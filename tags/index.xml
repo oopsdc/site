@@ -2,65 +2,65 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Tags on 0opsdc</title>
-    <link>https://examplesite.com/tags/</link>
+    <link>https://oopsdc.com/tags/</link>
     <description>Recent content in Tags on 0opsdc</description>
     <image>
-      <url>https://examplesite.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>https://examplesite.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+      <url>https://oopsdc.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://oopsdc.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
     </image>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sat, 28 Aug 2021 17:31:36 +0800</lastBuildDate><atom:link href="https://examplesite.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 28 Aug 2021 17:31:36 +0800</lastBuildDate><atom:link href="https://oopsdc.com/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Daily</title>
-      <link>https://examplesite.com/tags/daily/</link>
+      <link>https://oopsdc.com/tags/daily/</link>
       <pubDate>Sat, 28 Aug 2021 17:31:36 +0800</pubDate>
       
-      <guid>https://examplesite.com/tags/daily/</guid>
+      <guid>https://oopsdc.com/tags/daily/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Hack The Box</title>
-      <link>https://examplesite.com/tags/hack-the-box/</link>
+      <link>https://oopsdc.com/tags/hack-the-box/</link>
       <pubDate>Tue, 17 Aug 2021 15:03:30 +0800</pubDate>
       
-      <guid>https://examplesite.com/tags/hack-the-box/</guid>
+      <guid>https://oopsdc.com/tags/hack-the-box/</guid>
       <description></description>
     </item>
     
     <item>
       <title>CTF</title>
-      <link>https://examplesite.com/tags/ctf/</link>
+      <link>https://oopsdc.com/tags/ctf/</link>
       <pubDate>Fri, 13 Aug 2021 20:27:10 +0800</pubDate>
       
-      <guid>https://examplesite.com/tags/ctf/</guid>
+      <guid>https://oopsdc.com/tags/ctf/</guid>
       <description></description>
     </item>
     
     <item>
       <title>信息收集</title>
-      <link>https://examplesite.com/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/</link>
+      <link>https://oopsdc.com/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/</link>
       <pubDate>Fri, 25 Jun 2021 15:36:18 +0800</pubDate>
       
-      <guid>https://examplesite.com/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/</guid>
+      <guid>https://oopsdc.com/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/</guid>
       <description></description>
     </item>
     
     <item>
       <title>漏洞复现</title>
-      <link>https://examplesite.com/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</link>
+      <link>https://oopsdc.com/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</link>
       <pubDate>Thu, 17 Jun 2021 09:03:30 +0800</pubDate>
       
-      <guid>https://examplesite.com/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</guid>
+      <guid>https://oopsdc.com/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</guid>
       <description></description>
     </item>
     
     <item>
       <title>first</title>
-      <link>https://examplesite.com/tags/first/</link>
+      <link>https://oopsdc.com/tags/first/</link>
       <pubDate>Tue, 15 Sep 2020 11:30:03 +0000</pubDate>
       
-      <guid>https://examplesite.com/tags/first/</guid>
+      <guid>https://oopsdc.com/tags/first/</guid>
       <description></description>
     </item>
     

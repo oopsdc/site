@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>信息收集 on 0opsdc</title>
-    <link>https://examplesite.com/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/</link>
+    <link>https://oopsdc.com/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/</link>
     <description>Recent content in 信息收集 on 0opsdc</description>
     <image>
-      <url>https://examplesite.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>https://examplesite.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+      <url>https://oopsdc.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://oopsdc.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
     </image>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Fri, 25 Jun 2021 15:36:18 +0800</lastBuildDate><atom:link href="https://examplesite.com/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 25 Jun 2021 15:36:18 +0800</lastBuildDate><atom:link href="https://oopsdc.com/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>信息收集</title>
-      <link>https://examplesite.com/post/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/</link>
+      <link>https://oopsdc.com/post/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/</link>
       <pubDate>Fri, 25 Jun 2021 15:36:18 +0800</pubDate>
       
-      <guid>https://examplesite.com/post/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/</guid>
+      <guid>https://oopsdc.com/post/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/</guid>
       <description>信息收集概念 进行渗透测试之前，最重要的一步就是信息收集。
 信息收集的主要内容:收集服务器配置信息、网站敏感信息等，包括域名、子域名信息、目标网站系统CMS指纹、目标网站真实IP、开放端口等。
 1、收集域名信息 知道目标域名后，第一件事就是获取域名注册信息，包括域名DNS服务器信息及注册人联系信息等。

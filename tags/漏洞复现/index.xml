@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>漏洞复现 on 0opsdc</title>
-    <link>https://examplesite.com/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</link>
+    <link>https://oopsdc.com/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</link>
     <description>Recent content in 漏洞复现 on 0opsdc</description>
     <image>
-      <url>https://examplesite.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>https://examplesite.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+      <url>https://oopsdc.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://oopsdc.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
     </image>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Thu, 17 Jun 2021 09:03:30 +0800</lastBuildDate><atom:link href="https://examplesite.com/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 17 Jun 2021 09:03:30 +0800</lastBuildDate><atom:link href="https://oopsdc.com/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>JBoss漏洞复现</title>
-      <link>https://examplesite.com/post/jboss%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</link>
+      <link>https://oopsdc.com/post/jboss%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</link>
       <pubDate>Thu, 17 Jun 2021 09:03:30 +0800</pubDate>
       
-      <guid>https://examplesite.com/post/jboss%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</guid>
+      <guid>https://oopsdc.com/post/jboss%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</guid>
       <description>JBoss 4.x JBossMQ JMS 反序列化漏洞 CVE-2017-7504 漏洞描述 Red Hat JBoss Application Server是一款基于JavaEE的开源应用服务器。JBoss AS 4.x及之前版本中，JBossMQ实现过程的JMS over HTTP Invocation Layer的HTTPServerILServlet.java文件存在反序列化漏洞，攻击者可借助特制的序列化数据利用该漏洞执行任意代码。
 影响版本 JBoss AS 4.x及之前。
 复现思路 漏洞复现 环境搭建：
@@ -28,10 +28,10 @@ git clone https://github.com/joaomatosf/jexboss.git python3 jexboss.py -host htt
     
     <item>
       <title>Nginx漏洞复现</title>
-      <link>https://examplesite.com/post/nginx%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</link>
+      <link>https://oopsdc.com/post/nginx%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</link>
       <pubDate>Thu, 17 Jun 2021 09:03:30 +0800</pubDate>
       
-      <guid>https://examplesite.com/post/nginx%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</guid>
+      <guid>https://oopsdc.com/post/nginx%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</guid>
       <description>Nginx 越界读取缓存漏洞 CVE-2017-7529 漏洞描述 Nginx在反向代理站点的时候，通常会缓存一些文件，特别是静态文件。缓存的部分存储在文件中，每个缓存文件包括文件头+HTTP返回包头+HTTP返回包体。如果二次请求命中该缓存文件，Nginx会直接将该文件中的HTTP返回包体返回给用户。
 如果我的请求中包含Range头，Nginx将会根据我指定的start和end位置，返回指定长度的内容。而如果我构造了两个负的位置，如(-600, -9223372036854774591)，将可能读取到负位置的数据。如果这次请求又命中了缓存文件，则可能读取到缓存文件中位于HTTP返回包体前的文件头、HTTP返回包头等内容。
 影响版本 Nginx 0.5.6 ~ 1.13.2
@@ -43,10 +43,10 @@ POC已经在当前目录中给出来，文件名poc.py：
     
     <item>
       <title>服务器应用漏洞</title>
-      <link>https://examplesite.com/post/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E/</link>
+      <link>https://oopsdc.com/post/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E/</link>
       <pubDate>Thu, 17 Jun 2021 09:03:30 +0800</pubDate>
       
-      <guid>https://examplesite.com/post/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E/</guid>
+      <guid>https://oopsdc.com/post/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E/</guid>
       <description>OpenSSL OpenSSL 心脏滴血漏洞 CVE-2014-0160 漏洞描述 2014年4月7日，OpenSSL发布安全公告，在OpenSSL 1.0.1 ~ 1.0.1f Beta1版本中存在漏洞，漏洞名为HeartBleed。其中Heart是指该漏洞位于心跳协议上，Bleed是因为该漏洞会造成数据泄露。即HeartBleed是在心跳协议上的一个数据泄露漏洞，OpenSSL库中用到了该心跳协议。
 影响版本 OpenSSL 1.0.1、1.0.1a、1.0.1b、1.0.1c、1.0.1d、1.0.1e、1.0.1f、Beta 1 of OpenSSL 1.0.2等。
 复现思路 漏洞复现 环境搭建:
@@ -62,10 +62,10 @@ n0b0dyCN/redis-rogue-server: Redis(&amp;lt;=5.0.5) RCE (github.com)</description
     
     <item>
       <title>Apache漏洞复现</title>
-      <link>https://examplesite.com/post/apache%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</link>
+      <link>https://oopsdc.com/post/apache%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/post/apache%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</guid>
+      <guid>https://oopsdc.com/post/apache%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</guid>
       <description>Airflow 存储型XSS 漏洞描述 Apache Airflow 1.10.2及之前版本的airflow webserver服务存在XSS漏洞，原因在于`WEB应用未对客户端数据进行正确验证，导致攻击者可利用该漏洞执行客户端代码。
 影响版本 Apache Airflow 1.10.3以下版本。
 漏洞复现 访问/admin/dagrun/(默认不需要密码)。

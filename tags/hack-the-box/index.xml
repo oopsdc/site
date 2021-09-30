@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Hack The Box on 0opsdc</title>
-    <link>https://examplesite.com/tags/hack-the-box/</link>
+    <link>https://oopsdc.com/tags/hack-the-box/</link>
     <description>Recent content in Hack The Box on 0opsdc</description>
     <image>
-      <url>https://examplesite.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>https://examplesite.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+      <url>https://oopsdc.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://oopsdc.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
     </image>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Tue, 17 Aug 2021 15:03:30 +0800</lastBuildDate><atom:link href="https://examplesite.com/tags/hack-the-box/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 17 Aug 2021 15:03:30 +0800</lastBuildDate><atom:link href="https://oopsdc.com/tags/hack-the-box/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>HTB-Starting Point</title>
-      <link>https://examplesite.com/post/htb-starting-point/</link>
+      <link>https://oopsdc.com/post/htb-starting-point/</link>
       <pubDate>Tue, 17 Aug 2021 15:03:30 +0800</pubDate>
       
-      <guid>https://examplesite.com/post/htb-starting-point/</guid>
+      <guid>https://oopsdc.com/post/htb-starting-point/</guid>
       <description>Archetype  目标：拿到用户权限与系统权限。
 靶机IP：10.10.10.27。
  1、信息收集 先使用nmap看看靶机开放了什么端口：

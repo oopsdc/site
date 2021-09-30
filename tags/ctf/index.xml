@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>CTF on 0opsdc</title>
-    <link>https://examplesite.com/tags/ctf/</link>
+    <link>https://oopsdc.com/tags/ctf/</link>
     <description>Recent content in CTF on 0opsdc</description>
     <image>
-      <url>https://examplesite.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>https://examplesite.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+      <url>https://oopsdc.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://oopsdc.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
     </image>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Fri, 13 Aug 2021 20:27:10 +0800</lastBuildDate><atom:link href="https://examplesite.com/tags/ctf/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 13 Aug 2021 20:27:10 +0800</lastBuildDate><atom:link href="https://oopsdc.com/tags/ctf/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>MD5()函数绕过</title>
-      <link>https://examplesite.com/post/md5%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87/</link>
+      <link>https://oopsdc.com/post/md5%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87/</link>
       <pubDate>Fri, 13 Aug 2021 20:27:10 +0800</pubDate>
       
-      <guid>https://examplesite.com/post/md5%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87/</guid>
+      <guid>https://oopsdc.com/post/md5%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87/</guid>
       <description>示例代码：
 if (md5($_POST[&amp;#39;md51&amp;#39;]) == md5($_POST[&amp;#39;md52&amp;#39;]) &amp;amp;&amp;amp; $_POST[&amp;#39;md51&amp;#39;] != $_POST[&amp;#39;md52&amp;#39;]) 弱类型绕过 PHP在处理哈希字符串时，会把每一个0E开头的哈希值解释为0，所以若两个不同密码进行哈希后以0E开头，则会被认为值均为0，从而判等。
 md5加密后开头为0E的值：
@@ -29,10 +29,10 @@ md51[]=1&amp;amp;md52[]=2  本文链接：MD5()函数绕过 | Atmet (oopsdc.tk)
     
     <item>
       <title>BUUCTF</title>
-      <link>https://examplesite.com/post/buuctf/</link>
+      <link>https://oopsdc.com/post/buuctf/</link>
       <pubDate>Fri, 13 Aug 2021 10:08:21 +0800</pubDate>
       
-      <guid>https://examplesite.com/post/buuctf/</guid>
+      <guid>https://oopsdc.com/post/buuctf/</guid>
       <description>Basic Linux Labs  2020年10月24日 更新：目前所有靶机均能直接访问互联网。
 点击启动靶机可以启动一台安装好了 LAMP 的机器。
 并且这台机器位于靶机内网，所有动态靶机均可直接通过主机名访问这台机器。
@@ -52,10 +52,10 @@ GET /?file=/var/log/nginx/access.log HTTP/1.1Host: &amp;lt;domain&amp;gt;:&amp;
     
     <item>
       <title>从0到1-CTFer成长之路</title>
-      <link>https://examplesite.com/post/%E4%BB%8E0%E5%88%B01-ctfer%E6%88%90%E9%95%BF%E4%B9%8B%E8%B7%AF/</link>
+      <link>https://oopsdc.com/post/%E4%BB%8E0%E5%88%B01-ctfer%E6%88%90%E9%95%BF%E4%B9%8B%E8%B7%AF/</link>
       <pubDate>Sat, 03 Jul 2021 18:59:29 +0800</pubDate>
       
-      <guid>https://examplesite.com/post/%E4%BB%8E0%E5%88%B01-ctfer%E6%88%90%E9%95%BF%E4%B9%8B%E8%B7%AF/</guid>
+      <guid>https://oopsdc.com/post/%E4%BB%8E0%E5%88%B01-ctfer%E6%88%90%E9%95%BF%E4%B9%8B%E8%B7%AF/</guid>
       <description>平台地址:N1BOOK平台-Nu1L Team
 第一章 Web入门 信息搜集 常见搜集  Des:一共3部分flag。
  环境搭建 docker-compose.yml：
@@ -75,10 +75,10 @@ version: &amp;#39;3.2&amp;#39; services: web: image: registry.</description>
     
     <item>
       <title>Bugku</title>
-      <link>https://examplesite.com/post/bugku/</link>
+      <link>https://oopsdc.com/post/bugku/</link>
       <pubDate>Mon, 13 Apr 2020 22:06:50 +0800</pubDate>
       
-      <guid>https://examplesite.com/post/bugku/</guid>
+      <guid>https://oopsdc.com/post/bugku/</guid>
       <description>Bugku Web Web1  Des：flag{}。
  查看源码即可。
 Web2  Des：输入验证码即可得到flag。
@@ -102,10 +102,10 @@ Web5  Des:矛盾。
     
     <item>
       <title>攻防世界</title>
-      <link>https://examplesite.com/post/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C/</link>
+      <link>https://oopsdc.com/post/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C/</link>
       <pubDate>Fri, 03 Jan 2020 22:06:50 +0800</pubDate>
       
-      <guid>https://examplesite.com/post/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C/</guid>
+      <guid>https://oopsdc.com/post/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C/</guid>
       <description>攻防世界 Web view source  Des：X老师让小宁同学查看一个网页的源代码，但小宁同学发现鼠标右键好像不管用了。
  查看页面源码。
 获得flag。

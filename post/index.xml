@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Posts on 0opsdc</title>
-    <link>https://examplesite.com/post/</link>
+    <link>https://oopsdc.com/post/</link>
     <description>Recent content in Posts on 0opsdc</description>
     <image>
-      <url>https://examplesite.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>https://examplesite.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+      <url>https://oopsdc.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://oopsdc.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
     </image>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sat, 28 Aug 2021 17:31:36 +0800</lastBuildDate><atom:link href="https://examplesite.com/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 28 Aug 2021 17:31:36 +0800</lastBuildDate><atom:link href="https://oopsdc.com/post/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>LxRunOffline使用手册</title>
-      <link>https://examplesite.com/post/lxrunoffline/</link>
+      <link>https://oopsdc.com/post/lxrunoffline/</link>
       <pubDate>Sat, 28 Aug 2021 17:31:36 +0800</pubDate>
       
-      <guid>https://examplesite.com/post/lxrunoffline/</guid>
+      <guid>https://oopsdc.com/post/lxrunoffline/</guid>
       <description>一、简介 WSL有多香就不介绍了，但其原生命令较为简陋、默认安装在C盘，稍有不足。而LxRunOffline能够安装任意发行版系统到任意目录，且具备转移已安装WSL目录、备份等功能，是一个极好的WSL管理软件。
 项目地址：GitHub - DDoSolitary/LxRunOffline: A full-featured utility for managing Windows Subsystem for Linux (WSL)
 二、安装LxRunOffline  常规安装：下载项目，手动安装 通过Chocolatey安装：  choco install lxrunoffline  通过Scoop安装：  scoop bucket add extras scoop install lxrunoffline LxRunOffline参数介绍：
@@ -24,10 +24,10 @@ l , list - 列出所有已安装的发行版。gd , get-default - 获取 bash.e
     
     <item>
       <title>Scoop使用手册</title>
-      <link>https://examplesite.com/post/scoop%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/</link>
+      <link>https://oopsdc.com/post/scoop%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/</link>
       <pubDate>Mon, 23 Aug 2021 23:31:36 +0800</pubDate>
       
-      <guid>https://examplesite.com/post/scoop%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/</guid>
+      <guid>https://oopsdc.com/post/scoop%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/</guid>
       <description>Scoop简介 Scoop是一个包管理工具，类似Ubuntu的apt和Mac的homebrew，只需通过一条命令即可快速完成软件的下载、安装和配置等步骤。
 项目地址：GitHub - lukesampson/scoop: A command-line installer for Windows.
 Scoop安装 没什么问题的话，大部分的电脑都能直接安装scoop，有问题的话请参考官方文档和网络资料自行解决，本文仅描述scoop的安装过程及实际安装遇到的问题。
@@ -48,10 +48,10 @@ aria2-enabled (默认值: true)aria2-retry-wait (默认值: 2)aria2-split (默
     
     <item>
       <title>如何拥有多个GitHub Pages并配置子域名</title>
-      <link>https://examplesite.com/post/%E5%A6%82%E4%BD%95%E6%8B%A5%E6%9C%89%E5%A4%9A%E4%B8%AAgithub-pages%E5%B9%B6%E9%85%8D%E7%BD%AE%E5%AD%90%E5%9F%9F%E5%90%8D/</link>
+      <link>https://oopsdc.com/post/%E5%A6%82%E4%BD%95%E6%8B%A5%E6%9C%89%E5%A4%9A%E4%B8%AAgithub-pages%E5%B9%B6%E9%85%8D%E7%BD%AE%E5%AD%90%E5%9F%9F%E5%90%8D/</link>
       <pubDate>Sat, 21 Aug 2021 16:48:19 +0800</pubDate>
       
-      <guid>https://examplesite.com/post/%E5%A6%82%E4%BD%95%E6%8B%A5%E6%9C%89%E5%A4%9A%E4%B8%AAgithub-pages%E5%B9%B6%E9%85%8D%E7%BD%AE%E5%AD%90%E5%9F%9F%E5%90%8D/</guid>
+      <guid>https://oopsdc.com/post/%E5%A6%82%E4%BD%95%E6%8B%A5%E6%9C%89%E5%A4%9A%E4%B8%AAgithub-pages%E5%B9%B6%E9%85%8D%E7%BD%AE%E5%AD%90%E5%9F%9F%E5%90%8D/</guid>
       <description>文章背景 突发奇想能不能配置多个GitHub Pages，然后分别给它们绑定一个子域名，说干就干。
 博客搭建文章：博客搭建 | Atmet (oopsdc.tk)
 GitHub Pages有三种类型：项目、用户和组织，项目站点连接到GitHub托管的特定项目，后两者连接到特定GitHub账户。用户只能创建一个用户主站，但可以有多个项目站点。
@@ -67,10 +67,10 @@ test.oopsdc.tk也可通过仓库中的Settings进行设置，选择Pages后，�
     
     <item>
       <title>Vulhub环境搭建</title>
-      <link>https://examplesite.com/post/vulhub%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link>
+      <link>https://oopsdc.com/post/vulhub%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link>
       <pubDate>Fri, 20 Aug 2021 18:32:54 +0800</pubDate>
       
-      <guid>https://examplesite.com/post/vulhub%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid>
+      <guid>https://oopsdc.com/post/vulhub%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid>
       <description>安装环境  Ubuntu 20.04  环境配置  docker docker-compose  更换系统源 备份原文件：
 mv /etc/apt/source.list /etc/apt/source.list.bak 使用以下任一命令创建并编辑source.list文件：
 gedit /etc/apt/source.list vi /etc/apt/source.list vim /etc/apt/source.list	// 需使用 apt install vim 命令安装 文件内容如下：
@@ -79,10 +79,10 @@ gedit /etc/apt/source.list vi /etc/apt/source.list vim /etc/apt/source.list	// �
     
     <item>
       <title>GitHub不再支持密码验证解决方案</title>
-      <link>https://examplesite.com/post/github%E4%B8%8D%E5%86%8D%E6%94%AF%E6%8C%81%E5%AF%86%E7%A0%81%E9%AA%8C%E8%AF%81%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</link>
+      <link>https://oopsdc.com/post/github%E4%B8%8D%E5%86%8D%E6%94%AF%E6%8C%81%E5%AF%86%E7%A0%81%E9%AA%8C%E8%AF%81%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</link>
       <pubDate>Thu, 19 Aug 2021 08:46:55 +0800</pubDate>
       
-      <guid>https://examplesite.com/post/github%E4%B8%8D%E5%86%8D%E6%94%AF%E6%8C%81%E5%AF%86%E7%A0%81%E9%AA%8C%E8%AF%81%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</guid>
+      <guid>https://oopsdc.com/post/github%E4%B8%8D%E5%86%8D%E6%94%AF%E6%8C%81%E5%AF%86%E7%A0%81%E9%AA%8C%E8%AF%81%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</guid>
       <description>问题描述 在更新博客push本地资源时遇到如下报错：
 remote: Support for password authentication was removed on August 13, 2021. Please use a personal access token instead.大意就是GitHub从13号起不再支持密码验证，需要使用个人token，官方解释是为了安全。
 解决方案 进入GitHub首页后点击右上角的个人头像，选择Settings，在左侧选择Developer settings，然后选择Personal access tokens，选中之后点击Generate new token，我们可以设置token名、有效期及token的权限范围。仅需要仓库部署的话，我们就只需勾选repo，翻到最下面点击Gererate token。
@@ -94,10 +94,10 @@ remote: Support for password authentication was removed on August 13, 2021. Plea
     
     <item>
       <title>Kali安装Parallels Tools</title>
-      <link>https://examplesite.com/post/kali%E5%AE%89%E8%A3%85parallels-tools/</link>
+      <link>https://oopsdc.com/post/kali%E5%AE%89%E8%A3%85parallels-tools/</link>
       <pubDate>Wed, 18 Aug 2021 22:45:30 +0800</pubDate>
       
-      <guid>https://examplesite.com/post/kali%E5%AE%89%E8%A3%85parallels-tools/</guid>
+      <guid>https://oopsdc.com/post/kali%E5%AE%89%E8%A3%85parallels-tools/</guid>
       <description>环境配置 本文环境信息如下：
  Parallel Desktop 16 Business 16.5.0 (49183) Kali Linux 2021.2 64-Bit  系统安装 安装配置 安装Kali Linux的时候Parallels Desktop无法识别操作系统，需要我们手动选择Other Linux下的Kali Linux。
 配置选项因人而异，此处不细讲。
@@ -107,10 +107,10 @@ remote: Support for password authentication was removed on August 13, 2021. Plea
     
     <item>
       <title>HTB-Starting Point</title>
-      <link>https://examplesite.com/post/htb-starting-point/</link>
+      <link>https://oopsdc.com/post/htb-starting-point/</link>
       <pubDate>Tue, 17 Aug 2021 15:03:30 +0800</pubDate>
       
-      <guid>https://examplesite.com/post/htb-starting-point/</guid>
+      <guid>https://oopsdc.com/post/htb-starting-point/</guid>
       <description>Archetype  目标：拿到用户权限与系统权限。
 靶机IP：10.10.10.27。
  1、信息收集 先使用nmap看看靶机开放了什么端口：
@@ -119,10 +119,10 @@ sudo nmap -sS -sV 10.10.10.27 # 参数讲解 sS：使用SYN半开放式扫描，
     
     <item>
       <title>MD5()函数绕过</title>
-      <link>https://examplesite.com/post/md5%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87/</link>
+      <link>https://oopsdc.com/post/md5%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87/</link>
       <pubDate>Fri, 13 Aug 2021 20:27:10 +0800</pubDate>
       
-      <guid>https://examplesite.com/post/md5%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87/</guid>
+      <guid>https://oopsdc.com/post/md5%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87/</guid>
       <description>示例代码：
 if (md5($_POST[&amp;#39;md51&amp;#39;]) == md5($_POST[&amp;#39;md52&amp;#39;]) &amp;amp;&amp;amp; $_POST[&amp;#39;md51&amp;#39;] != $_POST[&amp;#39;md52&amp;#39;]) 弱类型绕过 PHP在处理哈希字符串时，会把每一个0E开头的哈希值解释为0，所以若两个不同密码进行哈希后以0E开头，则会被认为值均为0，从而判等。
 md5加密后开头为0E的值：
@@ -136,10 +136,10 @@ md51[]=1&amp;amp;md52[]=2  本文链接：MD5()函数绕过 | Atmet (oopsdc.tk)
     
     <item>
       <title>BUUCTF</title>
-      <link>https://examplesite.com/post/buuctf/</link>
+      <link>https://oopsdc.com/post/buuctf/</link>
       <pubDate>Fri, 13 Aug 2021 10:08:21 +0800</pubDate>
       
-      <guid>https://examplesite.com/post/buuctf/</guid>
+      <guid>https://oopsdc.com/post/buuctf/</guid>
       <description>Basic Linux Labs  2020年10月24日 更新：目前所有靶机均能直接访问互联网。
 点击启动靶机可以启动一台安装好了 LAMP 的机器。
 并且这台机器位于靶机内网，所有动态靶机均可直接通过主机名访问这台机器。
@@ -159,10 +159,10 @@ GET /?file=/var/log/nginx/access.log HTTP/1.1Host: &amp;lt;domain&amp;gt;:&amp;
     
     <item>
       <title>ATT&amp;CK实战一</title>
-      <link>https://examplesite.com/post/attck%E5%AE%9E%E6%88%98%E4%B8%80/</link>
+      <link>https://oopsdc.com/post/attck%E5%AE%9E%E6%88%98%E4%B8%80/</link>
       <pubDate>Wed, 21 Jul 2021 14:34:21 +0800</pubDate>
       
-      <guid>https://examplesite.com/post/attck%E5%AE%9E%E6%88%98%E4%B8%80/</guid>
+      <guid>https://oopsdc.com/post/attck%E5%AE%9E%E6%88%98%E4%B8%80/</guid>
       <description>一、环境搭建 1.1 下载虚拟机文件 自行搜索。
 1.2 环境介绍 开机密码：hongrisec@2019.
 本次实验共3台主机，Win7作为Web服务器，是最先攻击点，Win2k3为内网域成员主机，Win2k8 R2为内网域控主机。
@@ -180,10 +180,10 @@ Nmap scan report for 192.168.106.150Host is up (0.00044s latency).Not shown: 9
     
     <item>
       <title>浅析APNs推送机制</title>
-      <link>https://examplesite.com/post/%E6%B5%85%E6%9E%90apns%E6%8E%A8%E9%80%81%E6%9C%BA%E5%88%B6/</link>
+      <link>https://oopsdc.com/post/%E6%B5%85%E6%9E%90apns%E6%8E%A8%E9%80%81%E6%9C%BA%E5%88%B6/</link>
       <pubDate>Tue, 20 Jul 2021 17:19:55 +0800</pubDate>
       
-      <guid>https://examplesite.com/post/%E6%B5%85%E6%9E%90apns%E6%8E%A8%E9%80%81%E6%9C%BA%E5%88%B6/</guid>
+      <guid>https://oopsdc.com/post/%E6%B5%85%E6%9E%90apns%E6%8E%A8%E9%80%81%E6%9C%BA%E5%88%B6/</guid>
       <description>APNs简述 Apple Push Notification server(APNs)，即苹果推送通知服务。
 APNs出现需求 由于移动设备内存、CPU、电池容量等各种因素，iOS不允许APP进程常驻后台(时限大概为10min)。
 当用户主动关闭APP或后台APP进入后台达到限定时长后，意味着该APP进程的结束，在一定程度上保证了手机的流畅度与使用时长。但这也同时意味着服务器无法主动和用户交互(如实时推送消息)，为了解决这个限制，苹果推出了APNs，允许设备和服务器分别与苹果的推送服务器保持长连接状态。
@@ -203,10 +203,10 @@ deviceToken deviceToken是一个APP安装在设备上的唯一标识符，一个
     
     <item>
       <title>Arm开发板联网配置</title>
-      <link>https://examplesite.com/post/arm%E5%BC%80%E5%8F%91%E6%9D%BF%E8%81%94%E7%BD%91%E9%85%8D%E7%BD%AE/</link>
+      <link>https://oopsdc.com/post/arm%E5%BC%80%E5%8F%91%E6%9D%BF%E8%81%94%E7%BD%91%E9%85%8D%E7%BD%AE/</link>
       <pubDate>Tue, 20 Jul 2021 12:17:34 +0800</pubDate>
       
-      <guid>https://examplesite.com/post/arm%E5%BC%80%E5%8F%91%E6%9D%BF%E8%81%94%E7%BD%91%E9%85%8D%E7%BD%AE/</guid>
+      <guid>https://oopsdc.com/post/arm%E5%BC%80%E5%8F%91%E6%9D%BF%E8%81%94%E7%BD%91%E9%85%8D%E7%BD%AE/</guid>
       <description>文章背景 使用S5P6818开发板时，有业务上云的需求，遂有本文，内容较少，仅涉及联网部分。
 问题描述  插上网线后无法获取IP 配置静态IP后无法ping通外网  解决方案 分两步解决。
 1.配置静态IP 方法一
@@ -223,10 +223,10 @@ route add default gw &amp;lt;ip&amp;gt; 再使用route命令验证一下，确�
     
     <item>
       <title>utterances博客评论插件</title>
-      <link>https://examplesite.com/post/utterances%E5%8D%9A%E5%AE%A2%E8%AF%84%E8%AE%BA%E6%8F%92%E4%BB%B6/</link>
+      <link>https://oopsdc.com/post/utterances%E5%8D%9A%E5%AE%A2%E8%AF%84%E8%AE%BA%E6%8F%92%E4%BB%B6/</link>
       <pubDate>Tue, 20 Jul 2021 09:10:00 +0800</pubDate>
       
-      <guid>https://examplesite.com/post/utterances%E5%8D%9A%E5%AE%A2%E8%AF%84%E8%AE%BA%E6%8F%92%E4%BB%B6/</guid>
+      <guid>https://oopsdc.com/post/utterances%E5%8D%9A%E5%AE%A2%E8%AF%84%E8%AE%BA%E6%8F%92%E4%BB%B6/</guid>
       <description>概述 utterances是一个基于GitHub issue，拥有多种主题的开源小组件，本文将简述使用如何在hugo博客部署utterances。
 配置过程 新建仓库 新建一个公开的仓库，用于存放评论，名字随意。作者在此处创建一个名为utterances的公开仓库。
 安装utterances GitHub Apps - utterances
@@ -239,10 +239,10 @@ route add default gw &amp;lt;ip&amp;gt; 再使用route命令验证一下，确�
     
     <item>
       <title>ProxyChains简单使用</title>
-      <link>https://examplesite.com/post/proxychains%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/</link>
+      <link>https://oopsdc.com/post/proxychains%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/</link>
       <pubDate>Fri, 09 Jul 2021 22:24:59 +0800</pubDate>
       
-      <guid>https://examplesite.com/post/proxychains%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/</guid>
+      <guid>https://oopsdc.com/post/proxychains%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/</guid>
       <description>概述 ProxyChains是一个Linux和Unix下的代理工具，允许TCP和DNS通过代理隧道，支持HTTP、SOCKS4、SOCKS5类型的代理服务器，且可配置多个代理。
 ProxyChains通过用户自定义的代理列表强制连接指定的应用程序。
 本文简述kali下如何通过ProxyChains使用Windows主机代理。
@@ -252,10 +252,10 @@ ProxyChains-ng：rofl0r/proxychains-ng: proxychains ng (new generation) - a prel
     
     <item>
       <title>从0到1-CTFer成长之路</title>
-      <link>https://examplesite.com/post/%E4%BB%8E0%E5%88%B01-ctfer%E6%88%90%E9%95%BF%E4%B9%8B%E8%B7%AF/</link>
+      <link>https://oopsdc.com/post/%E4%BB%8E0%E5%88%B01-ctfer%E6%88%90%E9%95%BF%E4%B9%8B%E8%B7%AF/</link>
       <pubDate>Sat, 03 Jul 2021 18:59:29 +0800</pubDate>
       
-      <guid>https://examplesite.com/post/%E4%BB%8E0%E5%88%B01-ctfer%E6%88%90%E9%95%BF%E4%B9%8B%E8%B7%AF/</guid>
+      <guid>https://oopsdc.com/post/%E4%BB%8E0%E5%88%B01-ctfer%E6%88%90%E9%95%BF%E4%B9%8B%E8%B7%AF/</guid>
       <description>平台地址:N1BOOK平台-Nu1L Team
 第一章 Web入门 信息搜集 常见搜集  Des:一共3部分flag。
  环境搭建 docker-compose.yml：
@@ -275,10 +275,10 @@ version: &amp;#39;3.2&amp;#39; services: web: image: registry.</description>
     
     <item>
       <title>自定义GitHub个人资料</title>
-      <link>https://examplesite.com/post/%E8%87%AA%E5%AE%9A%E4%B9%89github%E4%B8%AA%E4%BA%BA%E8%B5%84%E6%96%99/</link>
+      <link>https://oopsdc.com/post/%E8%87%AA%E5%AE%9A%E4%B9%89github%E4%B8%AA%E4%BA%BA%E8%B5%84%E6%96%99/</link>
       <pubDate>Thu, 01 Jul 2021 21:33:33 +0800</pubDate>
       
-      <guid>https://examplesite.com/post/%E8%87%AA%E5%AE%9A%E4%B9%89github%E4%B8%AA%E4%BA%BA%E8%B5%84%E6%96%99/</guid>
+      <guid>https://oopsdc.com/post/%E8%87%AA%E5%AE%9A%E4%B9%89github%E4%B8%AA%E4%BA%BA%E8%B5%84%E6%96%99/</guid>
       <description>概述 想自定义一下GitHub的个人资料自述文件，遂有本文。
 官方文档:管理个人资料自述文件 - GitHub Docs
 关于自述文件:关于自述文件 - GitHub Docs
@@ -294,10 +294,10 @@ version: &amp;#39;3.2&amp;#39; services: web: image: registry.</description>
     
     <item>
       <title>信息收集</title>
-      <link>https://examplesite.com/post/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/</link>
+      <link>https://oopsdc.com/post/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/</link>
       <pubDate>Fri, 25 Jun 2021 15:36:18 +0800</pubDate>
       
-      <guid>https://examplesite.com/post/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/</guid>
+      <guid>https://oopsdc.com/post/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/</guid>
       <description>信息收集概念 进行渗透测试之前，最重要的一步就是信息收集。
 信息收集的主要内容:收集服务器配置信息、网站敏感信息等，包括域名、子域名信息、目标网站系统CMS指纹、目标网站真实IP、开放端口等。
 1、收集域名信息 知道目标域名后，第一件事就是获取域名注册信息，包括域名DNS服务器信息及注册人联系信息等。
@@ -320,10 +320,10 @@ VirusTotal
     
     <item>
       <title>JBoss漏洞复现</title>
-      <link>https://examplesite.com/post/jboss%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</link>
+      <link>https://oopsdc.com/post/jboss%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</link>
       <pubDate>Thu, 17 Jun 2021 09:03:30 +0800</pubDate>
       
-      <guid>https://examplesite.com/post/jboss%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</guid>
+      <guid>https://oopsdc.com/post/jboss%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</guid>
       <description>JBoss 4.x JBossMQ JMS 反序列化漏洞 CVE-2017-7504 漏洞描述 Red Hat JBoss Application Server是一款基于JavaEE的开源应用服务器。JBoss AS 4.x及之前版本中，JBossMQ实现过程的JMS over HTTP Invocation Layer的HTTPServerILServlet.java文件存在反序列化漏洞，攻击者可借助特制的序列化数据利用该漏洞执行任意代码。
 影响版本 JBoss AS 4.x及之前。
 复现思路 漏洞复现 环境搭建：
@@ -336,10 +336,10 @@ git clone https://github.com/joaomatosf/jexboss.git python3 jexboss.py -host htt
     
     <item>
       <title>Nginx漏洞复现</title>
-      <link>https://examplesite.com/post/nginx%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</link>
+      <link>https://oopsdc.com/post/nginx%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</link>
       <pubDate>Thu, 17 Jun 2021 09:03:30 +0800</pubDate>
       
-      <guid>https://examplesite.com/post/nginx%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</guid>
+      <guid>https://oopsdc.com/post/nginx%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</guid>
       <description>Nginx 越界读取缓存漏洞 CVE-2017-7529 漏洞描述 Nginx在反向代理站点的时候，通常会缓存一些文件，特别是静态文件。缓存的部分存储在文件中，每个缓存文件包括文件头+HTTP返回包头+HTTP返回包体。如果二次请求命中该缓存文件，Nginx会直接将该文件中的HTTP返回包体返回给用户。
 如果我的请求中包含Range头，Nginx将会根据我指定的start和end位置，返回指定长度的内容。而如果我构造了两个负的位置，如(-600, -9223372036854774591)，将可能读取到负位置的数据。如果这次请求又命中了缓存文件，则可能读取到缓存文件中位于HTTP返回包体前的文件头、HTTP返回包头等内容。
 影响版本 Nginx 0.5.6 ~ 1.13.2
@@ -351,10 +351,10 @@ POC已经在当前目录中给出来，文件名poc.py：
     
     <item>
       <title>服务器应用漏洞</title>
-      <link>https://examplesite.com/post/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E/</link>
+      <link>https://oopsdc.com/post/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E/</link>
       <pubDate>Thu, 17 Jun 2021 09:03:30 +0800</pubDate>
       
-      <guid>https://examplesite.com/post/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E/</guid>
+      <guid>https://oopsdc.com/post/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E/</guid>
       <description>OpenSSL OpenSSL 心脏滴血漏洞 CVE-2014-0160 漏洞描述 2014年4月7日，OpenSSL发布安全公告，在OpenSSL 1.0.1 ~ 1.0.1f Beta1版本中存在漏洞，漏洞名为HeartBleed。其中Heart是指该漏洞位于心跳协议上，Bleed是因为该漏洞会造成数据泄露。即HeartBleed是在心跳协议上的一个数据泄露漏洞，OpenSSL库中用到了该心跳协议。
 影响版本 OpenSSL 1.0.1、1.0.1a、1.0.1b、1.0.1c、1.0.1d、1.0.1e、1.0.1f、Beta 1 of OpenSSL 1.0.2等。
 复现思路 漏洞复现 环境搭建:
@@ -370,10 +370,10 @@ n0b0dyCN/redis-rogue-server: Redis(&amp;lt;=5.0.5) RCE (github.com)</description
     
     <item>
       <title>博客搭建</title>
-      <link>https://examplesite.com/post/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</link>
+      <link>https://oopsdc.com/post/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</link>
       <pubDate>Sat, 12 Jun 2021 12:29:53 +0800</pubDate>
       
-      <guid>https://examplesite.com/post/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</guid>
+      <guid>https://oopsdc.com/post/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</guid>
       <description>博客搭建 hugo Hugo官方网站：https://gohugo.io
 本文以PaperMod主题为例，官方文档：Installation · adityatelange/hugo-PaperMod Wiki (github.com)
 需求准备 Hugo：Releases · gohugoio/hugo (github.com)
@@ -388,10 +388,10 @@ hugo9.push到远程仓库 # 配置代理 git config --global http.proxy socks5:
     
     <item>
       <title>XSS Challenges</title>
-      <link>https://examplesite.com/post/xss-challenges/</link>
+      <link>https://oopsdc.com/post/xss-challenges/</link>
       <pubDate>Thu, 10 Jun 2021 21:03:39 +0800</pubDate>
       
-      <guid>https://examplesite.com/post/xss-challenges/</guid>
+      <guid>https://oopsdc.com/post/xss-challenges/</guid>
       <description>题目地址：https://xss-quiz.int21h.jp/
 Stage #1  Hint: Very simple&amp;hellip;
  直接输入测试语句：
@@ -409,10 +409,10 @@ Stage #4  Hint: Invisible input field.
     
     <item>
       <title>Test</title>
-      <link>https://examplesite.com/post/test/</link>
+      <link>https://oopsdc.com/post/test/</link>
       <pubDate>Fri, 28 May 2021 21:03:39 +0800</pubDate>
       
-      <guid>https://examplesite.com/post/test/</guid>
+      <guid>https://oopsdc.com/post/test/</guid>
       <description>He11o, th1s 1s a test!
 #include &amp;lt;stdio.h&amp;gt;int main() { pritnf(&amp;#34;Hello World!&amp;#34;); }  本文链接:Test | Atmet (oopsdc.tk)
 文章许可:本文采用CC BY-NC-SA 4.0许可协议，转载请注明出处。
@@ -421,10 +421,10 @@ Stage #4  Hint: Invisible input field.
     
     <item>
       <title>网站镜像克隆</title>
-      <link>https://examplesite.com/post/%E7%BD%91%E7%AB%99%E9%95%9C%E5%83%8F%E5%85%8B%E9%9A%86/</link>
+      <link>https://oopsdc.com/post/%E7%BD%91%E7%AB%99%E9%95%9C%E5%83%8F%E5%85%8B%E9%9A%86/</link>
       <pubDate>Tue, 20 Apr 2021 22:06:50 +0800</pubDate>
       
-      <guid>https://examplesite.com/post/%E7%BD%91%E7%AB%99%E9%95%9C%E5%83%8F%E5%85%8B%E9%9A%86/</guid>
+      <guid>https://oopsdc.com/post/%E7%BD%91%E7%AB%99%E9%95%9C%E5%83%8F%E5%85%8B%E9%9A%86/</guid>
       <description>使用wget克隆网站 使用方法 我们可以使用man wget命令查看帮助文档。
 操作命令及参数解释如下：
 wget -m -p -E -k -K -np -v https://www.baidu.com/ # 参数解释 -m	:	镜像，选择该选项适用于Web站点 -p	:	页面获取的先决条件，该选项确保包含了请求的图片和css脚本文件被下载(可以更好复制html5站点) -E	:	适用于拓展，可以在本地另存一个html文件 -k	:	转换链接，确保文件本转换，适用于本地浏览 -K	:	转换备份文件，将以orig为后缀作为原始文件 -np	:	不要到上一层子目录中 -v	:	显示过程，不显示过程为-nv 克隆结果 # 克隆后在当前目录下会出现一个与网站同名的子目录，树形结构如下 www.baidu.com ├── index.html ├── index.html.orig └── robots.txt 0 directories, 3 files 使用HTTrack克隆网站 使用方法 httrack # 进入软件后需要输入项目名 baidu # 克隆后的存放地址 /home/oopsdc/Desktop # 要克隆的网站地址 www.baidu.com # 有6个选项，此处我们选2，具有向导递归层级的镜像网站 2 # 接下来的部分全选默认选项 默认回车 克隆结果 baidu ├── backblue.</description>
@@ -432,10 +432,10 @@ wget -m -p -E -k -K -np -v https://www.baidu.com/ # 参数解释 -m	:	镜像，�
     
     <item>
       <title>Docker</title>
-      <link>https://examplesite.com/post/docker/</link>
+      <link>https://oopsdc.com/post/docker/</link>
       <pubDate>Tue, 13 Apr 2021 22:06:50 +0800</pubDate>
       
-      <guid>https://examplesite.com/post/docker/</guid>
+      <guid>https://oopsdc.com/post/docker/</guid>
       <description>Docker概述 镜像（image）：
 一个只读模板。一个镜像可以用来创建多个Docker容器，好似Java中的类和对象，镜像是类，容器是对象。容器（container）：
 Docker利用容器独立运行一个或一组应用，容器是用镜像创建的运行实例。容器可以被启动、开始、停止、删除。每个容器都是相互个隔离的。也可以把容器看做一个简易版Linux环境(包括root用户权限、进程空间、用户空间和网络空间等)及运行在其中的应用程序。容器的定义和镜像几乎一模一样，也是一堆层的统一视角，唯一区别在于容器最上面一层可读可写。仓库（repository）：
@@ -450,10 +450,10 @@ yum install -y yum-utils 5.设置镜像仓库：
     
     <item>
       <title>Golang</title>
-      <link>https://examplesite.com/post/golang/</link>
+      <link>https://oopsdc.com/post/golang/</link>
       <pubDate>Tue, 13 Apr 2021 22:06:50 +0800</pubDate>
       
-      <guid>https://examplesite.com/post/golang/</guid>
+      <guid>https://oopsdc.com/post/golang/</guid>
       <description>runoob教程:Go 语言教程 | 菜鸟教程 (runoob.com)
 环境搭建 安装包官方下载地址：Downloads - The Go Programming Language (golang.org)
 国内能打开的地址：Downloads - The Go Programming Language (google.cn)
@@ -468,10 +468,10 @@ go run hello.go go build生成二进制文件运行:
     
     <item>
       <title>GTK&#43;</title>
-      <link>https://examplesite.com/post/gtk&#43;/</link>
+      <link>https://oopsdc.com/post/gtk&#43;/</link>
       <pubDate>Sat, 27 Mar 2021 22:06:50 +0800</pubDate>
       
-      <guid>https://examplesite.com/post/gtk&#43;/</guid>
+      <guid>https://oopsdc.com/post/gtk&#43;/</guid>
       <description>GTK+简介 GTK+(Gnome Toolkit+)最初是为GIMP(GNU Image Manipulation Program)写的，在开发早期GIMP版本时，Peter Mattis 和 Spencer Kimball创建了GTK(GIMP Toolkit)作为Motif收费工具包的替代。当GTK获得了面向对象特性和可扩展性后，才变为了GTK+。
 GTK+特点 稳定、跨平台、多语言绑定、接口丰富、与时俱进、算法丰富、移动嵌入式应用广泛.
 学习手册  GTK+2手册：GTK+ 2 Reference Manual - GNOME Developer Center GTK+3手册：GTK+ 3 Reference Manual - GNOME Developer Center 中文手册：介绍 - 《GTK+3 参考手册》 - 书栈网 · BookStack  GTK程序简介  使用gcc编译时加上pkg-config --cflags --libs gtk+-2.0，或者直接使用makefile编译
@@ -480,19 +480,19 @@ GTK+特点 稳定、跨平台、多语言绑定、接口丰富、与时俱进、
     
     <item>
       <title>My 1st post</title>
-      <link>https://examplesite.com/post/my-1st-post/</link>
+      <link>https://oopsdc.com/post/my-1st-post/</link>
       <pubDate>Tue, 15 Sep 2020 11:30:03 +0000</pubDate>
       
-      <guid>https://examplesite.com/post/my-1st-post/</guid>
+      <guid>https://oopsdc.com/post/my-1st-post/</guid>
       <description>Desc Text.</description>
     </item>
     
     <item>
       <title>Bugku</title>
-      <link>https://examplesite.com/post/bugku/</link>
+      <link>https://oopsdc.com/post/bugku/</link>
       <pubDate>Mon, 13 Apr 2020 22:06:50 +0800</pubDate>
       
-      <guid>https://examplesite.com/post/bugku/</guid>
+      <guid>https://oopsdc.com/post/bugku/</guid>
       <description>Bugku Web Web1  Des：flag{}。
  查看源码即可。
 Web2  Des：输入验证码即可得到flag。
@@ -516,10 +516,10 @@ Web5  Des:矛盾。
     
     <item>
       <title>攻防世界</title>
-      <link>https://examplesite.com/post/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C/</link>
+      <link>https://oopsdc.com/post/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C/</link>
       <pubDate>Fri, 03 Jan 2020 22:06:50 +0800</pubDate>
       
-      <guid>https://examplesite.com/post/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C/</guid>
+      <guid>https://oopsdc.com/post/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C/</guid>
       <description>攻防世界 Web view source  Des：X老师让小宁同学查看一个网页的源代码，但小宁同学发现鼠标右键好像不管用了。
  查看页面源码。
 获得flag。
@@ -552,19 +552,19 @@ simple_php  Des：小宁听说php是最好的语言，于是她简单学习之�
     
     <item>
       <title></title>
-      <link>https://examplesite.com/post/readme/</link>
+      <link>https://oopsdc.com/post/readme/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/post/readme/</guid>
+      <guid>https://oopsdc.com/post/readme/</guid>
       <description>post </description>
     </item>
     
     <item>
       <title>Apache漏洞复现</title>
-      <link>https://examplesite.com/post/apache%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</link>
+      <link>https://oopsdc.com/post/apache%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://examplesite.com/post/apache%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</guid>
+      <guid>https://oopsdc.com/post/apache%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</guid>
       <description>Airflow 存储型XSS 漏洞描述 Apache Airflow 1.10.2及之前版本的airflow webserver服务存在XSS漏洞，原因在于`WEB应用未对客户端数据进行正确验证，导致攻击者可利用该漏洞执行客户端代码。
 影响版本 Apache Airflow 1.10.3以下版本。
 漏洞复现 访问/admin/dagrun/(默认不需要密码)。
