@@ -1,0 +1,237 @@
+<!doctype html><html lang=en dir=auto>
+<head><meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
+<meta name=robots content="index, follow">
+<title>CTF | 0opsdc</title>
+<meta name=keywords content>
+<meta name=description content="0opsdc">
+<meta name=author content="0opsdc">
+<link rel=canonical href=https://examplesite.com/tags/ctf/>
+<link crossorigin=anonymous href=/assets/css/stylesheet.min.5e2b4101351c21e906f398ae96901791830f58d430f96f2659dab7eaef7b3cb7.css integrity="sha256-XitBATUcIekG85iulpAXkYMPWNQw+W8mWdq36u97PLc=" rel="preload stylesheet" as=style>
+<link rel=icon href=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/favicon.png>
+<link rel=icon type=image/png sizes=16x16 href=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/favicon.png>
+<link rel=icon type=image/png sizes=32x32 href=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/favicon.png>
+<link rel=apple-touch-icon href=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/favicon.png>
+<link rel=mask-icon href=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/favicon.png>
+<meta name=theme-color content="#2e2e33">
+<meta name=msapplication-TileColor content="#2e2e33">
+<meta name=generator content="Hugo 0.88.1">
+<link rel=alternate type=application/rss+xml href=https://examplesite.com/tags/ctf/index.xml>
+<noscript>
+<style>#theme-toggle,.top-link{display:none}</style>
+<style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style>
+</noscript>
+<script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(a,e,f,g,b,c,d){a.GoogleAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=1,c.src=g,d.parentNode.insertBefore(c,d)}(window,document,'script','https://www.google-analytics.com/analytics.js','ga'),ga('create','UA-123-45','auto'),ga('send','pageview'))</script><meta property="og:title" content="CTF">
+<meta property="og:description" content="0opsdc">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://examplesite.com/tags/ctf/"><meta property="og:image" content="https://examplesite.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta property="og:site_name" content="0opsdc">
+<meta name=twitter:card content="summary_large_image">
+<meta name=twitter:image content="https://examplesite.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E">
+<meta name=twitter:title content="CTF">
+<meta name=twitter:description content="0opsdc">
+</head>
+<body class=list id=top>
+<script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add('dark'):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove('dark'):window.matchMedia('(prefers-color-scheme: dark)').matches&&document.body.classList.add('dark')</script>
+<header class=header>
+<nav class=nav>
+<div class=logo>
+<a href=https://examplesite.com/ accesskey=h title="Home (Alt + H)">Home</a>
+<span class=logo-switches>
+<button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+</button>
+</span>
+</div>
+<ul id=menu>
+<li>
+<a href=https://examplesite.com/archives/ title=Archives>
+<span>Archives</span>
+</a>
+</li>
+<li>
+<a href=https://examplesite.com/tags/ title=Tags>
+<span>Tags</span>
+</a>
+</li>
+<li>
+<a href=https://examplesite.com/search/ title="Search (Alt + /)" accesskey=/>
+<span>Search</span>
+</a>
+</li>
+</ul>
+</nav>
+</header>
+<main class=main>
+<header class=page-header><div class=breadcrumbs><a href=https://examplesite.com/>Home</a>&nbsp;»&nbsp;<a href=https://examplesite.com/tags/>Tags</a></div>
+<h1>CTF</h1>
+</header>
+<article class="post-entry tag-entry">
+<header class=entry-header>
+<h2>MD5()函数绕过
+</h2>
+</header>
+<section class=entry-content>
+<p>示例代码：
+if (md5($_POST['md51']) == md5($_POST['md52']) && $_POST['md51'] != $_POST['md52']) 弱类型绕过 PHP在处理哈希字符串时，会把每一个0E开头的哈希值解释为0，所以若两个不同密码进行哈希后以0E开头，则会被认为值均为0，从而判等。
+md5加密后开头为0E的值：
+QNKCDZO
+240610708
+s878926199a
+s155964671a
+s214587387a
+s214587387a
+以示例代码为例，分别给md51和md52赋表中不同的值。经过md5加密后，值均为0，而原始值又不同，顺利绕过if判断。
+数组绕过 md5()函数无法处理数组，会对传入的数组返回NULL，即数组经过md5加密后均得到NULL。
+我们仅需传入如下数据即可，数组内容随意：
+md51[]=1&md52[]=2 本文链接：MD5()函数绕过 | Atmet (oopsdc.tk)
+文章许可：本文采用CC BY-NC-SA 4.0许可协议，转载请注明出处。
+</p>
+</section>
+<footer class=entry-footer>August 13, 2021&nbsp;·&nbsp;0opsdc</footer>
+<a class=entry-link aria-label="post link to MD5()函数绕过" href=https://examplesite.com/post/md5%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87/></a>
+</article>
+<article class="post-entry tag-entry">
+<header class=entry-header>
+<h2>BUUCTF
+</h2>
+</header>
+<section class=entry-content>
+<p>Basic Linux Labs 2020年10月24日 更新：目前所有靶机均能直接访问互联网。
+点击启动靶机可以启动一台安装好了 LAMP 的机器。
+并且这台机器位于靶机内网，所有动态靶机均可直接通过主机名访问这台机器。
+但由于目前一个账户只能同时启动一台靶机，您如果有需要建议浏览器开一个隐私窗口，注册一个新账号来启动这个靶机。
+ssh 用户名：root 密码：123456 地址和端口为动态分配的。
+开启环境后按照题目给定地址和端口使用SSH连接即可。
+连接上云主机后使用ls命令，发现当前用户家目录下啥也没有，再使用cd ..命令切换到根目录下看看，发现flag.txt文件。
+也可直接使用cat /flag.txt命令查看flag。
+BUU LFI COURSE 1 启动环境后得到如下PHP代码：
+&lt;?php /** * Created by PhpStorm. * User: jinzhao * Date: 2019/7/9 * Time: 7:07 AM */ highlight_file(__FILE__); if(isset($_GET['file'])) { $str = $_GET['file']; include $_GET['file']; } 本地文件包含，通过file参数进行传参，可在URL后构造参数?file=/flag查看flag。
+拓展 通过Wappalyzer插件可以发现网站使用了nginx服务，尝试访问nginx访问日志：
+?file=/var/log/nginx/access.log
+页面回显出我们刚才的访问记录，接下来我们使用bp抓包尝试写入phpinfo。
+通过在User-Agent字段最后插入aaaaaaa&lt;?php phpinfo();?>bbbbbbb传入phpinfo()，刷新页面后检查是否传入成功。
+Request请求包如下：
+GET /?file=/var/log/nginx/access.log HTTP/1.1
+Host: &lt;domain>:&lt;port>
+Cache-Control: max-age=0
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5....</p>
+</section>
+<footer class=entry-footer>August 13, 2021&nbsp;·&nbsp;0opsdc</footer>
+<a class=entry-link aria-label="post link to BUUCTF" href=https://examplesite.com/post/buuctf/></a>
+</article>
+<article class="post-entry tag-entry">
+<header class=entry-header>
+<h2>从0到1-CTFer成长之路
+</h2>
+</header>
+<section class=entry-content>
+<p>平台地址:N1BOOK平台-Nu1L Team
+第一章 Web入门 信息搜集 常见搜集 Des:一共3部分flag。
+环境搭建 docker-compose.yml：
+version: '3.2' services: web: image: registry.cn-hangzhou.aliyuncs.com/n1book/web-information-backk:latest ports: - 80:80 启动：
+docker-compose up -d
+解题过程 既然说到了敏感文件，先试试robots.txt文件是否存在:
+User-agent: *
+Disallow:
+/flag1_is_her3_fun.txt
+访问flag1_is_her3_fun.txt，获得第一部分flag。
+剩下的工作就是扫描后台了，分别访问index.php~和.index.php.swp。
+粗心的小李 Des:看看能不能找到信息吧?
+环境搭建 docker-compose.yml：
+version: '3.2' services: web: image: registry.cn-hangzhou.aliyuncs.com/n1book/web-information-git:latest ports: - 80:80 启动：
+docker-compose up -d
+解题过程 Git泄露，找一下利用工具:gakki429/Git_Extract: 提取远程 git 泄露或本地 git 的工具 (github.com)
+使用后会在当前目录生成一个以网站命名的文件夹，cd进去，发现有一个index.html文件。flag就在其中。
+SQL注入 SQL注入-1 Des:N/A。
+环境搭建 docker-compose.yml：
+version: '3.2' services: web: image: registry....</p>
+</section>
+<footer class=entry-footer>July 3, 2021&nbsp;·&nbsp;0opsdc</footer>
+<a class=entry-link aria-label="post link to 从0到1-CTFer成长之路" href=https://examplesite.com/post/%E4%BB%8E0%E5%88%B01-ctfer%E6%88%90%E9%95%BF%E4%B9%8B%E8%B7%AF/></a>
+</article>
+<article class="post-entry tag-entry">
+<header class=entry-header>
+<h2>Bugku
+</h2>
+</header>
+<section class=entry-content>
+<p>Bugku Web Web1 Des：flag{}。
+查看源码即可。
+Web2 Des：输入验证码即可得到flag。
+输入框有输入长度限制，在控制台修改长度即可。
+Web3 Des：flag{}。
+通过get传参，按照题目要求直接传入
+?what=flag
+Web4 Des:post。
+方法1 利用hackbar直接post传参。
+方法2 利用burp抓包传值。
+方法3 编写python脚本。
+import requests s = requests.Session() r = s.get("&lt;url>") value = {'what':'flag'} r = s.post("&lt;url>", value) print(r.text) 题目更新 Des:看看源代码吧。
+查看源代码，发现有两串编码字符串。
+分别对两个字符串进行URL解码：
+按照代码含义将其组合起来：
+放到控制台Console里排版。
+将if判断里与a.value判等的值输入提交框，提交。
+获得flag。
+Web5 Des:矛盾。
+$num = $_GET['num']; if (!isnumeric($num)) { echo $num; if ($num == 1) echo 'flag{********}'; } 利用1a绕过，例：...</p>
+</section>
+<footer class=entry-footer>April 13, 2020&nbsp;·&nbsp;0opsdc</footer>
+<a class=entry-link aria-label="post link to Bugku" href=https://examplesite.com/post/bugku/></a>
+</article>
+<article class="post-entry tag-entry">
+<header class=entry-header>
+<h2>攻防世界
+</h2>
+</header>
+<section class=entry-content>
+<p>攻防世界 Web view source Des：X老师让小宁同学查看一个网页的源代码，但小宁同学发现鼠标右键好像不管用了。
+查看页面源码。
+获得flag。
+robots Des：X老师上课讲了Robots协议，小宁同学却上课打了瞌睡，赶紧来教教小宁Robots协议是什么吧。
+在URL后加上robots.txt，得到一个php页面提示，访问对应php文件。
+获得flag。
+backup Des：X老师忘记删除备份文件，他派小宁同学去把备份文件找出来,一起来帮小宁同学吧！
+尝试backup.php，无效。
+使用御剑扫描后台，得到index.php.bak，输入后下载备份文件，cat查看。
+获得flag。
+cookie Des：X老师告诉小宁他在cookie里放了些东西，小宁疑惑地想:‘这是夹心饼干的意思吗？’
+使用burp抓包，得到cookie.php。
+继续使用burp抓包，查看Response。
+获得flag。
+disable_button Des：N/A。
+页面的flag按钮无响应，猜测被禁用，查看控制台元素。
+&lt;input class="btn btn-default" disabled> 将此处的disabled前三字符删除，改为abled，按下按钮。
+获得flag。
+weak_auth Des：小宁写了一个登陆验证页面，随手就设了一个密码。
+查看源码。
+&lt;from class="form-inline" method="post" action="./check.php"> 有一个验证页面，访问它。
+页面空白，查看源码，提示。
+&lt;!--maybe you need a dictionary-->
+这道题或许不需要字典？
+尝试御剑扫描，无果。
+好的我错了，随机输入用户名和密码，使用burp抓包，response显示用户名必须为admin，初次爆破无果，手动尝试123456，正确….如果尝试继续用字典的话还是可以爆出来，只是比较费时间。
+获得flag。
+simple_php Des：小宁听说php是最好的语言，于是她简单学习之后写了几行php代码。
+&lt;?php show_source(__FILE__); include("config.php"); $a = @$_GET['a']; $b = @$_GET['b']; if ($a == 0 and $a) { echo $flag1; } if (is_numeric($b)) { exit(); } if ($b > 1234) { echo $flag2; } ?...</p>
+</section>
+<footer class=entry-footer>January 3, 2020&nbsp;·&nbsp;0opsdc</footer>
+<a class=entry-link aria-label="post link to 攻防世界" href=https://examplesite.com/post/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C/></a>
+</article>
+</main>
+<footer class=footer>
+<span>&copy; 2021 <a href=https://examplesite.com/>0opsdc</a></span>
+<span>
+Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://git.io/hugopapermod rel=noopener target=_blank>PaperMod</a>
+</span>
+</footer>
+<a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
+</a>
+<script>let menu=document.getElementById('menu');menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)},document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener("click",function(b){b.preventDefault();var a=this.getAttribute("href").substr(1);window.matchMedia('(prefers-reduced-motion: reduce)').matches?document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView({behavior:"smooth"}),a==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${a}`)})})</script>
+<script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script>
+<script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove('dark'),localStorage.setItem("pref-theme",'light')):(document.body.classList.add('dark'),localStorage.setItem("pref-theme",'dark'))})</script>
+</body>
+</html>

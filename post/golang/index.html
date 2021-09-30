@@ -1,0 +1,2055 @@
+<!doctype html><html lang=en dir=auto>
+<head><meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
+<meta name=robots content="index, follow">
+<title>Golang | 0opsdc</title>
+<meta name=keywords content="Daily">
+<meta name=description content="runoob教程:Go 语言教程 | 菜鸟教程 (runoob.com)
+环境搭建 安装包官方下载地址：Downloads - The Go Programming Language (golang.org)
+国内能打开的地址：Downloads - The Go Programming Language (google.cn)
+Windows安装go 安装包下载 这里我选择下载msi文件的go1.16.2.windows-amd64.zip压缩包，然后放在环境目录D:\Env\go1.16.2\bin下解压。
+环境配置 将go目录下的/bin路径添加到Path环境变量中，点击新建。
+检测安装 打开cmd输入go。
+hello-world 在工作目录创建hello.go文件。
+package main import &#34;fmt&#34; func main() { fmt.Println(&#34;Hello, World!&#34;) } 使用go run命令运行:
+go run hello.go go build生成二进制文件运行:
+> go build .\hello.go > ls Mode LastWriteTime Length Name ---- ------------- ------ ---- -a---- 2021/3/15 10:50 2094592 hello.exe -a---- 2021/3/15 10:47 79 hello.go > .">
+<meta name=author content="0opsdc">
+<link rel=canonical href=https://examplesite.com/post/golang/>
+<link crossorigin=anonymous href=/assets/css/stylesheet.min.5e2b4101351c21e906f398ae96901791830f58d430f96f2659dab7eaef7b3cb7.css integrity="sha256-XitBATUcIekG85iulpAXkYMPWNQw+W8mWdq36u97PLc=" rel="preload stylesheet" as=style>
+<script defer crossorigin=anonymous src=/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5+kdJvBz5iKbt6B5PJI=" onload=hljs.initHighlightingOnLoad()></script>
+<link rel=icon href=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/favicon.png>
+<link rel=icon type=image/png sizes=16x16 href=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/favicon.png>
+<link rel=icon type=image/png sizes=32x32 href=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/favicon.png>
+<link rel=apple-touch-icon href=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/favicon.png>
+<link rel=mask-icon href=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/favicon.png>
+<meta name=theme-color content="#2e2e33">
+<meta name=msapplication-TileColor content="#2e2e33">
+<meta name=generator content="Hugo 0.88.1">
+<noscript>
+<style>#theme-toggle,.top-link{display:none}</style>
+<style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style>
+</noscript>
+<script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(a,e,f,g,b,c,d){a.GoogleAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=1,c.src=g,d.parentNode.insertBefore(c,d)}(window,document,'script','https://www.google-analytics.com/analytics.js','ga'),ga('create','UA-123-45','auto'),ga('send','pageview'))</script><meta property="og:title" content="Golang">
+<meta property="og:description" content="runoob教程:Go 语言教程 | 菜鸟教程 (runoob.com)
+环境搭建 安装包官方下载地址：Downloads - The Go Programming Language (golang.org)
+国内能打开的地址：Downloads - The Go Programming Language (google.cn)
+Windows安装go 安装包下载 这里我选择下载msi文件的go1.16.2.windows-amd64.zip压缩包，然后放在环境目录D:\Env\go1.16.2\bin下解压。
+环境配置 将go目录下的/bin路径添加到Path环境变量中，点击新建。
+检测安装 打开cmd输入go。
+hello-world 在工作目录创建hello.go文件。
+package main import &#34;fmt&#34; func main() { fmt.Println(&#34;Hello, World!&#34;) } 使用go run命令运行:
+go run hello.go go build生成二进制文件运行:
+> go build .\hello.go > ls Mode LastWriteTime Length Name ---- ------------- ------ ---- -a---- 2021/3/15 10:50 2094592 hello.exe -a---- 2021/3/15 10:47 79 hello.go > .">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://examplesite.com/post/golang/"><meta property="og:image" content="https://examplesite.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta property="article:section" content="post">
+<meta property="article:published_time" content="2021-04-13T22:06:50+08:00">
+<meta property="article:modified_time" content="2021-04-13T22:06:50+08:00"><meta property="og:site_name" content="0opsdc">
+<meta name=twitter:card content="summary_large_image">
+<meta name=twitter:image content="https://examplesite.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E">
+<meta name=twitter:title content="Golang">
+<meta name=twitter:description content="runoob教程:Go 语言教程 | 菜鸟教程 (runoob.com)
+环境搭建 安装包官方下载地址：Downloads - The Go Programming Language (golang.org)
+国内能打开的地址：Downloads - The Go Programming Language (google.cn)
+Windows安装go 安装包下载 这里我选择下载msi文件的go1.16.2.windows-amd64.zip压缩包，然后放在环境目录D:\Env\go1.16.2\bin下解压。
+环境配置 将go目录下的/bin路径添加到Path环境变量中，点击新建。
+检测安装 打开cmd输入go。
+hello-world 在工作目录创建hello.go文件。
+package main import &#34;fmt&#34; func main() { fmt.Println(&#34;Hello, World!&#34;) } 使用go run命令运行:
+go run hello.go go build生成二进制文件运行:
+> go build .\hello.go > ls Mode LastWriteTime Length Name ---- ------------- ------ ---- -a---- 2021/3/15 10:50 2094592 hello.exe -a---- 2021/3/15 10:47 79 hello.go > .">
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://examplesite.com/post/"},{"@type":"ListItem","position":2,"name":"Golang","item":"https://examplesite.com/post/golang/"}]}</script>
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Golang","name":"Golang","description":"runoob教程:Go 语言教程 | 菜鸟教程 (runoob.com)\n环境搭建 安装包官方下载地址：Downloads - The Go Programming Language (golang.org)\n国内能打开的地址：Downloads - The Go Programming Language (google.cn)\nWindows安装go 安装包下载 这里我选择下载msi文件的go1.16.2.windows-amd64.zip压缩包，然后放在环境目录D:\\Env\\go1.16.2\\bin下解压。\n环境配置 将go目录下的/bin路径添加到Path环境变量中，点击新建。\n检测安装 打开cmd输入go。\nhello-world 在工作目录创建hello.go文件。\npackage main import \u0026#34;fmt\u0026#34; func main() { fmt.Println(\u0026#34;Hello, World!\u0026#34;) } 使用go run命令运行:\ngo run hello.go go build生成二进制文件运行:\n\u0026gt; go build .\\hello.go \u0026gt; ls Mode LastWriteTime Length Name ---- ------------- ------ ---- -a---- 2021/3/15 10:50 2094592 hello.exe -a---- 2021/3/15 10:47 79 hello.go \u0026gt; .","keywords":["Daily"],"articleBody":"runoob教程:Go 语言教程 | 菜鸟教程 (runoob.com)\n环境搭建 安装包官方下载地址：Downloads - The Go Programming Language (golang.org)\n国内能打开的地址：Downloads - The Go Programming Language (google.cn)\nWindows安装go 安装包下载 这里我选择下载msi文件的go1.16.2.windows-amd64.zip压缩包，然后放在环境目录D:\\Env\\go1.16.2\\bin下解压。\n环境配置 将go目录下的/bin路径添加到Path环境变量中，点击新建。\n检测安装 打开cmd输入go。\nhello-world 在工作目录创建hello.go文件。\npackage main import \"fmt\" func main() { fmt.Println(\"Hello, World!\") } 使用go run命令运行:\ngo run hello.go go build生成二进制文件运行:\n go build .\\hello.go  ls Mode LastWriteTime Length Name ---- ------------- ------ ---- -a---- 2021/3/15 10:50 2094592 hello.exe -a---- 2021/3/15 10:47 79 hello.go  .\\hello.exe Hello, World! Linux安装go  环境：Ubuntu 20.04.1（推荐使用WSL，但现在电脑上没配置，就在虚拟机上做了）\n 官方安装文档：Download and install - The Go Programming Language (google.cn)\n安装包下载 下载go1.16.2.linux-amd64.tar.gz压缩文件。\n解压 $ sudo tar -zxvf go1.16.2.linux-amd64.tar.gz 设置环境变量 $ export PATH=$PATH:/usr/local/go/bin 检测安装 $ go version 问题处理 本来想通过VMware Tools把压缩文件直接从主机拖到虚拟机的，但尝试本地解压VMware Tools失败，报错显示内存不足，尝试解压到其它目录。解决方法如下：\n$ sudo tar -xzvf VmwareTools.tar.gz -C /home/oopsdc\t# -C 后指定解压目录，我这里直接解压到用户目录下 $ cd /home/oopsdc/vmware-tools-distrib/\t# 切换到对应目录 $ sudo ./vmware-install.pl\t# 运行安装文件即可 Go语言结构 Go语言基础组成有以下几部分:\n 包声明 引入包 函数 变量 语句\u0026表达式 注释  我们以之前hello.go的代码为例。\npackage main import \"fmt\" func main() { fmt.Println(\"Hello, World!\") }  第一行package main定义了包名。我们必须在源文件非注释的第一行指明这个文件属于哪个包。如package main表示一个可独立执行的程序，每个Go应用程序都包含一个main包。 第三行import fmt告诉Go编译器这个程序需要使用fmt包的函数或其他元素。fmt包中有实现格式化I/O的函数。 第五行的func main()为程序开始执行的函数。main函数是每个可执行程序必须包含的，除init()函数外一般都是第一个执行的函数。 fmt.Println()可以将字符串输出到控制台并自动换行，效果与fmt.Println(\"Hello,World\\n\")相同。其中，Println和Print函数支持使用变量，如fmt.Println(arr)，若不加特别指令，会以默认打印格式将变量arr输出到控制台。 当标识符(如变量、常量、类型、函数名及结构字段等)以一个大写字母开头，如:Variable1，那么使用这种形式的标识符对象就可以被外部包代码所使用(需要先导入这个包)，这被称为导出(像面向对象语言中的public)；若标识符以小写字母开头，则对包外不可见，但在包内部可见并可用(类似protected)。 前括号{不能单独一行，否则会报错  func main() { // 错误  fmt.Println(\"Hello, World!\") } 学习笔记 变量声明三种方式 方式一 指定变量类型，若未初始化则值为0。\nvar v_name v_type v_name = value 实例1：\npackage main import \"fmt\" func main() { // 声明一个变量并初始化  var a = \"oopsdc\" fmt.Println(a) // 没有初始化就为零值  var b int fmt.Println(b) // bool 零值为 false  var c bool fmt.Println(c) } 执行结果：\noopsdc\r0\rfalse\r 数值类型(包括complex64/128)为 0 布尔类型为 false 字符串为 \"\"(空字符串) 以下几种类型为 nil：  var a *int var a []int var a map[string] int var a chan int var a func(string) int var a error // error 是接口 实例2：\npackage main import \"fmt\" func main() { var i int var f float64 var b bool var s string fmt.Printf(\"%v %v %v %q\\n\", i, f, b, s) } 执行结果：\n0 0 false \"\"\r方式二 根据值自行判断变量类型。\nvar v_name = value 实例：\npackage main import \"fmt\" func main() { var d = true fmt.Println(d) } 执行结果：\ntrue\r方式三 :=赋值，是使用变量的首选形式。**但只能被用在函数体内，不能够用于全局变量声明及赋值。**使用:=操作符可以高效创建一个变量。称之为初始化声明。\nv_name := value 注::=左侧需为未声明过的新变量，否则会报错。\n例：\nvar intVal int intVal :=1 // 这时候会产生编译错误  intVal,intVal1 := 1,2 // 此时不会产生编译错误，因为有声明新的变量，因为 := 是一个声明语句 实例:\npackage main import \"fmt\" func main() { f := \"oopsdc\" // var f string = \"oopsdc\"  fmt.Println(f) } 执行结果:\noopsdc\r多变量声明 //类型相同多个变量, 非全局变量 var vname1, vname2, vname3 type vname1, vname2, vname3 = v1, v2, v3 var vname1, vname2, vname3 = v1, v2, v3 // 和 python 很像,不需要显示声明类型，自动推断  vname1, vname2, vname3 := v1, v2, v3 // 出现在 := 左侧的变量不应该是已经被声明过的，否则会导致编译错误  // 这种因式分解关键字的写法一般用于声明全局变量 var ( vname1 v_type1 vname2 v_type2 ) 实例：\npackage main var x, y int var ( // 这种因式分解关键字的写法一般用于声明全局变量  a int b bool ) var c, d int = 1, 2 var e, f = 123, \"hello\" //这种不带声明格式的只能在函数体中出现 //g, h := 123, \"hello\"  func main(){ g, h := 123, \"hello\" println(x, y, a, b, c, d, e, f, g, h) } 执行结果：\n0 0 0 false 1 2 123 hello 123 hello\r空白标识符在函数返回值中的使用 实例：\npackage main import \"fmt\" func main() { _,numb,strs := numbers() //只获取函数返回值的后两个  fmt.Println(numb,strs) } //一个可以返回多个值的函数 func numbers()(int,int,string){ a , b , c := 1 , 2 , \"str\" return a,b,c } 执行结果：\n2 str\runsafe.sizeof()函数 实例如下：\npackage main import \"unsafe\" const ( a = \"abc\" b = len(a) c = unsafe.Sizeof(a) ) func main(){ println(a, b, c) } 运行结果：\nabc 3 16\r看到的时候没搞懂为什么c，即unsafe.Sizeof(a)的值为16，于是查了一下。\ncsdn文章：unsafe.sizeof()_记录每一个小阶段的学习心得，持之以恒！-CSDN博客\n 为什么字符串类型的unsafe.Sizeof()一直为16\n 实际中，字符串类型对应一个结构体，结构体有两个域。第一个域为指向该字符串的指针，第二个域是字符串长度，每个域占8字节，但并不包含指针指向的字符串内容，也就是说它的返回值一直为16。\niota特殊常量 iota介绍 是一个特殊常量，可认为是可被编译器修改的常量。\niota在const关键字出现时将被重置为 0(const内部的第一行之前)，const 中每新增一行常量声明将使iota计数一次(iota可理解为const语句块中的行索引)。\niota可被用作枚举值，第一个iota值为0，每当其在新的一行被引用时，值自动加1：\nconst ( a = iota\t// 1  b = iota\t// 2  c = iota\t// 3 ) 简写形式如下：\nconst ( a = iota b c ) iota用法 实例1：\npackage main import \"fmt\" func main() { const ( a = iota //0  b //1  c //2  d = \"ha\" //独立值，iota += 1  e //\"ha\" iota += 1  f = 100 //iota +=1  g //100 iota +=1  h = iota //7,恢复计数  i //8  ) fmt.Println(a,b,c,d,e,f,g,h,i) } 运行结果：\n go run .\\iota1.go 0 1 2 ha ha 100 100 7 8 实例2：\npackage main import \"fmt\" const ( i=1iota j=3iota k l ) func main() { fmt.Println(\"i =\",i) fmt.Println(\"j =\",j) fmt.Println(\"k =\",k) fmt.Println(\"l =\",l) } 运行结果：\n go run .\\iota2.go i = 1 j = 6 k = 12 l = 24 刚看到i=1的时候就想到了移位，以下是对结果的分析：\n110\rj = 3 * 2^1 = 6\rk = 3 1100\rk = 3 * 2^2 = 12\rl = 3 11000\rl = 3 * 2^3 = 24\r常量 常量是一个简单值的标识符，在程序运行过程中不会改变。\n常量中的数据类型只能为布尔型、数字型(整数型、浮点型和复数)及字符串型。\n常见常量定义格式：\nconst identifier [type] = value 类型说明符[type]可省略，因为编译器可根据变量值推断其类型。\n 显式类型定义  const a string = \"oopsdc\"  隐式类型定义  const a = \"oopsdc\"  多个常量定义  const a_name1, a_name2 = value1, value2 实例：\npackage main import \"fmt\" func main() { const LENGTH int = 10 const WIDTH int = 5 var area int const a, b, c = 1, false, \"str\" //多重赋值  area = LENGTH * WIDTH fmt.Printf(\"面积为 : %d\", area) println() println(a, b, c) } 执行结果：\n面积为 : 50\r1 false str\r常量用作枚举：\nconst ( Unknown = 0 Female = 1 Male = 2 ) 语言运算符 运算符用于在程序执行时执行数学或逻辑运算。\nGo语言内置运算符有:\n 算术运算符 关系运算符 逻辑运算符 位运算符 赋值运算符 其它运算符  其它运算符    运算符 描述 实例     \u0026 返回变量存储地址 \u0026a; 将给出变量的实际地址。   * 指针变量。 *a; 是一个指针变量    实例：\npackage main import \"fmt\" func main() { var a int = 4 var b int32 var c float32 var ptr *int /* 运算符实例 */ fmt.Printf(\"第 1 行 - a 变量类型为 = %T\\n\", a ); fmt.Printf(\"第 2 行 - b 变量类型为 = %T\\n\", b ); fmt.Printf(\"第 3 行 - c 变量类型为 = %T\\n\", c ); /* \u0026 和 * 运算符实例 */ ptr = \u0026a /* 'ptr' 包含了 'a' 变量的地址 */ fmt.Printf(\"a 的值为 %d\\n\", a); fmt.Printf(\"*ptr 为 %d\\n\", *ptr); } 执行结果：\n第 1 行 - a 变量类型为 = int\r第 2 行 - b 变量类型为 = int32\r第 3 行 - c 变量类型为 = float32\ra 的值为 4\r*ptr 为 4\r运算符优先级    优先级 运算符     5 * / % « » \u0026 \u0026^   4 + - | ^   3 == != =   2 \u0026\u0026   1 ||    我们可以通过使用括号来临时提升某个表达式的整体运算优先级。\n条件判断语句    语句 描述     if 语句 if 语句 由一个布尔表达式后紧跟一个或多个语句组成。   if…else 语句 if 语句 后可以使用可选的 else 语句, else 语句中的表达式在布尔表达式为 false 时执行。   if 嵌套语句 你可以在 if 或 else if 语句中嵌入一个或多个 if 或 else if 语句。   switch 语句 switch 语句用于基于不同条件执行不同动作。   select 语句 select 语句类似于 switch 语句，但是select会随机执行一个可运行的case。如果没有case可运行，它将阻塞，直到有case可运行。     注：Go 没有三目运算符，不支持?:形式的条件判断。\n 循环语句 Go 语言提供了以下几种类型循环处理语句:\n   循环类型 描述     for 循环 重复执行语句块   循环嵌套 在 for 循环中嵌套一个或多个 for 循环    循环控制语句 循环控制语句可以控制循环体内语句的执行过程。\nGO 语言支持以下几种循环控制语句:\n   控制语句 描述     break 语句 经常用于中断当前 for 循环或跳出 switch 语句   continue 语句 跳过当前循环的剩余语句，然后继续进行下一轮循环。   goto 语句 将控制转移到被标记的语句。    无限循环 实例：\npackage main import \"fmt\" func main() { for true { fmt.Printf(\"这是无限循环。\\n\"); } } 函数 函数定义 格式如下：\nfunc function_name( [parameter list] ) [return_types] { 函数体 } 函数定义解析:\n func：函数由 func 开始声明 function_name：函数名称，函数名和参数列表一起构成了函数签名。 parameter list：参数列表，参数就像一个占位符，当函数被调用时，你可以将值传递给参数，这个值被称为实际参数。参数列表指定的是参数类型、顺序、及参数个数。参数是可选的，也就是说函数也可以不包含参数。 return_types：返回类型，函数返回一列值。return_types 是该列值的数据类型。有些功能不需要返回值，这种情况下 return_types 不是必须的。 函数体：函数定义的代码集合。  实例：\n// 返回两个数的较大者 func main(num1, num2 int) int { // 声明局部变量 \tvar result int if (num1  num2) { result = num1 } else { result = num2 } return result } 函数调用 实例：\npackage main import \"fmt\" func main() { // 定义局部变量  var a int = 1 var b int = 2 var ret int // 调用函数返回最大值  ret = max(a, b) fmt.Printf(\"Maximum: %d\\n\", ret) } // max()函数 func max(num1, num2 int) int { // 定义局部变量  var res int if (num1  num2) { res = num1 } else { res = num2 } return res } 函数返回多个值 Go 函数可以返回多个值。\n实例：\npackage main import \"fmt\" func main() { a, b := swap(\"dc\", \"oops\") fmt.Println(a, b) } func swap(x, y string) (string, string) { return y, x } 执行结果：\noops dc\r函数参数 函数如果使用参数，该变量可称为函数的形参。\n形参就像定义在函数体内的局部变量。\n调用函数，可以通过两种方式来传递参数:\n   传递类型 描述     值传递 值传递是指在调用函数时将实际参数复制一份传递到函数中，这样在函数中如果对参数进行修改，将不会影响到实际参数。   引用传递 引用传递是指在调用函数时将实际参数的地址传递到函数中，那么在函数中对参数所进行的修改，将影响到实际参数。    默认情况下，Go 语言使用的是值传递，即在调用过程中不会影响到实际参数。\n函数用法    函数用法 描述     函数作为另外一个函数的实参 函数定义后可作为另外一个函数的实参数传入   闭包 闭包是匿名函数，可在动态编程中使用   方法 方法就是一个包含了接受者的函数    变量作用域 作用域为已声明标识符所表示的常量、类型、变量、函数或包在源代码中的作用范围。\nGo 语言中变量可以在三个地方声明:\n 函数内定义的变量称为局部变量 函数外定义的变量称为全局变量 函数定义中的变量称为形式参数  局部变量 在函数体内声明的变量称为局部变量，其作用域只在函数体内，参数和返回值也是局部变量。\n实例：\npackage main import \"fmt\" func main() { // 声明局部变量  var a, b, c int // 初始化参数  a = 1 b = 2 c = a + b fmt.Printf(\"Res: a=%d, b=%d, c=%d\\n\", a, b, c) } 执行结果：\nRes: a=1, b=2, c=3\r全局变量 在函数体外声明的变量称为全局变量，其作用域可以在整个包甚至外部包(被导出后)使用。\n全局变量可在任何函数中使用。\n实例1：\npackage main import \"fmt\" // 声明全局变量 var g int func main() { // 声明局部变量  var a, b int // 初始化参数  a = 1 b = 2 g = a + b fmt.Printf(\"Res: a=%d, b=%d, g=%d\\n\", a, b, g) } 执行结果：\nRes: a=1, b=2, g=3\rGo 语言中全局变量和局部变量名称可以相同，但位于函数内的局部变量会被优先考虑。\n实例2：\npackage main import \"fmt\" // 声明全局变量 var g int = 10 func main() { // 声明局部变量  var a, b, g int // 初始化参数  a = 1 b = 2 g = a + b fmt.Printf(\"Res: a=%d, b=%d, g=%d\\n\", a, b, g) } 执行结果：\nRes: a=1, b=2, g=3\r我们可以看出，即使在函数外部给全局变量g赋值为10，最后输出的还是函数体内局部变量g的值。\n形式参数 形式参数会作为函数的局部变量来使用。\n实例：\npackage main import \"fmt\" // 声明全局变量 var a int = 10 func main() { // main()函数中声明局部变量  var a int = 1 var b int = 2 var c int = 0 fmt.Printf(\"main()函数中 a=%d\\n\", a) c = sum(a, b) fmt.Printf(\"main()函数中 c=%d\\n\", c) } // sum()函数定义 func sum(a, b int) int { fmt.Printf(\"sum()函数中 a=%d\\n\", a) fmt.Printf(\"sum()函数中 b=%d\\n\", b) return a + b } 执行结果：\nmain()函数中 a=1\rsum()函数中 a=1\rsum()函数中 b=2\rmain()函数中 c=3\r初始化局部和全局变量 不同类型的局部和全局变量默认值为:\n   数据类型 初始化默认值     int 0   float32 0   pointer nil    数组 Go 中提供了数组类型的数据结构。\n数组是具有相同唯一类型的一组已编号且长度固定的数据项序列，这种类型可以是任意的原始类型例如整型、字符串或者自定义类型。\n相对于去声明 number0, number1, …, number99 的变量，使用数组形式 numbers[0], numbers[1] …, numbers[99] 更加方便且易于扩展。\n数组元素可以通过索引(位置)来读取(或者修改)，索引从0开始，第一个元素索引为0，第二个索引为1，以此类推。\n声明数组 语法格式如下：\nvar variable_name [SIZE] variable_type // 数组名 数组长度 数组类型 如我们定义一个类型为int，长度为10的数组balance：\nvar balance [10] int 初始化数组 var balance = [5]float32{1,2,3,4,5} 还可以通过字面量在声明数组的同时快速初始化：\nvar balance := [5]float32{1,2,3,4,5} 当数组长度不确定时，我们可以使用...代替数组长度，编译器会根据数组元素个数自动推断长度：\nvar balance := [...]float32{1,2,3,4,5} 当设置了数组长度时，我们可以通过指定下标来初始化元素：\n// 将索引为1和3的元素初始化 balance := [5]balance{1:1.0,3:3.0} 注：{}中的元素个数不能大于[]中的数字。\n访问数组元素 实例1：\npackage main import \"fmt\" func main() { var arr [10] int\t// 长度为10的数组 \tvar i, j int // 给数组初始化元素 \tfor i = 0; i 10; i++ { arr[i] = i + 1; } // 输出每个元素的值 \tfor j = 0; j 10; j++ { fmt.Printf(\"Ele[%d] = %d\\n\", j, arr[j]) } } 执行结果：\nEle[0] = 1\rEle[1] = 2\rEle[2] = 3\rEle[3] = 4\rEle[4] = 5\rEle[5] = 6\rEle[6] = 7\rEle[7] = 8\rEle[8] = 9\rEle[9] = 10\r实例2：\npackage main import \"fmt\" func main() { var i, j int arr := [...]float32{1,2,3,4,5} for i = 0; i 5; i++ { fmt.Printf(\"Ele[%d] = %f\\n\", i, arr[i]) } arr2 := [5]float32{1:2.0,3:7.0} for j = 0; j 5; j++ { fmt.Printf(\"Ele[%d] = %f\\n\", j, arr2[j]) } } 执行结果：\nEle[0] = 1.000000\rEle[1] = 2.000000\rEle[2] = 3.000000\rEle[3] = 4.000000\rEle[4] = 5.000000\rEle[0] = 0.000000\rEle[1] = 2.000000\rEle[2] = 0.000000\rEle[3] = 7.000000\rEle[4] = 0.000000\r更多内容 数组对Go 语言来说非常重要，以下我们是关于数组更多的内容:\n   内容 描述     多维数组 Go 语言支持多维数组，最简单的多维数组是二维数组   向函数传递数组 你可以向函数传递数组参数    指针 指针变量通常缩写为ptr。\n指针使用 实例：\npackage main import \"fmt\" func main() { var a int = 20 var ip *int ip = \u0026a fmt.Printf(\"a 变量地址为: %x\\n\", \u0026a) fmt.Printf(\"ip 变量存储地址为: %x\\n\", ip) fmt.Printf(\"*ip 指向的值: %d\\n\", *ip) } 执行结果：\na 变量地址为: c000128058\rip 变量存储地址为: c000128058\r*ip 指向的值: 20\r空指针 当指针没有被分配到任何变量时，值为nil。\n实例：\npackage main import \"fmt\" func main() { var ptr *int fmt.Printf(\"%x\\n\", ptr) } 执行结果：\n0\r空指针判断：\nif (ptr != nil) if (ptr == nil) 更多内容    内容 描述     Go 指针数组 你可以定义一个指针数组来存储地址   Go 指向指针的指针 Go 支持指向指针的指针   Go 向函数传递指针参数 通过引用或地址传参，在函数调用时可以改变其值    结构体 数组可以存储同一类型的数据，结构体中可以为不同项定义不同数据类型。\n结构体是由一系列具有相同类型或不同类型数据构成的数据集合。\n结构体表示一项纪录，比如一个学生有以下属性:\n 姓名 学号 学院 专业  定义结构体 使用type和struct语句。\ntype语句设定了结构体名称。\nstruct语句定义了一个新的数据类型，结构体中有一个或多个成员。\n结构体格式如下：\ntype struct_variable_type struct { member definition member definition ... } 定义了结构体类型，就能用于变量声明：\nvariable_name := structure_variable_type {value1, value2...} variable_name := structure_variable_type {key1:value1, key2:value2...} 实例：\npackage main import \"fmt\" func main() { fmt.Println(Books{\"Go lang\", \"DC\", \"Go lang learn\", \"oopsdc.tk\"}) fmt.Println(Books{title:\"Go lang\", author:\"DC\", subject:\"Go lang learn\", website:\"oopsdc.tk\"}) fmt.Println(Books{title:\"Go lang\", author:\"DC\"}) } type Books struct { title string author string subject string website string } 执行结果：\n{Go lang DC Go lang learn oopsdc.tk}\r{Go lang DC Go lang learn oopsdc.tk}\r{Go lang DC }\r访问结构体成员 格式：\n结构体.成员名\r实例：\npackage main import \"fmt\" func main() { var Book1 Books var Book2 Books Book1.title = \"C语言\" Book1.author = \"DC\" Book1.subject = \"编程\" Book1.id = 00001 Book2.title = \"Python语言\" Book2.author = \"DC\" Book2.subject = \"编程\" Book2.id = 00002 fmt.Printf(\"Book1 title: %s\\n\", Book1.title) fmt.Printf(\"Book1 author: %s\\n\", Book1.author) fmt.Printf(\"Book1 subject: %s\\n\", Book1.subject) fmt.Printf(\"Book1 id: %d\\n\", Book1.id) fmt.Printf(\"Book2 title: %s\\n\", Book2.title) fmt.Printf(\"Book2 author: %s\\n\", Book2.author) fmt.Printf(\"Book2 subject: %s\\n\", Book2.subject) fmt.Printf(\"Book2 id: %d\\n\", Book2.id) } type Books struct { title string author string subject string id int } 执行结果：\nBook1 title: C语言\rBook1 author: DC\rBook1 subject: 编程\rBook1 id: 1\rBook2 title: Python语言\rBook2 author: DC\rBook2 subject: 编程\rBook2 id: 2\r结构体作为函数参数 我们可以像其它数据类型一样将结构体类型作为参数传递给函数。\n实例：\npackage main import \"fmt\" func main() { var Book1 Books var Book2 Books Book1.title = \"C语言\" Book1.author = \"DC\" Book1.subject = \"编程\" Book1.date = \"2021-03-19\" Book2.title = \"Python\" Book2.author = \"DC\" Book2.subject = \"编程\" Book2.date = \"2021-03-19\" printBook(Book1) printBook(Book2) } type Books struct { title string author string subject string date string } func printBook(book Books) { fmt.Printf(\"Title: %s\\n\", book.title) fmt.Printf(\"Author: %s\\n\", book.author) fmt.Printf(\"Subject: %s\\n\", book.subject) fmt.Printf(\"Date: %s\\n\", book.date) } 执行结果：\nTitle: C语言\rAuthor: DC\rSubject: 编程\rDate: 2021-03-19\rTitle: Python\rAuthor: DC\rSubject: 编程\rDate: 2021-03-19\r结构体指针 定义结构体指针其实类似于其它指针变量：\nvar strcut_pointer *ptr 以上定义的指针变量可以存储结构体变量地址。我们可以通过\u0026符号查看结构体变量地址：\nstruct_pointer = \u0026ptr 使用结构体指针访问结构体成员，使用.：\nstruct_pointer.title 我们用指针重写一下之前结构体的实例：\npackage main import \"fmt\" func main() { var Book1 Books var Book2 Books Book1.title = \"C语言\" Book1.author = \"DC\" Book1.subject = \"编程\" Book1.date = \"2021-03-19\" Book2.title = \"Python\" Book2.author = \"DC\" Book2.subject = \"编程\" Book2.date = \"2021-03-19\" printBook(\u0026Book1) printBook(\u0026Book2) } type Books struct { title string author string subject string date string } func printBook(book *Books) { fmt.Printf(\"Title: %s\\n\", book.title) fmt.Printf(\"Author: %s\\n\", book.author) fmt.Printf(\"Subject: %s\\n\", book.subject) fmt.Printf(\"Date: %s\\n\", book.date) } 切片 切片是对数组的抽象。\nGo 中数组长度不可变，不适用部分特定场景，Go 提供了一种灵活且功能强悍的内置类型——切片(“动态数组”)。与数组相比，切片长度不固定，可以追加元素，在追加时可能使切片容量增大。\n定义切片 声明一个未指定长度的数组来定义切片：\nvar identifier []type 切片不需要指定长度。\n我们还可以使用make()函数创建切片：\nvar slice1 []type = make([]type, len) slice1 := make([]type, len) 也可以指定容量，capacity为可选参数：\nmake([]T, length, capacity) 此处的len是数组长度也是切片初始长度。\n切片初始化 直接初始化切片，[]表示切片类型，{1,2,3}初始化值依次为1,2,3，cap=len=3：\ns := [] int {1,2,3} 初始化切片s，是数组arr的引用：\ns := arr[:] 将arr中下标为startIndex到endIndex-1下的元素创建为一个新的切片：\ns := arr[startIndex:endIndex] 默认endIndex时将表示一直到arr的最后一个元素：\ns := arr[startIndex:]\r默认startIndex时表示从arr的第一个元素开始：\ns := arr[:endIndex] 通过切片s初始化切片s1：\ns1 := s[startIndex:endIndex] 通过内置函数make()初始化切片s，[]int标识其元素类型为int的切片：\ns := make([]int, len, cap) len()和cap()函数 切片可索引，且可由len()方法获取长度。\n切片提供了计算容量的方法，cap()可以测量切片长度上限。\n实例：\npackage main import \"fmt\" func main() { var nums = make([]int, 3, 5) printSlice(nums) } func printSlice(x []int) { fmt.Printf(\"len=%d cap=%d slice=%v\", len(x), cap(x), x) } 执行结果：\nlen=3 cap=5 slice=[0 0 0]\r空切片 切片在未初始化之前默认为nil，长度为0。\n实例：\npackage main import \"fmt\" func main() { var nums[] int printSlice(nums) if (nums == nil) { fmt.Println(\"切片为空!\") } } func printSlice(x []int) { fmt.Printf(\"len=%d cap=%d slice=%v\\n\", len(x), cap(x), x) } 执行结果：\nlen=0 cap=0 slice=[]\r切片为空!\r切片截取 可通过设置上下限设置截取切片。\n实例：\npackage main import \"fmt\" func main() { nums := []int{1,2,3,4,5,6,7,8,9} printSlice(nums) fmt.Println(\"nums=\",nums) fmt.Println(\"nums[1:4]=\",nums[1:4]) fmt.Println(\"nums[:3]=\",nums[:3]) fmt.Println(\"nums[4:]=\",nums[4:]) nums1 := make([]int, 0, 5) printSlice(nums1) num2 := nums[:2] printSlice(num2) num3 := nums[2:5] printSlice(num3) } func printSlice(x []int) { fmt.Printf(\"len=%d cap=%d slice=%v\\n\", len(x), cap(x), x) } 执行结果：\nlen=9 cap=9 slice=[1 2 3 4 5 6 7 8 9]\rnums= [1 2 3 4 5 6 7 8 9]\rnums[1:4]= [2 3 4]\rnums[:3]= [1 2 3]\rnums[4:]= [5 6 7 8 9]\rlen=0 cap=5 slice=[]\rlen=2 cap=9 slice=[1 2]\rlen=3 cap=7 slice=[3 4 5]\r前闭后开。\nappend()与copy()函数 若想增加切片容量，我们要创建一个新的更大的切片并把原切片内容拷贝过来，接下来我们通过copy与append方法。\n实例：\npackage main import \"fmt\" func main() { var nums []int printSlice(nums) nums = append(nums, 0) printSlice(nums) nums = append(nums, 1) printSlice(nums) nums = append(nums, 1, 2, 3) printSlice(nums) nums1 := make([]int, len(nums), (cap(nums))*2) copy(nums1, nums) printSlice(nums1) } func printSlice(x []int) { fmt.Printf(\"len=%d cap=%d slice=%v\\n\", len(x), cap(x), x) } 执行结果：\nlen=0 cap=0 slice=[]\rlen=1 cap=1 slice=[0]\rlen=2 cap=2 slice=[0 1]\rlen=5 cap=6 slice=[0 1 1 2 3]\rlen=5 cap=12 slice=[0 1 1 2 3]\rRange Go 语言中range关键字由于for循环中迭代数组(array)、切片(slice)、通道(channel)或集合(map)的元素，在数组和切片中它返回元素的索引及索引对应的值。即键值对。(key-value)\n实例：\npackage main import \"fmt\" func main() { nums := []int{2, 3, 4} sum := 0 for _, num := range nums { sum += num } fmt.Println(\"sum:\", sum) for i, num := range nums { if num == 3 { fmt.Println(\"index:\", i) } } kvs := map[string]string{\"a\":\"apple\", \"b\":\"banana\"} for k, v := range kvs { fmt.Printf(\"%s - %s\\n\", k, v) } for i, c := range \"go\" { fmt.Println(i, c) } } 执行结果：\nsum: 9\rindex: 1\ra - apple\rb - banana\r0 103\r1 111\rMap Map是一种无需的键值对集合，它最重要的一点是通过key来快速检索数据，key类似于索引，指向数据的值。\n我们可以像迭代数组和切片那样迭代Map，但Map时无序的，我们无法决定它的返回顺序，因为Map使用hash表实现。\n定义Map 1.使用内建函数make\n2.使用map关键字：\nvar map_variable map[key_data_type]value_data_type map_variable := make(map[key_data_type]value_type) 若不初始化map，那么会创建一个nil map，nil map不能用来存放键值对。\n实例：\npackage main import \"fmt\" func main() { var testMap map[string]string testMap = make(map[string]string) testMap [\"人文\"] = \"法学\" testMap [\"数计\"] = \"计算机\" testMap [\"外国语\"] = \"翻译\" testMap [\"智能制造\"] = \"嵌入式\" for aca := range testMap { fmt.Println(aca, \"招牌是\", testMap [aca]) } maj, ok := testMap [\"土木\"] if (ok) { fmt.Println(\"土木的招牌是:\", maj) } else { fmt.Println(\"值不存在\") } } 执行结果：\n智能制造 招牌是 嵌入式\r人文 招牌是 法学\r数计 招牌是 计算机\r外国语 招牌是 翻译\r值不存在\rdelete()函数 delete()函数用于删除集合元素，参数为map和其对应的key。\n实例：\npackage main import \"fmt\" func main() { testMap := map[string]string{\"一\": \"1\", \"二\": \"2\", \"三\": \"3\"} fmt.Println(\"原始数据\") for i := range testMap { fmt.Println(i, \"值为\", testMap [i]) } delete(testMap, \"一\") fmt.Println(\"一被删除\") fmt.Println(\"删除后数据\") for i := range testMap { fmt.Println(i, \"值为\", testMap [i]) } } 执行结果：\n原始数据\r一 值为 1\r二 值为 2\r三 值为 3\r一被删除\r删除后数据\r三 值为 3\r二 值为 2\r递归函数 Go 支持递归，但在使用时需要设置退出条件，否则将陷入无限循环。\n阶乘 import \"fmt\" func main() { var i int = 15 fmt.Printf(\"%d的阶乘为:%d\\n\", i, Factorial(uint64(i))) } func Factorial(n uint64)(res uint64) { if (n  0) { res = n * Factorial(n-1) return res } return 1 } 执行结果：\n15的阶乘为:1307674368000\r斐波那契数列 package main import \"fmt\" func main() { var i int for i = 0; i 10; i++ { fmt.Printf(\"%d\\t\", fibonacci(i)) } } func fibonacci(n int) int { if n 2 { return n } return fibonacci(n-2) + fibonacci(n-1) } 执行结果：\n0 1 1 2 3 5 8 13 21 34\r类型转换  注:Go 不支持隐式转换\n 基本格式:\ntype_name(expression) 类型 表达式 实例：\npackage main import \"fmt\" func main() { var res float32 var sum = 17 var count = 5 res = float32(sum)/float32(count) fmt.Printf(\"%f\\n\", res) } 执行结果:\n3.400000\r接口 Go 中提供了另一种数据类型，接口。它把所有具有共性的方法定义在一起，任何其它类型只要实现了这些方法就是实现了这个接口。\n实例：\npackage main import \"fmt\" func main() { var phone Phone phone = new(NokiaPhone) phone.call() phone = new (IPhone) phone.call() } type Phone interface { call() } type NokiaPhone struct { } func (nokiaPhone NokiaPhone) call() { fmt.Println(\"This is Nokiad\") } type IPhone struct { } func (iPhone IPhone) call() { fmt.Println(\"iPhone plz!\") } 执行结果：\nThis is Nokiad\riPhone plz!\r错误处理 Go 通过内置的错误接口提供了非常简单的错误处理机制。\nerror类型是一个接口类型，定义如下：\ntype error interface { Error() string } 我们可以在编码中通过实现error接口类型来生成错误信息。\n函数通常在最后的返回值中返回错误信息，使用error New可返回一个错误信息：\nfunc Sqrt(f float64) (float64, error) { if f 0 { return 0, errors.New(\"math: square root of negative number\") } } 我们在调用Sqrt的时候传递一个负数，然后得到non-nil的error对象，将此对象与nil比较，结果为true，所以fmt.Println(fmt包在处理error时会调用Error方法)被调用，输出错误，实例如下：\nres, err := Sqrt(-1) if err != nil { fmt.Println(err) } 实例：\npackage main import \"fmt\" func main() { if res, errorMsg := Divide(100, 10); errorMsg == \"\" { fmt.Println(\"100/10 = \", res) } if _, errorMsg := Divide(100, 0); errorMsg != \"\" { fmt.Println(\"errorMsg:\", errorMsg) } } type DivideError struct { dividee int divider int } func (de *DivideError) Error() string { strFormat := ` Cannot proceed, the divider is zero! dividee: %d divider: 0 ` return fmt.Sprintf(strFormat, de.dividee) } func Divide(varDividee int, varDivider int) (res int, errorMsg string) { if varDivider == 0 { dData := DivideError { dividee: varDividee, divider: varDivider, } errorMsg = dData.Error() return } else { return varDividee / varDivider, \"\" } } 执行结果：\n100/10 = 10\rerrorMsg:\rCannot proceed, the divider is zero!\rdividee: 100\rdivider: 0\r并发 Go 支持并发，我们只需通过go关键字开启goroutine即可。\ngoroutine是轻量级线程，调度是由Golang 运行时进行管理的。\ngoroutine语法格式：\ngo 函数名(参数列表) 如：\ngo f(x, y, z) 开启一个新routine：\nf(x, y, z) Go 允许使用go语句开启一个新的运行期线程，即goroutine。以一个不同的、新创建的goroutine来执行一个函数。同一个程序中所有goroutine共享一个地址空间。\n实例：\npackage main import ( \"fmt\" \"time\" ) func main() { go say(\"world\") say(\"hello\") } func say(s string) { for i := 0; i 5; i++ { time.Sleep(100 * time.Millisecond) fmt.Println(s) } } 执行结果：\nworld\rhello\rworld\rhello\rhello\rworld\rworld\rhello\rhello\r通道(channel) 通道是用来传递数据的一个数据结构，可用于两个goroutine之间通过传递一个指定类型的值来同步运行和通讯。操作符用于指定通道方向，发送或接收。若未指定方向，则为双向通道。\nch  v\t// 把v发送到通道ch v := ch\t// 从ch接收数据并把值赋给v 通道在使用前必须先创建：\nch := make(chan int)  注：默认情况下通道不带缓冲区。发送端发送数据，同时必须有接收端接收相应数据。\n 实例：\npackage main import \"fmt\" func main() { s := []int{7, 2, 8, -9, 4, 1} c := make(chan int) go sum(s[:len(s)/2], c) go sum(s[len(s)/2:], c) x, y := c, c fmt.Println(x, y, x+y) } func sum(s []int, c chan int) { sum := 0 for _, v := range s { sum += v } c  sum } 执行结果：\n-4 17 13\r通道缓冲区 通道可以设置缓冲区，通过make的第二个参数指定缓冲区大小。\nch := make(chan int, 100) 带缓冲区的通道允许发送端数据发送和接收端的数据获取处于异步状态，但由于缓冲区大小有限，所以必须由接收端来接收数据。\n 注:若通道不带缓冲，发送方会阻塞直到接收方从通道中接收了值。若通道带缓冲，发送方会阻塞直到发送的值被拷贝到缓冲区中，若缓冲区已满，则意味着需要等待直到接收方获取到一个值。接收方在有值可以接收之前会一直阻塞。\n 实例：\npackage main import \"fmt\" func main() { ch := make(chan int, 2) ch  1 ch  2 fmt.Println(ch) fmt.Println(ch) } 执行结果：\n1\r2\rGo遍历与关闭通道 Go通过range关键字来实现遍历读取到的数据，类似于数组或切片。格式如下：\nv, ok :=  ch 若通道接收不到数据后ok为false，这时通道可以使用close()函数关闭。\n实例：\npackage main import \"fmt\" func main() { c := make(chan int, 10) go fibonacci(cap(c), c) for i := range c { fmt.Println(i) } } func fibonacci(n int, c chan int) { x, y := 0, 1 for i := 0; i n; i++ { c  x x, y = y, x+y } close(c) } 执行结果：\n0\r1\r1\r2\r3\r5\r8\r13\r21\r34\r 本文链接：Go | Atmet (oopsdc.tk)\n文章许可：本文采用CC BY-NC-SA 4.0许可协议，转载请注明出处。\n ","wordCount":"3335","inLanguage":"en","datePublished":"2021-04-13T22:06:50+08:00","dateModified":"2021-04-13T22:06:50+08:00","author":{"@type":"Person","name":"0opsdc"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://examplesite.com/post/golang/"},"publisher":{"@type":"Organization","name":"0opsdc","logo":{"@type":"ImageObject","url":"https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/favicon.png"}}}</script>
+</head>
+<body id=top>
+<script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add('dark'):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove('dark'):window.matchMedia('(prefers-color-scheme: dark)').matches&&document.body.classList.add('dark')</script>
+<header class=header>
+<nav class=nav>
+<div class=logo>
+<a href=https://examplesite.com/ accesskey=h title="Home (Alt + H)">Home</a>
+<span class=logo-switches>
+<button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+</button>
+</span>
+</div>
+<ul id=menu>
+<li>
+<a href=https://examplesite.com/archives/ title=Archives>
+<span>Archives</span>
+</a>
+</li>
+<li>
+<a href=https://examplesite.com/tags/ title=Tags>
+<span>Tags</span>
+</a>
+</li>
+<li>
+<a href=https://examplesite.com/search/ title="Search (Alt + /)" accesskey=/>
+<span>Search</span>
+</a>
+</li>
+</ul>
+</nav>
+</header>
+<main class=main>
+<article class=post-single>
+<header class=post-header>
+<div class=breadcrumbs><a href=https://examplesite.com/>Home</a>&nbsp;»&nbsp;<a href=https://examplesite.com/post/>Posts</a></div>
+<h1 class=post-title>
+Golang
+</h1>
+<div class=post-meta>April 13, 2021&nbsp;·&nbsp;0opsdc
+</div>
+</header> <div class=toc>
+<details>
+<summary accesskey=c title="(Alt + C)">
+<span class=details>Table of Contents</span>
+</summary>
+<div class=inner><ul>
+<li>
+<a href=#%e7%8e%af%e5%a2%83%e6%90%ad%e5%bb%ba aria-label=环境搭建>环境搭建</a><ul>
+<li>
+<a href=#windows%e5%ae%89%e8%a3%85go aria-label=Windows安装go>Windows安装go</a><ul>
+<li>
+<a href=#%e5%ae%89%e8%a3%85%e5%8c%85%e4%b8%8b%e8%bd%bd aria-label=安装包下载>安装包下载</a></li>
+<li>
+<a href=#%e7%8e%af%e5%a2%83%e9%85%8d%e7%bd%ae aria-label=环境配置>环境配置</a></li>
+<li>
+<a href=#%e6%a3%80%e6%b5%8b%e5%ae%89%e8%a3%85 aria-label=检测安装>检测安装</a></li>
+<li>
+<a href=#hello-world aria-label=hello-world>hello-world</a></li></ul>
+</li>
+<li>
+<a href=#linux%e5%ae%89%e8%a3%85go aria-label=Linux安装go>Linux安装go</a><ul>
+<li>
+<a href=#%e5%ae%89%e8%a3%85%e5%8c%85%e4%b8%8b%e8%bd%bd-1 aria-label=安装包下载>安装包下载</a></li>
+<li>
+<a href=#%e8%a7%a3%e5%8e%8b aria-label=解压>解压</a></li>
+<li>
+<a href=#%e8%ae%be%e7%bd%ae%e7%8e%af%e5%a2%83%e5%8f%98%e9%87%8f aria-label=设置环境变量>设置环境变量</a></li>
+<li>
+<a href=#%e6%a3%80%e6%b5%8b%e5%ae%89%e8%a3%85-1 aria-label=检测安装>检测安装</a></li>
+<li>
+<a href=#%e9%97%ae%e9%a2%98%e5%a4%84%e7%90%86 aria-label=问题处理>问题处理</a></li></ul>
+</li></ul>
+</li>
+<li>
+<a href=#go%e8%af%ad%e8%a8%80%e7%bb%93%e6%9e%84 aria-label=Go语言结构>Go语言结构</a></li>
+<li>
+<a href=#%e5%ad%a6%e4%b9%a0%e7%ac%94%e8%ae%b0 aria-label=学习笔记>学习笔记</a><ul>
+<li>
+<a href=#%e5%8f%98%e9%87%8f%e5%a3%b0%e6%98%8e%e4%b8%89%e7%a7%8d%e6%96%b9%e5%bc%8f aria-label=变量声明三种方式>变量声明三种方式</a><ul>
+<li>
+<a href=#%e6%96%b9%e5%bc%8f%e4%b8%80 aria-label=方式一>方式一</a></li>
+<li>
+<a href=#%e6%96%b9%e5%bc%8f%e4%ba%8c aria-label=方式二>方式二</a></li>
+<li>
+<a href=#%e6%96%b9%e5%bc%8f%e4%b8%89 aria-label=方式三>方式三</a></li></ul>
+</li>
+<li>
+<a href=#%e5%a4%9a%e5%8f%98%e9%87%8f%e5%a3%b0%e6%98%8e aria-label=多变量声明>多变量声明</a></li>
+<li>
+<a href=#%e7%a9%ba%e7%99%bd%e6%a0%87%e8%af%86%e7%ac%a6%e5%9c%a8%e5%87%bd%e6%95%b0%e8%bf%94%e5%9b%9e%e5%80%bc%e4%b8%ad%e7%9a%84%e4%bd%bf%e7%94%a8 aria-label=空白标识符在函数返回值中的使用>空白标识符在函数返回值中的使用</a></li>
+<li>
+<a href=#unsafesizeof%e5%87%bd%e6%95%b0 aria-label=unsafe.sizeof()函数>unsafe.sizeof()函数</a></li>
+<li>
+<a href=#iota%e7%89%b9%e6%ae%8a%e5%b8%b8%e9%87%8f aria-label=iota特殊常量>iota特殊常量</a><ul>
+<li>
+<a href=#iota%e4%bb%8b%e7%bb%8d aria-label=iota介绍>iota介绍</a></li>
+<li>
+<a href=#iota%e7%94%a8%e6%b3%95 aria-label=iota用法>iota用法</a></li></ul>
+</li>
+<li>
+<a href=#%e5%b8%b8%e9%87%8f aria-label=常量>常量</a></li>
+<li>
+<a href=#%e8%af%ad%e8%a8%80%e8%bf%90%e7%ae%97%e7%ac%a6 aria-label=语言运算符>语言运算符</a><ul>
+<li>
+<a href=#%e5%85%b6%e5%ae%83%e8%bf%90%e7%ae%97%e7%ac%a6 aria-label=其它运算符>其它运算符</a></li>
+<li>
+<a href=#%e8%bf%90%e7%ae%97%e7%ac%a6%e4%bc%98%e5%85%88%e7%ba%a7 aria-label=运算符优先级>运算符优先级</a></li></ul>
+</li>
+<li>
+<a href=#%e6%9d%a1%e4%bb%b6%e5%88%a4%e6%96%ad%e8%af%ad%e5%8f%a5 aria-label=条件判断语句>条件判断语句</a></li>
+<li>
+<a href=#%e5%be%aa%e7%8e%af%e8%af%ad%e5%8f%a5 aria-label=循环语句>循环语句</a><ul>
+<li>
+<a href=#%e5%be%aa%e7%8e%af%e6%8e%a7%e5%88%b6%e8%af%ad%e5%8f%a5 aria-label=循环控制语句>循环控制语句</a></li>
+<li>
+<a href=#%e6%97%a0%e9%99%90%e5%be%aa%e7%8e%af aria-label=无限循环>无限循环</a></li></ul>
+</li>
+<li>
+<a href=#%e5%87%bd%e6%95%b0 aria-label=函数>函数</a><ul>
+<li>
+<a href=#%e5%87%bd%e6%95%b0%e5%ae%9a%e4%b9%89 aria-label=函数定义>函数定义</a></li>
+<li>
+<a href=#%e5%87%bd%e6%95%b0%e8%b0%83%e7%94%a8 aria-label=函数调用>函数调用</a></li>
+<li>
+<a href=#%e5%87%bd%e6%95%b0%e8%bf%94%e5%9b%9e%e5%a4%9a%e4%b8%aa%e5%80%bc aria-label=函数返回多个值>函数返回多个值</a></li>
+<li>
+<a href=#%e5%87%bd%e6%95%b0%e5%8f%82%e6%95%b0 aria-label=函数参数>函数参数</a></li>
+<li>
+<a href=#%e5%87%bd%e6%95%b0%e7%94%a8%e6%b3%95 aria-label=函数用法>函数用法</a></li>
+<li>
+<a href=#%e5%8f%98%e9%87%8f%e4%bd%9c%e7%94%a8%e5%9f%9f aria-label=变量作用域>变量作用域</a><ul>
+<li>
+<a href=#%e5%b1%80%e9%83%a8%e5%8f%98%e9%87%8f aria-label=局部变量>局部变量</a></li>
+<li>
+<a href=#%e5%85%a8%e5%b1%80%e5%8f%98%e9%87%8f aria-label=全局变量>全局变量</a></li>
+<li>
+<a href=#%e5%bd%a2%e5%bc%8f%e5%8f%82%e6%95%b0 aria-label=形式参数>形式参数</a></li>
+<li>
+<a href=#%e5%88%9d%e5%a7%8b%e5%8c%96%e5%b1%80%e9%83%a8%e5%92%8c%e5%85%a8%e5%b1%80%e5%8f%98%e9%87%8f aria-label=初始化局部和全局变量>初始化局部和全局变量</a></li></ul>
+</li></ul>
+</li>
+<li>
+<a href=#%e6%95%b0%e7%bb%84 aria-label=数组>数组</a><ul>
+<li>
+<a href=#%e5%a3%b0%e6%98%8e%e6%95%b0%e7%bb%84 aria-label=声明数组>声明数组</a></li>
+<li>
+<a href=#%e5%88%9d%e5%a7%8b%e5%8c%96%e6%95%b0%e7%bb%84 aria-label=初始化数组>初始化数组</a></li>
+<li>
+<a href=#%e8%ae%bf%e9%97%ae%e6%95%b0%e7%bb%84%e5%85%83%e7%b4%a0 aria-label=访问数组元素>访问数组元素</a></li>
+<li>
+<a href=#%e6%9b%b4%e5%a4%9a%e5%86%85%e5%ae%b9 aria-label=更多内容>更多内容</a></li></ul>
+</li>
+<li>
+<a href=#%e6%8c%87%e9%92%88 aria-label=指针>指针</a><ul>
+<li>
+<a href=#%e6%8c%87%e9%92%88%e4%bd%bf%e7%94%a8 aria-label=指针使用>指针使用</a></li>
+<li>
+<a href=#%e7%a9%ba%e6%8c%87%e9%92%88 aria-label=空指针>空指针</a></li>
+<li>
+<a href=#%e6%9b%b4%e5%a4%9a%e5%86%85%e5%ae%b9-1 aria-label=更多内容>更多内容</a></li></ul>
+</li>
+<li>
+<a href=#%e7%bb%93%e6%9e%84%e4%bd%93 aria-label=结构体>结构体</a><ul>
+<li>
+<a href=#%e5%ae%9a%e4%b9%89%e7%bb%93%e6%9e%84%e4%bd%93 aria-label=定义结构体>定义结构体</a></li>
+<li>
+<a href=#%e8%ae%bf%e9%97%ae%e7%bb%93%e6%9e%84%e4%bd%93%e6%88%90%e5%91%98 aria-label=访问结构体成员>访问结构体成员</a></li>
+<li>
+<a href=#%e7%bb%93%e6%9e%84%e4%bd%93%e4%bd%9c%e4%b8%ba%e5%87%bd%e6%95%b0%e5%8f%82%e6%95%b0 aria-label=结构体作为函数参数>结构体作为函数参数</a></li>
+<li>
+<a href=#%e7%bb%93%e6%9e%84%e4%bd%93%e6%8c%87%e9%92%88 aria-label=结构体指针>结构体指针</a></li></ul>
+</li>
+<li>
+<a href=#%e5%88%87%e7%89%87 aria-label=切片>切片</a><ul>
+<li>
+<a href=#%e5%ae%9a%e4%b9%89%e5%88%87%e7%89%87 aria-label=定义切片>定义切片</a></li>
+<li>
+<a href=#%e5%88%87%e7%89%87%e5%88%9d%e5%a7%8b%e5%8c%96 aria-label=切片初始化>切片初始化</a></li>
+<li>
+<a href=#len%e5%92%8ccap%e5%87%bd%e6%95%b0 aria-label=len()和cap()函数>len()和cap()函数</a></li>
+<li>
+<a href=#%e7%a9%ba%e5%88%87%e7%89%87 aria-label=空切片>空切片</a></li>
+<li>
+<a href=#%e5%88%87%e7%89%87%e6%88%aa%e5%8f%96 aria-label=切片截取>切片截取</a></li>
+<li>
+<a href=#append%e4%b8%8ecopy%e5%87%bd%e6%95%b0 aria-label=append()与copy()函数>append()与copy()函数</a></li></ul>
+</li>
+<li>
+<a href=#range aria-label=Range>Range</a></li>
+<li>
+<a href=#map aria-label=Map>Map</a><ul>
+<li>
+<a href=#%e5%ae%9a%e4%b9%89map aria-label=定义Map>定义Map</a></li>
+<li>
+<a href=#delete%e5%87%bd%e6%95%b0 aria-label=delete()函数>delete()函数</a></li></ul>
+</li>
+<li>
+<a href=#%e9%80%92%e5%bd%92%e5%87%bd%e6%95%b0 aria-label=递归函数>递归函数</a><ul>
+<li>
+<a href=#%e9%98%b6%e4%b9%98 aria-label=阶乘>阶乘</a></li>
+<li>
+<a href=#%e6%96%90%e6%b3%a2%e9%82%a3%e5%a5%91%e6%95%b0%e5%88%97 aria-label=斐波那契数列>斐波那契数列</a></li></ul>
+</li>
+<li>
+<a href=#%e7%b1%bb%e5%9e%8b%e8%bd%ac%e6%8d%a2 aria-label=类型转换>类型转换</a></li>
+<li>
+<a href=#%e6%8e%a5%e5%8f%a3 aria-label=接口>接口</a></li>
+<li>
+<a href=#%e9%94%99%e8%af%af%e5%a4%84%e7%90%86 aria-label=错误处理>错误处理</a></li>
+<li>
+<a href=#%e5%b9%b6%e5%8f%91 aria-label=并发>并发</a><ul>
+<li>
+<a href=#%e9%80%9a%e9%81%93channel aria-label=通道(channel)>通道(channel)</a></li>
+<li>
+<a href=#%e9%80%9a%e9%81%93%e7%bc%93%e5%86%b2%e5%8c%ba aria-label=通道缓冲区>通道缓冲区</a></li>
+<li>
+<a href=#go%e9%81%8d%e5%8e%86%e4%b8%8e%e5%85%b3%e9%97%ad%e9%80%9a%e9%81%93 aria-label=Go遍历与关闭通道>Go遍历与关闭通道</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</details>
+</div>
+<div class=post-content><p>runoob教程:<a href=https://www.runoob.com/go/go-tutorial.html>Go 语言教程 | 菜鸟教程 (runoob.com)</a></p>
+<h1 id=环境搭建>环境搭建<a hidden class=anchor aria-hidden=true href=#环境搭建>#</a></h1>
+<p>安装包官方下载地址：<a href=https://golang.org/dl/>Downloads - The Go Programming Language (golang.org)</a></p>
+<p>国内能打开的地址：<a href=https://golang.google.cn/dl/>Downloads - The Go Programming Language (google.cn)</a></p>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/image-20210315102706129.png alt=image-20210315102706129>
+</p>
+<h2 id=windows安装go>Windows安装go<a hidden class=anchor aria-hidden=true href=#windows安装go>#</a></h2>
+<h3 id=安装包下载>安装包下载<a hidden class=anchor aria-hidden=true href=#安装包下载>#</a></h3>
+<p>这里我选择下载<code>msi</code>文件的<code>go1.16.2.windows-amd64.zip</code>压缩包，然后放在环境目录<code>D:\Env\go1.16.2\bin</code>下解压。</p>
+<h3 id=环境配置>环境配置<a hidden class=anchor aria-hidden=true href=#环境配置>#</a></h3>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/image-20210315103735914.png alt=image-20210315103735914>
+</p>
+<p>将<code>go</code>目录下的<code>/bin</code>路径添加到<code>Path</code>环境变量中，点击新建。</p>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/image-20210315103845893.png alt=image-20210315103845893>
+</p>
+<h3 id=检测安装>检测安装<a hidden class=anchor aria-hidden=true href=#检测安装>#</a></h3>
+<p>打开<code>cmd</code>输入<code>go</code>。</p>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/image-20210315104102815.png alt=image-20210315104102815>
+</p>
+<h3 id=hello-world>hello-world<a hidden class=anchor aria-hidden=true href=#hello-world>#</a></h3>
+<p>在工作目录创建<code>hello.go</code>文件。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;Hello, World!&#34;</span>)
+}
+</code></pre></div><p>使用<code>go run</code>命令运行:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell>go run hello.go
+</code></pre></div><p><code>go build</code>生成二进制文件运行:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell>&gt; go build .\hello.go
+&gt; ls
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a----         2021/3/15     10<span style=color:#960050;background-color:#1e0010>:</span>50        2094592 hello.exe
+-a----         2021/3/15     10<span style=color:#960050;background-color:#1e0010>:</span>47             79 hello.go
+&gt; .\hello.exe
+Hello, World!
+</code></pre></div><h2 id=linux安装go>Linux安装go<a hidden class=anchor aria-hidden=true href=#linux安装go>#</a></h2>
+<blockquote>
+<p>环境：Ubuntu 20.04.1（推荐使用WSL，但现在电脑上没配置，就在虚拟机上做了）</p>
+</blockquote>
+<p>官方安装文档：<a href="https://golang.google.cn/doc/install?download=go1.16.2.linux-amd64.tar.gz">Download and install - The Go Programming Language (google.cn)</a></p>
+<h3 id=安装包下载-1>安装包下载<a hidden class=anchor aria-hidden=true href=#安装包下载-1>#</a></h3>
+<p>下载<code>go1.16.2.linux-amd64.tar.gz</code>压缩文件。</p>
+<h3 id=解压>解压<a hidden class=anchor aria-hidden=true href=#解压>#</a></h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>$ sudo tar -zxvf go1.16.2.linux-amd64.tar.gz
+</code></pre></div><h3 id=设置环境变量>设置环境变量<a hidden class=anchor aria-hidden=true href=#设置环境变量>#</a></h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>$ export PATH<span style=color:#f92672>=</span>$PATH:/usr/local/go/bin
+</code></pre></div><h3 id=检测安装-1>检测安装<a hidden class=anchor aria-hidden=true href=#检测安装-1>#</a></h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>$ go version
+</code></pre></div><h3 id=问题处理>问题处理<a hidden class=anchor aria-hidden=true href=#问题处理>#</a></h3>
+<p>本来想通过<code>VMware Tools</code>把压缩文件直接从主机拖到虚拟机的，但尝试本地解压<code>VMware Tools</code>失败，报错显示<code>内存不足</code>，尝试解压到其它目录。解决方法如下：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>$ sudo tar -xzvf VmwareTools.tar.gz -C /home/oopsdc		<span style=color:#75715e># -C 后指定解压目录，我这里直接解压到用户目录下</span>
+$ cd /home/oopsdc/vmware-tools-distrib/					<span style=color:#75715e># 切换到对应目录</span>
+$ sudo ./vmware-install.pl								<span style=color:#75715e># 运行安装文件即可</span>
+</code></pre></div><h1 id=go语言结构>Go语言结构<a hidden class=anchor aria-hidden=true href=#go语言结构>#</a></h1>
+<p><code>Go</code>语言基础组成有以下几部分:</p>
+<ol>
+<li>包声明</li>
+<li>引入包</li>
+<li>函数</li>
+<li>变量</li>
+<li>语句&表达式</li>
+<li>注释</li>
+</ol>
+<p>我们以之前<code>hello.go</code>的代码为例。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;Hello, World!&#34;</span>)
+}
+</code></pre></div><ol>
+<li>第一行<code>package main</code>定义了包名。我们必须在源文件非注释的第一行指明这个文件属于哪个包。如<code>package main</code>表示一个可独立执行的程序，每个Go应用程序都包含一个<code>main</code>包。</li>
+<li>第三行<code>import fmt</code>告诉<code>Go编译器</code>这个程序需要使用<code>fmt</code>包的函数或其他元素。<code>fmt</code>包中有实现<code>格式化I/O</code>的函数。</li>
+<li>第五行的<code>func main()</code>为程序开始执行的函数。<code>main</code>函数是每个可执行程序必须包含的，除<code>init()</code>函数外一般都是第一个执行的函数。</li>
+<li><code>fmt.Println()</code>可以将字符串输出到控制台并自动换行，效果与<code>fmt.Println("Hello,World\n")</code>相同。其中，<code>Println</code>和<code>Print</code>函数支持使用变量，如<code>fmt.Println(arr)</code>，若不加特别指令，会以默认打印格式将变量<code>arr</code>输出到控制台。</li>
+<li>当标识符(如变量、常量、类型、函数名及结构字段等)以一个大写字母开头，如:<code>Variable1</code>，那么使用这种形式的标识符对象就可以被外部包代码所使用(需要先导入这个包)，这被称为导出(像面向对象语言中的<code>public</code>)；若标识符以小写字母开头，则对包外不可见，但在包内部可见并可用(类似<code>protected</code>)。</li>
+<li>前括号<code>{</code>不能单独一行，否则会报错</li>
+</ol>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>()
+{ <span style=color:#75715e>// 错误
+</span><span style=color:#75715e></span>    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;Hello, World!&#34;</span>)
+}
+</code></pre></div><h1 id=学习笔记>学习笔记<a hidden class=anchor aria-hidden=true href=#学习笔记>#</a></h1>
+<h2 id=变量声明三种方式>变量声明三种方式<a hidden class=anchor aria-hidden=true href=#变量声明三种方式>#</a></h2>
+<h3 id=方式一>方式一<a hidden class=anchor aria-hidden=true href=#方式一>#</a></h3>
+<p>指定变量类型，若未初始化则值为<code>0</code>。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>v_name</span> <span style=color:#a6e22e>v_type</span>
+<span style=color:#a6e22e>v_name</span> = <span style=color:#a6e22e>value</span>
+</code></pre></div><p>实例1：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+    <span style=color:#75715e>// 声明一个变量并初始化
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>a</span> = <span style=color:#e6db74>&#34;oopsdc&#34;</span>
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>a</span>)
+
+    <span style=color:#75715e>// 没有初始化就为零值
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>b</span> <span style=color:#66d9ef>int</span>
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>b</span>)
+
+    <span style=color:#75715e>// bool 零值为 false
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>c</span> <span style=color:#66d9ef>bool</span>
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>c</span>)
+}
+</code></pre></div><p>执行结果：</p>
+<pre tabindex=0><code>oopsdc
+0
+false
+</code></pre><ul>
+<li>数值类型(包括<code>complex64/128</code>)为 <strong>0</strong></li>
+<li>布尔类型为 <strong>false</strong></li>
+<li>字符串为 <strong>""</strong>(空字符串)</li>
+<li>以下几种类型为 <strong>nil</strong>：</li>
+</ul>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>a</span> <span style=color:#f92672>*</span><span style=color:#66d9ef>int</span>
+<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>a</span> []<span style=color:#66d9ef>int</span>
+<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>a</span> <span style=color:#66d9ef>map</span>[<span style=color:#66d9ef>string</span>] <span style=color:#66d9ef>int</span>
+<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>a</span> <span style=color:#66d9ef>chan</span> <span style=color:#66d9ef>int</span>
+<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>a</span> <span style=color:#66d9ef>func</span>(<span style=color:#66d9ef>string</span>) <span style=color:#66d9ef>int</span>
+<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>a</span> <span style=color:#66d9ef>error</span> <span style=color:#75715e>// error 是接口
+</span></code></pre></div><p>实例2：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+    <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>i</span> <span style=color:#66d9ef>int</span>
+    <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>f</span> <span style=color:#66d9ef>float64</span>
+    <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>b</span> <span style=color:#66d9ef>bool</span>
+    <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>s</span> <span style=color:#66d9ef>string</span>
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;%v %v %v %q\n&#34;</span>, <span style=color:#a6e22e>i</span>, <span style=color:#a6e22e>f</span>, <span style=color:#a6e22e>b</span>, <span style=color:#a6e22e>s</span>)
+}
+</code></pre></div><p>执行结果：</p>
+<pre tabindex=0><code>0 0 false &quot;&quot;
+</code></pre><h3 id=方式二>方式二<a hidden class=anchor aria-hidden=true href=#方式二>#</a></h3>
+<p>根据值自行判断变量类型。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>v_name</span> = <span style=color:#a6e22e>value</span>
+</code></pre></div><p>实例：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+    <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>d</span> = <span style=color:#66d9ef>true</span>
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>d</span>)
+}
+</code></pre></div><p>执行结果：</p>
+<pre tabindex=0><code>true
+</code></pre><h3 id=方式三>方式三<a hidden class=anchor aria-hidden=true href=#方式三>#</a></h3>
+<p><code>:=</code>赋值，是使用变量的首选形式。**但只能被用在函数体内，不能够用于全局变量声明及赋值。**使用<code>:=</code>操作符可以高效创建一个变量。称之为初始化声明。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>v_name</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>value</span>
+</code></pre></div><p>注:<code>:=</code>左侧需为未声明过的新变量，否则会报错。</p>
+<p>例：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>intVal</span> <span style=color:#66d9ef>int</span> 
+
+<span style=color:#a6e22e>intVal</span> <span style=color:#f92672>:=</span><span style=color:#ae81ff>1</span> <span style=color:#75715e>// 这时候会产生编译错误
+</span><span style=color:#75715e></span>
+<span style=color:#a6e22e>intVal</span>,<span style=color:#a6e22e>intVal1</span> <span style=color:#f92672>:=</span> <span style=color:#ae81ff>1</span>,<span style=color:#ae81ff>2</span> <span style=color:#75715e>// 此时不会产生编译错误，因为有声明新的变量，因为 := 是一个声明语句
+</span></code></pre></div><p>实例:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+    <span style=color:#a6e22e>f</span> <span style=color:#f92672>:=</span> <span style=color:#e6db74>&#34;oopsdc&#34;</span> <span style=color:#75715e>// var f string = &#34;oopsdc&#34;
+</span><span style=color:#75715e></span>
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>f</span>)
+}
+</code></pre></div><p>执行结果:</p>
+<pre tabindex=0><code>oopsdc
+</code></pre><h2 id=多变量声明>多变量声明<a hidden class=anchor aria-hidden=true href=#多变量声明>#</a></h2>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#75715e>//类型相同多个变量, 非全局变量
+</span><span style=color:#75715e></span><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>vname1</span>, <span style=color:#a6e22e>vname2</span>, <span style=color:#a6e22e>vname3</span> <span style=color:#66d9ef>type</span>
+<span style=color:#a6e22e>vname1</span>, <span style=color:#a6e22e>vname2</span>, <span style=color:#a6e22e>vname3</span> = <span style=color:#a6e22e>v1</span>, <span style=color:#a6e22e>v2</span>, <span style=color:#a6e22e>v3</span>
+
+<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>vname1</span>, <span style=color:#a6e22e>vname2</span>, <span style=color:#a6e22e>vname3</span> = <span style=color:#a6e22e>v1</span>, <span style=color:#a6e22e>v2</span>, <span style=color:#a6e22e>v3</span> <span style=color:#75715e>// 和 python 很像,不需要显示声明类型，自动推断
+</span><span style=color:#75715e></span>
+<span style=color:#a6e22e>vname1</span>, <span style=color:#a6e22e>vname2</span>, <span style=color:#a6e22e>vname3</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>v1</span>, <span style=color:#a6e22e>v2</span>, <span style=color:#a6e22e>v3</span> <span style=color:#75715e>// 出现在 := 左侧的变量不应该是已经被声明过的，否则会导致编译错误
+</span><span style=color:#75715e></span>
+
+<span style=color:#75715e>// 这种因式分解关键字的写法一般用于声明全局变量
+</span><span style=color:#75715e></span><span style=color:#66d9ef>var</span> (
+    <span style=color:#a6e22e>vname1</span> <span style=color:#a6e22e>v_type1</span>
+    <span style=color:#a6e22e>vname2</span> <span style=color:#a6e22e>v_type2</span>
+)
+</code></pre></div><p>实例：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>x</span>, <span style=color:#a6e22e>y</span> <span style=color:#66d9ef>int</span>
+<span style=color:#66d9ef>var</span> (  <span style=color:#75715e>// 这种因式分解关键字的写法一般用于声明全局变量
+</span><span style=color:#75715e></span>    <span style=color:#a6e22e>a</span> <span style=color:#66d9ef>int</span>
+    <span style=color:#a6e22e>b</span> <span style=color:#66d9ef>bool</span>
+)
+
+<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>c</span>, <span style=color:#a6e22e>d</span> <span style=color:#66d9ef>int</span> = <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>2</span>
+<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>e</span>, <span style=color:#a6e22e>f</span> = <span style=color:#ae81ff>123</span>, <span style=color:#e6db74>&#34;hello&#34;</span>
+
+<span style=color:#75715e>//这种不带声明格式的只能在函数体中出现
+</span><span style=color:#75715e>//g, h := 123, &#34;hello&#34;
+</span><span style=color:#75715e></span>
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>(){
+    <span style=color:#a6e22e>g</span>, <span style=color:#a6e22e>h</span> <span style=color:#f92672>:=</span> <span style=color:#ae81ff>123</span>, <span style=color:#e6db74>&#34;hello&#34;</span>
+    println(<span style=color:#a6e22e>x</span>, <span style=color:#a6e22e>y</span>, <span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>b</span>, <span style=color:#a6e22e>c</span>, <span style=color:#a6e22e>d</span>, <span style=color:#a6e22e>e</span>, <span style=color:#a6e22e>f</span>, <span style=color:#a6e22e>g</span>, <span style=color:#a6e22e>h</span>)
+}
+</code></pre></div><p>执行结果：</p>
+<pre tabindex=0><code>0 0 0 false 1 2 123 hello 123 hello
+</code></pre><h2 id=空白标识符在函数返回值中的使用>空白标识符在函数返回值中的使用<a hidden class=anchor aria-hidden=true href=#空白标识符在函数返回值中的使用>#</a></h2>
+<p>实例：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+  <span style=color:#a6e22e>_</span>,<span style=color:#a6e22e>numb</span>,<span style=color:#a6e22e>strs</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>numbers</span>() <span style=color:#75715e>//只获取函数返回值的后两个
+</span><span style=color:#75715e></span>  <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>numb</span>,<span style=color:#a6e22e>strs</span>)
+}
+
+<span style=color:#75715e>//一个可以返回多个值的函数
+</span><span style=color:#75715e></span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>numbers</span>()(<span style=color:#66d9ef>int</span>,<span style=color:#66d9ef>int</span>,<span style=color:#66d9ef>string</span>){
+  <span style=color:#a6e22e>a</span> , <span style=color:#a6e22e>b</span> , <span style=color:#a6e22e>c</span> <span style=color:#f92672>:=</span> <span style=color:#ae81ff>1</span> , <span style=color:#ae81ff>2</span> , <span style=color:#e6db74>&#34;str&#34;</span>
+  <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>a</span>,<span style=color:#a6e22e>b</span>,<span style=color:#a6e22e>c</span>
+}
+</code></pre></div><p>执行结果：</p>
+<pre tabindex=0><code>2 str
+</code></pre><h2 id=unsafesizeof函数>unsafe.sizeof()函数<a hidden class=anchor aria-hidden=true href=#unsafesizeof函数>#</a></h2>
+<p>实例如下：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;unsafe&#34;</span>
+<span style=color:#66d9ef>const</span> (
+    <span style=color:#a6e22e>a</span> = <span style=color:#e6db74>&#34;abc&#34;</span>
+    <span style=color:#a6e22e>b</span> = len(<span style=color:#a6e22e>a</span>)
+    <span style=color:#a6e22e>c</span> = <span style=color:#a6e22e>unsafe</span>.<span style=color:#a6e22e>Sizeof</span>(<span style=color:#a6e22e>a</span>)
+)
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>(){
+    println(<span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>b</span>, <span style=color:#a6e22e>c</span>)
+}
+</code></pre></div><p>运行结果：</p>
+<pre tabindex=0><code>abc 3 16
+</code></pre><p>看到的时候没搞懂为什么<code>c</code>，即<code>unsafe.Sizeof(a)</code>的值为16，于是查了一下。</p>
+<p><code>csdn</code>文章：<a href=https://blog.csdn.net/zzuchengming/article/details/88628645>unsafe.sizeof()_记录每一个小阶段的学习心得，持之以恒！-CSDN博客</a></p>
+<blockquote>
+<p>为什么字符串类型的unsafe.Sizeof()一直为16</p>
+</blockquote>
+<p>实际中，字符串类型对应一个结构体，结构体有两个域。第一个域为指向该字符串的指针，第二个域是字符串长度，每个域占<code>8字节</code>，但并不包含指针指向的字符串内容，也就是说它的返回值一直为<code>16</code>。</p>
+<h2 id=iota特殊常量>iota特殊常量<a hidden class=anchor aria-hidden=true href=#iota特殊常量>#</a></h2>
+<h3 id=iota介绍>iota介绍<a hidden class=anchor aria-hidden=true href=#iota介绍>#</a></h3>
+<p>是一个特殊常量，可认为是可被编译器修改的常量。</p>
+<p><code>iota</code>在<code>const</code>关键字出现时将被重置为 <code>0</code>(<code>const</code>内部的第一行之前)，<code>const</code> 中每新增一行常量声明将使<code>iota</code>计数一次(<code>iota</code>可理解为<code>const</code>语句块中的行索引)。</p>
+<p><code>iota</code>可被用作枚举值，第一个<code>iota</code>值为<code>0</code>，每当其在新的一行被引用时，值自动加1：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>const</span> (
+    <span style=color:#a6e22e>a</span> = <span style=color:#66d9ef>iota</span>	<span style=color:#75715e>// 1
+</span><span style=color:#75715e></span>    <span style=color:#a6e22e>b</span> = <span style=color:#66d9ef>iota</span>	<span style=color:#75715e>// 2
+</span><span style=color:#75715e></span>    <span style=color:#a6e22e>c</span> = <span style=color:#66d9ef>iota</span>	<span style=color:#75715e>// 3
+</span><span style=color:#75715e></span>)
+</code></pre></div><p>简写形式如下：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>const</span> (
+    <span style=color:#a6e22e>a</span> = <span style=color:#66d9ef>iota</span>
+    <span style=color:#a6e22e>b</span>
+    <span style=color:#a6e22e>c</span>
+)
+</code></pre></div><h3 id=iota用法>iota用法<a hidden class=anchor aria-hidden=true href=#iota用法>#</a></h3>
+<p>实例1：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+    <span style=color:#66d9ef>const</span> (
+            <span style=color:#a6e22e>a</span> = <span style=color:#66d9ef>iota</span>   <span style=color:#75715e>//0
+</span><span style=color:#75715e></span>            <span style=color:#a6e22e>b</span>          <span style=color:#75715e>//1
+</span><span style=color:#75715e></span>            <span style=color:#a6e22e>c</span>          <span style=color:#75715e>//2
+</span><span style=color:#75715e></span>            <span style=color:#a6e22e>d</span> = <span style=color:#e6db74>&#34;ha&#34;</span>   <span style=color:#75715e>//独立值，iota += 1
+</span><span style=color:#75715e></span>            <span style=color:#a6e22e>e</span>          <span style=color:#75715e>//&#34;ha&#34;   iota += 1
+</span><span style=color:#75715e></span>            <span style=color:#a6e22e>f</span> = <span style=color:#ae81ff>100</span>    <span style=color:#75715e>//iota +=1
+</span><span style=color:#75715e></span>            <span style=color:#a6e22e>g</span>          <span style=color:#75715e>//100  iota +=1
+</span><span style=color:#75715e></span>            <span style=color:#a6e22e>h</span> = <span style=color:#66d9ef>iota</span>   <span style=color:#75715e>//7,恢复计数
+</span><span style=color:#75715e></span>            <span style=color:#a6e22e>i</span>          <span style=color:#75715e>//8
+</span><span style=color:#75715e></span>    )
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>a</span>,<span style=color:#a6e22e>b</span>,<span style=color:#a6e22e>c</span>,<span style=color:#a6e22e>d</span>,<span style=color:#a6e22e>e</span>,<span style=color:#a6e22e>f</span>,<span style=color:#a6e22e>g</span>,<span style=color:#a6e22e>h</span>,<span style=color:#a6e22e>i</span>)
+}
+</code></pre></div><p>运行结果：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell>&gt; go run .\iota1.go
+0 1 2 ha ha 100 100 7 8
+</code></pre></div><p>实例2：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+<span style=color:#66d9ef>const</span> (
+    <span style=color:#a6e22e>i</span>=<span style=color:#ae81ff>1</span><span style=color:#f92672>&lt;&lt;</span><span style=color:#66d9ef>iota</span>
+    <span style=color:#a6e22e>j</span>=<span style=color:#ae81ff>3</span><span style=color:#f92672>&lt;&lt;</span><span style=color:#66d9ef>iota</span>
+    <span style=color:#a6e22e>k</span>
+    <span style=color:#a6e22e>l</span>
+)
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;i =&#34;</span>,<span style=color:#a6e22e>i</span>)
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;j =&#34;</span>,<span style=color:#a6e22e>j</span>)
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;k =&#34;</span>,<span style=color:#a6e22e>k</span>)
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;l =&#34;</span>,<span style=color:#a6e22e>l</span>)
+}
+</code></pre></div><p>运行结果：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell>&gt; go run .\iota2.go
+i = 1
+j = 6
+k = 12
+l = 24
+</code></pre></div><p>刚看到<code>i=1&lt;&lt;iota</code>的时候就想到了移位，以下是对结果的分析：</p>
+<pre tabindex=0><code>&lt;&lt;n==*(2^n)
+
+i = 1 &lt;&lt; 0		# 左移0位
+i = 001
+i = 1 * 2^0 = 1
+
+j = 3 &lt;&lt; 1		# 左移1位
+j = 011 =&gt; 110
+j = 3 * 2^1 = 6
+
+k = 3 &lt;&lt; 2		# 左移2位
+k = 011 =&gt; 1100
+k = 3 * 2^2 = 12
+
+l = 3 &lt;&lt; 3		# 左移3位
+l = 011 =&gt; 11000
+l = 3 * 2^3 = 24
+</code></pre><h2 id=常量>常量<a hidden class=anchor aria-hidden=true href=#常量>#</a></h2>
+<p>常量是一个简单值的标识符，在程序运行过程中不会改变。</p>
+<p><strong>常量中的数据类型只能为布尔型、数字型(整数型、浮点型和复数)及字符串型。</strong></p>
+<p>常见常量定义格式：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>identifier</span> [<span style=color:#66d9ef>type</span>] = <span style=color:#a6e22e>value</span>
+</code></pre></div><p>类型说明符<code>[type]</code>可省略，因为编译器可根据变量值推断其类型。</p>
+<ul>
+<li>显式类型定义</li>
+</ul>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>a</span> <span style=color:#66d9ef>string</span> = <span style=color:#e6db74>&#34;oopsdc&#34;</span>
+</code></pre></div><ul>
+<li>隐式类型定义</li>
+</ul>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>a</span> = <span style=color:#e6db74>&#34;oopsdc&#34;</span>
+</code></pre></div><ul>
+<li>多个常量定义</li>
+</ul>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>a_name1</span>, <span style=color:#a6e22e>a_name2</span> = <span style=color:#a6e22e>value1</span>, <span style=color:#a6e22e>value2</span>
+</code></pre></div><p>实例：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+   <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>LENGTH</span> <span style=color:#66d9ef>int</span> = <span style=color:#ae81ff>10</span>
+   <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>WIDTH</span> <span style=color:#66d9ef>int</span> = <span style=color:#ae81ff>5</span>  
+   <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>area</span> <span style=color:#66d9ef>int</span>
+   <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>b</span>, <span style=color:#a6e22e>c</span> = <span style=color:#ae81ff>1</span>, <span style=color:#66d9ef>false</span>, <span style=color:#e6db74>&#34;str&#34;</span> <span style=color:#75715e>//多重赋值
+</span><span style=color:#75715e></span>
+   <span style=color:#a6e22e>area</span> = <span style=color:#a6e22e>LENGTH</span> <span style=color:#f92672>*</span> <span style=color:#a6e22e>WIDTH</span>
+   <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;面积为 : %d&#34;</span>, <span style=color:#a6e22e>area</span>)
+   println()
+   println(<span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>b</span>, <span style=color:#a6e22e>c</span>)  
+}
+</code></pre></div><p>执行结果：</p>
+<pre tabindex=0><code>面积为 : 50
+1 false str
+</code></pre><p>常量用作枚举：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>const</span> (
+    <span style=color:#a6e22e>Unknown</span> = <span style=color:#ae81ff>0</span>
+    <span style=color:#a6e22e>Female</span> = <span style=color:#ae81ff>1</span>
+    <span style=color:#a6e22e>Male</span> = <span style=color:#ae81ff>2</span>
+)
+</code></pre></div><h2 id=语言运算符>语言运算符<a hidden class=anchor aria-hidden=true href=#语言运算符>#</a></h2>
+<p>运算符用于在程序执行时执行数学或逻辑运算。</p>
+<p><code>Go</code>语言内置运算符有:</p>
+<ul>
+<li>算术运算符</li>
+<li>关系运算符</li>
+<li>逻辑运算符</li>
+<li>位运算符</li>
+<li>赋值运算符</li>
+<li>其它运算符</li>
+</ul>
+<h3 id=其它运算符>其它运算符<a hidden class=anchor aria-hidden=true href=#其它运算符>#</a></h3>
+<table>
+<thead>
+<tr>
+<th style=text-align:center>运算符</th>
+<th style=text-align:center>描述</th>
+<th style=text-align:center>实例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style=text-align:center>&</td>
+<td style=text-align:center>返回变量存储地址</td>
+<td style=text-align:center>&amp;a; 将给出变量的实际地址。</td>
+</tr>
+<tr>
+<td style=text-align:center>*</td>
+<td style=text-align:center>指针变量。</td>
+<td style=text-align:center>*a; 是一个指针变量</td>
+</tr>
+</tbody>
+</table>
+<p>实例：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+   <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>a</span> <span style=color:#66d9ef>int</span> = <span style=color:#ae81ff>4</span>
+   <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>b</span> <span style=color:#66d9ef>int32</span>
+   <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>c</span> <span style=color:#66d9ef>float32</span>
+   <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>ptr</span> <span style=color:#f92672>*</span><span style=color:#66d9ef>int</span>
+
+   <span style=color:#75715e>/* 运算符实例 */</span>
+   <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;第 1 行 - a 变量类型为 = %T\n&#34;</span>, <span style=color:#a6e22e>a</span> );
+   <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;第 2 行 - b 变量类型为 = %T\n&#34;</span>, <span style=color:#a6e22e>b</span> );
+   <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;第 3 行 - c 变量类型为 = %T\n&#34;</span>, <span style=color:#a6e22e>c</span> );
+
+   <span style=color:#75715e>/*  &amp; 和 * 运算符实例 */</span>
+   <span style=color:#a6e22e>ptr</span> = <span style=color:#f92672>&amp;</span><span style=color:#a6e22e>a</span>     <span style=color:#75715e>/* &#39;ptr&#39; 包含了 &#39;a&#39; 变量的地址 */</span>
+   <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;a 的值为  %d\n&#34;</span>, <span style=color:#a6e22e>a</span>);
+   <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;*ptr 为 %d\n&#34;</span>, <span style=color:#f92672>*</span><span style=color:#a6e22e>ptr</span>);
+}
+</code></pre></div><p>执行结果：</p>
+<pre tabindex=0><code>第 1 行 - a 变量类型为 = int
+第 2 行 - b 变量类型为 = int32
+第 3 行 - c 变量类型为 = float32
+a 的值为  4
+*ptr 为 4
+</code></pre><h3 id=运算符优先级>运算符优先级<a hidden class=anchor aria-hidden=true href=#运算符优先级>#</a></h3>
+<table>
+<thead>
+<tr>
+<th style=text-align:center>优先级</th>
+<th style=text-align:center>运算符</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style=text-align:center>5</td>
+<td style=text-align:center>* / % &#171; &#187; & &^</td>
+</tr>
+<tr>
+<td style=text-align:center>4</td>
+<td style=text-align:center>+ - | ^</td>
+</tr>
+<tr>
+<td style=text-align:center>3</td>
+<td style=text-align:center>== != &lt; &lt;= > >=</td>
+</tr>
+<tr>
+<td style=text-align:center>2</td>
+<td style=text-align:center>&&</td>
+</tr>
+<tr>
+<td style=text-align:center>1</td>
+<td style=text-align:center>||</td>
+</tr>
+</tbody>
+</table>
+<p>我们可以通过使用括号来临时提升某个表达式的整体运算优先级。</p>
+<h2 id=条件判断语句>条件判断语句<a hidden class=anchor aria-hidden=true href=#条件判断语句>#</a></h2>
+<table>
+<thead>
+<tr>
+<th style=text-align:center>语句</th>
+<th style=text-align:center>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style=text-align:center><a href=https://www.runoob.com/go/go-if-statement.html>if 语句</a></td>
+<td style=text-align:center><strong>if 语句</strong> 由一个布尔表达式后紧跟一个或多个语句组成。</td>
+</tr>
+<tr>
+<td style=text-align:center><a href=https://www.runoob.com/go/go-if-else-statement.html>if&mldr;else 语句</a></td>
+<td style=text-align:center><strong>if 语句</strong> 后可以使用可选的 <strong>else 语句</strong>, else 语句中的表达式在布尔表达式为 false 时执行。</td>
+</tr>
+<tr>
+<td style=text-align:center><a href=https://www.runoob.com/go/go-nested-if-statements.html>if 嵌套语句</a></td>
+<td style=text-align:center>你可以在 <strong>if</strong> 或 <strong>else if</strong> 语句中嵌入一个或多个 <strong>if</strong> 或 <strong>else if</strong> 语句。</td>
+</tr>
+<tr>
+<td style=text-align:center><a href=https://www.runoob.com/go/go-switch-statement.html>switch 语句</a></td>
+<td style=text-align:center><strong>switch</strong> 语句用于基于不同条件执行不同动作。</td>
+</tr>
+<tr>
+<td style=text-align:center><a href=https://www.runoob.com/go/go-select-statement.html>select 语句</a></td>
+<td style=text-align:center><strong>select</strong> 语句类似于 <strong>switch</strong> 语句，但是select会随机执行一个可运行的case。如果没有case可运行，它将阻塞，直到有case可运行。</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>注：Go 没有三目运算符，不支持<code>?:</code>形式的条件判断。</p>
+</blockquote>
+<h2 id=循环语句>循环语句<a hidden class=anchor aria-hidden=true href=#循环语句>#</a></h2>
+<p><code>Go </code>语言提供了以下几种类型循环处理语句:</p>
+<table>
+<thead>
+<tr>
+<th style=text-align:center>循环类型</th>
+<th style=text-align:center>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style=text-align:center><a href=https://www.runoob.com/go/go-for-loop.html>for 循环</a></td>
+<td style=text-align:center>重复执行语句块</td>
+</tr>
+<tr>
+<td style=text-align:center><a href=https://www.runoob.com/go/go-nested-loops.html>循环嵌套</a></td>
+<td style=text-align:center>在 for 循环中嵌套一个或多个 for 循环</td>
+</tr>
+</tbody>
+</table>
+<h3 id=循环控制语句>循环控制语句<a hidden class=anchor aria-hidden=true href=#循环控制语句>#</a></h3>
+<p>循环控制语句可以控制循环体内语句的执行过程。</p>
+<p><code>GO</code> 语言支持以下几种循环控制语句:</p>
+<table>
+<thead>
+<tr>
+<th style=text-align:center>控制语句</th>
+<th style=text-align:center>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style=text-align:center><a href=https://www.runoob.com/go/go-break-statement.html>break 语句</a></td>
+<td style=text-align:center>经常用于中断当前 for 循环或跳出 switch 语句</td>
+</tr>
+<tr>
+<td style=text-align:center><a href=https://www.runoob.com/go/go-continue-statement.html>continue 语句</a></td>
+<td style=text-align:center>跳过当前循环的剩余语句，然后继续进行下一轮循环。</td>
+</tr>
+<tr>
+<td style=text-align:center><a href=https://www.runoob.com/go/go-goto-statement.html>goto 语句</a></td>
+<td style=text-align:center>将控制转移到被标记的语句。</td>
+</tr>
+</tbody>
+</table>
+<h3 id=无限循环>无限循环<a hidden class=anchor aria-hidden=true href=#无限循环>#</a></h3>
+<p>实例：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+    <span style=color:#66d9ef>for</span> <span style=color:#66d9ef>true</span>  {
+        <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;这是无限循环。\n&#34;</span>);
+    }
+}
+</code></pre></div><h2 id=函数>函数<a hidden class=anchor aria-hidden=true href=#函数>#</a></h2>
+<h3 id=函数定义>函数定义<a hidden class=anchor aria-hidden=true href=#函数定义>#</a></h3>
+<p>格式如下：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>function_name</span>( [<span style=color:#a6e22e>parameter</span> <span style=color:#a6e22e>list</span>] ) [<span style=color:#a6e22e>return_types</span>] {
+	<span style=color:#a6e22e>函数体</span>
+}
+</code></pre></div><p>函数定义解析:</p>
+<ul>
+<li><code>func</code>：函数由 <code>func</code> 开始声明</li>
+<li><code>function_name</code>：函数名称，函数名和参数列表一起构成了函数签名。</li>
+<li><code>parameter list</code>：参数列表，参数就像一个占位符，当函数被调用时，你可以将值传递给参数，这个值被称为实际参数。参数列表指定的是参数类型、顺序、及参数个数。参数是可选的，也就是说函数也可以不包含参数。</li>
+<li><code>return_types</code>：返回类型，函数返回一列值。<code>return_types</code> 是该列值的数据类型。有些功能不需要返回值，这种情况下 <code>return_types</code> 不是必须的。</li>
+<li>函数体：函数定义的代码集合。</li>
+</ul>
+<p>实例：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#75715e>// 返回两个数的较大者
+</span><span style=color:#75715e></span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>(<span style=color:#a6e22e>num1</span>, <span style=color:#a6e22e>num2</span> <span style=color:#66d9ef>int</span>) <span style=color:#66d9ef>int</span> {
+    <span style=color:#75715e>// 声明局部变量
+</span><span style=color:#75715e></span>	<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>result</span> <span style=color:#66d9ef>int</span>
+	
+	<span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>num1</span> &gt; <span style=color:#a6e22e>num2</span>) {
+		<span style=color:#a6e22e>result</span> = <span style=color:#a6e22e>num1</span>
+	} <span style=color:#66d9ef>else</span> {
+		<span style=color:#a6e22e>result</span> = <span style=color:#a6e22e>num2</span>
+	}
+	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>result</span>
+}
+</code></pre></div><h3 id=函数调用>函数调用<a hidden class=anchor aria-hidden=true href=#函数调用>#</a></h3>
+<p>实例：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+    <span style=color:#75715e>// 定义局部变量
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>a</span> <span style=color:#66d9ef>int</span> = <span style=color:#ae81ff>1</span>
+    <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>b</span> <span style=color:#66d9ef>int</span> = <span style=color:#ae81ff>2</span>
+    <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>ret</span> <span style=color:#66d9ef>int</span>
+    
+    <span style=color:#75715e>// 调用函数返回最大值
+</span><span style=color:#75715e></span>    <span style=color:#a6e22e>ret</span> = <span style=color:#a6e22e>max</span>(<span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>b</span>)
+    
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;Maximum: %d\n&#34;</span>, <span style=color:#a6e22e>ret</span>)
+}
+
+<span style=color:#75715e>// max()函数
+</span><span style=color:#75715e></span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>max</span>(<span style=color:#a6e22e>num1</span>, <span style=color:#a6e22e>num2</span> <span style=color:#66d9ef>int</span>) <span style=color:#66d9ef>int</span> {
+    <span style=color:#75715e>// 定义局部变量
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>res</span> <span style=color:#66d9ef>int</span>
+    
+    <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>num1</span> &gt; <span style=color:#a6e22e>num2</span>) {
+        <span style=color:#a6e22e>res</span> = <span style=color:#a6e22e>num1</span>
+    } <span style=color:#66d9ef>else</span> {
+        <span style=color:#a6e22e>res</span> = <span style=color:#a6e22e>num2</span>
+    }
+    <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>res</span>
+}
+</code></pre></div><h3 id=函数返回多个值>函数返回多个值<a hidden class=anchor aria-hidden=true href=#函数返回多个值>#</a></h3>
+<p>Go 函数可以返回多个值。</p>
+<p>实例：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+    <span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>b</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>swap</span>(<span style=color:#e6db74>&#34;dc&#34;</span>, <span style=color:#e6db74>&#34;oops&#34;</span>)
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>b</span>)
+}
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>swap</span>(<span style=color:#a6e22e>x</span>, <span style=color:#a6e22e>y</span> <span style=color:#66d9ef>string</span>) (<span style=color:#66d9ef>string</span>, <span style=color:#66d9ef>string</span>) {
+    <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>y</span>, <span style=color:#a6e22e>x</span>
+}
+</code></pre></div><p>执行结果：</p>
+<pre tabindex=0><code>oops dc
+</code></pre><h3 id=函数参数>函数参数<a hidden class=anchor aria-hidden=true href=#函数参数>#</a></h3>
+<p>函数如果使用参数，该变量可称为函数的形参。</p>
+<p>形参就像定义在函数体内的局部变量。</p>
+<p>调用函数，可以通过两种方式来传递参数:</p>
+<table>
+<thead>
+<tr>
+<th style=text-align:center>传递类型</th>
+<th style=text-align:center>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style=text-align:center><a href=https://www.runoob.com/go/go-function-call-by-value.html>值传递</a></td>
+<td style=text-align:center>值传递是指在调用函数时将实际参数复制一份传递到函数中，这样在函数中如果对参数进行修改，将不会影响到实际参数。</td>
+</tr>
+<tr>
+<td style=text-align:center><a href=https://www.runoob.com/go/go-function-call-by-reference.html>引用传递</a></td>
+<td style=text-align:center>引用传递是指在调用函数时将实际参数的地址传递到函数中，那么在函数中对参数所进行的修改，将影响到实际参数。</td>
+</tr>
+</tbody>
+</table>
+<p>默认情况下，Go 语言使用的是值传递，即在调用过程中不会影响到实际参数。</p>
+<h3 id=函数用法>函数用法<a hidden class=anchor aria-hidden=true href=#函数用法>#</a></h3>
+<table>
+<thead>
+<tr>
+<th style=text-align:center>函数用法</th>
+<th style=text-align:center>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style=text-align:center><a href=https://www.runoob.com/go/go-function-as-values.html>函数作为另外一个函数的实参</a></td>
+<td style=text-align:center>函数定义后可作为另外一个函数的实参数传入</td>
+</tr>
+<tr>
+<td style=text-align:center><a href=https://www.runoob.com/go/go-function-closures.html>闭包</a></td>
+<td style=text-align:center>闭包是匿名函数，可在动态编程中使用</td>
+</tr>
+<tr>
+<td style=text-align:center><a href=https://www.runoob.com/go/go-method.html>方法</a></td>
+<td style=text-align:center>方法就是一个包含了接受者的函数</td>
+</tr>
+</tbody>
+</table>
+<h3 id=变量作用域>变量作用域<a hidden class=anchor aria-hidden=true href=#变量作用域>#</a></h3>
+<p>作用域为已声明标识符所表示的常量、类型、变量、函数或包在源代码中的作用范围。</p>
+<p><code>Go </code>语言中变量可以在三个地方声明:</p>
+<ul>
+<li>函数内定义的变量称为局部变量</li>
+<li>函数外定义的变量称为全局变量</li>
+<li>函数定义中的变量称为形式参数</li>
+</ul>
+<h4 id=局部变量>局部变量<a hidden class=anchor aria-hidden=true href=#局部变量>#</a></h4>
+<p>在函数体内声明的变量称为局部变量，其作用域只在函数体内，参数和返回值也是局部变量。</p>
+<p>实例：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+    <span style=color:#75715e>// 声明局部变量
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>b</span>, <span style=color:#a6e22e>c</span> <span style=color:#66d9ef>int</span>
+    
+    <span style=color:#75715e>// 初始化参数
+</span><span style=color:#75715e></span>    <span style=color:#a6e22e>a</span> = <span style=color:#ae81ff>1</span>
+    <span style=color:#a6e22e>b</span> = <span style=color:#ae81ff>2</span>
+    <span style=color:#a6e22e>c</span> = <span style=color:#a6e22e>a</span> <span style=color:#f92672>+</span> <span style=color:#a6e22e>b</span>
+    
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;Res: a=%d, b=%d, c=%d\n&#34;</span>, <span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>b</span>, <span style=color:#a6e22e>c</span>)
+}
+</code></pre></div><p>执行结果：</p>
+<pre tabindex=0><code>Res: a=1, b=2, c=3
+</code></pre><h4 id=全局变量>全局变量<a hidden class=anchor aria-hidden=true href=#全局变量>#</a></h4>
+<p>在函数体外声明的变量称为全局变量，其作用域可以在整个包甚至外部包(被导出后)使用。</p>
+<p>全局变量可在任何函数中使用。</p>
+<p>实例1：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+
+<span style=color:#75715e>// 声明全局变量
+</span><span style=color:#75715e></span><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>g</span> <span style=color:#66d9ef>int</span>
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+    <span style=color:#75715e>// 声明局部变量
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>b</span> <span style=color:#66d9ef>int</span>
+    
+    <span style=color:#75715e>// 初始化参数
+</span><span style=color:#75715e></span>    <span style=color:#a6e22e>a</span> = <span style=color:#ae81ff>1</span>
+    <span style=color:#a6e22e>b</span> = <span style=color:#ae81ff>2</span>
+    <span style=color:#a6e22e>g</span> = <span style=color:#a6e22e>a</span> <span style=color:#f92672>+</span> <span style=color:#a6e22e>b</span>
+    
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;Res: a=%d, b=%d, g=%d\n&#34;</span>, <span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>b</span>, <span style=color:#a6e22e>g</span>)
+}
+</code></pre></div><p>执行结果：</p>
+<pre tabindex=0><code>Res: a=1, b=2, g=3
+</code></pre><p><code>Go </code>语言中全局变量和局部变量名称可以相同，但位于函数内的局部变量会被优先考虑。</p>
+<p>实例2：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+
+<span style=color:#75715e>// 声明全局变量
+</span><span style=color:#75715e></span><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>g</span> <span style=color:#66d9ef>int</span> = <span style=color:#ae81ff>10</span>
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+    <span style=color:#75715e>// 声明局部变量
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>b</span>, <span style=color:#a6e22e>g</span> <span style=color:#66d9ef>int</span>
+    
+    <span style=color:#75715e>// 初始化参数
+</span><span style=color:#75715e></span>    <span style=color:#a6e22e>a</span> = <span style=color:#ae81ff>1</span>
+    <span style=color:#a6e22e>b</span> = <span style=color:#ae81ff>2</span>
+    <span style=color:#a6e22e>g</span> = <span style=color:#a6e22e>a</span> <span style=color:#f92672>+</span> <span style=color:#a6e22e>b</span>
+    
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;Res: a=%d, b=%d, g=%d\n&#34;</span>, <span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>b</span>, <span style=color:#a6e22e>g</span>)
+}
+</code></pre></div><p>执行结果：</p>
+<pre tabindex=0><code>Res: a=1, b=2, g=3
+</code></pre><p>我们可以看出，即使在函数外部给全局变量<code>g</code>赋值为<code>10</code>，最后输出的还是函数体内局部变量<code>g</code>的值。</p>
+<h4 id=形式参数>形式参数<a hidden class=anchor aria-hidden=true href=#形式参数>#</a></h4>
+<p>形式参数会作为函数的局部变量来使用。</p>
+<p>实例：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+
+<span style=color:#75715e>// 声明全局变量
+</span><span style=color:#75715e></span><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>a</span> <span style=color:#66d9ef>int</span> = <span style=color:#ae81ff>10</span>
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+    <span style=color:#75715e>// main()函数中声明局部变量
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>a</span> <span style=color:#66d9ef>int</span> = <span style=color:#ae81ff>1</span>
+    <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>b</span> <span style=color:#66d9ef>int</span> = <span style=color:#ae81ff>2</span>
+    <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>c</span> <span style=color:#66d9ef>int</span> = <span style=color:#ae81ff>0</span>
+    
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;main()函数中 a=%d\n&#34;</span>, <span style=color:#a6e22e>a</span>)
+    <span style=color:#a6e22e>c</span> = <span style=color:#a6e22e>sum</span>(<span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>b</span>)
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;main()函数中 c=%d\n&#34;</span>, <span style=color:#a6e22e>c</span>)
+}
+
+<span style=color:#75715e>// sum()函数定义
+</span><span style=color:#75715e></span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>sum</span>(<span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>b</span> <span style=color:#66d9ef>int</span>) <span style=color:#66d9ef>int</span> {
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;sum()函数中 a=%d\n&#34;</span>, <span style=color:#a6e22e>a</span>)
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;sum()函数中 b=%d\n&#34;</span>, <span style=color:#a6e22e>b</span>)
+    
+    <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>a</span> <span style=color:#f92672>+</span> <span style=color:#a6e22e>b</span>
+}
+</code></pre></div><p>执行结果：</p>
+<pre tabindex=0><code>main()函数中 a=1
+sum()函数中 a=1
+sum()函数中 b=2
+main()函数中 c=3
+</code></pre><h4 id=初始化局部和全局变量>初始化局部和全局变量<a hidden class=anchor aria-hidden=true href=#初始化局部和全局变量>#</a></h4>
+<p>不同类型的局部和全局变量默认值为:</p>
+<table>
+<thead>
+<tr>
+<th style=text-align:center>数据类型</th>
+<th style=text-align:center>初始化默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style=text-align:center>int</td>
+<td style=text-align:center>0</td>
+</tr>
+<tr>
+<td style=text-align:center>float32</td>
+<td style=text-align:center>0</td>
+</tr>
+<tr>
+<td style=text-align:center>pointer</td>
+<td style=text-align:center>nil</td>
+</tr>
+</tbody>
+</table>
+<h2 id=数组>数组<a hidden class=anchor aria-hidden=true href=#数组>#</a></h2>
+<p><code>Go </code>中提供了数组类型的数据结构。</p>
+<p>数组是具有相同唯一类型的一组已编号且长度固定的数据项序列，这种类型可以是任意的原始类型例如整型、字符串或者自定义类型。</p>
+<p>相对于去声明 <strong>number0, number1, &mldr;, number99</strong> 的变量，使用数组形式 <strong>numbers[0], numbers[1] &mldr;, numbers[99]</strong> 更加方便且易于扩展。</p>
+<p>数组元素可以通过索引(位置)来读取(或者修改)，索引从<code>0</code>开始，第一个元素索引为<code>0</code>，第二个索引为<code>1</code>，以此类推。</p>
+<h3 id=声明数组>声明数组<a hidden class=anchor aria-hidden=true href=#声明数组>#</a></h3>
+<p>语法格式如下：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>variable_name</span> [<span style=color:#a6e22e>SIZE</span>] <span style=color:#a6e22e>variable_type</span>
+<span style=color:#75715e>// 数组名 数组长度 数组类型
+</span></code></pre></div><p>如我们定义一个类型为<code>int</code>，长度为10的数组<code>balance</code>：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>balance</span> [<span style=color:#ae81ff>10</span>] <span style=color:#66d9ef>int</span>
+</code></pre></div><h3 id=初始化数组>初始化数组<a hidden class=anchor aria-hidden=true href=#初始化数组>#</a></h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>balance</span> = [<span style=color:#ae81ff>5</span>]<span style=color:#66d9ef>float32</span>{<span style=color:#ae81ff>1</span>,<span style=color:#ae81ff>2</span>,<span style=color:#ae81ff>3</span>,<span style=color:#ae81ff>4</span>,<span style=color:#ae81ff>5</span>}
+</code></pre></div><p>还可以通过字面量在声明数组的同时快速初始化：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>balance</span> <span style=color:#f92672>:=</span> [<span style=color:#ae81ff>5</span>]<span style=color:#66d9ef>float32</span>{<span style=color:#ae81ff>1</span>,<span style=color:#ae81ff>2</span>,<span style=color:#ae81ff>3</span>,<span style=color:#ae81ff>4</span>,<span style=color:#ae81ff>5</span>}
+</code></pre></div><p>当数组长度不确定时，我们可以使用<code>...</code>代替数组长度，编译器会根据数组元素个数自动推断长度：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>balance</span> <span style=color:#f92672>:=</span> [<span style=color:#f92672>...</span>]<span style=color:#66d9ef>float32</span>{<span style=color:#ae81ff>1</span>,<span style=color:#ae81ff>2</span>,<span style=color:#ae81ff>3</span>,<span style=color:#ae81ff>4</span>,<span style=color:#ae81ff>5</span>}
+</code></pre></div><p>当设置了数组长度时，我们可以通过指定下标来初始化元素：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#75715e>// 将索引为1和3的元素初始化
+</span><span style=color:#75715e></span><span style=color:#a6e22e>balance</span> <span style=color:#f92672>:=</span> [<span style=color:#ae81ff>5</span>]<span style=color:#a6e22e>balance</span>{<span style=color:#ae81ff>1</span>:<span style=color:#ae81ff>1.0</span>,<span style=color:#ae81ff>3</span>:<span style=color:#ae81ff>3.0</span>}
+</code></pre></div><p>注：<code>{}</code>中的元素个数不能大于<code>[]</code>中的数字。</p>
+<h3 id=访问数组元素>访问数组元素<a hidden class=anchor aria-hidden=true href=#访问数组元素>#</a></h3>
+<p>实例1：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+
+	<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>arr</span> [<span style=color:#ae81ff>10</span>] <span style=color:#66d9ef>int</span>		<span style=color:#75715e>// 长度为10的数组
+</span><span style=color:#75715e></span>	<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>i</span>, <span style=color:#a6e22e>j</span> <span style=color:#66d9ef>int</span>
+
+	<span style=color:#75715e>// 给数组初始化元素
+</span><span style=color:#75715e></span>	<span style=color:#66d9ef>for</span> <span style=color:#a6e22e>i</span> = <span style=color:#ae81ff>0</span>; <span style=color:#a6e22e>i</span> &lt; <span style=color:#ae81ff>10</span>; <span style=color:#a6e22e>i</span><span style=color:#f92672>++</span> {
+		<span style=color:#a6e22e>arr</span>[<span style=color:#a6e22e>i</span>] = <span style=color:#a6e22e>i</span> <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>;
+	}
+
+	<span style=color:#75715e>// 输出每个元素的值
+</span><span style=color:#75715e></span>	<span style=color:#66d9ef>for</span> <span style=color:#a6e22e>j</span> = <span style=color:#ae81ff>0</span>; <span style=color:#a6e22e>j</span> &lt; <span style=color:#ae81ff>10</span>; <span style=color:#a6e22e>j</span><span style=color:#f92672>++</span> {
+		<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;Ele[%d] = %d\n&#34;</span>, <span style=color:#a6e22e>j</span>, <span style=color:#a6e22e>arr</span>[<span style=color:#a6e22e>j</span>])
+	}
+}
+</code></pre></div><p>执行结果：</p>
+<pre tabindex=0><code>Ele[0] = 1
+Ele[1] = 2
+Ele[2] = 3
+Ele[3] = 4
+Ele[4] = 5
+Ele[5] = 6
+Ele[6] = 7
+Ele[7] = 8
+Ele[8] = 9
+Ele[9] = 10
+</code></pre><p>实例2：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+
+	<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>i</span>, <span style=color:#a6e22e>j</span> <span style=color:#66d9ef>int</span>
+
+	<span style=color:#a6e22e>arr</span> <span style=color:#f92672>:=</span> [<span style=color:#f92672>...</span>]<span style=color:#66d9ef>float32</span>{<span style=color:#ae81ff>1</span>,<span style=color:#ae81ff>2</span>,<span style=color:#ae81ff>3</span>,<span style=color:#ae81ff>4</span>,<span style=color:#ae81ff>5</span>}
+
+	<span style=color:#66d9ef>for</span> <span style=color:#a6e22e>i</span> = <span style=color:#ae81ff>0</span>; <span style=color:#a6e22e>i</span> &lt; <span style=color:#ae81ff>5</span>; <span style=color:#a6e22e>i</span><span style=color:#f92672>++</span> {
+		<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;Ele[%d] = %f\n&#34;</span>, <span style=color:#a6e22e>i</span>, <span style=color:#a6e22e>arr</span>[<span style=color:#a6e22e>i</span>])
+	}
+
+	<span style=color:#a6e22e>arr2</span> <span style=color:#f92672>:=</span> [<span style=color:#ae81ff>5</span>]<span style=color:#66d9ef>float32</span>{<span style=color:#ae81ff>1</span>:<span style=color:#ae81ff>2.0</span>,<span style=color:#ae81ff>3</span>:<span style=color:#ae81ff>7.0</span>}
+	<span style=color:#66d9ef>for</span> <span style=color:#a6e22e>j</span> = <span style=color:#ae81ff>0</span>; <span style=color:#a6e22e>j</span> &lt; <span style=color:#ae81ff>5</span>; <span style=color:#a6e22e>j</span><span style=color:#f92672>++</span> {
+		<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;Ele[%d] = %f\n&#34;</span>, <span style=color:#a6e22e>j</span>, <span style=color:#a6e22e>arr2</span>[<span style=color:#a6e22e>j</span>])
+	}
+
+}
+</code></pre></div><p>执行结果：</p>
+<pre tabindex=0><code>Ele[0] = 1.000000
+Ele[1] = 2.000000
+Ele[2] = 3.000000
+Ele[3] = 4.000000
+Ele[4] = 5.000000
+Ele[0] = 0.000000
+Ele[1] = 2.000000
+Ele[2] = 0.000000
+Ele[3] = 7.000000
+Ele[4] = 0.000000
+</code></pre><h3 id=更多内容>更多内容<a hidden class=anchor aria-hidden=true href=#更多内容>#</a></h3>
+<p>数组对<code>Go </code>语言来说非常重要，以下我们是关于数组更多的内容:</p>
+<table>
+<thead>
+<tr>
+<th style=text-align:center>内容</th>
+<th style=text-align:center>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style=text-align:center><a href=https://www.runoob.com/go/go-multi-dimensional-arrays.html>多维数组</a></td>
+<td style=text-align:center>Go 语言支持多维数组，最简单的多维数组是二维数组</td>
+</tr>
+<tr>
+<td style=text-align:center><a href=https://www.runoob.com/go/go-passing-arrays-to-functions.html>向函数传递数组</a></td>
+<td style=text-align:center>你可以向函数传递数组参数</td>
+</tr>
+</tbody>
+</table>
+<h2 id=指针>指针<a hidden class=anchor aria-hidden=true href=#指针>#</a></h2>
+<p>指针变量通常缩写为<code>ptr</code>。</p>
+<h3 id=指针使用>指针使用<a hidden class=anchor aria-hidden=true href=#指针使用>#</a></h3>
+<p>实例：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+
+	<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>a</span> <span style=color:#66d9ef>int</span> = <span style=color:#ae81ff>20</span>
+	<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>ip</span> <span style=color:#f92672>*</span><span style=color:#66d9ef>int</span>
+
+	<span style=color:#a6e22e>ip</span> = <span style=color:#f92672>&amp;</span><span style=color:#a6e22e>a</span>
+
+	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;a 变量地址为: %x\n&#34;</span>, <span style=color:#f92672>&amp;</span><span style=color:#a6e22e>a</span>)
+	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;ip 变量存储地址为: %x\n&#34;</span>, <span style=color:#a6e22e>ip</span>)
+	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;*ip 指向的值: %d\n&#34;</span>, <span style=color:#f92672>*</span><span style=color:#a6e22e>ip</span>)
+
+}
+</code></pre></div><p>执行结果：</p>
+<pre tabindex=0><code>a 变量地址为: c000128058
+ip 变量存储地址为: c000128058
+*ip 指向的值: 20
+</code></pre><h3 id=空指针>空指针<a hidden class=anchor aria-hidden=true href=#空指针>#</a></h3>
+<p>当指针没有被分配到任何变量时，值为<code>nil</code>。</p>
+<p>实例：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+	<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>ptr</span> <span style=color:#f92672>*</span><span style=color:#66d9ef>int</span>
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;%x\n&#34;</span>, <span style=color:#a6e22e>ptr</span>)
+}
+</code></pre></div><p>执行结果：</p>
+<pre tabindex=0><code>0
+</code></pre><p>空指针判断：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>ptr</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span>)
+<span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>ptr</span> <span style=color:#f92672>==</span> <span style=color:#66d9ef>nil</span>)
+</code></pre></div><h3 id=更多内容-1>更多内容<a hidden class=anchor aria-hidden=true href=#更多内容-1>#</a></h3>
+<table>
+<thead>
+<tr>
+<th style=text-align:center>内容</th>
+<th style=text-align:center>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style=text-align:center><a href=https://www.runoob.com/go/go-array-of-pointers.html>Go 指针数组</a></td>
+<td style=text-align:center>你可以定义一个指针数组来存储地址</td>
+</tr>
+<tr>
+<td style=text-align:center><a href=https://www.runoob.com/go/go-pointer-to-pointer.html>Go 指向指针的指针</a></td>
+<td style=text-align:center>Go 支持指向指针的指针</td>
+</tr>
+<tr>
+<td style=text-align:center><a href=https://www.runoob.com/go/go-passing-pointers-to-functions.html>Go 向函数传递指针参数</a></td>
+<td style=text-align:center>通过引用或地址传参，在函数调用时可以改变其值</td>
+</tr>
+</tbody>
+</table>
+<h2 id=结构体>结构体<a hidden class=anchor aria-hidden=true href=#结构体>#</a></h2>
+<p>数组可以存储同一类型的数据，结构体中可以为不同项定义不同数据类型。</p>
+<p>结构体是由一系列具有相同类型或不同类型数据构成的数据集合。</p>
+<p>结构体表示一项纪录，比如一个学生有以下属性:</p>
+<ul>
+<li>姓名</li>
+<li>学号</li>
+<li>学院</li>
+<li>专业</li>
+</ul>
+<h3 id=定义结构体>定义结构体<a hidden class=anchor aria-hidden=true href=#定义结构体>#</a></h3>
+<p>使用<code>type</code>和<code>struct</code>语句。</p>
+<p><code>type</code>语句设定了结构体名称。</p>
+<p><code>struct</code>语句定义了一个新的数据类型，结构体中有一个或多个成员。</p>
+<p>结构体格式如下：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>struct_variable_type</span> <span style=color:#66d9ef>struct</span> {
+    <span style=color:#a6e22e>member</span> <span style=color:#a6e22e>definition</span>
+    <span style=color:#a6e22e>member</span> <span style=color:#a6e22e>definition</span>
+    <span style=color:#f92672>...</span>
+}
+</code></pre></div><p>定义了结构体类型，就能用于变量声明：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>variable_name</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>structure_variable_type</span> {<span style=color:#a6e22e>value1</span>, <span style=color:#a6e22e>value2</span><span style=color:#f92672>...</span>}
+<span style=color:#a6e22e>variable_name</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>structure_variable_type</span> {<span style=color:#a6e22e>key1</span>:<span style=color:#a6e22e>value1</span>, <span style=color:#a6e22e>key2</span>:<span style=color:#a6e22e>value2</span><span style=color:#f92672>...</span>}
+</code></pre></div><p>实例：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>Books</span>{<span style=color:#e6db74>&#34;Go lang&#34;</span>, <span style=color:#e6db74>&#34;DC&#34;</span>, <span style=color:#e6db74>&#34;Go lang learn&#34;</span>, <span style=color:#e6db74>&#34;oopsdc.tk&#34;</span>})
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>Books</span>{<span style=color:#a6e22e>title</span>:<span style=color:#e6db74>&#34;Go lang&#34;</span>, <span style=color:#a6e22e>author</span>:<span style=color:#e6db74>&#34;DC&#34;</span>, <span style=color:#a6e22e>subject</span>:<span style=color:#e6db74>&#34;Go lang learn&#34;</span>, <span style=color:#a6e22e>website</span>:<span style=color:#e6db74>&#34;oopsdc.tk&#34;</span>})
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>Books</span>{<span style=color:#a6e22e>title</span>:<span style=color:#e6db74>&#34;Go lang&#34;</span>, <span style=color:#a6e22e>author</span>:<span style=color:#e6db74>&#34;DC&#34;</span>})
+}
+
+<span style=color:#66d9ef>type</span> <span style=color:#a6e22e>Books</span> <span style=color:#66d9ef>struct</span> {
+    <span style=color:#a6e22e>title</span> <span style=color:#66d9ef>string</span>
+    <span style=color:#a6e22e>author</span> <span style=color:#66d9ef>string</span>
+    <span style=color:#a6e22e>subject</span> <span style=color:#66d9ef>string</span>
+    <span style=color:#a6e22e>website</span> <span style=color:#66d9ef>string</span>
+}
+</code></pre></div><p>执行结果：</p>
+<pre tabindex=0><code>{Go lang DC Go lang learn oopsdc.tk}
+{Go lang DC Go lang learn oopsdc.tk}
+{Go lang DC  }
+</code></pre><h3 id=访问结构体成员>访问结构体成员<a hidden class=anchor aria-hidden=true href=#访问结构体成员>#</a></h3>
+<p>格式：</p>
+<pre tabindex=0><code>结构体.成员名
+</code></pre><p>实例：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+    <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>Book1</span> <span style=color:#a6e22e>Books</span>
+    <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>Book2</span> <span style=color:#a6e22e>Books</span>
+
+    <span style=color:#a6e22e>Book1</span>.<span style=color:#a6e22e>title</span> = <span style=color:#e6db74>&#34;C语言&#34;</span>
+    <span style=color:#a6e22e>Book1</span>.<span style=color:#a6e22e>author</span> = <span style=color:#e6db74>&#34;DC&#34;</span>
+    <span style=color:#a6e22e>Book1</span>.<span style=color:#a6e22e>subject</span> = <span style=color:#e6db74>&#34;编程&#34;</span>
+    <span style=color:#a6e22e>Book1</span>.<span style=color:#a6e22e>id</span> = <span style=color:#ae81ff>00001</span>
+
+    <span style=color:#a6e22e>Book2</span>.<span style=color:#a6e22e>title</span> = <span style=color:#e6db74>&#34;Python语言&#34;</span>
+    <span style=color:#a6e22e>Book2</span>.<span style=color:#a6e22e>author</span> = <span style=color:#e6db74>&#34;DC&#34;</span>
+    <span style=color:#a6e22e>Book2</span>.<span style=color:#a6e22e>subject</span> = <span style=color:#e6db74>&#34;编程&#34;</span>
+    <span style=color:#a6e22e>Book2</span>.<span style=color:#a6e22e>id</span> = <span style=color:#ae81ff>00002</span>
+
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;Book1 title: %s\n&#34;</span>, <span style=color:#a6e22e>Book1</span>.<span style=color:#a6e22e>title</span>)
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;Book1 author: %s\n&#34;</span>, <span style=color:#a6e22e>Book1</span>.<span style=color:#a6e22e>author</span>)
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;Book1 subject: %s\n&#34;</span>, <span style=color:#a6e22e>Book1</span>.<span style=color:#a6e22e>subject</span>)
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;Book1 id: %d\n&#34;</span>, <span style=color:#a6e22e>Book1</span>.<span style=color:#a6e22e>id</span>)
+
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;Book2 title: %s\n&#34;</span>, <span style=color:#a6e22e>Book2</span>.<span style=color:#a6e22e>title</span>)
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;Book2 author: %s\n&#34;</span>, <span style=color:#a6e22e>Book2</span>.<span style=color:#a6e22e>author</span>)
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;Book2 subject: %s\n&#34;</span>, <span style=color:#a6e22e>Book2</span>.<span style=color:#a6e22e>subject</span>)
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;Book2 id: %d\n&#34;</span>, <span style=color:#a6e22e>Book2</span>.<span style=color:#a6e22e>id</span>)
+}
+
+<span style=color:#66d9ef>type</span> <span style=color:#a6e22e>Books</span> <span style=color:#66d9ef>struct</span> {
+    <span style=color:#a6e22e>title</span> <span style=color:#66d9ef>string</span>
+    <span style=color:#a6e22e>author</span> <span style=color:#66d9ef>string</span>
+    <span style=color:#a6e22e>subject</span> <span style=color:#66d9ef>string</span>
+    <span style=color:#a6e22e>id</span> <span style=color:#66d9ef>int</span>
+}
+</code></pre></div><p>执行结果：</p>
+<pre tabindex=0><code>Book1 title: C语言
+Book1 author: DC
+Book1 subject: 编程
+Book1 id: 1
+Book2 title: Python语言
+Book2 author: DC
+Book2 subject: 编程
+Book2 id: 2
+</code></pre><h3 id=结构体作为函数参数>结构体作为函数参数<a hidden class=anchor aria-hidden=true href=#结构体作为函数参数>#</a></h3>
+<p>我们可以像其它数据类型一样将结构体类型作为参数传递给函数。</p>
+<p>实例：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+    <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>Book1</span> <span style=color:#a6e22e>Books</span>
+    <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>Book2</span> <span style=color:#a6e22e>Books</span>
+    
+    <span style=color:#a6e22e>Book1</span>.<span style=color:#a6e22e>title</span> = <span style=color:#e6db74>&#34;C语言&#34;</span>
+    <span style=color:#a6e22e>Book1</span>.<span style=color:#a6e22e>author</span> = <span style=color:#e6db74>&#34;DC&#34;</span>
+    <span style=color:#a6e22e>Book1</span>.<span style=color:#a6e22e>subject</span> = <span style=color:#e6db74>&#34;编程&#34;</span>
+    <span style=color:#a6e22e>Book1</span>.<span style=color:#a6e22e>date</span> = <span style=color:#e6db74>&#34;2021-03-19&#34;</span>
+    
+    <span style=color:#a6e22e>Book2</span>.<span style=color:#a6e22e>title</span> = <span style=color:#e6db74>&#34;Python&#34;</span>
+    <span style=color:#a6e22e>Book2</span>.<span style=color:#a6e22e>author</span> = <span style=color:#e6db74>&#34;DC&#34;</span>
+    <span style=color:#a6e22e>Book2</span>.<span style=color:#a6e22e>subject</span> = <span style=color:#e6db74>&#34;编程&#34;</span>
+    <span style=color:#a6e22e>Book2</span>.<span style=color:#a6e22e>date</span> = <span style=color:#e6db74>&#34;2021-03-19&#34;</span>
+    
+    <span style=color:#a6e22e>printBook</span>(<span style=color:#a6e22e>Book1</span>)
+    <span style=color:#a6e22e>printBook</span>(<span style=color:#a6e22e>Book2</span>)
+}
+
+<span style=color:#66d9ef>type</span> <span style=color:#a6e22e>Books</span> <span style=color:#66d9ef>struct</span> {
+    <span style=color:#a6e22e>title</span> <span style=color:#66d9ef>string</span>
+    <span style=color:#a6e22e>author</span> <span style=color:#66d9ef>string</span>
+    <span style=color:#a6e22e>subject</span> <span style=color:#66d9ef>string</span>
+    <span style=color:#a6e22e>date</span> <span style=color:#66d9ef>string</span>
+}
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>printBook</span>(<span style=color:#a6e22e>book</span> <span style=color:#a6e22e>Books</span>) {
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;Title: %s\n&#34;</span>, <span style=color:#a6e22e>book</span>.<span style=color:#a6e22e>title</span>)
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;Author: %s\n&#34;</span>, <span style=color:#a6e22e>book</span>.<span style=color:#a6e22e>author</span>)
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;Subject: %s\n&#34;</span>, <span style=color:#a6e22e>book</span>.<span style=color:#a6e22e>subject</span>)
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;Date: %s\n&#34;</span>, <span style=color:#a6e22e>book</span>.<span style=color:#a6e22e>date</span>)
+}
+</code></pre></div><p>执行结果：</p>
+<pre tabindex=0><code>Title: C语言
+Author: DC
+Subject: 编程
+Date: 2021-03-19
+Title: Python
+Author: DC
+Subject: 编程
+Date: 2021-03-19
+</code></pre><h3 id=结构体指针>结构体指针<a hidden class=anchor aria-hidden=true href=#结构体指针>#</a></h3>
+<p>定义结构体指针其实类似于其它指针变量：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>strcut_pointer</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>ptr</span>
+</code></pre></div><p>以上定义的指针变量可以存储结构体变量地址。我们可以通过<code>&</code>符号查看结构体变量地址：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>struct_pointer</span> = <span style=color:#f92672>&amp;</span><span style=color:#a6e22e>ptr</span>
+</code></pre></div><p>使用结构体指针访问结构体成员，使用<code>.</code>：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>struct_pointer</span>.<span style=color:#a6e22e>title</span>
+</code></pre></div><p>我们用指针重写一下之前结构体的实例：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+    <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>Book1</span> <span style=color:#a6e22e>Books</span>
+    <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>Book2</span> <span style=color:#a6e22e>Books</span>
+    
+     <span style=color:#a6e22e>Book1</span>.<span style=color:#a6e22e>title</span> = <span style=color:#e6db74>&#34;C语言&#34;</span>
+    <span style=color:#a6e22e>Book1</span>.<span style=color:#a6e22e>author</span> = <span style=color:#e6db74>&#34;DC&#34;</span>
+    <span style=color:#a6e22e>Book1</span>.<span style=color:#a6e22e>subject</span> = <span style=color:#e6db74>&#34;编程&#34;</span>
+    <span style=color:#a6e22e>Book1</span>.<span style=color:#a6e22e>date</span> = <span style=color:#e6db74>&#34;2021-03-19&#34;</span>
+    
+    <span style=color:#a6e22e>Book2</span>.<span style=color:#a6e22e>title</span> = <span style=color:#e6db74>&#34;Python&#34;</span>
+    <span style=color:#a6e22e>Book2</span>.<span style=color:#a6e22e>author</span> = <span style=color:#e6db74>&#34;DC&#34;</span>
+    <span style=color:#a6e22e>Book2</span>.<span style=color:#a6e22e>subject</span> = <span style=color:#e6db74>&#34;编程&#34;</span>
+    <span style=color:#a6e22e>Book2</span>.<span style=color:#a6e22e>date</span> = <span style=color:#e6db74>&#34;2021-03-19&#34;</span>
+    
+    <span style=color:#a6e22e>printBook</span>(<span style=color:#f92672>&amp;</span><span style=color:#a6e22e>Book1</span>)
+    <span style=color:#a6e22e>printBook</span>(<span style=color:#f92672>&amp;</span><span style=color:#a6e22e>Book2</span>)
+}
+
+<span style=color:#66d9ef>type</span> <span style=color:#a6e22e>Books</span> <span style=color:#66d9ef>struct</span> {
+    <span style=color:#a6e22e>title</span> <span style=color:#66d9ef>string</span>
+    <span style=color:#a6e22e>author</span> <span style=color:#66d9ef>string</span>
+    <span style=color:#a6e22e>subject</span> <span style=color:#66d9ef>string</span>
+    <span style=color:#a6e22e>date</span> <span style=color:#66d9ef>string</span>
+}
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>printBook</span>(<span style=color:#a6e22e>book</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>Books</span>) {
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;Title: %s\n&#34;</span>, <span style=color:#a6e22e>book</span>.<span style=color:#a6e22e>title</span>)
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;Author: %s\n&#34;</span>, <span style=color:#a6e22e>book</span>.<span style=color:#a6e22e>author</span>)
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;Subject: %s\n&#34;</span>, <span style=color:#a6e22e>book</span>.<span style=color:#a6e22e>subject</span>)
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;Date: %s\n&#34;</span>, <span style=color:#a6e22e>book</span>.<span style=color:#a6e22e>date</span>)
+}
+</code></pre></div><h2 id=切片>切片<a hidden class=anchor aria-hidden=true href=#切片>#</a></h2>
+<p>切片是对数组的抽象。</p>
+<p><code>Go </code>中数组长度不可变，不适用部分特定场景，<code>Go </code>提供了一种灵活且功能强悍的内置类型——切片(&ldquo;动态数组&rdquo;)。与数组相比，切片长度不固定，可以追加元素，在追加时可能使切片容量增大。</p>
+<h3 id=定义切片>定义切片<a hidden class=anchor aria-hidden=true href=#定义切片>#</a></h3>
+<p>声明一个未指定长度的数组来定义切片：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>identifier</span> []<span style=color:#66d9ef>type</span>
+</code></pre></div><p>切片不需要指定长度。</p>
+<p>我们还可以使用<code>make()</code>函数创建切片：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>slice1</span> []<span style=color:#66d9ef>type</span> = make([]<span style=color:#66d9ef>type</span>, <span style=color:#a6e22e>len</span>)
+<span style=color:#a6e22e>slice1</span> <span style=color:#f92672>:=</span> make([]<span style=color:#66d9ef>type</span>, <span style=color:#a6e22e>len</span>)
+</code></pre></div><p>也可以指定容量，<code>capacity</code>为可选参数：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go>make([]<span style=color:#a6e22e>T</span>, <span style=color:#a6e22e>length</span>, <span style=color:#a6e22e>capacity</span>)
+</code></pre></div><p>此处的<code>len</code>是数组长度也是切片初始长度。</p>
+<h3 id=切片初始化>切片初始化<a hidden class=anchor aria-hidden=true href=#切片初始化>#</a></h3>
+<p>直接初始化切片，<code>[]</code>表示切片类型，{1,2,3}初始化值依次为<code>1,2,3</code>，<code>cap=len=3</code>：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>s</span> <span style=color:#f92672>:=</span> [] <span style=color:#66d9ef>int</span> {<span style=color:#ae81ff>1</span>,<span style=color:#ae81ff>2</span>,<span style=color:#ae81ff>3</span>}
+</code></pre></div><p>初始化切片<code>s</code>，是数组<code>arr</code>的引用：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>s</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>arr</span>[:]
+</code></pre></div><p>将<code>arr</code>中下标为<code>startIndex</code>到<code>endIndex-1</code>下的元素创建为一个新的切片：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>s</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>arr</span>[<span style=color:#a6e22e>startIndex</span>:<span style=color:#a6e22e>endIndex</span>]
+</code></pre></div><p>默认<code>endIndex</code>时将表示一直到<code>arr</code>的最后一个元素：</p>
+<pre tabindex=0><code>s := arr[startIndex:]
+</code></pre><p>默认<code>startIndex</code>时表示从<code>arr</code>的第一个元素开始：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>s</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>arr</span>[:<span style=color:#a6e22e>endIndex</span>]
+</code></pre></div><p>通过切片<code>s</code>初始化切片<code>s1</code>：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>s1</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>s</span>[<span style=color:#a6e22e>startIndex</span>:<span style=color:#a6e22e>endIndex</span>]
+</code></pre></div><p>通过内置函数<code>make()</code>初始化切片<code>s</code>，<code>[]int</code>标识其元素类型为<code>int</code>的切片：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>s</span> <span style=color:#f92672>:=</span> make([]<span style=color:#66d9ef>int</span>, <span style=color:#a6e22e>len</span>, <span style=color:#a6e22e>cap</span>)
+</code></pre></div><h3 id=len和cap函数>len()和cap()函数<a hidden class=anchor aria-hidden=true href=#len和cap函数>#</a></h3>
+<p>切片可索引，且可由<code>len()</code>方法获取长度。</p>
+<p>切片提供了计算容量的方法，<code>cap()</code>可以测量切片长度上限。</p>
+<p>实例：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+    <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>nums</span> = make([]<span style=color:#66d9ef>int</span>, <span style=color:#ae81ff>3</span>, <span style=color:#ae81ff>5</span>)
+    
+    <span style=color:#a6e22e>printSlice</span>(<span style=color:#a6e22e>nums</span>)
+}
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>printSlice</span>(<span style=color:#a6e22e>x</span> []<span style=color:#66d9ef>int</span>) {
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;len=%d cap=%d slice=%v&#34;</span>, len(<span style=color:#a6e22e>x</span>), cap(<span style=color:#a6e22e>x</span>), <span style=color:#a6e22e>x</span>)
+}
+</code></pre></div><p>执行结果：</p>
+<pre tabindex=0><code>len=3 cap=5 slice=[0 0 0]
+</code></pre><h3 id=空切片>空切片<a hidden class=anchor aria-hidden=true href=#空切片>#</a></h3>
+<p>切片在未初始化之前默认为nil，长度为0。</p>
+<p>实例：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+    <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>nums</span>[] <span style=color:#66d9ef>int</span>
+    
+    <span style=color:#a6e22e>printSlice</span>(<span style=color:#a6e22e>nums</span>)
+    
+    <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>nums</span> <span style=color:#f92672>==</span> <span style=color:#66d9ef>nil</span>) {
+        <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;切片为空!&#34;</span>)
+    }
+}
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>printSlice</span>(<span style=color:#a6e22e>x</span> []<span style=color:#66d9ef>int</span>) {
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;len=%d cap=%d slice=%v\n&#34;</span>, len(<span style=color:#a6e22e>x</span>), cap(<span style=color:#a6e22e>x</span>), <span style=color:#a6e22e>x</span>)
+}
+</code></pre></div><p>执行结果：</p>
+<pre tabindex=0><code>len=0 cap=0 slice=[]
+切片为空!
+</code></pre><h3 id=切片截取>切片截取<a hidden class=anchor aria-hidden=true href=#切片截取>#</a></h3>
+<p>可通过设置上下限设置截取切片。</p>
+<p>实例：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+    <span style=color:#a6e22e>nums</span> <span style=color:#f92672>:=</span> []<span style=color:#66d9ef>int</span>{<span style=color:#ae81ff>1</span>,<span style=color:#ae81ff>2</span>,<span style=color:#ae81ff>3</span>,<span style=color:#ae81ff>4</span>,<span style=color:#ae81ff>5</span>,<span style=color:#ae81ff>6</span>,<span style=color:#ae81ff>7</span>,<span style=color:#ae81ff>8</span>,<span style=color:#ae81ff>9</span>}
+    <span style=color:#a6e22e>printSlice</span>(<span style=color:#a6e22e>nums</span>)
+    
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;nums=&#34;</span>,<span style=color:#a6e22e>nums</span>)
+    
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;nums[1:4]=&#34;</span>,<span style=color:#a6e22e>nums</span>[<span style=color:#ae81ff>1</span>:<span style=color:#ae81ff>4</span>])
+    
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;nums[:3]=&#34;</span>,<span style=color:#a6e22e>nums</span>[:<span style=color:#ae81ff>3</span>])
+    
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;nums[4:]=&#34;</span>,<span style=color:#a6e22e>nums</span>[<span style=color:#ae81ff>4</span>:])
+    
+    <span style=color:#a6e22e>nums1</span> <span style=color:#f92672>:=</span> make([]<span style=color:#66d9ef>int</span>, <span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>5</span>)
+    <span style=color:#a6e22e>printSlice</span>(<span style=color:#a6e22e>nums1</span>)
+    
+    <span style=color:#a6e22e>num2</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>nums</span>[:<span style=color:#ae81ff>2</span>]
+    <span style=color:#a6e22e>printSlice</span>(<span style=color:#a6e22e>num2</span>)
+    
+    <span style=color:#a6e22e>num3</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>nums</span>[<span style=color:#ae81ff>2</span>:<span style=color:#ae81ff>5</span>]
+    <span style=color:#a6e22e>printSlice</span>(<span style=color:#a6e22e>num3</span>)
+}
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>printSlice</span>(<span style=color:#a6e22e>x</span> []<span style=color:#66d9ef>int</span>) {
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;len=%d cap=%d slice=%v\n&#34;</span>, len(<span style=color:#a6e22e>x</span>), cap(<span style=color:#a6e22e>x</span>), <span style=color:#a6e22e>x</span>)
+}
+</code></pre></div><p>执行结果：</p>
+<pre tabindex=0><code>len=9 cap=9 slice=[1 2 3 4 5 6 7 8 9]
+nums= [1 2 3 4 5 6 7 8 9]
+nums[1:4]= [2 3 4]
+nums[:3]= [1 2 3]
+nums[4:]= [5 6 7 8 9]
+len=0 cap=5 slice=[]
+len=2 cap=9 slice=[1 2]
+len=3 cap=7 slice=[3 4 5]
+</code></pre><p>前闭后开。</p>
+<h3 id=append与copy函数>append()与copy()函数<a hidden class=anchor aria-hidden=true href=#append与copy函数>#</a></h3>
+<p>若想增加切片容量，我们要创建一个新的更大的切片并把原切片内容拷贝过来，接下来我们通过<code>copy</code>与<code>append</code>方法。</p>
+<p>实例：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+    <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>nums</span> []<span style=color:#66d9ef>int</span>
+    <span style=color:#a6e22e>printSlice</span>(<span style=color:#a6e22e>nums</span>)
+    
+    <span style=color:#a6e22e>nums</span> = append(<span style=color:#a6e22e>nums</span>, <span style=color:#ae81ff>0</span>)
+    <span style=color:#a6e22e>printSlice</span>(<span style=color:#a6e22e>nums</span>)
+    
+    <span style=color:#a6e22e>nums</span> = append(<span style=color:#a6e22e>nums</span>, <span style=color:#ae81ff>1</span>)
+    <span style=color:#a6e22e>printSlice</span>(<span style=color:#a6e22e>nums</span>)
+    
+    <span style=color:#a6e22e>nums</span> = append(<span style=color:#a6e22e>nums</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>2</span>, <span style=color:#ae81ff>3</span>)
+    <span style=color:#a6e22e>printSlice</span>(<span style=color:#a6e22e>nums</span>)
+    
+    <span style=color:#a6e22e>nums1</span> <span style=color:#f92672>:=</span> make([]<span style=color:#66d9ef>int</span>, len(<span style=color:#a6e22e>nums</span>), (cap(<span style=color:#a6e22e>nums</span>))<span style=color:#f92672>*</span><span style=color:#ae81ff>2</span>)
+    
+    copy(<span style=color:#a6e22e>nums1</span>, <span style=color:#a6e22e>nums</span>)
+    <span style=color:#a6e22e>printSlice</span>(<span style=color:#a6e22e>nums1</span>)
+}
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>printSlice</span>(<span style=color:#a6e22e>x</span> []<span style=color:#66d9ef>int</span>) {
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;len=%d cap=%d slice=%v\n&#34;</span>, len(<span style=color:#a6e22e>x</span>), cap(<span style=color:#a6e22e>x</span>), <span style=color:#a6e22e>x</span>)
+}
+</code></pre></div><p>执行结果：</p>
+<pre tabindex=0><code>len=0 cap=0 slice=[]
+len=1 cap=1 slice=[0]
+len=2 cap=2 slice=[0 1]
+len=5 cap=6 slice=[0 1 1 2 3]
+len=5 cap=12 slice=[0 1 1 2 3]
+</code></pre><h2 id=range>Range<a hidden class=anchor aria-hidden=true href=#range>#</a></h2>
+<p>Go 语言中<code>range</code>关键字由于for循环中迭代数组(array)、切片(slice)、通道(channel)或集合(map)的元素，在数组和切片中它返回元素的索引及索引对应的值。即键值对。(key-value)</p>
+<p>实例：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+        <span style=color:#a6e22e>nums</span> <span style=color:#f92672>:=</span> []<span style=color:#66d9ef>int</span>{<span style=color:#ae81ff>2</span>, <span style=color:#ae81ff>3</span>, <span style=color:#ae81ff>4</span>}
+        <span style=color:#a6e22e>sum</span> <span style=color:#f92672>:=</span> <span style=color:#ae81ff>0</span>
+
+        <span style=color:#66d9ef>for</span> <span style=color:#a6e22e>_</span>, <span style=color:#a6e22e>num</span> <span style=color:#f92672>:=</span> <span style=color:#66d9ef>range</span> <span style=color:#a6e22e>nums</span> {
+                <span style=color:#a6e22e>sum</span> <span style=color:#f92672>+=</span> <span style=color:#a6e22e>num</span>
+        }
+        <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;sum:&#34;</span>, <span style=color:#a6e22e>sum</span>)
+
+        <span style=color:#66d9ef>for</span> <span style=color:#a6e22e>i</span>, <span style=color:#a6e22e>num</span> <span style=color:#f92672>:=</span> <span style=color:#66d9ef>range</span> <span style=color:#a6e22e>nums</span> {
+                <span style=color:#66d9ef>if</span> <span style=color:#a6e22e>num</span> <span style=color:#f92672>==</span> <span style=color:#ae81ff>3</span> {
+                        <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;index:&#34;</span>, <span style=color:#a6e22e>i</span>)
+                }
+        }
+
+        <span style=color:#a6e22e>kvs</span> <span style=color:#f92672>:=</span> <span style=color:#66d9ef>map</span>[<span style=color:#66d9ef>string</span>]<span style=color:#66d9ef>string</span>{<span style=color:#e6db74>&#34;a&#34;</span>:<span style=color:#e6db74>&#34;apple&#34;</span>, <span style=color:#e6db74>&#34;b&#34;</span>:<span style=color:#e6db74>&#34;banana&#34;</span>}
+        <span style=color:#66d9ef>for</span> <span style=color:#a6e22e>k</span>, <span style=color:#a6e22e>v</span> <span style=color:#f92672>:=</span> <span style=color:#66d9ef>range</span> <span style=color:#a6e22e>kvs</span> {
+                <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;%s -&gt; %s\n&#34;</span>, <span style=color:#a6e22e>k</span>, <span style=color:#a6e22e>v</span>)
+        }
+
+        <span style=color:#66d9ef>for</span> <span style=color:#a6e22e>i</span>, <span style=color:#a6e22e>c</span> <span style=color:#f92672>:=</span> <span style=color:#66d9ef>range</span> <span style=color:#e6db74>&#34;go&#34;</span> {
+                <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>i</span>, <span style=color:#a6e22e>c</span>)
+        }
+}
+</code></pre></div><p>执行结果：</p>
+<pre tabindex=0><code>sum: 9
+index: 1
+a -&gt; apple
+b -&gt; banana
+0 103
+1 111
+</code></pre><h2 id=map>Map<a hidden class=anchor aria-hidden=true href=#map>#</a></h2>
+<p>Map是一种无需的键值对集合，它最重要的一点是通过key来快速检索数据，key类似于索引，指向数据的值。</p>
+<p>我们可以像迭代数组和切片那样迭代Map，但Map时无序的，我们无法决定它的返回顺序，因为Map使用hash表实现。</p>
+<h3 id=定义map>定义Map<a hidden class=anchor aria-hidden=true href=#定义map>#</a></h3>
+<p>1.使用内建函数<code>make</code></p>
+<p>2.使用<code>map</code>关键字：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>map_variable</span> <span style=color:#66d9ef>map</span>[<span style=color:#a6e22e>key_data_type</span>]<span style=color:#a6e22e>value_data_type</span>
+<span style=color:#a6e22e>map_variable</span> <span style=color:#f92672>:=</span> make(<span style=color:#66d9ef>map</span>[<span style=color:#a6e22e>key_data_type</span>]<span style=color:#a6e22e>value_type</span>)
+</code></pre></div><p>若不初始化map，那么会创建一个<code>nil map</code>，<code>nil map</code>不能用来存放键值对。</p>
+<p>实例：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+        <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>testMap</span> <span style=color:#66d9ef>map</span>[<span style=color:#66d9ef>string</span>]<span style=color:#66d9ef>string</span>
+        <span style=color:#a6e22e>testMap</span> = make(<span style=color:#66d9ef>map</span>[<span style=color:#66d9ef>string</span>]<span style=color:#66d9ef>string</span>)
+
+        <span style=color:#a6e22e>testMap</span> [<span style=color:#e6db74>&#34;人文&#34;</span>] = <span style=color:#e6db74>&#34;法学&#34;</span>
+        <span style=color:#a6e22e>testMap</span> [<span style=color:#e6db74>&#34;数计&#34;</span>] = <span style=color:#e6db74>&#34;计算机&#34;</span>
+        <span style=color:#a6e22e>testMap</span> [<span style=color:#e6db74>&#34;外国语&#34;</span>] = <span style=color:#e6db74>&#34;翻译&#34;</span>
+        <span style=color:#a6e22e>testMap</span> [<span style=color:#e6db74>&#34;智能制造&#34;</span>] = <span style=color:#e6db74>&#34;嵌入式&#34;</span>
+
+        <span style=color:#66d9ef>for</span> <span style=color:#a6e22e>aca</span> <span style=color:#f92672>:=</span> <span style=color:#66d9ef>range</span> <span style=color:#a6e22e>testMap</span> {
+                <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>aca</span>, <span style=color:#e6db74>&#34;招牌是&#34;</span>, <span style=color:#a6e22e>testMap</span> [<span style=color:#a6e22e>aca</span>])
+        }
+
+        <span style=color:#a6e22e>maj</span>, <span style=color:#a6e22e>ok</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>testMap</span> [<span style=color:#e6db74>&#34;土木&#34;</span>]
+
+        <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>ok</span>) {
+                <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;土木的招牌是:&#34;</span>, <span style=color:#a6e22e>maj</span>)
+        } <span style=color:#66d9ef>else</span> {
+                <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;值不存在&#34;</span>)
+        }
+}
+</code></pre></div><p>执行结果：</p>
+<pre tabindex=0><code>智能制造 招牌是 嵌入式
+人文 招牌是 法学
+数计 招牌是 计算机
+外国语 招牌是 翻译
+值不存在
+</code></pre><h3 id=delete函数>delete()函数<a hidden class=anchor aria-hidden=true href=#delete函数>#</a></h3>
+<p><code>delete()</code>函数用于删除集合元素，参数为<code>map</code>和其对应的<code>key</code>。</p>
+<p>实例：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+        <span style=color:#a6e22e>testMap</span> <span style=color:#f92672>:=</span> <span style=color:#66d9ef>map</span>[<span style=color:#66d9ef>string</span>]<span style=color:#66d9ef>string</span>{<span style=color:#e6db74>&#34;一&#34;</span>: <span style=color:#e6db74>&#34;1&#34;</span>, <span style=color:#e6db74>&#34;二&#34;</span>: <span style=color:#e6db74>&#34;2&#34;</span>, <span style=color:#e6db74>&#34;三&#34;</span>: <span style=color:#e6db74>&#34;3&#34;</span>}
+
+        <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;原始数据&#34;</span>)
+
+        <span style=color:#66d9ef>for</span> <span style=color:#a6e22e>i</span> <span style=color:#f92672>:=</span> <span style=color:#66d9ef>range</span> <span style=color:#a6e22e>testMap</span> {
+                <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>i</span>, <span style=color:#e6db74>&#34;值为&#34;</span>, <span style=color:#a6e22e>testMap</span> [<span style=color:#a6e22e>i</span>])
+        }
+
+        delete(<span style=color:#a6e22e>testMap</span>, <span style=color:#e6db74>&#34;一&#34;</span>)
+        <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;一被删除&#34;</span>)
+
+        <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;删除后数据&#34;</span>)
+
+        <span style=color:#66d9ef>for</span> <span style=color:#a6e22e>i</span> <span style=color:#f92672>:=</span> <span style=color:#66d9ef>range</span> <span style=color:#a6e22e>testMap</span> {
+                <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>i</span>, <span style=color:#e6db74>&#34;值为&#34;</span>, <span style=color:#a6e22e>testMap</span> [<span style=color:#a6e22e>i</span>])
+        }
+}
+</code></pre></div><p>执行结果：</p>
+<pre tabindex=0><code>原始数据
+一 值为 1
+二 值为 2
+三 值为 3
+一被删除
+删除后数据
+三 值为 3
+二 值为 2
+</code></pre><h2 id=递归函数>递归函数<a hidden class=anchor aria-hidden=true href=#递归函数>#</a></h2>
+<p>Go 支持递归，但在使用时需要设置退出条件，否则将陷入无限循环。</p>
+<h3 id=阶乘>阶乘<a hidden class=anchor aria-hidden=true href=#阶乘>#</a></h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+        <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>i</span> <span style=color:#66d9ef>int</span> = <span style=color:#ae81ff>15</span>
+        <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;%d的阶乘为:%d\n&#34;</span>, <span style=color:#a6e22e>i</span>, <span style=color:#a6e22e>Factorial</span>(uint64(<span style=color:#a6e22e>i</span>)))
+}
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>Factorial</span>(<span style=color:#a6e22e>n</span> <span style=color:#66d9ef>uint64</span>)(<span style=color:#a6e22e>res</span> <span style=color:#66d9ef>uint64</span>) {
+        <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>n</span> &gt; <span style=color:#ae81ff>0</span>) {
+                <span style=color:#a6e22e>res</span> = <span style=color:#a6e22e>n</span> <span style=color:#f92672>*</span> <span style=color:#a6e22e>Factorial</span>(<span style=color:#a6e22e>n</span><span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>)
+                <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>res</span>
+        }
+        <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>1</span>
+}
+</code></pre></div><p>执行结果：</p>
+<pre tabindex=0><code>15的阶乘为:1307674368000
+</code></pre><h3 id=斐波那契数列>斐波那契数列<a hidden class=anchor aria-hidden=true href=#斐波那契数列>#</a></h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+        <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>i</span> <span style=color:#66d9ef>int</span>
+        <span style=color:#66d9ef>for</span> <span style=color:#a6e22e>i</span> = <span style=color:#ae81ff>0</span>; <span style=color:#a6e22e>i</span> &lt; <span style=color:#ae81ff>10</span>; <span style=color:#a6e22e>i</span><span style=color:#f92672>++</span> {
+                <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;%d\t&#34;</span>, <span style=color:#a6e22e>fibonacci</span>(<span style=color:#a6e22e>i</span>))
+        }
+}
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>fibonacci</span>(<span style=color:#a6e22e>n</span> <span style=color:#66d9ef>int</span>) <span style=color:#66d9ef>int</span> {
+        <span style=color:#66d9ef>if</span> <span style=color:#a6e22e>n</span> &lt; <span style=color:#ae81ff>2</span> {
+                <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>n</span>
+        }
+        <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>fibonacci</span>(<span style=color:#a6e22e>n</span><span style=color:#f92672>-</span><span style=color:#ae81ff>2</span>) <span style=color:#f92672>+</span> <span style=color:#a6e22e>fibonacci</span>(<span style=color:#a6e22e>n</span><span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>)
+}
+</code></pre></div><p>执行结果：</p>
+<pre tabindex=0><code>0       1       1       2       3       5       8       13      21      34
+</code></pre><h2 id=类型转换>类型转换<a hidden class=anchor aria-hidden=true href=#类型转换>#</a></h2>
+<blockquote>
+<p>注:Go 不支持隐式转换</p>
+</blockquote>
+<p>基本格式:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>type_name</span>(<span style=color:#a6e22e>expression</span>)
+<span style=color:#a6e22e>类型</span>      <span style=color:#a6e22e>表达式</span>
+</code></pre></div><p>实例：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+        <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>res</span> <span style=color:#66d9ef>float32</span>
+        <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>sum</span> = <span style=color:#ae81ff>17</span>
+        <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>count</span> = <span style=color:#ae81ff>5</span>
+
+        <span style=color:#a6e22e>res</span> = float32(<span style=color:#a6e22e>sum</span>)<span style=color:#f92672>/</span>float32(<span style=color:#a6e22e>count</span>)
+        <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;%f\n&#34;</span>, <span style=color:#a6e22e>res</span>)
+}
+</code></pre></div><p>执行结果:</p>
+<pre tabindex=0><code>3.400000
+</code></pre><h2 id=接口>接口<a hidden class=anchor aria-hidden=true href=#接口>#</a></h2>
+<p><code>Go </code>中提供了另一种数据类型，<code>接口</code>。它把所有具有共性的方法定义在一起，任何其它类型只要实现了这些方法就是实现了这个接口。</p>
+<p>实例：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+        <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>phone</span> <span style=color:#a6e22e>Phone</span>
+
+        <span style=color:#a6e22e>phone</span> = new(<span style=color:#a6e22e>NokiaPhone</span>)
+        <span style=color:#a6e22e>phone</span>.<span style=color:#a6e22e>call</span>()
+
+        <span style=color:#a6e22e>phone</span> = <span style=color:#a6e22e>new</span> (<span style=color:#a6e22e>IPhone</span>)
+        <span style=color:#a6e22e>phone</span>.<span style=color:#a6e22e>call</span>()
+}
+
+<span style=color:#66d9ef>type</span> <span style=color:#a6e22e>Phone</span> <span style=color:#66d9ef>interface</span> {
+        <span style=color:#a6e22e>call</span>()
+}
+
+<span style=color:#66d9ef>type</span> <span style=color:#a6e22e>NokiaPhone</span> <span style=color:#66d9ef>struct</span> {
+}
+
+<span style=color:#66d9ef>func</span> (<span style=color:#a6e22e>nokiaPhone</span> <span style=color:#a6e22e>NokiaPhone</span>) <span style=color:#a6e22e>call</span>() {
+        <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;This is Nokiad&#34;</span>)
+}
+
+<span style=color:#66d9ef>type</span> <span style=color:#a6e22e>IPhone</span> <span style=color:#66d9ef>struct</span> {
+}
+
+<span style=color:#66d9ef>func</span> (<span style=color:#a6e22e>iPhone</span> <span style=color:#a6e22e>IPhone</span>) <span style=color:#a6e22e>call</span>() {
+        <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;iPhone plz!&#34;</span>)
+}
+</code></pre></div><p>执行结果：</p>
+<pre tabindex=0><code>This is Nokiad
+iPhone plz!
+</code></pre><h2 id=错误处理>错误处理<a hidden class=anchor aria-hidden=true href=#错误处理>#</a></h2>
+<p><code>Go </code>通过内置的错误接口提供了非常简单的错误处理机制。</p>
+<p><code>error</code>类型是一个接口类型，定义如下：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>type</span> <span style=color:#66d9ef>error</span> <span style=color:#66d9ef>interface</span> {
+	<span style=color:#a6e22e>Error</span>() <span style=color:#66d9ef>string</span>
+}
+</code></pre></div><p>我们可以在编码中通过实现<code>error</code>接口类型来生成错误信息。</p>
+<p>函数通常在最后的返回值中返回错误信息，使用<code>error New</code>可返回一个错误信息：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>Sqrt</span>(<span style=color:#a6e22e>f</span> <span style=color:#66d9ef>float64</span>) (<span style=color:#66d9ef>float64</span>, <span style=color:#66d9ef>error</span>) {
+    <span style=color:#66d9ef>if</span> <span style=color:#a6e22e>f</span> &lt; <span style=color:#ae81ff>0</span> {
+        <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>, <span style=color:#a6e22e>errors</span>.<span style=color:#a6e22e>New</span>(<span style=color:#e6db74>&#34;math: square root of negative number&#34;</span>)
+    }
+}
+</code></pre></div><p>我们在调用<code>Sqrt</code>的时候传递一个负数，然后得到<code>non-nil</code>的<code>error</code>对象，将此对象与<code>nil</code>比较，结果为<code>true</code>，所以<code>fmt.Println(fmt包在处理error时会调用Error方法)</code>被调用，输出错误，实例如下：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>res</span>, <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>Sqrt</span>(<span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>)
+
+<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
+    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>err</span>)
+}
+</code></pre></div><p>实例：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+        <span style=color:#66d9ef>if</span> <span style=color:#a6e22e>res</span>, <span style=color:#a6e22e>errorMsg</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>Divide</span>(<span style=color:#ae81ff>100</span>, <span style=color:#ae81ff>10</span>); <span style=color:#a6e22e>errorMsg</span> <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;&#34;</span> {
+                <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;100/10 = &#34;</span>, <span style=color:#a6e22e>res</span>)
+        }
+
+        <span style=color:#66d9ef>if</span> <span style=color:#a6e22e>_</span>, <span style=color:#a6e22e>errorMsg</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>Divide</span>(<span style=color:#ae81ff>100</span>, <span style=color:#ae81ff>0</span>); <span style=color:#a6e22e>errorMsg</span> <span style=color:#f92672>!=</span> <span style=color:#e6db74>&#34;&#34;</span> {
+                <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;errorMsg:&#34;</span>, <span style=color:#a6e22e>errorMsg</span>)
+        }
+}
+
+<span style=color:#66d9ef>type</span> <span style=color:#a6e22e>DivideError</span> <span style=color:#66d9ef>struct</span> {
+        <span style=color:#a6e22e>dividee</span> <span style=color:#66d9ef>int</span>
+        <span style=color:#a6e22e>divider</span> <span style=color:#66d9ef>int</span>
+}
+
+<span style=color:#66d9ef>func</span> (<span style=color:#a6e22e>de</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>DivideError</span>) <span style=color:#a6e22e>Error</span>() <span style=color:#66d9ef>string</span> {
+        <span style=color:#a6e22e>strFormat</span> <span style=color:#f92672>:=</span> <span style=color:#e6db74>`
+</span><span style=color:#e6db74>        Cannot proceed, the divider is zero!
+</span><span style=color:#e6db74>        dividee: %d
+</span><span style=color:#e6db74>        divider: 0
+</span><span style=color:#e6db74>`</span>
+        <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Sprintf</span>(<span style=color:#a6e22e>strFormat</span>, <span style=color:#a6e22e>de</span>.<span style=color:#a6e22e>dividee</span>)
+}
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>Divide</span>(<span style=color:#a6e22e>varDividee</span> <span style=color:#66d9ef>int</span>, <span style=color:#a6e22e>varDivider</span> <span style=color:#66d9ef>int</span>) (<span style=color:#a6e22e>res</span> <span style=color:#66d9ef>int</span>, <span style=color:#a6e22e>errorMsg</span> <span style=color:#66d9ef>string</span>) {
+        <span style=color:#66d9ef>if</span> <span style=color:#a6e22e>varDivider</span> <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span> {
+                <span style=color:#a6e22e>dData</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>DivideError</span> {
+                        <span style=color:#a6e22e>dividee</span>: <span style=color:#a6e22e>varDividee</span>,
+                        <span style=color:#a6e22e>divider</span>: <span style=color:#a6e22e>varDivider</span>,
+                }
+                <span style=color:#a6e22e>errorMsg</span> = <span style=color:#a6e22e>dData</span>.<span style=color:#a6e22e>Error</span>()
+                <span style=color:#66d9ef>return</span>
+        } <span style=color:#66d9ef>else</span> {
+                <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>varDividee</span> <span style=color:#f92672>/</span> <span style=color:#a6e22e>varDivider</span>, <span style=color:#e6db74>&#34;&#34;</span>
+        }
+}
+</code></pre></div><p>执行结果：</p>
+<pre tabindex=0><code>100/10 =  10
+errorMsg:
+        Cannot proceed, the divider is zero!
+        dividee: 100
+        divider: 0
+</code></pre><h2 id=并发>并发<a hidden class=anchor aria-hidden=true href=#并发>#</a></h2>
+<p>Go 支持并发，我们只需通过<code>go</code>关键字开启<code>goroutine</code>即可。</p>
+<p><code>goroutine</code>是轻量级线程，调度是由Golang 运行时进行管理的。</p>
+<p><code>goroutine</code>语法格式：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>go</span> <span style=color:#a6e22e>函数名</span>(<span style=color:#a6e22e>参数列表</span>)
+</code></pre></div><p>如：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>go</span> <span style=color:#a6e22e>f</span>(<span style=color:#a6e22e>x</span>, <span style=color:#a6e22e>y</span>, <span style=color:#a6e22e>z</span>)
+</code></pre></div><p>开启一个新<code>routine</code>：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>f</span>(<span style=color:#a6e22e>x</span>, <span style=color:#a6e22e>y</span>, <span style=color:#a6e22e>z</span>)
+</code></pre></div><p><code>Go </code>允许使用<code>go</code>语句开启一个新的运行期线程，即<code>goroutine</code>。以一个不同的、新创建的<code>goroutine</code>来执行一个函数。同一个程序中所有<code>goroutine</code>共享一个地址空间。</p>
+<p>实例：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> (
+        <span style=color:#e6db74>&#34;fmt&#34;</span>
+        <span style=color:#e6db74>&#34;time&#34;</span>
+)
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+        <span style=color:#66d9ef>go</span> <span style=color:#a6e22e>say</span>(<span style=color:#e6db74>&#34;world&#34;</span>)
+        <span style=color:#a6e22e>say</span>(<span style=color:#e6db74>&#34;hello&#34;</span>)
+}
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>say</span>(<span style=color:#a6e22e>s</span> <span style=color:#66d9ef>string</span>) {
+        <span style=color:#66d9ef>for</span> <span style=color:#a6e22e>i</span> <span style=color:#f92672>:=</span> <span style=color:#ae81ff>0</span>; <span style=color:#a6e22e>i</span> &lt; <span style=color:#ae81ff>5</span>; <span style=color:#a6e22e>i</span><span style=color:#f92672>++</span> {
+                <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Sleep</span>(<span style=color:#ae81ff>100</span> <span style=color:#f92672>*</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Millisecond</span>)
+                <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>s</span>)
+        }
+}
+</code></pre></div><p>执行结果：</p>
+<pre tabindex=0><code>world
+hello
+world
+hello
+hello
+world
+world
+hello
+hello
+</code></pre><h3 id=通道channel>通道(channel)<a hidden class=anchor aria-hidden=true href=#通道channel>#</a></h3>
+<p>通道是用来传递数据的一个数据结构，可用于两个<code>goroutine</code>之间通过传递一个指定类型的值来同步运行和通讯。操作符<code>&lt;-</code>用于指定通道方向，发送或接收。若未指定方向，则为双向通道。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>ch</span> <span style=color:#f92672>&lt;-</span> <span style=color:#a6e22e>v</span>			<span style=color:#75715e>// 把v发送到通道ch
+</span><span style=color:#75715e></span><span style=color:#a6e22e>v</span> <span style=color:#f92672>:=</span> <span style=color:#f92672>&lt;-</span><span style=color:#a6e22e>ch</span>		<span style=color:#75715e>// 从ch接收数据并把值赋给v
+</span></code></pre></div><p>通道在使用前必须先创建：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>ch</span> <span style=color:#f92672>:=</span> make(<span style=color:#66d9ef>chan</span> <span style=color:#66d9ef>int</span>)
+</code></pre></div><blockquote>
+<p>注：默认情况下通道不带缓冲区。发送端发送数据，同时必须有接收端接收相应数据。</p>
+</blockquote>
+<p>实例：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+        <span style=color:#a6e22e>s</span> <span style=color:#f92672>:=</span> []<span style=color:#66d9ef>int</span>{<span style=color:#ae81ff>7</span>, <span style=color:#ae81ff>2</span>, <span style=color:#ae81ff>8</span>, <span style=color:#f92672>-</span><span style=color:#ae81ff>9</span>, <span style=color:#ae81ff>4</span>, <span style=color:#ae81ff>1</span>}
+
+        <span style=color:#a6e22e>c</span> <span style=color:#f92672>:=</span> make(<span style=color:#66d9ef>chan</span> <span style=color:#66d9ef>int</span>)
+        <span style=color:#66d9ef>go</span> <span style=color:#a6e22e>sum</span>(<span style=color:#a6e22e>s</span>[:len(<span style=color:#a6e22e>s</span>)<span style=color:#f92672>/</span><span style=color:#ae81ff>2</span>], <span style=color:#a6e22e>c</span>)
+        <span style=color:#66d9ef>go</span> <span style=color:#a6e22e>sum</span>(<span style=color:#a6e22e>s</span>[len(<span style=color:#a6e22e>s</span>)<span style=color:#f92672>/</span><span style=color:#ae81ff>2</span>:], <span style=color:#a6e22e>c</span>)
+        <span style=color:#a6e22e>x</span>, <span style=color:#a6e22e>y</span> <span style=color:#f92672>:=</span> <span style=color:#f92672>&lt;-</span><span style=color:#a6e22e>c</span>, <span style=color:#f92672>&lt;-</span><span style=color:#a6e22e>c</span>
+
+        <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>x</span>, <span style=color:#a6e22e>y</span>, <span style=color:#a6e22e>x</span><span style=color:#f92672>+</span><span style=color:#a6e22e>y</span>)
+}
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>sum</span>(<span style=color:#a6e22e>s</span> []<span style=color:#66d9ef>int</span>, <span style=color:#a6e22e>c</span> <span style=color:#66d9ef>chan</span> <span style=color:#66d9ef>int</span>) {
+        <span style=color:#a6e22e>sum</span> <span style=color:#f92672>:=</span> <span style=color:#ae81ff>0</span>
+        <span style=color:#66d9ef>for</span> <span style=color:#a6e22e>_</span>, <span style=color:#a6e22e>v</span> <span style=color:#f92672>:=</span> <span style=color:#66d9ef>range</span> <span style=color:#a6e22e>s</span> {
+                <span style=color:#a6e22e>sum</span> <span style=color:#f92672>+=</span> <span style=color:#a6e22e>v</span>
+        }
+        <span style=color:#a6e22e>c</span> <span style=color:#f92672>&lt;-</span> <span style=color:#a6e22e>sum</span>
+}
+</code></pre></div><p>执行结果：</p>
+<pre tabindex=0><code>-4 17 13
+</code></pre><h3 id=通道缓冲区>通道缓冲区<a hidden class=anchor aria-hidden=true href=#通道缓冲区>#</a></h3>
+<p>通道可以设置缓冲区，通过<code>make</code>的第二个参数指定缓冲区大小。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>ch</span> <span style=color:#f92672>:=</span> make(<span style=color:#66d9ef>chan</span> <span style=color:#66d9ef>int</span>, <span style=color:#ae81ff>100</span>)
+</code></pre></div><p>带缓冲区的通道允许发送端数据发送和接收端的数据获取处于异步状态，但由于缓冲区大小有限，所以必须由接收端来接收数据。</p>
+<blockquote>
+<p>注:若通道不带缓冲，发送方会阻塞直到接收方从通道中接收了值。若通道带缓冲，发送方会阻塞直到发送的值被拷贝到缓冲区中，若缓冲区已满，则意味着需要等待直到接收方获取到一个值。接收方在有值可以接收之前会一直阻塞。</p>
+</blockquote>
+<p>实例：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+        <span style=color:#a6e22e>ch</span> <span style=color:#f92672>:=</span> make(<span style=color:#66d9ef>chan</span> <span style=color:#66d9ef>int</span>, <span style=color:#ae81ff>2</span>)
+
+        <span style=color:#a6e22e>ch</span> <span style=color:#f92672>&lt;-</span> <span style=color:#ae81ff>1</span>
+        <span style=color:#a6e22e>ch</span> <span style=color:#f92672>&lt;-</span> <span style=color:#ae81ff>2</span>
+
+        <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#f92672>&lt;-</span><span style=color:#a6e22e>ch</span>)
+        <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#f92672>&lt;-</span><span style=color:#a6e22e>ch</span>)
+}
+</code></pre></div><p>执行结果：</p>
+<pre tabindex=0><code>1
+2
+</code></pre><h3 id=go遍历与关闭通道>Go遍历与关闭通道<a hidden class=anchor aria-hidden=true href=#go遍历与关闭通道>#</a></h3>
+<p><code>Go</code>通过<code>range</code>关键字来实现遍历读取到的数据，类似于数组或切片。格式如下：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>v</span>, <span style=color:#a6e22e>ok</span> <span style=color:#f92672>:=</span> <span style=color:#f92672>&lt;-</span> <span style=color:#a6e22e>ch</span>
+</code></pre></div><p>若通道接收不到数据后<code>ok</code>为<code>false</code>，这时通道可以使用<code>close()</code>函数关闭。</p>
+<p>实例：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+        <span style=color:#a6e22e>c</span> <span style=color:#f92672>:=</span> make(<span style=color:#66d9ef>chan</span> <span style=color:#66d9ef>int</span>, <span style=color:#ae81ff>10</span>)
+        <span style=color:#66d9ef>go</span> <span style=color:#a6e22e>fibonacci</span>(cap(<span style=color:#a6e22e>c</span>), <span style=color:#a6e22e>c</span>)
+
+        <span style=color:#66d9ef>for</span> <span style=color:#a6e22e>i</span> <span style=color:#f92672>:=</span> <span style=color:#66d9ef>range</span> <span style=color:#a6e22e>c</span> {
+                <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>i</span>)
+        }
+}
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>fibonacci</span>(<span style=color:#a6e22e>n</span> <span style=color:#66d9ef>int</span>, <span style=color:#a6e22e>c</span> <span style=color:#66d9ef>chan</span> <span style=color:#66d9ef>int</span>) {
+        <span style=color:#a6e22e>x</span>, <span style=color:#a6e22e>y</span> <span style=color:#f92672>:=</span> <span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>1</span>
+        <span style=color:#66d9ef>for</span> <span style=color:#a6e22e>i</span> <span style=color:#f92672>:=</span> <span style=color:#ae81ff>0</span>; <span style=color:#a6e22e>i</span> &lt; <span style=color:#a6e22e>n</span>; <span style=color:#a6e22e>i</span><span style=color:#f92672>++</span> {
+                <span style=color:#a6e22e>c</span> <span style=color:#f92672>&lt;-</span> <span style=color:#a6e22e>x</span>
+                <span style=color:#a6e22e>x</span>, <span style=color:#a6e22e>y</span> = <span style=color:#a6e22e>y</span>, <span style=color:#a6e22e>x</span><span style=color:#f92672>+</span><span style=color:#a6e22e>y</span>
+        }
+        close(<span style=color:#a6e22e>c</span>)
+}
+</code></pre></div><p>执行结果：</p>
+<pre tabindex=0><code>0
+1
+1
+2
+3
+5
+8
+13
+21
+34
+</code></pre><blockquote>
+<p>本文链接：<a href=https://oopsdc.tk/post/go/>Go | Atmet (oopsdc.tk)</a></p>
+<p>文章许可：本文采用<a href=https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh>CC BY-NC-SA 4.0</a>许可协议，转载请注明出处。</p>
+</blockquote>
+</div>
+<footer class=post-footer>
+<ul class=post-tags>
+<li><a href=https://examplesite.com/tags/daily/>Daily</a></li>
+</ul>
+<nav class=paginav>
+<a class=prev href=https://examplesite.com/post/docker/>
+<span class=title>« Prev Page</span>
+<br>
+<span>Docker</span>
+</a>
+<a class=next href=https://examplesite.com/post/gtk+/>
+<span class=title>Next Page »</span>
+<br>
+<span>GTK+</span>
+</a>
+</nav>
+<div class=share-buttons>
+<a target=_blank rel="noopener noreferrer" aria-label="share Golang on twitter" href="https://twitter.com/intent/tweet/?text=Golang&url=https%3a%2f%2fexamplesite.com%2fpost%2fgolang%2f&hashtags=Daily"><svg viewBox="0 0 512 512"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM195.519 424.544c135.939.0 210.268-112.643 210.268-210.268.0-3.218.0-6.437-.153-9.502 14.406-10.421 26.973-23.448 36.935-38.314-13.18 5.824-27.433 9.809-42.452 11.648 15.326-9.196 26.973-23.602 32.49-40.92-14.252 8.429-30.038 14.56-46.896 17.931-13.487-14.406-32.644-23.295-53.946-23.295-40.767.0-73.87 33.104-73.87 73.87.0 5.824.613 11.494 1.992 16.858-61.456-3.065-115.862-32.49-152.337-77.241-6.284 10.881-9.962 23.601-9.962 37.088.0 25.594 13.027 48.276 32.95 61.456-12.107-.307-23.448-3.678-33.41-9.196v.92c0 35.862 25.441 65.594 59.311 72.49-6.13 1.686-12.72 2.606-19.464 2.606-4.751.0-9.348-.46-13.946-1.38 9.349 29.426 36.628 50.728 68.965 51.341-25.287 19.771-57.164 31.571-91.8 31.571-5.977.0-11.801-.306-17.625-1.073 32.337 21.15 71.264 33.41 112.95 33.41z"/></svg>
+</a>
+<a target=_blank rel="noopener noreferrer" aria-label="share Golang on linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fexamplesite.com%2fpost%2fgolang%2f&title=Golang&summary=Golang&source=https%3a%2f%2fexamplesite.com%2fpost%2fgolang%2f"><svg viewBox="0 0 512 512"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM160.461 423.278V197.561h-75.04v225.717h75.04zm270.539.0V293.839c0-69.333-37.018-101.586-86.381-101.586-39.804.0-57.634 21.891-67.617 37.266v-31.958h-75.021c.995 21.181.0 225.717.0 225.717h75.02V297.222c0-6.748.486-13.492 2.474-18.315 5.414-13.475 17.767-27.434 38.494-27.434 27.135.0 38.007 20.707 38.007 51.037v120.768H431zM123.448 88.722C97.774 88.722 81 105.601 81 127.724c0 21.658 16.264 39.002 41.455 39.002h.484c26.165.0 42.452-17.344 42.452-39.002-.485-22.092-16.241-38.954-41.943-39.002z"/></svg>
+</a>
+<a target=_blank rel="noopener noreferrer" aria-label="share Golang on reddit" href="https://reddit.com/submit?url=https%3a%2f%2fexamplesite.com%2fpost%2fgolang%2f&title=Golang"><svg viewBox="0 0 512 512"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM446 265.638c0-22.964-18.616-41.58-41.58-41.58-11.211.0-21.361 4.457-28.841 11.666-28.424-20.508-67.586-33.757-111.204-35.278l18.941-89.121 61.884 13.157c.756 15.734 13.642 28.29 29.56 28.29 16.407.0 29.706-13.299 29.706-29.701.0-16.403-13.299-29.702-29.706-29.702-11.666.0-21.657 6.792-26.515 16.578l-69.105-14.69c-1.922-.418-3.939-.042-5.585 1.036-1.658 1.073-2.811 2.761-3.224 4.686l-21.152 99.438c-44.258 1.228-84.046 14.494-112.837 35.232-7.468-7.164-17.589-11.591-28.757-11.591-22.965.0-41.585 18.616-41.585 41.58.0 16.896 10.095 31.41 24.568 37.918-.639 4.135-.99 8.328-.99 12.576.0 63.977 74.469 115.836 166.33 115.836s166.334-51.859 166.334-115.836c0-4.218-.347-8.387-.977-12.493 14.564-6.47 24.735-21.034 24.735-38.001zM326.526 373.831c-20.27 20.241-59.115 21.816-70.534 21.816-11.428.0-50.277-1.575-70.522-21.82-3.007-3.008-3.007-7.882.0-10.889 3.003-2.999 7.882-3.003 10.885.0 12.777 12.781 40.11 17.317 59.637 17.317 19.522.0 46.86-4.536 59.657-17.321 3.016-2.999 7.886-2.995 10.885.008 3.008 3.011 3.003 7.882-.008 10.889zm-5.23-48.781c-16.373.0-29.701-13.324-29.701-29.698.0-16.381 13.328-29.714 29.701-29.714 16.378.0 29.706 13.333 29.706 29.714.0 16.374-13.328 29.698-29.706 29.698zM160.91 295.348c0-16.381 13.328-29.71 29.714-29.71 16.369.0 29.689 13.329 29.689 29.71.0 16.373-13.32 29.693-29.689 29.693-16.386.0-29.714-13.32-29.714-29.693z"/></svg>
+</a>
+<a target=_blank rel="noopener noreferrer" aria-label="share Golang on facebook" href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fexamplesite.com%2fpost%2fgolang%2f"><svg viewBox="0 0 512 512"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H342.978V319.085h66.6l12.672-82.621h-79.272v-53.617c0-22.603 11.073-44.636 46.58-44.636H425.6v-70.34s-32.71-5.582-63.982-5.582c-65.288.0-107.96 39.569-107.96 111.204v62.971h-72.573v82.621h72.573V512h-191.104c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892z"/></svg>
+</a>
+<a target=_blank rel="noopener noreferrer" aria-label="share Golang on whatsapp" href="https://api.whatsapp.com/send?text=Golang%20-%20https%3a%2f%2fexamplesite.com%2fpost%2fgolang%2f"><svg viewBox="0 0 512 512"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zm-58.673 127.703c-33.842-33.881-78.847-52.548-126.798-52.568-98.799.0-179.21 80.405-179.249 179.234-.013 31.593 8.241 62.428 23.927 89.612l-25.429 92.884 95.021-24.925c26.181 14.28 55.659 21.807 85.658 21.816h.074c98.789.0 179.206-80.413 179.247-179.243.018-47.895-18.61-92.93-52.451-126.81zM263.976 403.485h-.06c-26.734-.01-52.954-7.193-75.828-20.767l-5.441-3.229-56.386 14.792 15.05-54.977-3.542-5.637c-14.913-23.72-22.791-51.136-22.779-79.287.033-82.142 66.867-148.971 149.046-148.971 39.793.014 77.199 15.531 105.329 43.692 28.128 28.16 43.609 65.592 43.594 105.4-.034 82.149-66.866 148.983-148.983 148.984zm81.721-111.581c-4.479-2.242-26.499-13.075-30.604-14.571-4.105-1.495-7.091-2.241-10.077 2.241-2.986 4.483-11.569 14.572-14.182 17.562-2.612 2.988-5.225 3.364-9.703 1.12-4.479-2.241-18.91-6.97-36.017-22.23C231.8 264.15 222.81 249.484 220.198 245s-.279-6.908 1.963-9.14c2.016-2.007 4.48-5.232 6.719-7.847 2.24-2.615 2.986-4.484 4.479-7.472 1.493-2.99.747-5.604-.374-7.846-1.119-2.241-10.077-24.288-13.809-33.256-3.635-8.733-7.327-7.55-10.077-7.688-2.609-.13-5.598-.158-8.583-.158-2.986.0-7.839 1.121-11.944 5.604-4.105 4.484-15.675 15.32-15.675 37.364.0 22.046 16.048 43.342 18.287 46.332 2.24 2.99 31.582 48.227 76.511 67.627 10.685 4.615 19.028 7.371 25.533 9.434 10.728 3.41 20.492 2.929 28.209 1.775 8.605-1.285 26.499-10.833 30.231-21.295 3.732-10.464 3.732-19.431 2.612-21.298-1.119-1.869-4.105-2.99-8.583-5.232z"/></svg>
+</a>
+<a target=_blank rel="noopener noreferrer" aria-label="share Golang on telegram" href="https://telegram.me/share/url?text=Golang&url=https%3a%2f%2fexamplesite.com%2fpost%2fgolang%2f"><svg viewBox="2 2 28 28"><path d="M26.49 29.86H5.5a3.37 3.37.0 01-2.47-1 3.35 3.35.0 01-1-2.47V5.48A3.36 3.36.0 013 3 3.37 3.37.0 015.5 2h21A3.38 3.38.0 0129 3a3.36 3.36.0 011 2.46V26.37a3.35 3.35.0 01-1 2.47 3.38 3.38.0 01-2.51 1.02zm-5.38-6.71a.79.79.0 00.85-.66L24.73 9.24a.55.55.0 00-.18-.46.62.62.0 00-.41-.17q-.08.0-16.53 6.11a.59.59.0 00-.41.59.57.57.0 00.43.52l4 1.24 1.61 4.83a.62.62.0 00.63.43.56.56.0 00.4-.17L16.54 20l4.09 3A.9.9.0 0021.11 23.15zM13.8 20.71l-1.21-4q8.72-5.55 8.78-5.55c.15.0.23.0.23.16a.18.18.0 010 .06s-2.51 2.3-7.52 6.8z"/></svg>
+</a>
+</div>
+</footer>
+</article>
+</main>
+<footer class=footer>
+<span>&copy; 2021 <a href=https://examplesite.com/>0opsdc</a></span>
+<span>
+Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://git.io/hugopapermod rel=noopener target=_blank>PaperMod</a>
+</span>
+</footer>
+<a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
+</a>
+<script>let menu=document.getElementById('menu');menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)},document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener("click",function(b){b.preventDefault();var a=this.getAttribute("href").substr(1);window.matchMedia('(prefers-reduced-motion: reduce)').matches?document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView({behavior:"smooth"}),a==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${a}`)})})</script>
+<script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script>
+<script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove('dark'),localStorage.setItem("pref-theme",'light')):(document.body.classList.add('dark'),localStorage.setItem("pref-theme",'dark'))})</script>
+<script>document.querySelectorAll('pre > code').forEach(b=>{const c=b.parentNode.parentNode,a=document.createElement('button');a.classList.add('copy-code'),a.innerText='copy';function d(){a.innerText='copied!',setTimeout(()=>{a.innerText='copy'},2e3)}a.addEventListener('click',e=>{if('clipboard'in navigator){navigator.clipboard.writeText(b.textContent),d();return}const a=document.createRange();a.selectNodeContents(b);const c=window.getSelection();c.removeAllRanges(),c.addRange(a);try{document.execCommand('copy'),d()}catch(a){}c.removeRange(a)}),c.classList.contains("highlight")?c.appendChild(a):c.parentNode.firstChild==c||(b.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?b.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(a):b.parentNode.appendChild(a))})</script>
+</body>
+</html>

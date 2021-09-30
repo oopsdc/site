@@ -1,0 +1,1241 @@
+<!doctype html><html lang=en dir=auto>
+<head><meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
+<meta name=robots content="index, follow">
+<title>Docker | 0opsdc</title>
+<meta name=keywords content="Daily">
+<meta name=description content="Docker概述 镜像（image）：
+一个只读模板。一个镜像可以用来创建多个Docker容器，好似Java中的类和对象，镜像是类，容器是对象。容器（container）：
+Docker利用容器独立运行一个或一组应用，容器是用镜像创建的运行实例。容器可以被启动、开始、停止、删除。每个容器都是相互个隔离的。也可以把容器看做一个简易版Linux环境(包括root用户权限、进程空间、用户空间和网络空间等)及运行在其中的应用程序。容器的定义和镜像几乎一模一样，也是一堆层的统一视角，唯一区别在于容器最上面一层可读可写。仓库（repository）：
+仓库是集中存放镜像文件的场所。仓库和仓库注册服务器(registry)是有区别的，后者往往存在多个仓库，每个仓库又存在多个镜像，每个镜像有不同的标签。仓库分为公开仓库和私有仓库两种形式。最大的公开仓库是Docker Hub，国内最大的为阿里云、网易云等。Docker安装  环境:CentOS 7
+ 1.官方文档
+2.yum安装gcc相关环境：
+yum -y install gcc yum -y install gcc-c++ 3.卸载旧版本：
+yum remove docker \ 	docker-client \ 	docker-client-latest \ 	docker-common \ 	docker-latest \ 	docker-latest-logrotate \ 	docker-logrotate \ 	docker-engine 4.安装依赖包：
+yum install -y yum-utils 5.设置镜像仓库：
+# 错误 yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo ## 报错 [Errno 14] curl#35 - TCP connection reset by peer [Errno 12] curl#35 - Timeout # 推荐国内镜像 yum-config-manager --add-repo http://mirrors.">
+<meta name=author content="0opsdc">
+<link rel=canonical href=https://examplesite.com/post/docker/>
+<link crossorigin=anonymous href=/assets/css/stylesheet.min.5e2b4101351c21e906f398ae96901791830f58d430f96f2659dab7eaef7b3cb7.css integrity="sha256-XitBATUcIekG85iulpAXkYMPWNQw+W8mWdq36u97PLc=" rel="preload stylesheet" as=style>
+<script defer crossorigin=anonymous src=/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5+kdJvBz5iKbt6B5PJI=" onload=hljs.initHighlightingOnLoad()></script>
+<link rel=icon href=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/favicon.png>
+<link rel=icon type=image/png sizes=16x16 href=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/favicon.png>
+<link rel=icon type=image/png sizes=32x32 href=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/favicon.png>
+<link rel=apple-touch-icon href=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/favicon.png>
+<link rel=mask-icon href=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/favicon.png>
+<meta name=theme-color content="#2e2e33">
+<meta name=msapplication-TileColor content="#2e2e33">
+<meta name=generator content="Hugo 0.88.1">
+<noscript>
+<style>#theme-toggle,.top-link{display:none}</style>
+<style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style>
+</noscript>
+<script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(a,e,f,g,b,c,d){a.GoogleAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=1,c.src=g,d.parentNode.insertBefore(c,d)}(window,document,'script','https://www.google-analytics.com/analytics.js','ga'),ga('create','UA-123-45','auto'),ga('send','pageview'))</script><meta property="og:title" content="Docker">
+<meta property="og:description" content="Docker概述 镜像（image）：
+一个只读模板。一个镜像可以用来创建多个Docker容器，好似Java中的类和对象，镜像是类，容器是对象。容器（container）：
+Docker利用容器独立运行一个或一组应用，容器是用镜像创建的运行实例。容器可以被启动、开始、停止、删除。每个容器都是相互个隔离的。也可以把容器看做一个简易版Linux环境(包括root用户权限、进程空间、用户空间和网络空间等)及运行在其中的应用程序。容器的定义和镜像几乎一模一样，也是一堆层的统一视角，唯一区别在于容器最上面一层可读可写。仓库（repository）：
+仓库是集中存放镜像文件的场所。仓库和仓库注册服务器(registry)是有区别的，后者往往存在多个仓库，每个仓库又存在多个镜像，每个镜像有不同的标签。仓库分为公开仓库和私有仓库两种形式。最大的公开仓库是Docker Hub，国内最大的为阿里云、网易云等。Docker安装  环境:CentOS 7
+ 1.官方文档
+2.yum安装gcc相关环境：
+yum -y install gcc yum -y install gcc-c++ 3.卸载旧版本：
+yum remove docker \ 	docker-client \ 	docker-client-latest \ 	docker-common \ 	docker-latest \ 	docker-latest-logrotate \ 	docker-logrotate \ 	docker-engine 4.安装依赖包：
+yum install -y yum-utils 5.设置镜像仓库：
+# 错误 yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo ## 报错 [Errno 14] curl#35 - TCP connection reset by peer [Errno 12] curl#35 - Timeout # 推荐国内镜像 yum-config-manager --add-repo http://mirrors.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://examplesite.com/post/docker/"><meta property="og:image" content="https://examplesite.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta property="article:section" content="post">
+<meta property="article:published_time" content="2021-04-13T22:06:50+08:00">
+<meta property="article:modified_time" content="2021-04-13T22:06:50+08:00"><meta property="og:site_name" content="0opsdc">
+<meta name=twitter:card content="summary_large_image">
+<meta name=twitter:image content="https://examplesite.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E">
+<meta name=twitter:title content="Docker">
+<meta name=twitter:description content="Docker概述 镜像（image）：
+一个只读模板。一个镜像可以用来创建多个Docker容器，好似Java中的类和对象，镜像是类，容器是对象。容器（container）：
+Docker利用容器独立运行一个或一组应用，容器是用镜像创建的运行实例。容器可以被启动、开始、停止、删除。每个容器都是相互个隔离的。也可以把容器看做一个简易版Linux环境(包括root用户权限、进程空间、用户空间和网络空间等)及运行在其中的应用程序。容器的定义和镜像几乎一模一样，也是一堆层的统一视角，唯一区别在于容器最上面一层可读可写。仓库（repository）：
+仓库是集中存放镜像文件的场所。仓库和仓库注册服务器(registry)是有区别的，后者往往存在多个仓库，每个仓库又存在多个镜像，每个镜像有不同的标签。仓库分为公开仓库和私有仓库两种形式。最大的公开仓库是Docker Hub，国内最大的为阿里云、网易云等。Docker安装  环境:CentOS 7
+ 1.官方文档
+2.yum安装gcc相关环境：
+yum -y install gcc yum -y install gcc-c++ 3.卸载旧版本：
+yum remove docker \ 	docker-client \ 	docker-client-latest \ 	docker-common \ 	docker-latest \ 	docker-latest-logrotate \ 	docker-logrotate \ 	docker-engine 4.安装依赖包：
+yum install -y yum-utils 5.设置镜像仓库：
+# 错误 yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo ## 报错 [Errno 14] curl#35 - TCP connection reset by peer [Errno 12] curl#35 - Timeout # 推荐国内镜像 yum-config-manager --add-repo http://mirrors.">
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://examplesite.com/post/"},{"@type":"ListItem","position":2,"name":"Docker","item":"https://examplesite.com/post/docker/"}]}</script>
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Docker","name":"Docker","description":"Docker概述 镜像（image）：\n一个只读模板。一个镜像可以用来创建多个Docker容器，好似Java中的类和对象，镜像是类，容器是对象。\r容器（container）：\nDocker利用容器独立运行一个或一组应用，容器是用镜像创建的运行实例。\r容器可以被启动、开始、停止、删除。\r每个容器都是相互个隔离的。\r也可以把容器看做一个简易版Linux环境(包括root用户权限、进程空间、用户空间和网络空间等)及运行在其中的应用程序。\r容器的定义和镜像几乎一模一样，也是一堆层的统一视角，唯一区别在于容器最上面一层可读可写。\r仓库（repository）：\n仓库是集中存放镜像文件的场所。\r仓库和仓库注册服务器(registry)是有区别的，后者往往存在多个仓库，每个仓库又存在多个镜像，每个镜像有不同的标签。\r仓库分为公开仓库和私有仓库两种形式。\r最大的公开仓库是Docker Hub，国内最大的为阿里云、网易云等。\rDocker安装  环境:CentOS 7\n 1.官方文档\n2.yum安装gcc相关环境：\nyum -y install gcc yum -y install gcc-c++ 3.卸载旧版本：\nyum remove docker \\ \tdocker-client \\ \tdocker-client-latest \\ \tdocker-common \\ \tdocker-latest \\ \tdocker-latest-logrotate \\ \tdocker-logrotate \\ \tdocker-engine 4.安装依赖包：\nyum install -y yum-utils 5.设置镜像仓库：\n# 错误 yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo ## 报错 [Errno 14] curl#35 - TCP connection reset by peer [Errno 12] curl#35 - Timeout # 推荐国内镜像 yum-config-manager --add-repo http://mirrors.","keywords":["Daily"],"articleBody":"Docker概述 镜像（image）：\n一个只读模板。一个镜像可以用来创建多个Docker容器，好似Java中的类和对象，镜像是类，容器是对象。\r容器（container）：\nDocker利用容器独立运行一个或一组应用，容器是用镜像创建的运行实例。\r容器可以被启动、开始、停止、删除。\r每个容器都是相互个隔离的。\r也可以把容器看做一个简易版Linux环境(包括root用户权限、进程空间、用户空间和网络空间等)及运行在其中的应用程序。\r容器的定义和镜像几乎一模一样，也是一堆层的统一视角，唯一区别在于容器最上面一层可读可写。\r仓库（repository）：\n仓库是集中存放镜像文件的场所。\r仓库和仓库注册服务器(registry)是有区别的，后者往往存在多个仓库，每个仓库又存在多个镜像，每个镜像有不同的标签。\r仓库分为公开仓库和私有仓库两种形式。\r最大的公开仓库是Docker Hub，国内最大的为阿里云、网易云等。\rDocker安装  环境:CentOS 7\n 1.官方文档\n2.yum安装gcc相关环境：\nyum -y install gcc yum -y install gcc-c++ 3.卸载旧版本：\nyum remove docker \\ \tdocker-client \\ \tdocker-client-latest \\ \tdocker-common \\ \tdocker-latest \\ \tdocker-latest-logrotate \\ \tdocker-logrotate \\ \tdocker-engine 4.安装依赖包：\nyum install -y yum-utils 5.设置镜像仓库：\n# 错误 yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo ## 报错 [Errno 14] curl#35 - TCP connection reset by peer [Errno 12] curl#35 - Timeout # 推荐国内镜像 yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo 6.更新yum软件包索引：\nyum makecache fast 7.安装Docker CE：\nyum install docker-ce docker-ce-cli containerd.io 8.启动Docker：\nsystemctl start docker 9.测试命令：\ndocker version # 查看Docker版本 docker run hello-world # 拉取镜像 docker images # 查看本地镜像 Docker卸载 systemctl stop docker yum -y remove docker-ce docker-ce-cli containerd.io rm -rf /var/lib/docker Docker换源 # 创建或修改/etc/docker/daemon.json文件 vim /etc/docker/daemon.json { \"registry-mirrors\": [\"https://registry.docker-cn.com\"] } systemctl daemon-reload systemctl restart docker.service # 网易 http://hub-mirror.c.163.com # ustc https://docker.mirrors.ustc.edu.cn # 中国科技大学 https://docker.mirrors.ustc.edu.cn # 阿里云容器 服务 https://cr.console.aliyun.com/ # 首页点击“创建我的容器镜像” 得到一个专属的镜像加速地址，类似于“https://1234abcd.mirror.aliyuncs.com” nginx安装 tomcat安装 部署es+kibana # es暴露的端口很多，十分耗内存，数据一般需要放置到安全目录 # 启动es docker run -d --name elasticsearch --net somenetwork -p 9200:9200 -p 9300:9300 -e \"discovery.type=single-node\" elasticsearch:latest # --net somenetwork 网络配置 # 查看CPU状态 docker stats # 运行环境修改 docker run -d --name elasticsearch --net somenetwork -p 9200:9200 -p 9300:9300 -e \"discovery.type=single-node\" -e ES_JAVA_OPTS=\"-Xms64m -Xmx512m\" elasticsearch:latest Portainer安装 Docker图形化管理工具，提供一个后台面板：\ndocker run -d -p 8088:9000 --restart=always -v /var/run/docker.sock:/var/run/docker.sock --privileged=true portainer/portainer Rancher(CI/CD使用)\nDocker镜像讲解 镜像是什么 镜像是一种轻量级、可执行的独立软件包，用来打包软件运行环境和基于运行环境开发的软件，包含运行某个软件所需的所有内容，包括代码、运行时、库、环境变量和配置文件。\n所有应用直接打包Docker镜像。\n如何得到镜像：\n 官方下载 朋友分享 自己制作  Docker镜像加载原理  UnionFS(联合文件系统)\n 我们下载的时候看见的一层层就是这个。\n是一种分层、轻量级且高性能的文件系统，支持对文件系统的修改作为一次提交来层层叠加，同时可以将不同目录挂载到同一个虚拟文件系统下(unite several directions into a single virtual filesystem)。Union文件系统是Docker镜像的基础，镜像可以通过分层来进行继承，基于基础镜像(没有父镜像)，可以制作各种具体的应用镜像。\n特性：一次同时加载多个文件系统，但从外面只能看到一个文件系统，联合加载会把各层文件系统叠加起来，这样最终的文件系统会包含所有底层的文件和目录。\n Docker镜像加载原理\n Docker的镜像实际上由一层层文件系统组成，这种层级的文件系统称为UnionFS。\nbootfs(boot file system)主要包含bootloader和kernel，bootloader主要引导加载kernel，Linux刚启动时会加载bootfs文件系统，在Docker镜像的最底层是bootfs。这一层与我们典型的Linux/Unix系统一样，包含boot加载器和内核。boot加载完成后整个内核都在内存中，此时内存的使用权已转交给内核，此时系统也会卸载bootfs。\nrootfs，在bootfs之上。包含的就是典型Linux系统中的/dev，/proc，/bin，/etc等标准目录和文件。rootfs就是各种不同的操作系统发行版，如Ubuntu、CentOS等。\n对于一个精简的OS，rootfs可以很小，只需包含最基本的命令、工具和程序库即可，因为底层直接用Host的kernel，自己只需提供rootfs。可见对于不同的Linux发行版，bootfs基本一致，rootfs会有差别，因此不同的发行版可以公用bootfs。\n分层理解 为什么Docker镜像采用分层结构？\n资源共享，如有多个镜像都从相同的Base镜像构建而来，那么宿主机只需在磁盘上保留一份Base镜像，内存中也只需加载一份Base镜像，这样就可以为所有的容器服务了，且镜像的每一层都可以被共享。\n使用docker image inspect查看镜像分层。\n 特点\n Docker镜像一般都是只读的，当容器启动时，一个新的可写层被加载到镜像顶部。\n这一层就是我们常说的容器层，容器之下的都叫镜像层。\ncommit镜像 docker commit #提交容器成为一个新的版本 # 命令和git原理类似 docker commit -m=\"description\" -a=\"author\" id target_image_name:[TAG] 实战测试\ndocker run -it -p 8080:8080 tomcat # 将webapps.dist所有文件拷贝到webapps cp -r webapps.dist/* webapps # 将修改后的容器通过commit提交为一个新的镜像 docker commit -a=\"dc\" -m=\"add webapps\" id name:version 容器 容器就是通过docker镜像创建的实例对象，常用命令如下:\ndocker ps # 查看运行中的容器状态 docker ps -a # 查看所有容器状态 docker ps -aq # 列出所有容器ID docker stop $(docker ps -aq) # 停止所有容器 docker rm $(docker ps -aq) # 删除所有容器 docker rmi $(docker images -q) # 删除所有镜像 容器数据卷 什么是容器数据卷？ Docker的理念：将应用和环境打包成一个镜像。\n如果数据都在容器中，容器一删除则数据消失。\n需求：数据持久化。\n容器之间需要有一个数据共享技术。\nDocker容器中产生的数据同步到本地。\n这就是卷技术，目录挂载，将容器内目录挂载到虚拟机或Linux中。\n总结：容器的持久化和同步操作。容器间也可以数据共享。\n使用数据卷  使用命令挂载\n docker run -it -v 主机内目录:容器内目录 docker run -it -v /home/test_real:/home centos /bin/bash # 宿主机查看挂载状态 docker inspect container-id \"Mounts\": [ { \"Type\": \"bind\", \"Source\": \"/home/test_real\", \"Destination\": \"/home\", \"Mode\": \"\", \"RW\": true, \"Propagation\": \"rprivate\" } ] # 退出容器 exit # 修改文件内容 vim testfile # 重新打开容器 docker start container-id # 进入容器 docker attach container-id #未start报错:You cannot attach to a stopped container, start it first MySQL安装 思考：MySQL数据持久化问题。\n# 拉取MySQL docker pull mysql # 官方启动:docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:tag # 运行容器并做数据挂载 docker run -d -p 3310:3306 -v /home/mysql_real/conf:/etc/mysql/conf.d -v /home/mysql_real/data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 mysql 具名和匿名挂载 # 匿名挂载 -v 容器内路径 docker run -d -P --name name -v /etc/nginx nginx # -P:随机映射端口 # 查看所有的volume情况 docker volume ls # 具名挂载 docker run -d -P --name name -v juming-nginx:/etc/nginx nginx 所有Docker容器内的卷，没有指定目录的情况下都在/var/lib/docker/volumes/xxx/_data。\n通过具名挂载可以方便的找到我们的一个卷，大多数情况使用具名挂载。\n# 如何确定匿名挂载还是具名挂载，还是指定路径挂载 -v 容器内路径 # 匿名挂载 -v 卷名:容器内路径 # 具名挂载 -v /宿主机路径:容器内路径 # 指定路径挂载 拓展：\n# 通过-v容器内路径:ro/rw改变读写权限 docker run -d -P --name name -v juming-nginx:/etc/nginx:ro nginx # 只能通过宿主机操作，容器内部无法操作 docker run -d -P --name name -v juming-nginx:/etc/nginx:rw nginx 初识Dockerfile Dockerfile就是用来构建Docker镜像的构建文件。其实就是命令脚本，通过这个脚本可以生成镜像。\n镜像是一层层的，脚本就是一个个的命令，每个命令就是一层。\n# 创建一个dockerfile文件 # 指令(大写) 参数 FROM centos VOLUME[\"volume01\",\"volume02\"] # 匿名挂载，和外部一定有一个同步目录 CMD echo \"-----end-----\" CMD /bin/bash # 使用 docker build -f dockerfile1 -t dc/centos . # 查看容器本地卷信息，测试文件是否同步 docker inspect -f \"{{.Monuts}}\" id 这种方式使用十分多，因为我们通常会构建自己的镜像。\n假设构建镜像的时候没有挂载卷，要手动镜像挂载，-v 卷名:容器内路径。\n数据卷容器 多个MySQL实现数据共享。\ndocker run -d -p 3310:3306 -v /etc/mysql/conf.d -v /var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 --name mysql01 mysql docker run -d -p 3310:3306 -e MYSQL_ROOT_PASSWORD=123456 --name mysql02 --volumes-from mysql01 mysql 容器之间配置信息的传递，数据卷容器的生命周期一直持续到无人使用为止。\n一旦持久化到了本地，这个时候本地数据不会删除。\nDockerFile 核心是用来构建Docker镜像的文件。是一个命令参数脚本。\n构建步骤：\n 编写一个Dockerfile文件 docker build构建成为一个镜像 docker run运行镜像 docker push发布镜像(DockerHub、阿里云镜像仓库)  DockerFile构建过程 基础知识：\n 每个保留关键字(指令)都必须为大写字母 执行顺序由上至下 #为注释 每个指令都会创建提交一个新镜像层并提交  DockerFile面向开发。\nDockerFile：构建文件，定义了一切的步骤，源代码。\nDockerImage：通过DockerFile构建生成的镜像，最终发布和运行的产品。\nDocker容器：镜像运行起来提供服务。\nDockerFile指令 实战centos部署 DockerHub大部分镜像都是由基础镜像scratch组成，然后配置需要的软件和配置。\n# 1.编写DockerFile文件 FROM centos MAINTAINER dc ENV MYPATH /usr/local WORKDIR $MYPATH RUN yum -y install vim RUN yum -y install net-tools EXPOSE 80 CMD echo $MYPATH CMD echo \"-----end-----\" CMD /bin/bash # 2.通过文件构建镜像 docker build -f mydockerfile -t mycentos:1.0 . # 运行结果 Successfully built b8fab89ecdea Successfully tagged mycentos:1.0 # 3.测试运行 docker run -it mycentos:1.0 # 列出本地进行的变更历史 docker history image-id  CMD 和 ENTRYPOINT 的区别\n CMD\t# 指定容器启动时要运行的命令，只有最后一个生效，且可被替代 ENTRYPOINT\t# 同CMD，可以追加命令 测试CMD\n# 编写DockerFile文件 vim dockerfile-cmd-test FROM centos CMD [\"ls\",\"-a\"] # 构建镜像 docker build -f dockerfile-cmd-test -t cmd-test . # RUN运行，发现`ls -a`命令生效 docker run `id` # 想追加一个命令 ls -al docker run `id` -l # error # cmd清理 -l 替换了CMD [\"ls\",\"-a\"]命令，-l不是命令所以报错 测试ENTRYPOINT\n# 编写DockerFile文件 vim dockerfile-cmd-entrypoint FROM centos ENTRYPOINT [\"ls\",\"-a\"] # 构建镜像 docker build -f dockerfile-cmd-entrypoint -t entrypoint-test . DockerFile中很多命令都相似，我们需要了解其中的区别，最好的学习就是对比并测试。\n实战tomcat部署  准备镜像文件，tomcat压缩包，jdk压缩包 编写DockerFile文件，官方命名Dockerfile，build会自动寻找这个文件，不需要-f指定：  FROM centos MAINTAINER dc COPY readme.txt /usr/local/readme.txt ADD apache-tomcat-9.0.22.tar.gz /usr/local ADD jdk-8u281-linux-x64.tar.gz /usr/local RUN yum -y install vim ENV MYPATH /usr/local WORKDIR $MYPATH ENV JAVA_HOME /usr/local/jdk-8u281 ENV CLASS_PATH $JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar ENV CATALINA_HOME /usr/local/apache-tomcat-9.0.22 ENV CATALINA_BASH /usr/local/apache-tomcat-9.0.22 ENV PATH $PATH:$JAVA_HOME/bin:$CATALINA_HOME/lib:$CATALINA_HOME/bin EXPOSE 8080 CMD /usr/local/apache-tomcat-9.0.22/bin/startup.sh \u0026\u0026 tail -F /usr/local/apache-tomcat-9.0.22/bin/logs/catalina.out 3.构建镜像：\ndocker build -t diy-tomcat . 4.启动镜像：\ndocker run -d -p 9090:8080 --name dc-tomcat -v /home/tomcat/test:/url/local/apache-tomcat-9.0.22/webapps/test -v /home/tomcat/tomcat-logs/:/usr/local/apache-tomcat-9.0.22/logs diy-tomcat 5.进入容器：\ndocker exec -it `随意复制一段id` /bin/bash 6.访问测试：\ncurl localhost:9090 7.发布项目(做了卷挂载，直接在本地发布即可)\nxml文件 jsp文件 项目部署成功。\n发布镜像  DockerHub\n 1.登录DockerHub：Docker Hub：\ndocker login -u username -p password 2.在服务器上提交镜像：\ndocker tag [image-id/image-name:tag] new-image-name:tag docker push image-id:tag/image-name:tag  aliyun镜像\n 1.登录阿里云：阿里云-上云就上阿里云 (aliyun.com)\n2.进入容器镜像服务:容器镜像服务_镜像构建_镜像授权_镜像托管-阿里云 (aliyun.com)\n3.创建命名空间\n4.创建容器镜像\n5.参考官方文档\nDocker网络 Docker0 问题：docker是如何处理容器网络访问的？\n我们首先创建一个tomcat容器，利用学到的两类方法来试试。\n 方式一，手动执行\n docker run -d -P --name tomcat-01 tomcat docker exec -it tomcat-01 ip addr  方式二，编写DockerFile\n # DockerFile内容 FROM tomcat MAINTAINER dc CMD docker run -d -P --name tomcat-01 tomcat CMD docker exec -it tomcat-01 ip addr # 构建镜像 docker build -f dockerfile -t tomcat-test . 方法有误，稍后修改。\n容器启动的时候会得到一个docker分配的eth@if262ip地址。\n测试：Linux能ping通容器内部ip地址。\n 原理\n 每安装并启动一个Docker容器，Docker就会给其分配一个ip，只要安装了Docker，就会有一个docker0网卡。\ndocker0网卡使用桥接模式，使用veth-pair技术。\n再启动一个容器就会多一对网卡。\n7: veth4f1ae6f@if6 docker exec -it tomcat-02 ping `ip` #tomcat-02可以ping通tomcat-01 # 容器之间可以互通  小结\n Docker使用的是Linux的桥接，宿主机中是一个Docker容器的网桥。\nDocker中所有的网络接口都是虚拟的，转发效率高。\n容器删除，则对应的一对网桥也被回收。\n–link  思考场景\n 编写了一个微服务，database url=ip:，项目不重启，数据库ip换掉，如何进行处理？\ndocker exec -it tomcat-02 ping tomcat-01 # 无法直接ping通 # 启动一个tomcat-03，并与tomcat-02连接 docker run -d -P --name tomcat-03 --link tomcat-02 tomcat # 实现通过名称ping通，但是反向无法ping通 # 其实就是tomcat-03在本地配置了tomcat-02 # 查看tomcat-03 hosts配置 docker exec -it tomcat-03 cat /etc/hosts --link就是在hosts配置中增加了一个映射，已经不建议使用。\ndocker0问题：不支持容器名进行连接访问。\n自定义网络 # 查看所有docker网络 docker network ls 网络模式\n# --net bridge 为默认参数 docker run -d -P --name tomcat-01 --net bridge tomcat # docker0特点：默认不能通过名称访问，通过 --link 打通连接 # 可以自定义一个网络 docker network create --driver bridge --subnet 192.168.0.0/16 --gateway 192.168.0.1 mynet # 查看网络概览 docker network ls # 查看详细信息 docker network inspect mynet # 使用自己的网络 docker run -d -P --name tomcat-mynet-01 --net mynet tomcat docker run -d -P --name tomcat-mynet-02 --net mynet tomcat # ping测试 docker exec -it tomcat-mynet-01 ping tomcat-mynet-02 # 两者互相可ping通 优点：\nredis、mysql：不同集群使用不同网络，保证集群是安全和健康的。\n网络连通 # 启动两个容器 docker run -d -P --name tomcat-01 tomcat docker run -d -P --name tomcat-02 tomcat # 已知tomcat-01与tomcat-02无法ping通 # 连接网络 docker network connect mynet tomcat-01 docker network connect mynet tomcat-02 # 查看 mynet docker network inspect mynet # 其中包含了tomcat-01与tomcat-02 # 四个容器完美ping通 实战Redis集群部署 # 使用脚本部署 docker network create redis --subnet 172.42.0.0/16 # 通过脚本创建六个redis配置 for port in $(seq 1 6); do mkdir -p /mydata/redis/node-${port}/conf touch /mydata/redis/node-${port}/conf/redis.conf cat /mydata/redis/node-${port}/conf/redis.conf port 6379 bind 0.0.0.0 cluster-enabled yes cluster-config-file nodes.conf cluster-node-timeout 5000 cluster-announce-ip 172.42.0.1${port} cluster-announce-port 6379 cluster-announce-bus-port 16379 appendonly yes EOF done docker run -p 637${port}:6379 -p 1637${port}:16379 --name redis-${port} -v /mydata/redis/node-${port}/data:/data -v /mydata/redis/node-${port}/conf/redis.conf:/etc/redis/redis.conf -d --net redis --ip 172.42.0.1${port} redis:5.0.9-alpine3.11 redis-server /etc/redis/redis.conf; # 1-6依次修改即可 docker run -p 6371:6379 -p 16371:16379 --name redis-1 \\ -v /mydata/redis/node-1/data:/data \\ -v /mydata/redis/node-1/conf/redis.conf:/etc/redis/redis.conf \\ -d --net redis --ip 172.42.0.11 redis:5.0.9-alpine3.11 redis-server /etc/redis/redis.conf # 进入容器 docker exec -it redis-1 /bin/sh # redis中为sh # 创建集群 redis-cli --cluster create 172.42.0.11:6379 172.42.0.12:6379 172.42.0.13:6379 172.42.0.14:6379 172.42.0.15:6379 172.42.0.16:6379 --cluster-replicas 1 # 查看集群数量 redis-cli -c cluster info cluster nodes set a b get a # 第一次get会提示`Could not connect to Redis at 172.42.0.13:6379: Host is unreachable` # 重新进入 redis-cli -c get a # `Redirected to slot [15495] located at 172.42.0.14:6379 \"b\"` cluster nodes `redis-3状态为master,fail，redis-4状态为myself,master` SpringBoot微服务打包Docker镜像  构建SpringBoot项目 打包应用 编写DockerFile 构建镜像 发布运行  # DockerFile FROM java:8 COPY *.jar /app.jar CMD [\"--server.port=8080\"] EXPOSE 8080 ENTRYPOINT [\"java\",\"-jar\",\"/app.jar\"] # 构建 docker build -t image-name . Docker Compose 概述 官方概述:Overview of Docker Compose | Docker Documentation\n轻松高效管理容器，定义运行多个容器。\n一键启动/停止服务。\n三步骤 1.Define your app’s environment with a Dockerfile so it can be reproduced anywhere.\n Dockerfile 保证我们的项目在任何地方可以运行  2.Define the services that make up your app in docker-compose.yml so they can be run together in an isolated environment.\n services 什么是服务 docker-compose.yml 文件应该怎么写  3.Run docker-compose up and Compose starts and runs your entire app.\n 启动项目  作用：批量容器编排\n 理解\n Compose 是 Docker 官方开源项目，需要安装。\nDockerfile让程序在任何地方运行。\nversion: '2.0' services: web: build: . ports: - \"5000:5000\" volumes: - .:/code - logvolume01:/var/log links: - redis redis: image: redis volumes: logvolume01: {} docker-compose up 100个服务\nCompose重要的两个概念：\n 服务 services，容器、应用(web、redis、mysql…) 项目 project，一组关联容器  安装Docker Compose 官方安装文档:Install Docker Compose | Docker Documentation\n1.下载\n# 官方下载，从GitHub下载，巨慢 sudo curl -L \"https://github.com/docker/compose/releases/download/1.28.5/docker-compose-$(uname -s)-$(uname -m)\" -o /usr/local/bin/docker-compose # 国内镜像 curl -L https://get.daocloud.io/docker/compose/releases/download/1.24.0/docker-compose-`uname -s`-`uname -m`  /usr/local/bin/docker-compose # 查看是否下载成功 cd /usr/local/bin ls 2.授权\nchmod +x /usr/local/bin/docker-compose # 或 chmod 777 /usr/local/bin/docker-compose # 任意位置运行 docerk-compose version 查看是否成功 初使用 使用教程：Get started with Docker Compose | Docker Documentation\n1.创建项目文件夹\n2.项目文件夹下创建app.py文件，将官网代码复制过来：\nimport time import redis from flask import Flask app = Flask(__name__) cache = redis.Redis(host='redis', port=6379) def get_hit_count(): retries = 5 while True: try: return cache.incr('hits') except redis.exceptions.ConnectionError as exc: if retries == 0: raise exc retries -= 1 time.sleep(0.5) @app.route('/') def hello(): count = get_hit_count() return 'Hello World! I have been seen {}times.\\n'.format(count) 3.创建requirements.txt依赖包文件\n4.创建Dockerfile：\nFROM python:3.7-alpine\t# 基本环境包 WORKDIR /code\t# 工作目录 ENV FLASK_APP=app.py\t# 环境 ENV FLASK_RUN_HOST=0.0.0.0 RUN apk add --no-cache gcc musl-dev linux-headers\t# 运行 COPY requirements.txt requirements.txt\t# 拷贝文件 RUN pip install -r requirements.txt\t# 使用pip安装 EXPOSE 5000\t# 暴露端口 COPY . .\t# 拷贝当前目录 CMD [\"flask\", \"run\"]\t# 运行 5.在Compose文件中定义服务：\n# 以前我们需要docker run逐个运行 # 现在创建docker-compose.yml文件 version: \"3.9\"\t# 版本 services:\t# 服务 web: build: . ports: - \"5000:5000\" redis: image: \"redis:alpine\" 6.使用Compose构建并运行应用：\ndocker-compose up # docker-compose up -d 后台运行 # 我这里报错了，报错如下： ERROR: Version in \"./docker-compose.yml\" is unsupported. You might be seeing this error because you're using the wrong Compose file version. Either specify a supported version (e.g \"2.2\" or \"3.3\") and place your service definitions under the `services` key, or omit the `version` key and place your service definitions at the root of the file to use version 1. For more on the Compose file format versions, see https://docs.docker.com/compose/compose-file/ # 解决方案，修改docker-compose.yml文件中的版本 version: \"3.9\" - version: \"3.3\" # 项目部署过程中出现了其它错误 docker-compose build # 先build一下 docker-compose up # 成功启动 # 测试，每访问一次计数器+1 localhost:5000 # 浏览器键入 curl localhost:5000 # curl请求 7.停止：\n# 在yaml文件所在目录下运行命令 docker-compose stop Ctrl+C 流程：\n1.创建网络\n2.执行Docker-compose.yml\n3.启动服务\n默认规则：\n自动拉取镜像：\n[root@localhost ~]# docker service ls Error response from daemon: This node is not a swarm manager. Use \"docker swarm init\" or \"docker swarm join\" to connect this node to swarm and try again. **命名规则：**默认服务名 文件名_服务名_num。A B _num 副本数量。集群状态下不可能只有一个运行实例。弹性：10 HA 高可用、高并发。kunectl service负载均衡。\n**网络规则：**使用命令docker network ls查看，默认名称composetest_default。项目中的内容都在同一网络，可通过域名访问。\n小结：\n1.应用，如app.py\n2.Dockerfile应用打包为镜像\n3.Docker-compose.yml文件(定义整个服务、需要的环境)。完整的上线服务\n4.启动compose项目(docker-compose up)\nyaml规则 官方示例:Compose file version 3 reference | Docker Documentation\ndocker-compose.yml是核心。\n# 只有三层 version: '' # 版本 services: # 服务 服务1: web # 服务配置 images build network ... 服务2: redis ... # 其他配置 网络/卷/全局规则 volumes: networks: configs: depends_on\nSimple example：\nversion: \"3.9\" services: web: build: . depends_on:\t# 依赖于db和redis - db - redis redis: image: redis db: image: postgres # 启动顺序：web -- redis -- db  There are several things to be aware of when using depends_on:\n depends_on does not wait for db and redis to be “ready” before starting web - only until they have been started. If you need to wait for a service to be ready, see Controlling startup order for more on this problem and strategies for solving it. Version 3 no longer supports the condition form of depends_on. The depends_on option is ignored when deploying a stack in swarm mode with a version 3 Compose file.   deploy\n Added in version 3 file format.\n Specify configuration related to the deployment and running of services. This only takes effect when deploying to a swarm with docker stack deploy, and is ignored by docker-compose up and docker-compose run.\nversion: \"3.9\" services: redis: image: redis:alpine deploy: replicas: 6\t# 副本 placement: max_replicas_per_node: 1 update_config: parallelism: 2 delay: 10s restart_policy: condition: on-failure 部署wp博客 官方文档部署WordPress博客:Quickstart: Compose and WordPress | Docker Documentation\n1.创建一个空文件夹，此处命名为my_wordpress\nmkdir my_wordpress 2.切换到对应目录\ncd my_wordpress/ 3.创建docker-compose.yml文件\nversion: \"3.3\" services: db: image: mysql:5.7 volumes: - db_data:/var/lib/mysql restart: always environment: MYSQL_ROOT_PASSWORD: somewordpress MYSQL_DATABASE: wordpress MYSQL_USER: wordpress MYSQL_PASSWORD: wordpress wordpress: depends_on: - db image: wordpress:latest ports: - \"8000:80\" restart: always environment: WORDPRESS_DB_HOST: db:3306 WORDPRESS_DB_USER: wordpress WORDPRESS_DB_PASSWORD: wordpress WORDPRESS_DB_NAME: wordpress volumes: db_data: {}  Notes:\n The docker volume db_data persists any updates made by WordPress to the database. Learn more about docker volumes WordPress Multisite works only on ports 80 and 443.   4.构建项目\nNow, run docker-compose up -d from your project directory.\nThis runs docker-compose up in detached mode, pulls the needed Docker images, and starts the wordpress and database containers.\n$ docker-compose up -d  Note: WordPress Multisite works only on ports 80 and/or 443. If you get an error message about binding 0.0.0.0 to port 80 or 443 (depending on which one you specified), it is likely that the port you configured for WordPress is already in use by another service.\n 5.开始安装\n经过第4步后，访问localhost:8000端口即可设置博客。\n实战 1.编写项目微服务\n2.Dockefile构建镜像\n3.docker-compose.yaml编排项目\n4.docker-compose up\n5.docker-compose up --build项目重新部署打包\nDocker Swarm Docker Swarm官方文档:Swarm mode overview | Docker Documentation\n节点如何工作： Docker Engine 1.12 introduces swarm mode that enables you to create a cluster of one or more Docker Engines called a swarm. A swarm consists of one or more nodes: physical or virtual machines running Docker Engine 1.12 or later in swarm mode.\nThere are two types of nodes: managers and workers.\nIf you haven’t already, read through the swarm mode overview and key concepts.\n管理与工作节点 管理节点 Manager nodes handle cluster management tasks:\n maintaining cluster state scheduling services serving swarm mode HTTP API endpoints  Using a Raft implementation, the managers maintain a consistent internal state of the entire swarm and all the services running on it. For testing purposes it is OK to run a swarm with a single manager. If the manager in a single-manager swarm fails, your services continue to run, but you need to create a new cluster to recover.\nTo take advantage of swarm mode’s fault-tolerance features, Docker recommends you implement an odd number of nodes according to your organization’s high-availability requirements. When you have multiple managers you can recover from the failure of a manager node without downtime.\n  A three-manager swarm tolerates a maximum loss of one manager.\n  A five-manager swarm tolerates a maximum simultaneous loss of two manager nodes.\n  An N manager cluster tolerates the loss of at most (N-1)/2 managers.\n  Docker recommends a maximum of seven manager nodes for a swarm.\n Important Note: Adding more managers does NOT mean increased scalability or higher performance. In general, the opposite is true.\n   工作节点 Worker nodes are also instances of Docker Engine whose sole purpose is to execute containers. Worker nodes don’t participate in the Raft distributed state, make scheduling decisions, or serve the swarm mode HTTP API.\nYou can create a swarm of one manager node, but you cannot have a worker node without at least one manager node. By default, all managers are also workers. In a single manager node cluster, you can run commands like docker service create and the scheduler places all tasks on the local Engine.\nTo prevent the scheduler from placing tasks on a manager node in a multi-node swarm, set the availability for the manager node to Drain. The scheduler gracefully stops tasks on nodes in Drain mode and schedules the tasks on an Active node. The scheduler does not assign new tasks to nodes with Drain availability.\nRefer to the docker node update command line reference to see how to change node availability.\nRaft 图中有一个Raft Consensus Group的概念，我们来查阅一下资料。\nRaft:一种新的分布式协议研究，为真实世界应用建立的协议，主要注重协议落地性和可理解性。保证大多数节点存活才可使用。\n关于分布式系统的Raft算法讲解:分布式系统的Raft算法 - 解道Jdon\nRaft算法详解:图解：什么是Raft算法？ - 无敌码龙的个人空间 - OSCHINA - 中文开源技术交流社区\n命令 # 帮助命令 docker swarm --help Usage: docker swarm COMMAND Manage Swarm Commands: ca Display and rotate the root CA init Initialize a swarm join Join a swarm as a node and/or manager join-token Manage join tokens leave Leave the swarm unlock Unlock swarm unlock-key Manage the unlock key update Update the swarm docker swarm init\t# 初始化节点 docker swarm join\t# 加入节点 # 获取令牌 docker swarm join-token manager docker swarm join-token worker docker node ls # 查看节点 具体使用 服务无感升级为灰度发布(也称金丝雀发布)。\ndocker run\t# 容器启动，不具有扩缩容功能 docker service 服务\t# 能实现扩缩容及滚动更新 docker service create -p 8888:80 --name my-nginx nginx # 查看服务 docker service ps my-nginx docker service ls docker service inspect my-nginx # 创建副本 docker service update --replicas 3 my-nginx docker service update --replicas 1 my-nginx # 更新为1个服务 docker service scale my-nginx=5\t# 动态扩缩容，与update效果相同 docker service rm my-nginx 概念总结 Swarm 集群的管理和编号。docker可以初始化一个swarm集群，其它节点可以加入。(manager、worker)\nNode 就是一个docker节点，多个节点组成一个网络集群。\nService 任务，可以在manager或worker来运行。用户访问的其实就是service，这是集群的核心。\nTask 容器内命令，细节任务。\n调整service运行方式 docker service create --mode replicated --name my-centos centos\t# 仅在副本运行 docker service create --mode global --name haha alpine ping baidu.com\t# 全局运行 拓展 网络模式：“PublishMode”:“ingress”\nSwarm:\nOverlay:网络变成一个整体\ningress:具有负载均衡功能的特殊Overlay网络，\nDocker Stack docker-compose\t# 单机部署项目 docker-compose up -d wordpress.yaml docker stack\t# 集群部署 docker stack deploy wordpress.yaml Docker Secret Commands: create Create a secret from a file or STDIN as content inspect Display detailed information on one or more secrets ls List secrets rm Remove one or more secrets Docker Config Commands:\rcreate Create a config from a file or STDIN\rinspect Display detailed information on one or more configs\rls List configs\rrm Remove one or more configs\r 本文链接：Docker | Atmet (oopsdc.tk)\n文章许可：本文采用CC BY-NC-SA 4.0许可协议，转载请注明出处。\n ","wordCount":"2755","inLanguage":"en","datePublished":"2021-04-13T22:06:50+08:00","dateModified":"2021-04-13T22:06:50+08:00","author":{"@type":"Person","name":"0opsdc"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://examplesite.com/post/docker/"},"publisher":{"@type":"Organization","name":"0opsdc","logo":{"@type":"ImageObject","url":"https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/favicon.png"}}}</script>
+</head>
+<body id=top>
+<script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add('dark'):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove('dark'):window.matchMedia('(prefers-color-scheme: dark)').matches&&document.body.classList.add('dark')</script>
+<header class=header>
+<nav class=nav>
+<div class=logo>
+<a href=https://examplesite.com/ accesskey=h title="Home (Alt + H)">Home</a>
+<span class=logo-switches>
+<button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+</button>
+</span>
+</div>
+<ul id=menu>
+<li>
+<a href=https://examplesite.com/archives/ title=Archives>
+<span>Archives</span>
+</a>
+</li>
+<li>
+<a href=https://examplesite.com/tags/ title=Tags>
+<span>Tags</span>
+</a>
+</li>
+<li>
+<a href=https://examplesite.com/search/ title="Search (Alt + /)" accesskey=/>
+<span>Search</span>
+</a>
+</li>
+</ul>
+</nav>
+</header>
+<main class=main>
+<article class=post-single>
+<header class=post-header>
+<div class=breadcrumbs><a href=https://examplesite.com/>Home</a>&nbsp;»&nbsp;<a href=https://examplesite.com/post/>Posts</a></div>
+<h1 class=post-title>
+Docker
+</h1>
+<div class=post-meta>April 13, 2021&nbsp;·&nbsp;0opsdc
+</div>
+</header> <div class=toc>
+<details>
+<summary accesskey=c title="(Alt + C)">
+<span class=details>Table of Contents</span>
+</summary>
+<div class=inner><ul>
+<li>
+<a href=#docker%e6%a6%82%e8%bf%b0 aria-label=Docker概述>Docker概述</a></li>
+<li>
+<a href=#docker%e5%ae%89%e8%a3%85 aria-label=Docker安装>Docker安装</a></li>
+<li>
+<a href=#docker%e5%8d%b8%e8%bd%bd aria-label=Docker卸载>Docker卸载</a></li>
+<li>
+<a href=#docker%e6%8d%a2%e6%ba%90 aria-label=Docker换源>Docker换源</a></li>
+<li>
+<a href=#nginx%e5%ae%89%e8%a3%85 aria-label=nginx安装>nginx安装</a></li>
+<li>
+<a href=#tomcat%e5%ae%89%e8%a3%85 aria-label=tomcat安装>tomcat安装</a></li>
+<li>
+<a href=#%e9%83%a8%e7%bd%b2eskibana aria-label=部署es+kibana>部署es+kibana</a></li>
+<li>
+<a href=#portainer%e5%ae%89%e8%a3%85 aria-label=Portainer安装>Portainer安装</a></li>
+<li>
+<a href=#docker%e9%95%9c%e5%83%8f%e8%ae%b2%e8%a7%a3 aria-label=Docker镜像讲解>Docker镜像讲解</a><ul>
+<li>
+<a href=#%e9%95%9c%e5%83%8f%e6%98%af%e4%bb%80%e4%b9%88 aria-label=镜像是什么>镜像是什么</a></li>
+<li>
+<a href=#docker%e9%95%9c%e5%83%8f%e5%8a%a0%e8%bd%bd%e5%8e%9f%e7%90%86 aria-label=Docker镜像加载原理>Docker镜像加载原理</a></li>
+<li>
+<a href=#%e5%88%86%e5%b1%82%e7%90%86%e8%a7%a3 aria-label=分层理解>分层理解</a></li>
+<li>
+<a href=#commit%e9%95%9c%e5%83%8f aria-label=commit镜像>commit镜像</a></li></ul>
+</li>
+<li>
+<a href=#%e5%ae%b9%e5%99%a8 aria-label=容器>容器</a></li>
+<li>
+<a href=#%e5%ae%b9%e5%99%a8%e6%95%b0%e6%8d%ae%e5%8d%b7 aria-label=容器数据卷>容器数据卷</a><ul>
+<li>
+<a href=#%e4%bb%80%e4%b9%88%e6%98%af%e5%ae%b9%e5%99%a8%e6%95%b0%e6%8d%ae%e5%8d%b7 aria-label=什么是容器数据卷？>什么是容器数据卷？</a></li>
+<li>
+<a href=#%e4%bd%bf%e7%94%a8%e6%95%b0%e6%8d%ae%e5%8d%b7 aria-label=使用数据卷>使用数据卷</a></li>
+<li>
+<a href=#mysql%e5%ae%89%e8%a3%85 aria-label=MySQL安装>MySQL安装</a></li>
+<li>
+<a href=#%e5%85%b7%e5%90%8d%e5%92%8c%e5%8c%bf%e5%90%8d%e6%8c%82%e8%bd%bd aria-label=具名和匿名挂载>具名和匿名挂载</a></li>
+<li>
+<a href=#%e5%88%9d%e8%af%86dockerfile aria-label=初识Dockerfile>初识Dockerfile</a></li>
+<li>
+<a href=#%e6%95%b0%e6%8d%ae%e5%8d%b7%e5%ae%b9%e5%99%a8 aria-label=数据卷容器>数据卷容器</a></li></ul>
+</li>
+<li>
+<a href=#dockerfile aria-label=DockerFile>DockerFile</a><ul>
+<li>
+<a href=#dockerfile%e6%9e%84%e5%bb%ba%e8%bf%87%e7%a8%8b aria-label=DockerFile构建过程>DockerFile构建过程</a></li>
+<li>
+<a href=#dockerfile%e6%8c%87%e4%bb%a4 aria-label=DockerFile指令>DockerFile指令</a></li>
+<li>
+<a href=#%e5%ae%9e%e6%88%98centos%e9%83%a8%e7%bd%b2 aria-label=实战centos部署>实战centos部署</a></li>
+<li>
+<a href=#%e5%ae%9e%e6%88%98tomcat%e9%83%a8%e7%bd%b2 aria-label=实战tomcat部署>实战tomcat部署</a></li>
+<li>
+<a href=#%e5%8f%91%e5%b8%83%e9%95%9c%e5%83%8f aria-label=发布镜像>发布镜像</a></li></ul>
+</li>
+<li>
+<a href=#docker%e7%bd%91%e7%bb%9c aria-label=Docker网络>Docker网络</a><ul>
+<li>
+<a href=#docker0 aria-label=Docker0>Docker0</a></li>
+<li>
+<a href=#--link aria-label=&amp;ndash;link>&ndash;link</a></li>
+<li>
+<a href=#%e8%87%aa%e5%ae%9a%e4%b9%89%e7%bd%91%e7%bb%9c aria-label=自定义网络>自定义网络</a></li>
+<li>
+<a href=#%e7%bd%91%e7%bb%9c%e8%bf%9e%e9%80%9a aria-label=网络连通>网络连通</a></li>
+<li>
+<a href=#%e5%ae%9e%e6%88%98redis%e9%9b%86%e7%be%a4%e9%83%a8%e7%bd%b2 aria-label=实战Redis集群部署>实战Redis集群部署</a></li>
+<li>
+<a href=#springboot%e5%be%ae%e6%9c%8d%e5%8a%a1%e6%89%93%e5%8c%85docker%e9%95%9c%e5%83%8f aria-label=SpringBoot微服务打包Docker镜像>SpringBoot微服务打包Docker镜像</a></li></ul>
+</li>
+<li>
+<a href=#docker-compose aria-label="Docker Compose">Docker Compose</a><ul>
+<li>
+<a href=#%e6%a6%82%e8%bf%b0 aria-label=概述>概述</a></li>
+<li>
+<a href=#%e4%b8%89%e6%ad%a5%e9%aa%a4 aria-label=三步骤>三步骤</a></li>
+<li>
+<a href=#%e5%ae%89%e8%a3%85docker-compose aria-label="安装Docker Compose">安装Docker Compose</a></li>
+<li>
+<a href=#%e5%88%9d%e4%bd%bf%e7%94%a8 aria-label=初使用>初使用</a></li>
+<li>
+<a href=#yaml%e8%a7%84%e5%88%99 aria-label=yaml规则>yaml规则</a></li>
+<li>
+<a href=#%e9%83%a8%e7%bd%b2wp%e5%8d%9a%e5%ae%a2 aria-label=部署wp博客>部署wp博客</a></li>
+<li>
+<a href=#%e5%ae%9e%e6%88%98 aria-label=实战>实战</a></li></ul>
+</li>
+<li>
+<a href=#docker-swarm aria-label="Docker Swarm">Docker Swarm</a><ul>
+<li>
+<a href=#%e8%8a%82%e7%82%b9%e5%a6%82%e4%bd%95%e5%b7%a5%e4%bd%9c aria-label=节点如何工作：>节点如何工作：</a></li>
+<li>
+<a href=#%e7%ae%a1%e7%90%86%e4%b8%8e%e5%b7%a5%e4%bd%9c%e8%8a%82%e7%82%b9 aria-label=管理与工作节点>管理与工作节点</a><ul>
+<li>
+<a href=#%e7%ae%a1%e7%90%86%e8%8a%82%e7%82%b9 aria-label=管理节点>管理节点</a></li>
+<li>
+<a href=#%e5%b7%a5%e4%bd%9c%e8%8a%82%e7%82%b9 aria-label=工作节点>工作节点</a></li></ul>
+</li>
+<li>
+<a href=#raft aria-label=Raft>Raft</a></li>
+<li>
+<a href=#%e5%91%bd%e4%bb%a4 aria-label=命令>命令</a></li>
+<li>
+<a href=#%e5%85%b7%e4%bd%93%e4%bd%bf%e7%94%a8 aria-label=具体使用>具体使用</a></li>
+<li>
+<a href=#%e6%a6%82%e5%bf%b5%e6%80%bb%e7%bb%93 aria-label=概念总结>概念总结</a><ul>
+<li>
+<a href=#swarm aria-label=Swarm>Swarm</a></li>
+<li>
+<a href=#node aria-label=Node>Node</a></li>
+<li>
+<a href=#service aria-label=Service>Service</a></li>
+<li>
+<a href=#task aria-label=Task>Task</a></li>
+<li>
+<a href=#%e8%b0%83%e6%95%b4service%e8%bf%90%e8%a1%8c%e6%96%b9%e5%bc%8f aria-label=调整service运行方式>调整service运行方式</a></li>
+<li>
+<a href=#%e6%8b%93%e5%b1%95 aria-label=拓展>拓展</a></li></ul>
+</li></ul>
+</li>
+<li>
+<a href=#docker-stack aria-label="Docker Stack">Docker Stack</a></li>
+<li>
+<a href=#docker-secret aria-label="Docker Secret">Docker Secret</a></li>
+<li>
+<a href=#docker-config aria-label="Docker Config">Docker Config</a>
+</li>
+</ul>
+</div>
+</details>
+</div>
+<div class=post-content><h1 id=docker概述>Docker概述<a hidden class=anchor aria-hidden=true href=#docker概述>#</a></h1>
+<p>镜像（<code>image</code>）：</p>
+<pre tabindex=0><code>一个只读模板。一个镜像可以用来创建多个Docker容器，好似Java中的类和对象，镜像是类，容器是对象。
+</code></pre><p>容器（<code>container</code>）：</p>
+<pre tabindex=0><code>Docker利用容器独立运行一个或一组应用，容器是用镜像创建的运行实例。
+容器可以被启动、开始、停止、删除。
+每个容器都是相互个隔离的。
+也可以把容器看做一个简易版Linux环境(包括root用户权限、进程空间、用户空间和网络空间等)及运行在其中的应用程序。
+容器的定义和镜像几乎一模一样，也是一堆层的统一视角，唯一区别在于容器最上面一层可读可写。
+</code></pre><p>仓库（<code>repository</code>）：</p>
+<pre tabindex=0><code>仓库是集中存放镜像文件的场所。
+仓库和仓库注册服务器(registry)是有区别的，后者往往存在多个仓库，每个仓库又存在多个镜像，每个镜像有不同的标签。
+仓库分为公开仓库和私有仓库两种形式。
+最大的公开仓库是Docker Hub，国内最大的为阿里云、网易云等。
+</code></pre><h1 id=docker安装>Docker安装<a hidden class=anchor aria-hidden=true href=#docker安装>#</a></h1>
+<blockquote>
+<p>环境:CentOS 7</p>
+</blockquote>
+<p>1.<a href=https://docs.docker.com/engine/install/centos/>官方文档</a></p>
+<p>2.<code>yum</code>安装<code>gcc</code>相关环境：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>yum -y install gcc
+yum -y install gcc-c++
+</code></pre></div><p>3.卸载旧版本：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>yum remove docker <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>					docker-client <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>					docker-client-latest <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>					docker-common <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>					docker-latest <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>					docker-latest-logrotate <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>					docker-logrotate <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>					docker-engine
+</code></pre></div><p>4.安装依赖包：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>yum install -y yum-utils
+</code></pre></div><p>5.设置镜像仓库：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#75715e># 错误</span>
+yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+<span style=color:#75715e>## 报错</span>
+<span style=color:#f92672>[</span>Errno 14<span style=color:#f92672>]</span> curl#35 - TCP connection reset by peer
+<span style=color:#f92672>[</span>Errno 12<span style=color:#f92672>]</span> curl#35 - Timeout
+
+<span style=color:#75715e># 推荐国内镜像</span>
+yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+</code></pre></div><p>6.更新<code>yum</code>软件包索引：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>yum makecache fast
+</code></pre></div><p>7.安装<code>Docker CE</code>：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>yum install docker-ce docker-ce-cli containerd.io
+</code></pre></div><p>8.启动<code>Docker</code>：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>systemctl start docker
+</code></pre></div><p>9.测试命令：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>docker version <span style=color:#75715e># 查看Docker版本</span>
+
+docker run hello-world <span style=color:#75715e># 拉取镜像</span>
+
+docker images <span style=color:#75715e># 查看本地镜像</span>
+</code></pre></div><h1 id=docker卸载>Docker卸载<a hidden class=anchor aria-hidden=true href=#docker卸载>#</a></h1>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>systemctl stop docker
+
+yum -y remove docker-ce docker-ce-cli containerd.io
+
+rm -rf /var/lib/docker
+</code></pre></div><h1 id=docker换源>Docker换源<a hidden class=anchor aria-hidden=true href=#docker换源>#</a></h1>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#75715e># 创建或修改/etc/docker/daemon.json文件</span>
+vim /etc/docker/daemon.json
+<span style=color:#f92672>{</span>
+    <span style=color:#e6db74>&#34;registry-mirrors&#34;</span>: <span style=color:#f92672>[</span><span style=color:#e6db74>&#34;https://registry.docker-cn.com&#34;</span><span style=color:#f92672>]</span>
+<span style=color:#f92672>}</span>
+systemctl daemon-reload
+systemctl restart docker.service
+
+<span style=color:#75715e># 网易 http://hub-mirror.c.163.com</span>
+
+<span style=color:#75715e># ustc https://docker.mirrors.ustc.edu.cn</span>
+
+<span style=color:#75715e># 中国科技大学 https://docker.mirrors.ustc.edu.cn</span>
+
+<span style=color:#75715e># 阿里云容器 服务 https://cr.console.aliyun.com/</span>
+<span style=color:#75715e># 首页点击“创建我的容器镜像” 得到一个专属的镜像加速地址，类似于“https://1234abcd.mirror.aliyuncs.com”</span>
+</code></pre></div><h1 id=nginx安装>nginx安装<a hidden class=anchor aria-hidden=true href=#nginx安装>#</a></h1>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/image-20210312122717900.png alt=image-20210312122717900>
+</p>
+<h1 id=tomcat安装>tomcat安装<a hidden class=anchor aria-hidden=true href=#tomcat安装>#</a></h1>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/image-20210312123113861.png alt=image-20210312123113861>
+</p>
+<h1 id=部署eskibana>部署es+kibana<a hidden class=anchor aria-hidden=true href=#部署eskibana>#</a></h1>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#75715e># es暴露的端口很多，十分耗内存，数据一般需要放置到安全目录</span>
+<span style=color:#75715e># 启动es</span>
+docker run -d --name elasticsearch --net somenetwork -p 9200:9200 -p 9300:9300 -e <span style=color:#e6db74>&#34;discovery.type=single-node&#34;</span> elasticsearch:latest
+<span style=color:#75715e># --net somenetwork 网络配置</span>
+
+<span style=color:#75715e># 查看CPU状态</span>
+docker stats
+
+<span style=color:#75715e># 运行环境修改</span>
+docker run -d --name elasticsearch --net somenetwork -p 9200:9200 -p 9300:9300 -e <span style=color:#e6db74>&#34;discovery.type=single-node&#34;</span> -e ES_JAVA_OPTS<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;-Xms64m -Xmx512m&#34;</span> elasticsearch:latest
+</code></pre></div><h1 id=portainer安装>Portainer安装<a hidden class=anchor aria-hidden=true href=#portainer安装>#</a></h1>
+<p><code>Docker</code>图形化管理工具，提供一个后台面板：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>docker run -d -p 8088:9000 --restart<span style=color:#f92672>=</span>always -v /var/run/docker.sock:/var/run/docker.sock --privileged<span style=color:#f92672>=</span>true portainer/portainer
+</code></pre></div><p><code>Rancher</code>(<code>CI/CD</code>使用)</p>
+<h1 id=docker镜像讲解>Docker镜像讲解<a hidden class=anchor aria-hidden=true href=#docker镜像讲解>#</a></h1>
+<h2 id=镜像是什么>镜像是什么<a hidden class=anchor aria-hidden=true href=#镜像是什么>#</a></h2>
+<p>镜像是一种轻量级、可执行的独立软件包，用来打包软件运行环境和基于运行环境开发的软件，包含运行某个软件所需的所有内容，包括代码、运行时、库、环境变量和配置文件。</p>
+<p>所有应用直接打包<code>Docker</code>镜像。</p>
+<p>如何得到镜像：</p>
+<ul>
+<li>官方下载</li>
+<li>朋友分享</li>
+<li>自己制作</li>
+</ul>
+<h2 id=docker镜像加载原理>Docker镜像加载原理<a hidden class=anchor aria-hidden=true href=#docker镜像加载原理>#</a></h2>
+<blockquote>
+<p>UnionFS(联合文件系统)</p>
+</blockquote>
+<p>我们下载的时候看见的一层层就是这个。</p>
+<p>是一种分层、轻量级且高性能的文件系统，支持对文件系统的修改作为一次提交来层层叠加，同时可以将不同目录挂载到同一个虚拟文件系统下(unite several directions into a single virtual filesystem)。<code>Union</code>文件系统是<code>Docker</code>镜像的基础，镜像可以通过分层来进行继承，基于基础镜像(没有父镜像)，可以制作各种具体的应用镜像。</p>
+<p>特性：一次同时加载多个文件系统，但从外面只能看到一个文件系统，联合加载会把各层文件系统叠加起来，这样最终的文件系统会包含所有底层的文件和目录。</p>
+<blockquote>
+<p>Docker镜像加载原理</p>
+</blockquote>
+<p><code>Docker</code>的镜像实际上由一层层文件系统组成，这种层级的文件系统称为<code>UnionFS</code>。</p>
+<p><code>bootfs</code>(boot file system)主要包含<code>bootloader</code>和<code>kernel</code>，<code>bootloader</code>主要引导加载<code>kernel</code>，<code>Linux</code>刚启动时会加载<code>bootfs</code>文件系统，在<code>Docker</code>镜像的最底层是<code>bootfs</code>。这一层与我们典型的<code>Linux/Unix</code>系统一样，包含<code>boot</code>加载器和内核。<code>boot</code>加载完成后整个内核都在内存中，此时内存的使用权已转交给内核，此时系统也会卸载<code>bootfs</code>。</p>
+<p><code>rootfs</code>，在<code>bootfs</code>之上。包含的就是典型<code>Linux</code>系统中的<code>/dev</code>，<code>/proc</code>，<code>/bin</code>，<code>/etc</code>等标准目录和文件。<code>rootfs</code>就是各种不同的操作系统发行版，如<code>Ubuntu</code>、<code>CentOS</code>等。</p>
+<p>对于一个精简的<code>OS</code>，<code>rootfs</code>可以很小，只需包含最基本的命令、工具和程序库即可，因为底层直接用<code>Host</code>的<code>kernel</code>，自己只需提供<code>rootfs</code>。可见对于不同的<code>Linux</code>发行版，<code>bootfs</code>基本一致，<code>rootfs</code>会有差别，因此不同的发行版可以公用<code>bootfs</code>。</p>
+<h2 id=分层理解>分层理解<a hidden class=anchor aria-hidden=true href=#分层理解>#</a></h2>
+<p>为什么<code>Docker</code>镜像采用分层结构？</p>
+<p>资源共享，如有多个镜像都从相同的Base镜像构建而来，那么宿主机只需在磁盘上保留一份<code>Base</code>镜像，内存中也只需加载一份<code>Base</code>镜像，这样就可以为所有的容器服务了，且镜像的每一层都可以被共享。</p>
+<p>使用<code>docker image inspect</code>查看镜像分层。</p>
+<blockquote>
+<p>特点</p>
+</blockquote>
+<p><code>Docker</code>镜像一般都是只读的，当容器启动时，一个新的可写层被加载到镜像顶部。</p>
+<p>这一层就是我们常说的容器层，容器之下的都叫镜像层。</p>
+<h2 id=commit镜像>commit镜像<a hidden class=anchor aria-hidden=true href=#commit镜像>#</a></h2>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>docker commit <span style=color:#75715e>#提交容器成为一个新的版本</span>
+
+<span style=color:#75715e># 命令和git原理类似</span>
+docker commit -m<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;description&#34;</span> -a<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;author&#34;</span> id target_image_name:<span style=color:#f92672>[</span>TAG<span style=color:#f92672>]</span>
+</code></pre></div><p>实战测试</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>docker run -it -p 8080:8080 tomcat
+
+<span style=color:#75715e># 将webapps.dist所有文件拷贝到webapps</span>
+cp -r webapps.dist/* webapps
+
+<span style=color:#75715e># 将修改后的容器通过commit提交为一个新的镜像</span>
+docker commit -a<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;dc&#34;</span> -m<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;add webapps&#34;</span> id name:version
+</code></pre></div><h1 id=容器>容器<a hidden class=anchor aria-hidden=true href=#容器>#</a></h1>
+<p>容器就是通过<code>docker</code>镜像创建的实例对象，常用命令如下:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>docker ps <span style=color:#75715e># 查看运行中的容器状态</span>
+docker ps -a <span style=color:#75715e># 查看所有容器状态</span>
+docker ps -aq <span style=color:#75715e># 列出所有容器ID</span>
+docker stop <span style=color:#66d9ef>$(</span>docker ps -aq<span style=color:#66d9ef>)</span> <span style=color:#75715e># 停止所有容器</span>
+docker rm <span style=color:#66d9ef>$(</span>docker ps -aq<span style=color:#66d9ef>)</span> <span style=color:#75715e># 删除所有容器</span>
+docker rmi <span style=color:#66d9ef>$(</span>docker images -q<span style=color:#66d9ef>)</span> <span style=color:#75715e># 删除所有镜像</span>
+</code></pre></div><h1 id=容器数据卷>容器数据卷<a hidden class=anchor aria-hidden=true href=#容器数据卷>#</a></h1>
+<h2 id=什么是容器数据卷>什么是容器数据卷？<a hidden class=anchor aria-hidden=true href=#什么是容器数据卷>#</a></h2>
+<p><code>Docker</code>的理念：将应用和环境打包成一个镜像。</p>
+<p>如果数据都在容器中，容器一删除则数据消失。</p>
+<p>需求：数据持久化。</p>
+<p>容器之间需要有一个数据共享技术。</p>
+<p><code>Docker</code>容器中产生的数据同步到本地。</p>
+<p>这就是卷技术，目录挂载，将容器内目录挂载到虚拟机或<code>Linux</code>中。</p>
+<p>总结：容器的持久化和同步操作。容器间也可以数据共享。</p>
+<h2 id=使用数据卷>使用数据卷<a hidden class=anchor aria-hidden=true href=#使用数据卷>#</a></h2>
+<blockquote>
+<p>使用命令挂载</p>
+</blockquote>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>docker run -it -v 主机内目录:容器内目录
+
+docker run -it -v /home/test_real:/home centos /bin/bash
+
+<span style=color:#75715e># 宿主机查看挂载状态</span>
+docker inspect container-id
+
+<span style=color:#e6db74>&#34;Mounts&#34;</span>: <span style=color:#f92672>[</span>
+            <span style=color:#f92672>{</span>
+                <span style=color:#e6db74>&#34;Type&#34;</span>: <span style=color:#e6db74>&#34;bind&#34;</span>,
+                <span style=color:#e6db74>&#34;Source&#34;</span>: <span style=color:#e6db74>&#34;/home/test_real&#34;</span>,
+                <span style=color:#e6db74>&#34;Destination&#34;</span>: <span style=color:#e6db74>&#34;/home&#34;</span>,
+                <span style=color:#e6db74>&#34;Mode&#34;</span>: <span style=color:#e6db74>&#34;&#34;</span>,
+                <span style=color:#e6db74>&#34;RW&#34;</span>: true,
+                <span style=color:#e6db74>&#34;Propagation&#34;</span>: <span style=color:#e6db74>&#34;rprivate&#34;</span>
+            <span style=color:#f92672>}</span>
+        <span style=color:#f92672>]</span>
+        
+<span style=color:#75715e># 退出容器</span>
+exit
+
+<span style=color:#75715e># 修改文件内容</span>
+vim testfile
+
+<span style=color:#75715e># 重新打开容器</span>
+docker start container-id
+
+<span style=color:#75715e># 进入容器</span>
+docker attach container-id <span style=color:#75715e>#未start报错:You cannot attach to a stopped container, start it first</span>
+</code></pre></div><h2 id=mysql安装>MySQL安装<a hidden class=anchor aria-hidden=true href=#mysql安装>#</a></h2>
+<p>思考：<code>MySQL</code>数据持久化问题。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#75715e># 拉取MySQL</span>
+docker pull mysql
+
+<span style=color:#75715e># 官方启动:docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:tag</span>
+
+<span style=color:#75715e># 运行容器并做数据挂载</span>
+docker run -d -p 3310:3306 -v /home/mysql_real/conf:/etc/mysql/conf.d -v /home/mysql_real/data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD<span style=color:#f92672>=</span><span style=color:#ae81ff>123456</span> mysql
+</code></pre></div><h2 id=具名和匿名挂载>具名和匿名挂载<a hidden class=anchor aria-hidden=true href=#具名和匿名挂载>#</a></h2>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=color:#75715e># 匿名挂载</span>
+-v 容器内路径
+docker run -d -P --name name -v /etc/nginx nginx <span style=color:#75715e># -P:随机映射端口</span>
+
+<span style=color:#75715e># 查看所有的volume情况</span>
+docker volume ls
+
+<span style=color:#75715e># 具名挂载</span>
+docker run -d -P --name name -v juming-nginx:/etc/nginx nginx
+</code></pre></div><p>所有<code>Docker</code>容器内的卷，没有指定目录的情况下都在<code>/var/lib/docker/volumes/xxx/_data</code>。</p>
+<p>通过具名挂载可以方便的找到我们的一个卷，大多数情况使用<code>具名挂载</code>。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#75715e># 如何确定匿名挂载还是具名挂载，还是指定路径挂载</span>
+-v 容器内路径 <span style=color:#75715e># 匿名挂载</span>
+-v 卷名:容器内路径 <span style=color:#75715e># 具名挂载</span>
+-v /宿主机路径:容器内路径 <span style=color:#75715e># 指定路径挂载</span>
+</code></pre></div><p>拓展：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#75715e># 通过-v容器内路径:ro/rw改变读写权限</span>
+docker run -d -P --name name -v juming-nginx:/etc/nginx:ro nginx <span style=color:#75715e># 只能通过宿主机操作，容器内部无法操作</span>
+docker run -d -P --name name -v juming-nginx:/etc/nginx:rw nginx
+</code></pre></div><h2 id=初识dockerfile>初识Dockerfile<a hidden class=anchor aria-hidden=true href=#初识dockerfile>#</a></h2>
+<p><code>Dockerfile</code>就是用来构建<code>Docker</code>镜像的构建文件。其实就是命令脚本，通过这个脚本可以生成镜像。</p>
+<p>镜像是一层层的，脚本就是一个个的命令，每个命令就是一层。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#75715e># 创建一个dockerfile文件</span>
+<span style=color:#75715e># 指令(大写) 参数</span>
+FROM centos
+
+VOLUME<span style=color:#f92672>[</span><span style=color:#e6db74>&#34;volume01&#34;</span>,<span style=color:#e6db74>&#34;volume02&#34;</span><span style=color:#f92672>]</span> <span style=color:#75715e># 匿名挂载，和外部一定有一个同步目录</span>
+
+CMD echo <span style=color:#e6db74>&#34;-----end-----&#34;</span>
+CMD /bin/bash
+
+<span style=color:#75715e># 使用</span>
+docker build -f dockerfile1 -t dc/centos .
+
+<span style=color:#75715e># 查看容器本地卷信息，测试文件是否同步</span>
+docker inspect -f <span style=color:#e6db74>&#34;{{.Monuts}}&#34;</span> id
+</code></pre></div><p>这种方式使用十分多，因为我们通常会构建自己的镜像。</p>
+<p>假设构建镜像的时候没有挂载卷，要手动镜像挂载，<code>-v 卷名:容器内路径</code>。</p>
+<h2 id=数据卷容器>数据卷容器<a hidden class=anchor aria-hidden=true href=#数据卷容器>#</a></h2>
+<p>多个<code>MySQL</code>实现数据共享。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>docker run -d -p 3310:3306 -v /etc/mysql/conf.d -v /var/lib/mysql -e MYSQL_ROOT_PASSWORD<span style=color:#f92672>=</span><span style=color:#ae81ff>123456</span> --name mysql01 mysql
+
+docker run -d -p 3310:3306 -e MYSQL_ROOT_PASSWORD<span style=color:#f92672>=</span><span style=color:#ae81ff>123456</span> --name mysql02 --volumes-from mysql01 mysql
+</code></pre></div><p>容器之间配置信息的传递，数据卷容器的生命周期一直持续到无人使用为止。</p>
+<p>一旦持久化到了本地，这个时候本地数据不会删除。</p>
+<h1 id=dockerfile>DockerFile<a hidden class=anchor aria-hidden=true href=#dockerfile>#</a></h1>
+<p>核心是用来构建<code>Docker</code>镜像的文件。是一个命令参数脚本。</p>
+<p>构建步骤：</p>
+<ol>
+<li>编写一个<code>Dockerfile</code>文件</li>
+<li><code>docker build</code>构建成为一个镜像</li>
+<li><code>docker run</code>运行镜像</li>
+<li><code>docker push</code>发布镜像(DockerHub、阿里云镜像仓库)</li>
+</ol>
+<h2 id=dockerfile构建过程>DockerFile构建过程<a hidden class=anchor aria-hidden=true href=#dockerfile构建过程>#</a></h2>
+<p><strong>基础知识</strong>：</p>
+<ol>
+<li>每个保留关键字(指令)都必须为大写字母</li>
+<li>执行顺序由上至下</li>
+<li><code>#</code>为注释</li>
+<li>每个指令都会创建提交一个新镜像层并提交</li>
+</ol>
+<p><code>DockerFile</code>面向开发。</p>
+<p><code>DockerFile</code>：构建文件，定义了一切的步骤，源代码。</p>
+<p><code>DockerImage</code>：通过DockerFile构建生成的镜像，最终发布和运行的产品。</p>
+<p><code>Docker</code>容器：镜像运行起来提供服务。</p>
+<h2 id=dockerfile指令>DockerFile指令<a hidden class=anchor aria-hidden=true href=#dockerfile指令>#</a></h2>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/image-20210312123413198.png alt=image-20210312123413198>
+</p>
+<h2 id=实战centos部署>实战centos部署<a hidden class=anchor aria-hidden=true href=#实战centos部署>#</a></h2>
+<p><code>DockerHub</code>大部分镜像都是由基础镜像<code>scratch</code>组成，然后配置需要的软件和配置。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#75715e># 1.编写DockerFile文件</span>
+FROM centos
+
+MAINTAINER dc&lt;1107762686@qq.com&gt;
+
+ENV MYPATH /usr/local
+
+WORKDIR $MYPATH
+
+RUN yum -y install vim
+RUN yum -y install net-tools
+
+EXPOSE <span style=color:#ae81ff>80</span>
+
+CMD echo $MYPATH
+CMD echo <span style=color:#e6db74>&#34;-----end-----&#34;</span>
+CMD /bin/bash
+
+<span style=color:#75715e># 2.通过文件构建镜像</span>
+docker build -f mydockerfile -t mycentos:1.0 .
+<span style=color:#75715e># 运行结果</span>
+Successfully built b8fab89ecdea
+Successfully tagged mycentos:1.0
+
+<span style=color:#75715e># 3.测试运行</span>
+docker run -it mycentos:1.0
+<span style=color:#75715e># 列出本地进行的变更历史</span>
+docker history image-id
+</code></pre></div><blockquote>
+<p>CMD 和 ENTRYPOINT 的区别</p>
+</blockquote>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>CMD					<span style=color:#75715e># 指定容器启动时要运行的命令，只有最后一个生效，且可被替代</span>
+ENTRYPOINT			<span style=color:#75715e># 同CMD，可以追加命令</span>
+</code></pre></div><p>测试<code>CMD</code></p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#75715e># 编写DockerFile文件</span>
+vim dockerfile-cmd-test
+FROM centos
+CMD <span style=color:#f92672>[</span><span style=color:#e6db74>&#34;ls&#34;</span>,<span style=color:#e6db74>&#34;-a&#34;</span><span style=color:#f92672>]</span>
+
+<span style=color:#75715e># 构建镜像</span>
+docker build -f dockerfile-cmd-test -t cmd-test .
+
+<span style=color:#75715e># RUN运行，发现`ls -a`命令生效</span>
+docker run <span style=color:#e6db74>`</span>id<span style=color:#e6db74>`</span>
+
+<span style=color:#75715e># 想追加一个命令 ls -al</span>
+docker run <span style=color:#e6db74>`</span>id<span style=color:#e6db74>`</span> -l <span style=color:#75715e># error</span>
+
+<span style=color:#75715e># cmd清理 -l 替换了CMD [&#34;ls&#34;,&#34;-a&#34;]命令，-l不是命令所以报错</span>
+</code></pre></div><p>测试<code>ENTRYPOINT</code></p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#75715e># 编写DockerFile文件</span>
+vim dockerfile-cmd-entrypoint
+FROM centos
+ENTRYPOINT <span style=color:#f92672>[</span><span style=color:#e6db74>&#34;ls&#34;</span>,<span style=color:#e6db74>&#34;-a&#34;</span><span style=color:#f92672>]</span>
+
+<span style=color:#75715e># 构建镜像</span>
+docker build -f dockerfile-cmd-entrypoint -t entrypoint-test .
+</code></pre></div><p><code>DockerFile</code>中很多命令都相似，我们需要了解其中的区别，最好的学习就是对比并测试。</p>
+<h2 id=实战tomcat部署>实战tomcat部署<a hidden class=anchor aria-hidden=true href=#实战tomcat部署>#</a></h2>
+<ol>
+<li>准备镜像文件，<code>tomcat</code>压缩包，<code>jdk</code>压缩包</li>
+<li>编写<code>DockerFile</code>文件，官方命名<code>Dockerfile</code>，<code>build</code>会自动寻找这个文件，不需要<code>-f</code>指定：</li>
+</ol>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>FROM centos
+
+MAINTAINER dc&lt;1107762686@qq.com&gt;
+
+COPY readme.txt /usr/local/readme.txt
+
+ADD apache-tomcat-9.0.22.tar.gz /usr/local
+ADD jdk-8u281-linux-x64.tar.gz /usr/local
+
+RUN yum -y install vim
+
+ENV MYPATH /usr/local
+
+WORKDIR $MYPATH
+
+ENV JAVA_HOME /usr/local/jdk-8u281
+ENV CLASS_PATH $JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+ENV CATALINA_HOME /usr/local/apache-tomcat-9.0.22
+ENV CATALINA_BASH /usr/local/apache-tomcat-9.0.22
+ENV PATH $PATH:$JAVA_HOME/bin:$CATALINA_HOME/lib:$CATALINA_HOME/bin
+
+EXPOSE <span style=color:#ae81ff>8080</span>
+
+CMD /usr/local/apache-tomcat-9.0.22/bin/startup.sh <span style=color:#f92672>&amp;&amp;</span> tail -F /usr/local/apache-tomcat-9.0.22/bin/logs/catalina.out
+</code></pre></div><p>3.构建镜像：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>docker build -t diy-tomcat .
+</code></pre></div><p>4.启动镜像：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>docker run -d -p 9090:8080 --name dc-tomcat -v /home/tomcat/test:/url/local/apache-tomcat-9.0.22/webapps/test -v /home/tomcat/tomcat-logs/:/usr/local/apache-tomcat-9.0.22/logs diy-tomcat
+</code></pre></div><p>5.进入容器：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>docker exec -it <span style=color:#e6db74>`</span>随意复制一段id<span style=color:#e6db74>`</span> /bin/bash
+</code></pre></div><p>6.访问测试：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>curl localhost:9090
+</code></pre></div><p>7.发布项目(做了卷挂载，直接在本地发布即可)</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>xml文件
+jsp文件
+</code></pre></div><p>项目部署成功。</p>
+<h2 id=发布镜像>发布镜像<a hidden class=anchor aria-hidden=true href=#发布镜像>#</a></h2>
+<blockquote>
+<p>DockerHub</p>
+</blockquote>
+<p>1.登录<code>DockerHub</code>：<a href=https://hub.docker.com/>Docker Hub</a>：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>docker login -u username -p password
+</code></pre></div><p>2.在服务器上提交镜像：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>docker tag <span style=color:#f92672>[</span>image-id/image-name:tag<span style=color:#f92672>]</span> new-image-name:tag
+docker push image-id:tag/image-name:tag
+</code></pre></div><blockquote>
+<p>aliyun镜像</p>
+</blockquote>
+<p>1.登录阿里云：<a href=https://www.aliyun.com/>阿里云-上云就上阿里云 (aliyun.com)</a></p>
+<p>2.进入容器镜像服务:<a href="https://www.aliyun.com/product/acr?spm=5176.10695662.1362911.1.48573417z7IhcP">容器镜像服务_镜像构建_镜像授权_镜像托管-阿里云 (aliyun.com)</a></p>
+<p>3.创建命名空间</p>
+<p>4.创建容器镜像</p>
+<p>5.参考官方文档</p>
+<h1 id=docker网络>Docker网络<a hidden class=anchor aria-hidden=true href=#docker网络>#</a></h1>
+<h2 id=docker0>Docker0<a hidden class=anchor aria-hidden=true href=#docker0>#</a></h2>
+<p>问题：<code>docker</code>是如何处理容器网络访问的？</p>
+<p>我们首先创建一个<code>tomcat</code>容器，利用学到的两类方法来试试。</p>
+<blockquote>
+<p>方式一，手动执行</p>
+</blockquote>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>docker run -d -P --name tomcat-01 tomcat
+docker exec -it tomcat-01 ip addr
+</code></pre></div><blockquote>
+<p>方式二，编写<code>DockerFile</code></p>
+</blockquote>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#75715e># DockerFile内容</span>
+FROM tomcat
+
+MAINTAINER dc&lt;1107762686@qq.com&gt;
+
+CMD docker run -d -P --name tomcat-01 tomcat
+CMD docker exec -it tomcat-01 ip addr
+
+<span style=color:#75715e># 构建镜像</span>
+docker build -f dockerfile -t tomcat-test .
+</code></pre></div><p><del>方法有误，稍后修改。</del></p>
+<p>容器启动的时候会得到一个<code>docker</code>分配的<code>eth@if262</code>ip地址。</p>
+<p>测试：<code>Linux</code>能<code>ping</code>通容器内部ip地址。</p>
+<blockquote>
+<p>原理</p>
+</blockquote>
+<p>每安装并启动一个<code>Docker</code>容器，<code>Docker</code>就会给其分配一个<code>ip</code>，只要安装了<code>Docker</code>，就会有一个<code>docker0</code>网卡。</p>
+<p><code>docker0</code>网卡使用桥接模式，使用<code>veth-pair</code>技术。</p>
+<p>再启动一个容器就会多一对网卡。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>7: veth4f1ae6f@if6
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>docker exec -it tomcat-02 ping <span style=color:#e6db74>`</span>ip<span style=color:#e6db74>`</span> <span style=color:#75715e>#tomcat-02可以ping通tomcat-01</span>
+<span style=color:#75715e># 容器之间可以互通</span>
+</code></pre></div><blockquote>
+<p>小结</p>
+</blockquote>
+<p><code>Docker</code>使用的是<code>Linux</code>的桥接，宿主机中是一个<code>Docker</code>容器的网桥。</p>
+<p><code>Docker</code>中所有的网络接口都是虚拟的，转发效率高。</p>
+<p>容器删除，则对应的一对网桥也被回收。</p>
+<h2 id=--link>&ndash;link<a hidden class=anchor aria-hidden=true href=#--link>#</a></h2>
+<blockquote>
+<p>思考场景</p>
+</blockquote>
+<p>编写了一个微服务，<code>database url=ip:</code>，项目不重启，数据库<code>ip</code>换掉，如何进行处理？</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>docker exec -it tomcat-02 ping tomcat-01 <span style=color:#75715e># 无法直接ping通</span>
+
+<span style=color:#75715e># 启动一个tomcat-03，并与tomcat-02连接</span>
+docker run -d -P --name tomcat-03 --link tomcat-02 tomcat
+<span style=color:#75715e># 实现通过名称ping通，但是反向无法ping通</span>
+<span style=color:#75715e># 其实就是tomcat-03在本地配置了tomcat-02</span>
+
+<span style=color:#75715e># 查看tomcat-03 hosts配置</span>
+docker exec -it tomcat-03 cat /etc/hosts
+</code></pre></div><p><code>--link</code>就是在<code>hosts</code>配置中增加了一个映射，已经不建议使用。</p>
+<p><code>docker0</code>问题：不支持容器名进行连接访问。</p>
+<h2 id=自定义网络>自定义网络<a hidden class=anchor aria-hidden=true href=#自定义网络>#</a></h2>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#75715e># 查看所有docker网络</span>
+docker network ls
+</code></pre></div><p><strong>网络模式</strong></p>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/image-20210312123612107.png alt=image-20210312123612107>
+</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#75715e># --net bridge 为默认参数</span>
+docker run -d -P --name tomcat-01 --net bridge tomcat
+
+<span style=color:#75715e># docker0特点：默认不能通过名称访问，通过 --link 打通连接</span>
+<span style=color:#75715e># 可以自定义一个网络</span>
+docker network create --driver bridge --subnet 192.168.0.0/16 --gateway 192.168.0.1 mynet
+
+<span style=color:#75715e># 查看网络概览</span>
+docker network ls
+
+<span style=color:#75715e># 查看详细信息</span>
+docker network inspect mynet
+
+<span style=color:#75715e># 使用自己的网络</span>
+docker run -d -P --name tomcat-mynet-01 --net mynet tomcat
+docker run -d -P --name tomcat-mynet-02 --net mynet tomcat
+
+<span style=color:#75715e># ping测试</span>
+docker exec -it tomcat-mynet-01 ping tomcat-mynet-02
+<span style=color:#75715e># 两者互相可ping通</span>
+</code></pre></div><p><strong>优点</strong>：</p>
+<p><code>redis</code>、<code>mysql</code>：不同集群使用不同网络，保证集群是安全和健康的。</p>
+<h2 id=网络连通>网络连通<a hidden class=anchor aria-hidden=true href=#网络连通>#</a></h2>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#75715e># 启动两个容器</span>
+docker run -d -P --name tomcat-01 tomcat
+docker run -d -P --name tomcat-02 tomcat
+
+<span style=color:#75715e># 已知tomcat-01与tomcat-02无法ping通</span>
+<span style=color:#75715e># 连接网络</span>
+docker network connect mynet tomcat-01
+docker network connect mynet tomcat-02
+
+<span style=color:#75715e># 查看 mynet</span>
+docker network inspect mynet
+<span style=color:#75715e># 其中包含了tomcat-01与tomcat-02</span>
+<span style=color:#75715e># 四个容器完美ping通</span>
+</code></pre></div><h2 id=实战redis集群部署>实战Redis集群部署<a hidden class=anchor aria-hidden=true href=#实战redis集群部署>#</a></h2>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#75715e># 使用脚本部署</span>
+docker network create redis --subnet 172.42.0.0/16
+
+<span style=color:#75715e># 通过脚本创建六个redis配置</span>
+<span style=color:#66d9ef>for</span> port in <span style=color:#66d9ef>$(</span>seq <span style=color:#ae81ff>1</span> 6<span style=color:#66d9ef>)</span>;
+<span style=color:#66d9ef>do</span>
+mkdir -p /mydata/redis/node-<span style=color:#e6db74>${</span>port<span style=color:#e6db74>}</span>/conf
+touch /mydata/redis/node-<span style=color:#e6db74>${</span>port<span style=color:#e6db74>}</span>/conf/redis.conf
+cat <span style=color:#e6db74>&lt;&lt; EOF &gt;/mydata/redis/node-${port}/conf/redis.conf
+</span><span style=color:#e6db74>port 6379
+</span><span style=color:#e6db74>bind 0.0.0.0
+</span><span style=color:#e6db74>cluster-enabled yes
+</span><span style=color:#e6db74>cluster-config-file nodes.conf
+</span><span style=color:#e6db74>cluster-node-timeout 5000
+</span><span style=color:#e6db74>cluster-announce-ip 172.42.0.1${port}
+</span><span style=color:#e6db74>cluster-announce-port 6379
+</span><span style=color:#e6db74>cluster-announce-bus-port 16379
+</span><span style=color:#e6db74>appendonly yes
+</span><span style=color:#e6db74>EOF</span>
+<span style=color:#66d9ef>done</span>
+
+docker run -p 637<span style=color:#e6db74>${</span>port<span style=color:#e6db74>}</span>:6379 -p 1637<span style=color:#e6db74>${</span>port<span style=color:#e6db74>}</span>:16379 --name redis-<span style=color:#e6db74>${</span>port<span style=color:#e6db74>}</span>
+-v /mydata/redis/node-<span style=color:#e6db74>${</span>port<span style=color:#e6db74>}</span>/data:/data
+-v /mydata/redis/node-<span style=color:#e6db74>${</span>port<span style=color:#e6db74>}</span>/conf/redis.conf:/etc/redis/redis.conf
+-d --net redis --ip 172.42.0.1<span style=color:#e6db74>${</span>port<span style=color:#e6db74>}</span> redis:5.0.9-alpine3.11 redis-server /etc/redis/redis.conf;
+
+<span style=color:#75715e># 1-6依次修改即可</span>
+docker run -p 6371:6379 -p 16371:16379 --name redis-1 <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>-v /mydata/redis/node-1/data:/data <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>-v /mydata/redis/node-1/conf/redis.conf:/etc/redis/redis.conf <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>-d --net redis --ip 172.42.0.11 redis:5.0.9-alpine3.11 redis-server /etc/redis/redis.conf
+
+<span style=color:#75715e># 进入容器</span>
+docker exec -it redis-1 /bin/sh <span style=color:#75715e># redis中为sh</span>
+
+<span style=color:#75715e># 创建集群</span>
+redis-cli --cluster create 172.42.0.11:6379 172.42.0.12:6379 172.42.0.13:6379 172.42.0.14:6379 172.42.0.15:6379 172.42.0.16:6379 --cluster-replicas <span style=color:#ae81ff>1</span>
+
+<span style=color:#75715e># 查看集群数量</span>
+redis-cli -c
+cluster info
+cluster nodes
+set a b
+get a <span style=color:#75715e># 第一次get会提示`Could not connect to Redis at 172.42.0.13:6379: Host is unreachable`</span>
+<span style=color:#75715e># 重新进入</span>
+redis-cli -c
+get a 
+<span style=color:#75715e># `Redirected to slot [15495] located at 172.42.0.14:6379</span>
+<span style=color:#e6db74>&#34;b&#34;</span><span style=color:#e6db74>`</span>
+
+cluster nodes
+<span style=color:#e6db74>`</span>redis-3状态为master,fail，redis-4状态为myself,master<span style=color:#e6db74>`</span>
+</code></pre></div><h2 id=springboot微服务打包docker镜像>SpringBoot微服务打包Docker镜像<a hidden class=anchor aria-hidden=true href=#springboot微服务打包docker镜像>#</a></h2>
+<ol>
+<li>构建<code>SpringBoot</code>项目</li>
+<li>打包应用</li>
+<li>编写<code>DockerFile</code></li>
+<li>构建镜像</li>
+<li>发布运行</li>
+</ol>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#75715e># DockerFile</span>
+<span style=color:#ae81ff>FROM java:8</span>
+
+<span style=color:#ae81ff>COPY *.jar /app.jar</span>
+
+<span style=color:#ae81ff>CMD [&#34;--server.port=8080&#34;]</span>
+
+<span style=color:#ae81ff>EXPOSE 8080</span>
+
+<span style=color:#ae81ff>ENTRYPOINT [&#34;java&#34;,&#34;-jar&#34;,&#34;/app.jar&#34;]</span>
+
+<span style=color:#75715e># 构建</span>
+<span style=color:#ae81ff>docker build -t image-name .</span>
+</code></pre></div><h1 id=docker-compose>Docker Compose<a hidden class=anchor aria-hidden=true href=#docker-compose>#</a></h1>
+<h2 id=概述>概述<a hidden class=anchor aria-hidden=true href=#概述>#</a></h2>
+<p>官方概述:<a href=https://docs.docker.com/compose/>Overview of Docker Compose | Docker Documentation</a></p>
+<p>轻松高效管理容器，定义运行多个容器。</p>
+<p>一键启动/停止服务。</p>
+<h2 id=三步骤>三步骤<a hidden class=anchor aria-hidden=true href=#三步骤>#</a></h2>
+<p>1.Define your app&rsquo;s environment with a <code>Dockerfile</code> so it can be reproduced anywhere.</p>
+<ul>
+<li>Dockerfile 保证我们的项目在任何地方可以运行</li>
+</ul>
+<p>2.Define the services that make up your app in <code>docker-compose.yml</code> so they can be run together in an isolated environment.</p>
+<ul>
+<li>services 什么是服务</li>
+<li>docker-compose.yml 文件应该怎么写</li>
+</ul>
+<p>3.Run <code>docker-compose up</code> and Compose starts and runs your entire app.</p>
+<ul>
+<li>启动项目</li>
+</ul>
+<p><strong>作用：批量容器编排</strong></p>
+<blockquote>
+<p>理解</p>
+</blockquote>
+<p><code>Compose </code>是 <code>Docker </code>官方开源项目，需要安装。</p>
+<p><code>Dockerfile</code>让程序在任何地方运行。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#f92672>version</span>: <span style=color:#e6db74>&#39;2.0&#39;</span>
+<span style=color:#f92672>services</span>:
+	<span style=color:#f92672>web</span>:
+		<span style=color:#f92672>build</span>: <span style=color:#ae81ff>.</span>
+		<span style=color:#f92672>ports</span>:
+		- <span style=color:#e6db74>&#34;5000:5000&#34;</span>
+		<span style=color:#f92672>volumes</span>:
+		- <span style=color:#ae81ff>.:/code</span>
+		- <span style=color:#ae81ff>logvolume01:/var/log</span>
+		<span style=color:#f92672>links</span>:
+		- <span style=color:#ae81ff>redis</span>
+	<span style=color:#f92672>redis</span>:
+		<span style=color:#f92672>image</span>: <span style=color:#ae81ff>redis</span>
+<span style=color:#f92672>volumes</span>:
+	<span style=color:#f92672>logvolume01</span>: {}
+</code></pre></div><p>docker-compose up 100个服务</p>
+<p><strong>Compose重要的两个概念</strong>：</p>
+<ul>
+<li>服务 services，容器、应用(web、redis、mysql&mldr;)</li>
+<li>项目 project，一组关联容器</li>
+</ul>
+<h2 id=安装docker-compose>安装Docker Compose<a hidden class=anchor aria-hidden=true href=#安装docker-compose>#</a></h2>
+<p>官方安装文档:<a href=https://docs.docker.com/compose/install/>Install Docker Compose | Docker Documentation</a></p>
+<p>1.下载</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=color:#75715e># 官方下载，从GitHub下载，巨慢</span>
+sudo curl -L <span style=color:#e6db74>&#34;https://github.com/docker/compose/releases/download/1.28.5/docker-compose-</span><span style=color:#66d9ef>$(</span>uname -s<span style=color:#66d9ef>)</span><span style=color:#e6db74>-</span><span style=color:#66d9ef>$(</span>uname -m<span style=color:#66d9ef>)</span><span style=color:#e6db74>&#34;</span> -o /usr/local/bin/docker-compose
+
+<span style=color:#75715e># 国内镜像</span>
+curl -L https://get.daocloud.io/docker/compose/releases/download/1.24.0/docker-compose-<span style=color:#e6db74>`</span>uname -s<span style=color:#e6db74>`</span>-<span style=color:#e6db74>`</span>uname -m<span style=color:#e6db74>`</span> &gt; /usr/local/bin/docker-compose
+
+<span style=color:#75715e># 查看是否下载成功</span>
+cd /usr/local/bin
+ls
+</code></pre></div><p>2.授权</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>chmod +x /usr/local/bin/docker-compose
+<span style=color:#75715e># 或</span>
+chmod <span style=color:#ae81ff>777</span> /usr/local/bin/docker-compose
+
+<span style=color:#75715e># 任意位置运行 docerk-compose version 查看是否成功</span>
+</code></pre></div><h2 id=初使用>初使用<a hidden class=anchor aria-hidden=true href=#初使用>#</a></h2>
+<p>使用教程：<a href=https://docs.docker.com/compose/gettingstarted/>Get started with Docker Compose | Docker Documentation</a></p>
+<p>1.创建项目文件夹</p>
+<p>2.项目文件夹下创建<code>app.py</code>文件，将官网代码复制过来：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>import</span> time
+
+<span style=color:#f92672>import</span> redis
+<span style=color:#f92672>from</span> flask <span style=color:#f92672>import</span> Flask
+
+app <span style=color:#f92672>=</span> Flask(__name__)
+cache <span style=color:#f92672>=</span> redis<span style=color:#f92672>.</span>Redis(host<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;redis&#39;</span>, port<span style=color:#f92672>=</span><span style=color:#ae81ff>6379</span>)
+
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>get_hit_count</span>():
+    retries <span style=color:#f92672>=</span> <span style=color:#ae81ff>5</span>
+    <span style=color:#66d9ef>while</span> <span style=color:#66d9ef>True</span>:
+        <span style=color:#66d9ef>try</span>:
+            <span style=color:#66d9ef>return</span> cache<span style=color:#f92672>.</span>incr(<span style=color:#e6db74>&#39;hits&#39;</span>)
+        <span style=color:#66d9ef>except</span> redis<span style=color:#f92672>.</span>exceptions<span style=color:#f92672>.</span>ConnectionError <span style=color:#66d9ef>as</span> exc:
+            <span style=color:#66d9ef>if</span> retries <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span>:
+                <span style=color:#66d9ef>raise</span> exc
+            retries <span style=color:#f92672>-=</span> <span style=color:#ae81ff>1</span>
+            time<span style=color:#f92672>.</span>sleep(<span style=color:#ae81ff>0.5</span>)
+
+<span style=color:#a6e22e>@app</span><span style=color:#f92672>.</span>route(<span style=color:#e6db74>&#39;/&#39;</span>)
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>hello</span>():
+    count <span style=color:#f92672>=</span> get_hit_count()
+    <span style=color:#66d9ef>return</span> <span style=color:#e6db74>&#39;Hello World! I have been seen </span><span style=color:#e6db74>{}</span><span style=color:#e6db74> times.</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#39;</span><span style=color:#f92672>.</span>format(count)
+</code></pre></div><p>3.创建<code>requirements.txt</code>依赖包文件</p>
+<p>4.创建<code>Dockerfile</code>：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>FROM python:3.7-alpine									<span style=color:#75715e># 基本环境包</span>
+WORKDIR /code											<span style=color:#75715e># 工作目录</span>
+ENV FLASK_APP<span style=color:#f92672>=</span>app.py									<span style=color:#75715e># 环境</span>
+ENV FLASK_RUN_HOST<span style=color:#f92672>=</span>0.0.0.0
+RUN apk add --no-cache gcc musl-dev linux-headers		<span style=color:#75715e># 运行</span>
+COPY requirements.txt requirements.txt					<span style=color:#75715e># 拷贝文件</span>
+RUN pip install -r requirements.txt						<span style=color:#75715e># 使用pip安装</span>
+EXPOSE 5000												<span style=color:#75715e># 暴露端口</span>
+COPY . .												<span style=color:#75715e># 拷贝当前目录</span>
+CMD <span style=color:#f92672>[</span><span style=color:#e6db74>&#34;flask&#34;</span>, <span style=color:#e6db74>&#34;run&#34;</span><span style=color:#f92672>]</span>									<span style=color:#75715e># 运行</span>
+</code></pre></div><p>5.在Compose文件中定义服务：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#75715e># 以前我们需要docker run逐个运行</span>
+<span style=color:#75715e># 现在创建docker-compose.yml文件</span>
+<span style=color:#f92672>version</span>: <span style=color:#e6db74>&#34;3.9&#34;</span>					<span style=color:#75715e># 版本</span>
+<span style=color:#ae81ff>services:						# 服务</span>
+  <span style=color:#f92672>web</span>:
+    <span style=color:#f92672>build</span>: <span style=color:#ae81ff>.</span>
+    <span style=color:#f92672>ports</span>:
+      - <span style=color:#e6db74>&#34;5000:5000&#34;</span>
+  <span style=color:#f92672>redis</span>:
+    <span style=color:#f92672>image</span>: <span style=color:#e6db74>&#34;redis:alpine&#34;</span>
+</code></pre></div><p>6.使用<code>Compose</code>构建并运行应用：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>docker-compose up <span style=color:#75715e># docker-compose up -d 后台运行</span>
+<span style=color:#75715e># 我这里报错了，报错如下：</span>
+ERROR: Version in <span style=color:#e6db74>&#34;./docker-compose.yml&#34;</span> is unsupported. You might be seeing this error because you<span style=color:#960050;background-color:#1e0010>&#39;</span>re using the wrong Compose file version. Either specify a supported version <span style=color:#f92672>(</span>e.g <span style=color:#e6db74>&#34;2.2&#34;</span> or <span style=color:#e6db74>&#34;3.3&#34;</span><span style=color:#f92672>)</span> and place your service definitions under the <span style=color:#e6db74>`</span>services<span style=color:#e6db74>`</span> key, or omit the <span style=color:#e6db74>`</span>version<span style=color:#e6db74>`</span> key and place your service definitions at the root of the file to use version 1.
+For more on the Compose file format versions, see https://docs.docker.com/compose/compose-file/
+
+<span style=color:#75715e># 解决方案，修改docker-compose.yml文件中的版本</span>
+version: <span style=color:#e6db74>&#34;3.9&#34;</span>  -&gt;  version: <span style=color:#e6db74>&#34;3.3&#34;</span>
+
+<span style=color:#75715e># 项目部署过程中出现了其它错误</span>
+docker-compose build <span style=color:#75715e># 先build一下</span>
+docker-compose up <span style=color:#75715e># 成功启动</span>
+
+<span style=color:#75715e># 测试，每访问一次计数器+1</span>
+localhost:5000 <span style=color:#75715e># 浏览器键入</span>
+curl localhost:5000 <span style=color:#75715e># curl请求</span>
+</code></pre></div><p>7.停止：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#75715e># 在yaml文件所在目录下运行命令</span>
+docker-compose stop
+Ctrl+C
+</code></pre></div><p><strong>流程：</strong></p>
+<p>1.创建网络</p>
+<p>2.执行<code>Docker-compose.yml</code></p>
+<p>3.启动服务</p>
+<p>默认规则：</p>
+<p>自动拉取镜像：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#f92672>[</span>root@localhost ~<span style=color:#f92672>]</span><span style=color:#75715e># docker service ls</span>
+Error response from daemon: This node is not a swarm manager. Use <span style=color:#e6db74>&#34;docker swarm init&#34;</span> or <span style=color:#e6db74>&#34;docker swarm join&#34;</span> to connect this node to swarm and try again.
+</code></pre></div><p>**命名规则：**默认服务名 文件名_服务名_num。A B _num 副本数量。集群状态下不可能只有一个运行实例。弹性：10 HA 高可用、高并发。<code>kunectl service</code>负载均衡。</p>
+<p>**网络规则：**使用命令<code>docker network ls</code>查看，默认名称composetest_default。项目中的内容都在同一网络，可通过域名访问。</p>
+<p><strong>小结：</strong></p>
+<p>1.应用，如<code>app.py</code></p>
+<p>2.<code>Dockerfile</code>应用打包为镜像</p>
+<p>3.<code>Docker-compose.yml</code>文件(定义整个服务、需要的环境)。完整的上线服务</p>
+<p>4.启动<code>compose</code>项目(<code>docker-compose up</code>)</p>
+<h2 id=yaml规则>yaml规则<a hidden class=anchor aria-hidden=true href=#yaml规则>#</a></h2>
+<p>官方示例:<a href=https://docs.docker.com/compose/compose-file/compose-file-v3/>Compose file version 3 reference | Docker Documentation</a></p>
+<p><code>docker-compose.yml</code>是核心。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#75715e># 只有三层</span>
+
+<span style=color:#f92672>version</span>: <span style=color:#e6db74>&#39;&#39;</span> <span style=color:#75715e># 版本</span>
+<span style=color:#f92672>services</span>: <span style=color:#75715e># 服务</span>
+	<span style=color:#f92672>服务1</span>: <span style=color:#ae81ff>web</span>
+		<span style=color:#75715e># 服务配置</span>
+		<span style=color:#ae81ff>images</span>
+		<span style=color:#ae81ff>build</span>
+		<span style=color:#ae81ff>network</span>
+		<span style=color:#ae81ff>...</span>
+	<span style=color:#f92672>服务2</span>: <span style=color:#ae81ff>redis</span>
+	<span style=color:#ae81ff>...</span>
+<span style=color:#75715e># 其他配置 网络/卷/全局规则</span>
+<span style=color:#f92672>volumes</span>:
+<span style=color:#f92672>networks</span>:
+<span style=color:#f92672>configs</span>:
+</code></pre></div><p><code>depends_on</code></p>
+<p>Simple example：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#f92672>version</span>: <span style=color:#e6db74>&#34;3.9&#34;</span>
+<span style=color:#f92672>services</span>:
+  <span style=color:#f92672>web</span>:
+    <span style=color:#f92672>build</span>: <span style=color:#ae81ff>.</span>
+    <span style=color:#ae81ff>depends_on:			# 依赖于db和redis</span>
+      - <span style=color:#ae81ff>db</span>
+      - <span style=color:#ae81ff>redis</span>
+  <span style=color:#f92672>redis</span>:
+    <span style=color:#f92672>image</span>: <span style=color:#ae81ff>redis</span>
+  <span style=color:#f92672>db</span>:
+    <span style=color:#f92672>image</span>: <span style=color:#ae81ff>postgres</span>
+<span style=color:#75715e># 启动顺序：web --&gt; redis --&gt; db</span>
+</code></pre></div><blockquote>
+<p>There are several things to be aware of when using <code>depends_on</code>:</p>
+<ul>
+<li><code>depends_on</code> does not wait for <code>db</code> and <code>redis</code> to be “ready” before starting <code>web</code> - only until they have been started. If you need to wait for a service to be ready, see <a href=https://docs.docker.com/compose/startup-order/>Controlling startup order</a> for more on this problem and strategies for solving it.</li>
+<li>Version 3 no longer supports the <code>condition</code> form of <code>depends_on</code>.</li>
+<li>The <code>depends_on</code> option is ignored when <a href=https://docs.docker.com/engine/reference/commandline/stack_deploy/>deploying a stack in swarm mode</a> with a version 3 Compose file.</li>
+</ul>
+</blockquote>
+<p><strong>deploy</strong></p>
+<blockquote>
+<p>Added in <a href=https://docs.docker.com/compose/compose-file/compose-versioning/#version-3>version 3</a> file format.</p>
+</blockquote>
+<p>Specify configuration related to the deployment and running of services. This only takes effect when deploying to a <a href=https://docs.docker.com/engine/swarm/>swarm</a> with <a href=https://docs.docker.com/engine/reference/commandline/stack_deploy/>docker stack deploy</a>, and is ignored by <code>docker-compose up</code> and <code>docker-compose run</code>.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#f92672>version</span>: <span style=color:#e6db74>&#34;3.9&#34;</span>
+<span style=color:#f92672>services</span>:
+  <span style=color:#f92672>redis</span>:
+    <span style=color:#f92672>image</span>: <span style=color:#ae81ff>redis:alpine</span>
+    <span style=color:#f92672>deploy</span>:
+      <span style=color:#f92672>replicas</span>: <span style=color:#ae81ff>6</span>					<span style=color:#75715e># 副本</span>
+      <span style=color:#f92672>placement</span>:
+        <span style=color:#f92672>max_replicas_per_node</span>: <span style=color:#ae81ff>1</span>
+      <span style=color:#f92672>update_config</span>:
+        <span style=color:#f92672>parallelism</span>: <span style=color:#ae81ff>2</span>
+        <span style=color:#f92672>delay</span>: <span style=color:#ae81ff>10s</span>
+      <span style=color:#f92672>restart_policy</span>:
+        <span style=color:#f92672>condition</span>: <span style=color:#66d9ef>on</span>-<span style=color:#ae81ff>failure</span>
+</code></pre></div><h2 id=部署wp博客>部署wp博客<a hidden class=anchor aria-hidden=true href=#部署wp博客>#</a></h2>
+<p>官方文档部署WordPress博客:<a href=https://docs.docker.com/samples/wordpress/>Quickstart: Compose and WordPress | Docker Documentation</a></p>
+<p>1.创建一个空文件夹，此处命名为<code>my_wordpress</code></p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>mkdir my_wordpress
+</code></pre></div><p>2.切换到对应目录</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>cd my_wordpress/
+</code></pre></div><p>3.创建<code>docker-compose.yml</code>文件</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#f92672>version</span>: <span style=color:#e6db74>&#34;3.3&#34;</span>
+    
+<span style=color:#f92672>services</span>:
+  <span style=color:#f92672>db</span>:
+    <span style=color:#f92672>image</span>: <span style=color:#ae81ff>mysql:5.7</span>
+    <span style=color:#f92672>volumes</span>:
+      - <span style=color:#ae81ff>db_data:/var/lib/mysql</span>
+    <span style=color:#f92672>restart</span>: <span style=color:#ae81ff>always</span>
+    <span style=color:#f92672>environment</span>:
+      <span style=color:#f92672>MYSQL_ROOT_PASSWORD</span>: <span style=color:#ae81ff>somewordpress</span>
+      <span style=color:#f92672>MYSQL_DATABASE</span>: <span style=color:#ae81ff>wordpress</span>
+      <span style=color:#f92672>MYSQL_USER</span>: <span style=color:#ae81ff>wordpress</span>
+      <span style=color:#f92672>MYSQL_PASSWORD</span>: <span style=color:#ae81ff>wordpress</span>
+    
+  <span style=color:#f92672>wordpress</span>:
+    <span style=color:#f92672>depends_on</span>:
+      - <span style=color:#ae81ff>db</span>
+    <span style=color:#f92672>image</span>: <span style=color:#ae81ff>wordpress:latest</span>
+    <span style=color:#f92672>ports</span>:
+      - <span style=color:#e6db74>&#34;8000:80&#34;</span>
+    <span style=color:#f92672>restart</span>: <span style=color:#ae81ff>always</span>
+    <span style=color:#f92672>environment</span>:
+      <span style=color:#f92672>WORDPRESS_DB_HOST</span>: <span style=color:#ae81ff>db:3306</span>
+      <span style=color:#f92672>WORDPRESS_DB_USER</span>: <span style=color:#ae81ff>wordpress</span>
+      <span style=color:#f92672>WORDPRESS_DB_PASSWORD</span>: <span style=color:#ae81ff>wordpress</span>
+      <span style=color:#f92672>WORDPRESS_DB_NAME</span>: <span style=color:#ae81ff>wordpress</span>
+<span style=color:#f92672>volumes</span>:
+  <span style=color:#f92672>db_data</span>: {}
+</code></pre></div><blockquote>
+<p><strong>Notes</strong>:</p>
+<ul>
+<li>The docker volume <code>db_data</code> persists any updates made by WordPress to the database. <a href=https://docs.docker.com/storage/volumes/>Learn more about docker volumes</a></li>
+<li>WordPress Multisite works only on ports <code>80</code> and <code>443</code>.</li>
+</ul>
+</blockquote>
+<p>4.构建项目</p>
+<p>Now, run <code>docker-compose up -d</code> from your project directory.</p>
+<p>This runs <a href=https://docs.docker.com/compose/reference/up/><code>docker-compose up</code></a> in detached mode, pulls the needed Docker images, and starts the wordpress and database containers.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>$ docker-compose up -d
+</code></pre></div><blockquote>
+<p><strong>Note</strong>: WordPress Multisite works only on ports <code>80</code> and/or <code>443</code>. If you get an error message about binding <code>0.0.0.0</code> to port <code>80</code> or <code>443</code> (depending on which one you specified), it is likely that the port you configured for WordPress is already in use by another service.</p>
+</blockquote>
+<p>5.开始安装</p>
+<p>经过第4步后，访问<code>localhost:8000</code>端口即可设置博客。</p>
+<h2 id=实战>实战<a hidden class=anchor aria-hidden=true href=#实战>#</a></h2>
+<p>1.编写项目微服务</p>
+<p>2.<code>Dockefile</code>构建镜像</p>
+<p>3.<code>docker-compose.yaml</code>编排项目</p>
+<p>4.<code>docker-compose up</code></p>
+<p>5.<code>docker-compose up --build</code>项目重新部署打包</p>
+<h1 id=docker-swarm>Docker Swarm<a hidden class=anchor aria-hidden=true href=#docker-swarm>#</a></h1>
+<p>Docker Swarm官方文档:<a href=https://docs.docker.com/engine/swarm/>Swarm mode overview | Docker Documentation</a></p>
+<h2 id=节点如何工作>节点如何工作：<a hidden class=anchor aria-hidden=true href=#节点如何工作>#</a></h2>
+<p>Docker Engine 1.12 introduces swarm mode that enables you to create a cluster of one or more Docker Engines called a swarm. A swarm consists of one or more nodes: physical or virtual machines running Docker Engine 1.12 or later in swarm mode.</p>
+<p>There are two types of nodes: <a href=https://docs.docker.com/engine/swarm/how-swarm-mode-works/nodes/#manager-nodes><strong>managers</strong></a> and <a href=https://docs.docker.com/engine/swarm/how-swarm-mode-works/nodes/#worker-nodes><strong>workers</strong></a>.</p>
+<p><img loading=lazy src=https://docs.docker.com/engine/swarm/images/swarm-diagram.png alt="Swarm mode cluster">
+</p>
+<p>If you haven’t already, read through the <a href=https://docs.docker.com/engine/swarm/>swarm mode overview</a> and <a href=https://docs.docker.com/engine/swarm/key-concepts/>key concepts</a>.</p>
+<h2 id=管理与工作节点>管理与工作节点<a hidden class=anchor aria-hidden=true href=#管理与工作节点>#</a></h2>
+<h3 id=管理节点>管理节点<a hidden class=anchor aria-hidden=true href=#管理节点>#</a></h3>
+<p>Manager nodes handle cluster management tasks:</p>
+<ul>
+<li>maintaining cluster state</li>
+<li>scheduling services</li>
+<li>serving swarm mode <a href=https://docs.docker.com/engine/api/>HTTP API endpoints</a></li>
+</ul>
+<p>Using a <a href=https://raft.github.io/raft.pdf>Raft</a> implementation, the managers maintain a consistent internal state of the entire swarm and all the services running on it. For testing purposes it is OK to run a swarm with a single manager. If the manager in a single-manager swarm fails, your services continue to run, but you need to create a new cluster to recover.</p>
+<p>To take advantage of swarm mode’s fault-tolerance features, Docker recommends you implement an odd number of nodes according to your organization’s high-availability requirements. When you have multiple managers you can recover from the failure of a manager node without downtime.</p>
+<ul>
+<li>
+<p>A three-manager swarm tolerates a maximum loss of one manager.</p>
+</li>
+<li>
+<p>A five-manager swarm tolerates a maximum simultaneous loss of two manager nodes.</p>
+</li>
+<li>
+<p>An <code>N</code> manager cluster tolerates the loss of at most <code>(N-1)/2</code> managers.</p>
+</li>
+<li>
+<p>Docker recommends a maximum of seven manager nodes for a swarm.</p>
+<blockquote>
+<p><strong>Important Note</strong>: Adding more managers does NOT mean increased scalability or higher performance. In general, the opposite is true.</p>
+</blockquote>
+</li>
+</ul>
+<h3 id=工作节点>工作节点<a hidden class=anchor aria-hidden=true href=#工作节点>#</a></h3>
+<p>Worker nodes are also instances of Docker Engine whose sole purpose is to execute containers. Worker nodes don’t participate in the Raft distributed state, make scheduling decisions, or serve the swarm mode HTTP API.</p>
+<p>You can create a swarm of one manager node, but you cannot have a worker node without at least one manager node. By default, all managers are also workers. In a single manager node cluster, you can run commands like <code>docker service create</code> and the scheduler places all tasks on the local Engine.</p>
+<p>To prevent the scheduler from placing tasks on a manager node in a multi-node swarm, set the availability for the manager node to <code>Drain</code>. The scheduler gracefully stops tasks on nodes in <code>Drain</code> mode and schedules the tasks on an <code>Active</code> node. The scheduler does not assign new tasks to nodes with <code>Drain</code> availability.</p>
+<p>Refer to the <a href=https://docs.docker.com/engine/reference/commandline/node_update/><code>docker node update</code></a> command line reference to see how to change node availability.</p>
+<h2 id=raft>Raft<a hidden class=anchor aria-hidden=true href=#raft>#</a></h2>
+<p>图中有一个<code>Raft Consensus Group</code>的概念，我们来查阅一下资料。</p>
+<p><code>Raft</code>:一种新的分布式协议研究，为真实世界应用建立的协议，主要注重协议落地性和可理解性。保证大多数节点存活才可使用。</p>
+<p>关于分布式系统的Raft算法讲解:<a href=https://www.jdon.com/artichect/raft.html>分布式系统的Raft算法 - 解道Jdon</a></p>
+<p>Raft算法详解:<a href=https://my.oschina.net/u/3550665/blog/4367046>图解：什么是Raft算法？ - 无敌码龙的个人空间 - OSCHINA - 中文开源技术交流社区</a></p>
+<h2 id=命令>命令<a hidden class=anchor aria-hidden=true href=#命令>#</a></h2>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#75715e># 帮助命令</span>
+docker swarm --help
+
+Usage:  docker swarm COMMAND
+
+Manage Swarm
+
+Commands:
+  ca          Display and rotate the root CA
+  init        Initialize a swarm
+  join        Join a swarm as a node and/or manager
+  join-token  Manage join tokens
+  leave       Leave the swarm
+  unlock      Unlock swarm
+  unlock-key  Manage the unlock key
+  update      Update the swarm
+  
+docker swarm init			<span style=color:#75715e># 初始化节点</span>
+docker swarm join			<span style=color:#75715e># 加入节点</span>
+<span style=color:#75715e># 获取令牌</span>
+docker swarm join-token manager
+docker swarm join-token worker
+docker node ls 				<span style=color:#75715e># 查看节点</span>
+</code></pre></div><h2 id=具体使用>具体使用<a hidden class=anchor aria-hidden=true href=#具体使用>#</a></h2>
+<p>服务无感升级为灰度发布(也称金丝雀发布)。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>docker run														<span style=color:#75715e># 容器启动，不具有扩缩容功能</span>
+docker service 服务											   <span style=color:#75715e># 能实现扩缩容及滚动更新</span>
+docker service create -p 8888:80 --name my-nginx nginx
+<span style=color:#75715e># 查看服务</span>
+docker service ps my-nginx
+docker service ls
+docker service inspect my-nginx
+<span style=color:#75715e># 创建副本</span>
+docker service update --replicas <span style=color:#ae81ff>3</span> my-nginx
+docker service update --replicas <span style=color:#ae81ff>1</span> my-nginx 				    <span style=color:#75715e># 更新为1个服务</span>
+docker service scale my-nginx<span style=color:#f92672>=</span>5									<span style=color:#75715e># 动态扩缩容，与update效果相同</span>
+docker service rm my-nginx
+</code></pre></div><h2 id=概念总结>概念总结<a hidden class=anchor aria-hidden=true href=#概念总结>#</a></h2>
+<h3 id=swarm>Swarm<a hidden class=anchor aria-hidden=true href=#swarm>#</a></h3>
+<p>集群的管理和编号。<code>docker</code>可以初始化一个<code>swarm</code>集群，其它节点可以加入。(<code>manager、worker</code>)</p>
+<h3 id=node>Node<a hidden class=anchor aria-hidden=true href=#node>#</a></h3>
+<p>就是一个<code>docker</code>节点，多个节点组成一个网络集群。</p>
+<h3 id=service>Service<a hidden class=anchor aria-hidden=true href=#service>#</a></h3>
+<p>任务，可以在<code>manager</code>或<code>worker</code>来运行。用户访问的其实就是<code>service</code>，这是集群的核心。</p>
+<h3 id=task>Task<a hidden class=anchor aria-hidden=true href=#task>#</a></h3>
+<p>容器内命令，细节任务。</p>
+<h3 id=调整service运行方式>调整service运行方式<a hidden class=anchor aria-hidden=true href=#调整service运行方式>#</a></h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>docker service create --mode replicated --name my-centos centos			<span style=color:#75715e># 仅在副本运行</span>
+docker service create --mode global --name haha alpine ping baidu.com	<span style=color:#75715e># 全局运行</span>
+</code></pre></div><h3 id=拓展>拓展<a hidden class=anchor aria-hidden=true href=#拓展>#</a></h3>
+<p>网络模式：&ldquo;PublishMode&rdquo;:&ldquo;ingress&rdquo;</p>
+<p>Swarm:</p>
+<p><code>Overlay</code>:网络变成一个整体</p>
+<p><code>ingress</code>:具有负载均衡功能的特殊<code>Overlay</code>网络，</p>
+<h1 id=docker-stack>Docker Stack<a hidden class=anchor aria-hidden=true href=#docker-stack>#</a></h1>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>docker-compose			<span style=color:#75715e># 单机部署项目</span>
+docker-compose up -d wordpress.yaml 
+docker stack			<span style=color:#75715e># 集群部署</span>
+docker stack deploy wordpress.yaml
+</code></pre></div><h1 id=docker-secret>Docker Secret<a hidden class=anchor aria-hidden=true href=#docker-secret>#</a></h1>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>Commands:
+  create      Create a secret from a file or STDIN as content
+  inspect     Display detailed information on one or more secrets
+  ls          List secrets
+  rm          Remove one or more secrets
+</code></pre></div><h1 id=docker-config>Docker Config<a hidden class=anchor aria-hidden=true href=#docker-config>#</a></h1>
+<pre tabindex=0><code>Commands:
+  create      Create a config from a file or STDIN
+  inspect     Display detailed information on one or more configs
+  ls          List configs
+  rm          Remove one or more configs
+</code></pre><blockquote>
+<p>本文链接：<a href=https://oopsdc.tk/post/docker/>Docker | Atmet (oopsdc.tk)</a></p>
+<p>文章许可：本文采用<a href=https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh>CC BY-NC-SA 4.0</a>许可协议，转载请注明出处。</p>
+</blockquote>
+</div>
+<footer class=post-footer>
+<ul class=post-tags>
+<li><a href=https://examplesite.com/tags/daily/>Daily</a></li>
+</ul>
+<nav class=paginav>
+<a class=prev href=https://examplesite.com/post/%E7%BD%91%E7%AB%99%E9%95%9C%E5%83%8F%E5%85%8B%E9%9A%86/>
+<span class=title>« Prev Page</span>
+<br>
+<span>网站镜像克隆</span>
+</a>
+<a class=next href=https://examplesite.com/post/golang/>
+<span class=title>Next Page »</span>
+<br>
+<span>Golang</span>
+</a>
+</nav>
+<div class=share-buttons>
+<a target=_blank rel="noopener noreferrer" aria-label="share Docker on twitter" href="https://twitter.com/intent/tweet/?text=Docker&url=https%3a%2f%2fexamplesite.com%2fpost%2fdocker%2f&hashtags=Daily"><svg viewBox="0 0 512 512"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM195.519 424.544c135.939.0 210.268-112.643 210.268-210.268.0-3.218.0-6.437-.153-9.502 14.406-10.421 26.973-23.448 36.935-38.314-13.18 5.824-27.433 9.809-42.452 11.648 15.326-9.196 26.973-23.602 32.49-40.92-14.252 8.429-30.038 14.56-46.896 17.931-13.487-14.406-32.644-23.295-53.946-23.295-40.767.0-73.87 33.104-73.87 73.87.0 5.824.613 11.494 1.992 16.858-61.456-3.065-115.862-32.49-152.337-77.241-6.284 10.881-9.962 23.601-9.962 37.088.0 25.594 13.027 48.276 32.95 61.456-12.107-.307-23.448-3.678-33.41-9.196v.92c0 35.862 25.441 65.594 59.311 72.49-6.13 1.686-12.72 2.606-19.464 2.606-4.751.0-9.348-.46-13.946-1.38 9.349 29.426 36.628 50.728 68.965 51.341-25.287 19.771-57.164 31.571-91.8 31.571-5.977.0-11.801-.306-17.625-1.073 32.337 21.15 71.264 33.41 112.95 33.41z"/></svg>
+</a>
+<a target=_blank rel="noopener noreferrer" aria-label="share Docker on linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fexamplesite.com%2fpost%2fdocker%2f&title=Docker&summary=Docker&source=https%3a%2f%2fexamplesite.com%2fpost%2fdocker%2f"><svg viewBox="0 0 512 512"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM160.461 423.278V197.561h-75.04v225.717h75.04zm270.539.0V293.839c0-69.333-37.018-101.586-86.381-101.586-39.804.0-57.634 21.891-67.617 37.266v-31.958h-75.021c.995 21.181.0 225.717.0 225.717h75.02V297.222c0-6.748.486-13.492 2.474-18.315 5.414-13.475 17.767-27.434 38.494-27.434 27.135.0 38.007 20.707 38.007 51.037v120.768H431zM123.448 88.722C97.774 88.722 81 105.601 81 127.724c0 21.658 16.264 39.002 41.455 39.002h.484c26.165.0 42.452-17.344 42.452-39.002-.485-22.092-16.241-38.954-41.943-39.002z"/></svg>
+</a>
+<a target=_blank rel="noopener noreferrer" aria-label="share Docker on reddit" href="https://reddit.com/submit?url=https%3a%2f%2fexamplesite.com%2fpost%2fdocker%2f&title=Docker"><svg viewBox="0 0 512 512"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM446 265.638c0-22.964-18.616-41.58-41.58-41.58-11.211.0-21.361 4.457-28.841 11.666-28.424-20.508-67.586-33.757-111.204-35.278l18.941-89.121 61.884 13.157c.756 15.734 13.642 28.29 29.56 28.29 16.407.0 29.706-13.299 29.706-29.701.0-16.403-13.299-29.702-29.706-29.702-11.666.0-21.657 6.792-26.515 16.578l-69.105-14.69c-1.922-.418-3.939-.042-5.585 1.036-1.658 1.073-2.811 2.761-3.224 4.686l-21.152 99.438c-44.258 1.228-84.046 14.494-112.837 35.232-7.468-7.164-17.589-11.591-28.757-11.591-22.965.0-41.585 18.616-41.585 41.58.0 16.896 10.095 31.41 24.568 37.918-.639 4.135-.99 8.328-.99 12.576.0 63.977 74.469 115.836 166.33 115.836s166.334-51.859 166.334-115.836c0-4.218-.347-8.387-.977-12.493 14.564-6.47 24.735-21.034 24.735-38.001zM326.526 373.831c-20.27 20.241-59.115 21.816-70.534 21.816-11.428.0-50.277-1.575-70.522-21.82-3.007-3.008-3.007-7.882.0-10.889 3.003-2.999 7.882-3.003 10.885.0 12.777 12.781 40.11 17.317 59.637 17.317 19.522.0 46.86-4.536 59.657-17.321 3.016-2.999 7.886-2.995 10.885.008 3.008 3.011 3.003 7.882-.008 10.889zm-5.23-48.781c-16.373.0-29.701-13.324-29.701-29.698.0-16.381 13.328-29.714 29.701-29.714 16.378.0 29.706 13.333 29.706 29.714.0 16.374-13.328 29.698-29.706 29.698zM160.91 295.348c0-16.381 13.328-29.71 29.714-29.71 16.369.0 29.689 13.329 29.689 29.71.0 16.373-13.32 29.693-29.689 29.693-16.386.0-29.714-13.32-29.714-29.693z"/></svg>
+</a>
+<a target=_blank rel="noopener noreferrer" aria-label="share Docker on facebook" href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fexamplesite.com%2fpost%2fdocker%2f"><svg viewBox="0 0 512 512"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H342.978V319.085h66.6l12.672-82.621h-79.272v-53.617c0-22.603 11.073-44.636 46.58-44.636H425.6v-70.34s-32.71-5.582-63.982-5.582c-65.288.0-107.96 39.569-107.96 111.204v62.971h-72.573v82.621h72.573V512h-191.104c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892z"/></svg>
+</a>
+<a target=_blank rel="noopener noreferrer" aria-label="share Docker on whatsapp" href="https://api.whatsapp.com/send?text=Docker%20-%20https%3a%2f%2fexamplesite.com%2fpost%2fdocker%2f"><svg viewBox="0 0 512 512"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zm-58.673 127.703c-33.842-33.881-78.847-52.548-126.798-52.568-98.799.0-179.21 80.405-179.249 179.234-.013 31.593 8.241 62.428 23.927 89.612l-25.429 92.884 95.021-24.925c26.181 14.28 55.659 21.807 85.658 21.816h.074c98.789.0 179.206-80.413 179.247-179.243.018-47.895-18.61-92.93-52.451-126.81zM263.976 403.485h-.06c-26.734-.01-52.954-7.193-75.828-20.767l-5.441-3.229-56.386 14.792 15.05-54.977-3.542-5.637c-14.913-23.72-22.791-51.136-22.779-79.287.033-82.142 66.867-148.971 149.046-148.971 39.793.014 77.199 15.531 105.329 43.692 28.128 28.16 43.609 65.592 43.594 105.4-.034 82.149-66.866 148.983-148.983 148.984zm81.721-111.581c-4.479-2.242-26.499-13.075-30.604-14.571-4.105-1.495-7.091-2.241-10.077 2.241-2.986 4.483-11.569 14.572-14.182 17.562-2.612 2.988-5.225 3.364-9.703 1.12-4.479-2.241-18.91-6.97-36.017-22.23C231.8 264.15 222.81 249.484 220.198 245s-.279-6.908 1.963-9.14c2.016-2.007 4.48-5.232 6.719-7.847 2.24-2.615 2.986-4.484 4.479-7.472 1.493-2.99.747-5.604-.374-7.846-1.119-2.241-10.077-24.288-13.809-33.256-3.635-8.733-7.327-7.55-10.077-7.688-2.609-.13-5.598-.158-8.583-.158-2.986.0-7.839 1.121-11.944 5.604-4.105 4.484-15.675 15.32-15.675 37.364.0 22.046 16.048 43.342 18.287 46.332 2.24 2.99 31.582 48.227 76.511 67.627 10.685 4.615 19.028 7.371 25.533 9.434 10.728 3.41 20.492 2.929 28.209 1.775 8.605-1.285 26.499-10.833 30.231-21.295 3.732-10.464 3.732-19.431 2.612-21.298-1.119-1.869-4.105-2.99-8.583-5.232z"/></svg>
+</a>
+<a target=_blank rel="noopener noreferrer" aria-label="share Docker on telegram" href="https://telegram.me/share/url?text=Docker&url=https%3a%2f%2fexamplesite.com%2fpost%2fdocker%2f"><svg viewBox="2 2 28 28"><path d="M26.49 29.86H5.5a3.37 3.37.0 01-2.47-1 3.35 3.35.0 01-1-2.47V5.48A3.36 3.36.0 013 3 3.37 3.37.0 015.5 2h21A3.38 3.38.0 0129 3a3.36 3.36.0 011 2.46V26.37a3.35 3.35.0 01-1 2.47 3.38 3.38.0 01-2.51 1.02zm-5.38-6.71a.79.79.0 00.85-.66L24.73 9.24a.55.55.0 00-.18-.46.62.62.0 00-.41-.17q-.08.0-16.53 6.11a.59.59.0 00-.41.59.57.57.0 00.43.52l4 1.24 1.61 4.83a.62.62.0 00.63.43.56.56.0 00.4-.17L16.54 20l4.09 3A.9.9.0 0021.11 23.15zM13.8 20.71l-1.21-4q8.72-5.55 8.78-5.55c.15.0.23.0.23.16a.18.18.0 010 .06s-2.51 2.3-7.52 6.8z"/></svg>
+</a>
+</div>
+</footer>
+</article>
+</main>
+<footer class=footer>
+<span>&copy; 2021 <a href=https://examplesite.com/>0opsdc</a></span>
+<span>
+Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://git.io/hugopapermod rel=noopener target=_blank>PaperMod</a>
+</span>
+</footer>
+<a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
+</a>
+<script>let menu=document.getElementById('menu');menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)},document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener("click",function(b){b.preventDefault();var a=this.getAttribute("href").substr(1);window.matchMedia('(prefers-reduced-motion: reduce)').matches?document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView({behavior:"smooth"}),a==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${a}`)})})</script>
+<script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script>
+<script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove('dark'),localStorage.setItem("pref-theme",'light')):(document.body.classList.add('dark'),localStorage.setItem("pref-theme",'dark'))})</script>
+<script>document.querySelectorAll('pre > code').forEach(b=>{const c=b.parentNode.parentNode,a=document.createElement('button');a.classList.add('copy-code'),a.innerText='copy';function d(){a.innerText='copied!',setTimeout(()=>{a.innerText='copy'},2e3)}a.addEventListener('click',e=>{if('clipboard'in navigator){navigator.clipboard.writeText(b.textContent),d();return}const a=document.createRange();a.selectNodeContents(b);const c=window.getSelection();c.removeAllRanges(),c.addRange(a);try{document.execCommand('copy'),d()}catch(a){}c.removeRange(a)}),c.classList.contains("highlight")?c.appendChild(a):c.parentNode.firstChild==c||(b.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?b.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(a):b.parentNode.appendChild(a))})</script>
+</body>
+</html>

