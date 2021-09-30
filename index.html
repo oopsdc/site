@@ -79,6 +79,20 @@
 </article>
 <article class=post-entry>
 <header class=entry-header>
+<h2>HTB-Starting Point
+</h2>
+</header>
+<section class=entry-content>
+<p>Archetype 目标：拿到用户权限与系统权限。
+靶机IP：10.10.10.27。
+1、信息收集 先使用nmap看看靶机开放了什么端口：
+sudo nmap -sS -sV 10.10.10.27 # 参数讲解 sS：使用SYN半开放式扫描，扫描快，隐蔽性高 sV：探测服务版本 # 扫描结果 Nmap scan report for 10.10.10.27 (10.10.10.27) Host is up (0.28s latency). Not shown: 996 closed ports PORT STATE SERVICE VERSION 135/tcp open msrpc Microsoft Windows RPC 139/tcp open netbios-ssn Microsoft Windows netbios-ssn 445/tcp open microsoft-ds Microsoft Windows Server 2008 R2 - 2012 microsoft-ds 1433/tcp open ms-sql-s Microsoft SQL Server 2017 14.00.1000 Service Info: OSs: Windows, Windows Server 2008 R2 - 2012; CPE: cpe:/o:microsoft:windows 比较容易入手的就是445端口对应的SMB服务，1433是SQL Server的默认端口。先尝试能否匿名访问SMB服务，这里使用Kali预装的smbclient：...</p>
+</section>
+<footer class=entry-footer>September 1, 2021&nbsp;·&nbsp;0opsdc</footer>
+<a class=entry-link aria-label="post link to HTB-Starting Point" href=https://oopsdc.com/post/htb-starting-point/></a>
+</article>
+<article class=post-entry>
+<header class=entry-header>
 <h2>LxRunOffline使用手册
 </h2>
 </header>
@@ -205,25 +219,12 @@ remote: Support for password authentication was removed on August 13, 2021. Plea
 <p>环境配置 本文环境信息如下：
 Parallel Desktop 16 Business 16.5.0 (49183) Kali Linux 2021.2 64-Bit 系统安装 安装配置 安装Kali Linux的时候Parallels Desktop无法识别操作系统，需要我们手动选择Other Linux下的Kali Linux。
 配置选项因人而异，此处不细讲。
+在安装过程中可选择GNOME作为桌面环境，避免后面的踩坑。
 更换国内源 # 备份原文件 mv /etc/apt/source.list /etc/apt/source.list.bak # 更换为清华源 vim /etc/apt/source.list # 输入以下内容 "deb http://mirrors.tuna.tsinghua.edu.cn/kali kali-rolling main contrib non-free" "deb-src https://mirrors.tuna.tsinghua.edu.cn/kali kali-rolling main contrib non-free" 安装Parallels Tools 把鼠标移到窗口的右上，有一个黄色的感叹符号，点击即可安装Parallels Tools。
 # 检测光盘是否挂载成功 mount | grep iso9660 # 将安装文件拷贝至本地，此处的dirname为自己创建的目录名称 mkdir ~/&lt;dirname> && cp -r /media/cdrom0/* ~/&lt;dirname> # 安装Parallels Tools cd ~/&lt;dirname> && ....</p>
 </section>
 <footer class=entry-footer>August 18, 2021&nbsp;·&nbsp;0opsdc</footer>
 <a class=entry-link aria-label="post link to Kali安装Parallels Tools" href=https://oopsdc.com/post/kali%E5%AE%89%E8%A3%85parallels-tools/></a>
-</article>
-<article class=post-entry>
-<header class=entry-header>
-<h2>HTB-Starting Point
-</h2>
-</header>
-<section class=entry-content>
-<p>Archetype 目标：拿到用户权限与系统权限。
-靶机IP：10.10.10.27。
-1、信息收集 先使用nmap看看靶机开放了什么端口：
-sudo nmap -sS -sV 10.10.10.27 # 参数讲解 sS：使用SYN半开放式扫描，扫描快，隐蔽性高 sV：探测服务版本 # 扫描结果 Nmap scan report for 10.10.10.27 (10.10.10.27) Host is up (0.28s latency). Not shown: 996 closed ports PORT STATE SERVICE VERSION 135/tcp open msrpc Microsoft Windows RPC 139/tcp open netbios-ssn Microsoft Windows netbios-ssn 445/tcp open microsoft-ds Microsoft Windows Server 2008 R2 - 2012 microsoft-ds 1433/tcp open ms-sql-s Microsoft SQL Server 2017 14.00.1000 Service Info: OSs: Windows, Windows Server 2008 R2 - 2012; CPE: cpe:/o:microsoft:windows 比较容易入手的就是445端口对应的SMB服务，1433是SQL Server的默认端口。先尝试能否匿名访问SMB服务，这里使用Kali预装的smbclient：...</p>
-</section>
-<footer class=entry-footer>August 17, 2021&nbsp;·&nbsp;0opsdc</footer>
-<a class=entry-link aria-label="post link to HTB-Starting Point" href=https://oopsdc.com/post/htb-starting-point/></a>
 </article>
 <footer class=page-footer>
 <nav class=pagination>

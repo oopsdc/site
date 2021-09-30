@@ -101,6 +101,7 @@ remote: Support for password authentication was removed on August 13, 2021. Plea
       <description>环境配置 本文环境信息如下：
  Parallel Desktop 16 Business 16.5.0 (49183) Kali Linux 2021.2 64-Bit  系统安装 安装配置 安装Kali Linux的时候Parallels Desktop无法识别操作系统，需要我们手动选择Other Linux下的Kali Linux。
 配置选项因人而异，此处不细讲。
+在安装过程中可选择GNOME作为桌面环境，避免后面的踩坑。
 更换国内源 # 备份原文件 mv /etc/apt/source.list /etc/apt/source.list.bak # 更换为清华源 vim /etc/apt/source.list # 输入以下内容 &amp;#34;deb http://mirrors.tuna.tsinghua.edu.cn/kali kali-rolling main contrib non-free&amp;#34; &amp;#34;deb-src https://mirrors.tuna.tsinghua.edu.cn/kali kali-rolling main contrib non-free&amp;#34; 安装Parallels Tools 把鼠标移到窗口的右上，有一个黄色的感叹符号，点击即可安装Parallels Tools。
 # 检测光盘是否挂载成功 mount | grep iso9660 # 将安装文件拷贝至本地，此处的dirname为自己创建的目录名称 mkdir ~/&amp;lt;dirname&amp;gt; &amp;amp;&amp;amp; cp -r /media/cdrom0/* ~/&amp;lt;dirname&amp;gt; # 安装Parallels Tools cd ~/&amp;lt;dirname&amp;gt; &amp;amp;&amp;amp; .</description>
     </item>
